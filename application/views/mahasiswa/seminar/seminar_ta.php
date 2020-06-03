@@ -110,7 +110,8 @@
                                                     } else {
                                                         echo "<ul style='margin-left: -20px;'>";
                                                         foreach($lampiran as $rw) {
-                                                            echo "<li><a href='".base_url($rw->file)."' download>".$rw->jenis_berkas."</a></li>";
+                                                            $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
+                                                            echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
                                                         }
         
                                                         echo "</ul>";

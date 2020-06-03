@@ -79,6 +79,7 @@ $route['mahasiswa/tugas-akhir/tema/ajukan-perbaikan'] = 'mahasiswa/ajukan_data_t
 $route['mahasiswa/tugas-akhir/seminar'] = 'mahasiswa/seminar';
 $route['mahasiswa/tugas-akhir/seminar/form'] = 'mahasiswa/form_seminar';
 $route['mahasiswa/tugas-akhir/seminar/lampiran'] = 'mahasiswa/lampiran_seminar';
+$route['mahasiswa/tambah_berkas_seminar'] = 'mahasiswa/tambah_berkas_seminar';
 
 // Dosen
 $route['dosen/kelola-akun'] = 'dosen/akun';

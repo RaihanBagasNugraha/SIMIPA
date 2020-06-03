@@ -391,5 +391,19 @@ class Ta_model extends CI_Model
 		
 		return $query->result();
 	}
+
+	function insert_lampiran_seminar($data)
+	{
+		$this->db->trans_start();
+		$this->db->insert('seminar_sidang_berkas', $data);
+		$this->db->trans_complete();
+		
+	}
+
+	function get_berkas_name($id)
+	{
+		$result = $this->db->query('SELECT nama FROM jenis_berkas_lampiran WHERE id_jenis ='.$id)->row()->nama;
+		return $result;
+	}
 	
 }

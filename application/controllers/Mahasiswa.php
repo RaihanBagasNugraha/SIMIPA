@@ -476,5 +476,47 @@ class Mahasiswa extends CI_Controller {
 	{
 		$this->load->view('mahasiswa/seminar/form_seminar_ta');
 	}
+
+	function lampiran_seminar()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['lampiran'] = $this->ta_model->select_lampiran_by_seminar($this->input->get('id'));
+		// $data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
+		
+		// print_r($data);
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/seminar/form_lampiran_seminar',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function tambah_berkas_seminar()
+	{
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($_POST);
+		// print_r($_FILES);
+
+		$data = array(
+			'id_seminar' => $this->input->post('id_seminar'),
+			'jenis_berkas' => $this->input->post('jenis_berkas')
+		);
+
+		if(!empty($_FILES)) {
+			$file = $_FILES['file']['tmp_name']; 
+			$sourceProperties = getimagesize($file);
+			$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$this->input->post('id_seminar');
+			$folderPath = "assets/uploads/berkas-seminar/";
+			$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+			$data['file'] = $folderPath. $fileNewName. ".". $ext;
+			move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+		}
+
+		$this->ta_model->insert_lampiran_seminar($data);
+		redirect(site_url("mahasiswa/tugas-akhir/seminar/lampiran?id=".$this->input->post('id_seminar')."&status=sukses"));
+	}
 	
 }
