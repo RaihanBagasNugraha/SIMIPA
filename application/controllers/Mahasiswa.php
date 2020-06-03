@@ -476,6 +476,8 @@ class Mahasiswa extends CI_Controller {
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		$data['biodata'] = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 3)->row();
+		$data_ta = $this->ta_model->get_approved_ta($this->session->userdata('username'));
+		$data['ta'] = $data_ta[0];
 		// $data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
 
 		if($this->input->get('aksi') == "ubah")

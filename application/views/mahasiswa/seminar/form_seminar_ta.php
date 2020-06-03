@@ -32,6 +32,50 @@
                                 <div class="card-body">
                                 <?php if(empty($status_ta) || ($this->input->get('aksi') == 'ubah' && !empty($this->input->get('id')))) { ?>  
                                     <form method="post" action="<?php echo site_url('#') ?>" >
+                                        <!-- <?php 
+                                        echo "<pre>";
+                                        print_r($ta);
+                                        echo $ta->npm;
+                                        ?> -->
+
+                                        <div class="position-relative row form-group">
+                                            <label for="npm" class="col-sm-3 col-form-label">Npm</label>
+                                            <div class="col-sm-3">
+                                                <input value="<?php echo $biodata->npm ?>" readonly required name="npm" class="form-control input-mask-trigger" >
+                                            </div>
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                                            <div class="col-sm-9">
+                                                <input value="<?php echo $this->user_model->get_mahasiswa_name($biodata->npm); ?>" readonly required name="nama" class="form-control input-mask-trigger" >
+                                            </div>
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="prodi" class="col-sm-3 col-form-label">Judul</label>
+                                            <div class="col-sm-9">
+                                                <?php if($ta->judul_approve == '1'){ ?>
+                                                    <textarea required name="judul" class="form-control" placeholder="Ketik judul utama penelitian di sini..." readonly><?php echo $ta->judul1 ?></textarea>
+                                                <?php } elseif($ta->judul_approve == '2'){?>
+                                                    <textarea required name="judul" class="form-control" placeholder="Ketik judul utama penelitian di sini..." readonly><?php echo $ta->judul2 ?></textarea>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="jenis" class="col-sm-3 col-form-label">Jenis</label>
+                                            <div class="col-sm-9">
+                                                <select required name="jenis" class=" form-control">
+                                                <option value="">-- Jenis Seminar --</option>
+                                                    <option value="Seminar Tugas Akhir">Seminar Tugas Akhir</option>
+                                                    <option value="Seminar Usul">Seminar Usul</option>
+                                                    <option value="Seminar Hasil">Seminar Hasil</option>
+                                                    <option value="Sidang Komprehensif">Sidang Komprehensif</option>
+                                                </select>  
+                                            </div>
+                                        </div>
+
                                     
                                     </form>
                                                 <?php } else {

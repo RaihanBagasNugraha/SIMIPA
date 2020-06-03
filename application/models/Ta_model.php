@@ -410,5 +410,13 @@ class Ta_model extends CI_Model
 		$result = $this->db->query('SELECT nama FROM jenis_berkas_lampiran WHERE id_jenis ='.$id)->row()->nama;
 		return $result;
 	}
+
+	function get_approved_ta($npm)
+	{
+		$this->db->where('npm =', $npm);
+		$this->db->where('status =', '4');
+		$query = $this->db->get($this->table);
+		return $query->result();
+	}
 	
 }
