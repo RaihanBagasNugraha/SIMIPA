@@ -7,7 +7,7 @@
                                         <i class="pe-7s-file icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Kelola Berkas Lampiran Tema Penelitian
+                                    <div>Kelola Berkas Lampiran Seminar
                                         <div class="page-title-subheading">Jangan lupa untuk mengunggah berkas pendukung.
                                         </div>
                                     </div>

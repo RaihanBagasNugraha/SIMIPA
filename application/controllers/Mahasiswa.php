@@ -490,7 +490,7 @@ class Mahasiswa extends CI_Controller {
 		$this->load->view('mahasiswa/seminar/form_lampiran_seminar',$data);
 
         $this->load->view('footer_global');
-	}
+	} 
 
 	function tambah_berkas_seminar()
 	{
