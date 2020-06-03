@@ -81,6 +81,11 @@ class Ta_model extends CI_Model
 	{
 		$this->db->delete('tugas_akhir_berkas', $data);
 	}
+
+	function delete_lampiran_seminar($data)
+	{
+		$this->db->delete('seminar_sidang_berkas', $data);
+	}
 	
 	function delete_ta($data)
 	{

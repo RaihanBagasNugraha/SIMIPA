@@ -474,7 +474,37 @@ class Mahasiswa extends CI_Controller {
 
 	function form_seminar()
 	{
-		$this->load->view('mahasiswa/seminar/form_seminar_ta');
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['biodata'] = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 3)->row();
+		// $data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
+
+		if($this->input->get('aksi') == "ubah")
+		{
+			$ta = $this->ta_model->select_ta_by_id($this->input->get('id'), $this->session->userdata('username'));
+			$data_seminar = $ta[0];
+		}
+		else
+		{
+			$data_seminar = array(
+				'id_tugas_akhir' => null,
+				'jenis' => null,
+				'tgl_pelaksanaan' => null,
+				'waktu_pelaksanaan' => null,
+				'tempat' => null,
+				'ipk' => null,
+				'sks' => null,
+				'toefl' => null,
+			);
+		}
+
+		$data['data_seminar'] = $data_seminar;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/seminar/form_seminar_ta',$data);
+	
+		$this->load->view('footer_global');
 	}
 
 	function lampiran_seminar()
@@ -517,6 +547,22 @@ class Mahasiswa extends CI_Controller {
 
 		$this->ta_model->insert_lampiran_seminar($data);
 		redirect(site_url("mahasiswa/tugas-akhir/seminar/lampiran?id=".$this->input->post('id_seminar')."&status=sukses"));
+	}
+
+	function hapus_berkas_seminar()
+	{
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);	
+		$id = $this->input->post('id_berkas');
+		$id_seminar = $this->input->post('id_seminar');
+		$file = $this->input->post('file_berkas');
+		
+		$data = array("id" => $id);
+		$this->ta_model->delete_lampiran_seminar($data);
+		unlink($file);
+	    
+	    redirect(site_url("mahasiswa/tugas-akhir/seminar/lampiran?id=".$id_seminar));
 	}
 	
 }

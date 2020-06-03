@@ -58,9 +58,9 @@
                                                             <td><?php echo $row->nama ?></td>
                                                             <td>
                                                             <a style="width: 60px;" href="<?php echo base_url($row->file) ?>" class="mr-1 mb-1 btn btn-info btn-sm" download>Unduh
-                                                </a>
-                                                            <a data-toggle = "modal" data-id="<?php echo $row->id."#$#$".$nama_berkas."#$#$".$row->id_seminar."#$#$".$row->file ?>" class="passingID">
-                                                            <button style="width: 60px;" type="button" class="btn mb-1 btn-danger btn-sm aksi"  data-toggle="modal" data-target="#delBerkas">
+                                                            </a>
+                                                            <a data-toggle = "modal" data-id="<?php echo $row->id."#$#$".$nama_berkas."#$#$".$row->id_seminar."#$#$".$row->file ?>" class="passingIDs">
+                                                            <button style="width: 60px;" type="button" class="btn mb-1 btn-danger btn-sm aksi"  data-toggle="modal" data-target="#delBerkasSeminar">
                                                                 Hapus
                                                             </button>
                                                             </a>
@@ -149,12 +149,12 @@
 <script src="<?php echo site_url("assets/scripts/select2.full.js") ?>"></script>
 
 <script>
-                            $(document).on("click", ".passingID", function () {
+                            $(document).on("click", ".passingIDs", function () {
                              var dataId = $(this).attr('data-id');
                              var data = dataId.split("#$#$");
                              $(".modal-body #berkasID").val( data[0] );
                              $(".modal-body #berkasNama").text(data[1]);
-                             $(".modal-body #pengajuanID").val(data[2]);
+                             $(".modal-body #IDSeminar").val(data[2]);
                              $(".modal-body #berkasFile").val(data[3]);
                              
                              //console.log("Tes");
