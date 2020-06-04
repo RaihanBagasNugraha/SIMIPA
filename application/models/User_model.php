@@ -158,6 +158,17 @@ class User_model extends CI_Model
 		return $result;
 	}
 
+	function get_dosen_by_nip($nip)
+	{
+		$this->db->select('*');
+		$this->db->from('tbl_users_dosen');
+		$this->db->join('tbl_users', 'tbl_users_dosen.nip_nik = '.$nip);
+		$this->db->where('tbl_users_dosen.id_user', 'tbl_users.userId');
+		$query = $this->db->get();
+		
+		return $query->row();
+	}
+
 
 	
 	/* ------------------------------------

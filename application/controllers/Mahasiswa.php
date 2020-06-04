@@ -488,6 +488,7 @@ class Mahasiswa extends CI_Controller {
 		else
 		{
 			$data_seminar = array(
+				'id' => null,
 				'id_tugas_akhir' => null,
 				'jenis' => null,
 				'tgl_pelaksanaan' => null,
@@ -565,6 +566,64 @@ class Mahasiswa extends CI_Controller {
 		unlink($file);
 	    
 	    redirect(site_url("mahasiswa/tugas-akhir/seminar/lampiran?id=".$id_seminar));
+	}
+
+	function add_seminar()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$ttd = $data['ttd'];
+		$aksi = $data['aksi'];
+	
+		// echo "<pre>";
+		// print_r($data_seminar);
+
+		// $id_tugas_akhir = $data['id_tugas_akhir'];
+		// $jenis = $data['jenis'];
+		// $tgl_pelaksaan = $data['tanggal'];
+		// $waktu_pelaksanaan = $data['waktu'];
+		// $tempat = $data['tempat'];
+		// $ipk = $data['ipk'];
+		// $sks = $data['sks'];
+		// $toefl = $data['toefl'];
+		
+
+		// $data['npm'] = $this->session->userdata('username');
+		if($aksi == "ubah") {
+			echo "yes";
+			// $where = $data['id_pengajuan'];
+			// unset($data['id_pengajuan']);
+			// $this->ta_model->update($data, $where);
+		} else {
+			$data_seminar = array(
+				'id_tugas_akhir' => $data['id_tugas_akhir'],
+				'jenis' => $data['jenis'],
+				'tgl_pelaksanaan' => $data['tanggal'],
+				'waktu_pelaksanaan' => $data['waktu'],
+				'tempat' => $data['tempat'],
+				'ipk' => $data['ipk'],
+				'sks' => $data['sks'],
+				'toefl' => $data['toefl'],
+				'status' => '-1',
+				'keterangan' => NULL
+				
+			);
+
+			$data_approval = array(
+				'status_slug' => 'Mahasiswa',
+				'id_user' => $this->session->userdata('userId'),
+				'ttd' => $ttd,	
+			);
+
+			$this->ta_model->insert_seminar($data_seminar, $data_approval);
+		}
+		
+
+		
+		redirect(site_url("mahasiswa/tugas-akhir/seminar"));
+		
 	}
 	
 }

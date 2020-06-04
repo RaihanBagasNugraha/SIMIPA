@@ -31,29 +31,31 @@
                                 <div class="card-header">Form Pengajuan Tema Penelitian</div>
                                 <div class="card-body">
                                 <?php if(empty($status_ta) || ($this->input->get('aksi') == 'ubah' && !empty($this->input->get('id')))) { ?>  
-                                    <form method="post" action="<?php echo site_url('#') ?>" >
+                                    <form method="post" action="<?php echo site_url('mahasiswa/simpan-pengajuan-seminar') ?>" >
+                                    <input value="<?php echo  $data_seminar['id']; ?>" type="hidden" required name="id_seminar" id="id_seminar">
+                                    <input value="<?php echo $ta->id_pengajuan ?>" type="hidden" required name="id_tugas_akhir" id="id_tugas_akhir">
                                         <!-- <?php 
                                         echo "<pre>";
-                                        print_r($ta);
-                                        echo $ta->npm;
+                                        print_r($data_seminar);
+                                        
                                         ?> -->
 
                                         <div class="position-relative row form-group">
-                                            <label for="npm" class="col-sm-3 col-form-label">Npm</label>
+                                            <label for="npm" class="col-sm-3 col-form-label"><b>Npm</b></label>
                                             <div class="col-sm-3">
                                                 <input value="<?php echo $biodata->npm ?>" readonly required name="npm" class="form-control input-mask-trigger" >
                                             </div>
                                         </div>
 
                                         <div class="position-relative row form-group">
-                                            <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                                            <label for="nama" class="col-sm-3 col-form-label"><b>Nama</b></label>
                                             <div class="col-sm-9">
                                                 <input value="<?php echo $this->user_model->get_mahasiswa_name($biodata->npm); ?>" readonly required name="nama" class="form-control input-mask-trigger" >
                                             </div>
                                         </div>
 
                                         <div class="position-relative row form-group">
-                                            <label for="prodi" class="col-sm-3 col-form-label">Judul</label>
+                                            <label for="prodi" class="col-sm-3 col-form-label"><b>Judul</b></label>
                                             <div class="col-sm-9">
                                                 <?php if($ta->judul_approve == '1'){ ?>
                                                     <textarea required name="judul" class="form-control" placeholder="Ketik judul utama penelitian di sini..." readonly><?php echo $ta->judul1 ?></textarea>
@@ -64,15 +66,152 @@
                                         </div>
 
                                         <div class="position-relative row form-group">
-                                            <label for="jenis" class="col-sm-3 col-form-label">Jenis</label>
+                                            <label for="jenis" class="col-sm-3 col-form-label"><b>Jenis</b></label>
                                             <div class="col-sm-9">
                                                 <select required name="jenis" class=" form-control">
-                                                <option value="">-- Jenis Seminar --</option>
+                                                <option value="">[Jenis Seminar]</option>
                                                     <option value="Seminar Tugas Akhir">Seminar Tugas Akhir</option>
                                                     <option value="Seminar Usul">Seminar Usul</option>
                                                     <option value="Seminar Hasil">Seminar Hasil</option>
                                                     <option value="Sidang Komprehensif">Sidang Komprehensif</option>
                                                 </select>  
+                                            </div>
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="tanggal" class="col-sm-3 col-form-label"><b>Tanggal</b></label>
+                                            <div class="col-sm-3">
+                                                <input value="<?php echo $data_seminar['tgl_pelaksanaan']; ?>" type="date" required name="tanggal" class="form-control input-mask-trigger" >
+                                            </div>
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="jenis" class="col-sm-3 col-form-label"><b>Waktu</b></label>
+                                            <div class="col-sm-3">
+                                                <select required name="waktu" class=" form-control">
+                                                <option value="">[Pilih Waktu]</option>
+                                                    <?php
+                                                        $waktu = "";
+                                                        for($hh=7; $hh<=17; $hh++) {
+                                                            if($hh == 12) continue;
+                                                            $num_padded = sprintf("%02d", $hh);
+                                                    ?>
+                                                    <option <?php if($waktu == $num_padded.":00:00") echo "selected"; ?> value="<?php echo $num_padded.":00:00"; ?>"><?php echo $num_padded.":00:00"; ?></option>
+                                                    
+                                                    <?php
+                                                            if($hh == 17) break;
+                                                    ?>
+                                                            <option <?php if($waktu == $num_padded.":15:00") echo "selected"; ?> value="<?php echo $num_padded.":15:00"; ?>"><?php echo $num_padded.":15:00"; ?></option>
+                                                            <option <?php if($waktu == $num_padded.":30:00") echo "selected"; ?> value="<?php echo $num_padded.":30:00"; ?>"><?php echo $num_padded.":30:00"; ?></option>
+                                                            <option <?php if($waktu == $num_padded.":45:00") echo "selected"; ?> value="<?php echo $num_padded.":45:00"; ?>"><?php echo $num_padded.":45:00"; ?></option>
+                                                        <?php
+                                                        }
+                                                    ?>
+                                                </select>  
+                                            </div>
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="tanggal" class="col-sm-3 col-form-label"><b>Tempat</b></label>
+                                            <div class="col-sm-9">
+                                                <input value="<?php echo $data_seminar['tempat']; ?>" required name="tempat" class="form-control input-mask-trigger" >
+                                            </div>
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>IPK</b></label>
+                                            <div class="col-sm-3">
+                                                <input value="<?php echo $data_seminar['ipk'] ?>" required name="ipk" class="form-control input-mask-trigger" data-inputmask="'mask': '9.99'" im-insert="true">
+                                            </div>
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Jumlah SKS</b></label>
+                                            <div class="col-sm-3">
+                                                <input value="<?php echo $data_seminar['sks'] ?>" required name="sks" class="form-control input-mask-trigger" data-inputmask="'mask': '999'" im-insert="true">
+                                            </div>
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Nilai TOEFL</b></label>
+                                            <div class="col-sm-3">
+                                                <input value="<?php echo $data_seminar['toefl'] ?>" name="toefl" class="form-control input-mask-trigger" data-inputmask="'mask': '999'" im-insert="true">
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <h5><b>Komisi Pembimbing</b></h5>
+
+                                        <?php $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($ta->id_pengajuan); 
+                                            
+                                                foreach($komisi_pembimbing as $kom) {
+                                        ?>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="nama" class="col-sm-3 col-form-label"><b><?php echo $kom->status; ?></b></label>
+                                            <div class="col-sm-9">
+                                                <input value="<?php echo $kom->name; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
+                                                <input value="<?php echo $kom->nip_nik; ?>" readonly required name="<?php echo $kom->status; ?>" type="hidden" class="form-control input-mask-trigger" >
+                                            </div>
+                                        </div>
+
+                                        <?php } ?>
+
+                                        <br>
+                                        <h5><b>Komisi Penguji</b></h5>
+
+                                        <?php $komisi_penguji = $this->ta_model->get_penguji_ta($ta->id_pengajuan); 
+                                                foreach($komisi_penguji as $kom) {
+                                        ?>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="nama" class="col-sm-3 col-form-label"><b><?php echo $kom->status; ?></b></label>
+                                            <div class="col-sm-9">
+                                                <input value="<?php echo $kom->name; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
+                                                <input value="<?php echo $kom->nip_nik; ?>" readonly required name="<?php echo $kom->status; ?>" type="hidden" class="form-control input-mask-trigger" >
+                                            </div>
+                                        </div>
+
+                                        <?php } ?>
+
+
+                                        <div class="position-relative row form-group"><label for="ttd" class="col-sm-3 col-form-label"><b>Tanda Tangan Digital</b></label>
+                                            <div class="col-sm-4">
+                                            <canvas style="border: 1px solid #aaa; height: 200px; background-color: #efefef;" id="signature-pad" class="signature-pad col-sm-12" height="200px"></canvas>
+                                            <small class="form-text text-muted">Silahkan tanda tangan pada canvas di atas, jangan lupa Klik <b>Oke</b> sebelum menyimpan data.</small>
+                                            </div>
+                                            <div class="col-sm-5">
+                                            <div role="group" class="btn-group btn-group btn-group-toggle"  style="margin-bottom: 10px;">
+                                                    <label class="btn btn-dark">
+                                                        <input type="radio" name="pen_color" class="pen_color" value="0" checked>
+                                                        Hitam
+                                                    </label>
+                                                    <label class="btn btn-primary">
+                                                        <input type="radio" name="pen_color" class="pen_color" value="1">
+                                                        Biru
+                                                    </label>
+                                                    
+                                                </div>
+                                                
+                                            </a>
+                                            <a id="clear" class="mb-2 btn btn-light" onclick="document.getElementById('output').value = ''">Hapus
+                                            </a>
+                                            <a id="preview" class="mb-2 btn btn-light">Oke
+                                            </a>
+                                            <input style="background-color: #efefef;" type="text" class="form-control readonly" required placeholder="Klik Oke setelah tanda tangan di canvas." name="ttd" id="output" value="">
+                                            <input type="hidden" name="aksi" value="<?php if(!empty($this->input->get("aksi"))) echo $this->input->get("aksi") ?>">
+                                            </div>
+                                    
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <div class="col-sm-9 offset-sm-3">
+                                            <button value="<?php if($this->input->get('aksi') == "ubah") echo "ubah"; ?>" type="submit" class="btn-shadow btn btn-info">
+                                            <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fa fa-save fa-w-20"></i>
+                                            </span>
+                                            <?php if($this->input->get('aksi') == "ubah") echo "Ubah"; else echo "Simpan" ?> Data
+                                        </button>
                                             </div>
                                         </div>
 

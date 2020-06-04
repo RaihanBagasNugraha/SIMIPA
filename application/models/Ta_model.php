@@ -418,5 +418,19 @@ class Ta_model extends CI_Model
 		$query = $this->db->get($this->table);
 		return $query->result();
 	}
+
+	function insert_seminar($data_seminar, $data_approval)
+	{
+		$this->db->trans_start();
+		$this->db->insert($this->table_seminar, $data_seminar);
+		$insert_id = $this->db->insert_id();
+		
+		$data_approval['id_pengajuan'] = $insert_id;
+		$this->db->insert('seminar_sidang_approval', $data_approval);
+
+		$this->db->trans_complete();
+		
+		return $insert_id;
+	}
 	
 }
