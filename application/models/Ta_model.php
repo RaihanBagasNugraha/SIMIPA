@@ -432,5 +432,28 @@ class Ta_model extends CI_Model
 		
 		return $insert_id;
 	}
+
+	function select_seminar_by_id($id)
+	{
+		$this->db->where(array('id' => $id));
+		// $this->db->where(array('id_pengajuan' => $id, 'npm' => $npm, 'status' => -1));
+		$this->db->where("(status='-1' OR status='5')");
+		$query = $this->db->get($this->table_seminar);
+		return $query->result_array();
+	}
+
+	function get_seminar_approval_id($id)
+	{
+		$result = $this->db->query('SELECT ttd FROM seminar_sidang_approval WHERE id_pengajuan ='.$id)->row()->ttd;
+		return $result;
+	}
 	
+	function update_seminar($data_seminar,$data_approval, $where)
+	{
+	    $this->db->where('id', $where);
+		$this->db->update($this->table_seminar, $data_seminar);
+		
+		$this->db->where('id_pengajuan', $where);
+	    $this->db->update('seminar_sidang_approval', $data_approval);
+	}
 }

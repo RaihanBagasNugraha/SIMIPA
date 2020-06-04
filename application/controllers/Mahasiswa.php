@@ -482,7 +482,7 @@ class Mahasiswa extends CI_Controller {
 
 		if($this->input->get('aksi') == "ubah")
 		{
-			$ta = $this->ta_model->select_ta_by_id($this->input->get('id'), $this->session->userdata('username'));
+			$ta = $this->ta_model->select_seminar_by_id($this->input->get('id'));
 			$data_seminar = $ta[0];
 		}
 		else
@@ -592,10 +592,24 @@ class Mahasiswa extends CI_Controller {
 
 		// $data['npm'] = $this->session->userdata('username');
 		if($aksi == "ubah") {
-			echo "yes";
-			// $where = $data['id_pengajuan'];
-			// unset($data['id_pengajuan']);
-			// $this->ta_model->update($data, $where);
+			$data_seminar = array(
+				'id_tugas_akhir' => $data['id_tugas_akhir'],
+				'jenis' => $data['jenis'],
+				'tgl_pelaksanaan' => $data['tanggal'],
+				'waktu_pelaksanaan' => $data['waktu'],
+				'tempat' => $data['tempat'],
+				'ipk' => $data['ipk'],
+				'sks' => $data['sks'],
+				'toefl' => $data['toefl'],				
+			);
+
+			$data_approval = array(
+				'ttd' => $ttd,	
+			);
+			// echo "<pre>";
+			// print_r($data);
+			$where = $data['id_seminar'];
+			$this->ta_model->update_seminar($data_seminar,$data_approval, $where);
 		} else {
 			$data_seminar = array(
 				'id_tugas_akhir' => $data['id_tugas_akhir'],

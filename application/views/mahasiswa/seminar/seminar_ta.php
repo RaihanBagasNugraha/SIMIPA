@@ -139,7 +139,7 @@
                                                 <?php } ?>
 
                                                 <?php if($row->status == -1) { ?>
-                                                <a href="<?php echo site_url("mahasiswa/tugas-akhir/tema/form?aksi=ubah&id=".$row->id) ?>" class="btn-wide mb-2 btn btn-warning btn-sm btn-block">Ubah
+                                                <a href="<?php echo site_url("mahasiswa/tugas-akhir/seminar/form?aksi=ubah&id=".$row->id) ?>" class="btn-wide mb-2 btn btn-warning btn-sm btn-block">Ubah
                                                 </a>
                                                 <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="passingID" >
                                                             <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#delPengajuan">

@@ -35,8 +35,9 @@
                                     <input value="<?php echo  $data_seminar['id']; ?>" type="hidden" required name="id_seminar" id="id_seminar">
                                     <input value="<?php echo $ta->id_pengajuan ?>" type="hidden" required name="id_tugas_akhir" id="id_tugas_akhir">
                                         <!-- <?php 
-                                        echo "<pre>";
-                                        print_r($data_seminar);
+                                        // echo "<pre>";
+                                        // print_r($data_seminar);
+                                        
                                         
                                         ?> -->
 
@@ -68,12 +69,17 @@
                                         <div class="position-relative row form-group">
                                             <label for="jenis" class="col-sm-3 col-form-label"><b>Jenis</b></label>
                                             <div class="col-sm-9">
+                                            <?php 
+                                            $jenis = $data_seminar['jenis']; 
+                                            $select = "selected";
+                                            
+                                            ?>
                                                 <select required name="jenis" class=" form-control">
                                                 <option value="">[Jenis Seminar]</option>
-                                                    <option value="Seminar Tugas Akhir">Seminar Tugas Akhir</option>
-                                                    <option value="Seminar Usul">Seminar Usul</option>
-                                                    <option value="Seminar Hasil">Seminar Hasil</option>
-                                                    <option value="Sidang Komprehensif">Sidang Komprehensif</option>
+                                                    <option value="Seminar Tugas Akhir" <?php if($jenis == 'Seminar Tugas Akhir' && $jenis != NULL){echo $select;} ?>>Seminar Tugas Akhir</option>
+                                                    <option value="Seminar Usul" <?php if($jenis == 'Seminar Usul' && $jenis != NULL){echo $select;} ?>>Seminar Usul</option>
+                                                    <option value="Seminar Hasil" <?php if($jenis == 'Seminar Hasil' && $jenis != NULL){echo $select;} ?>>Seminar Hasil</option>
+                                                    <option value="Sidang Komprehensif" <?php if($jenis == 'Sidang Komprehensif' && $jenis != NULL){echo $select;} ?>>Sidang Komprehensif</option>
                                                 </select>  
                                             </div>
                                         </div>
@@ -385,7 +391,8 @@ var signaturePad = new SignaturePad(canvas);
 
 <?php if($this->input->get('aksi') == 'ubah' && !empty($this->input->get('id'))) { 
     
-    $ttd_img = json_encode($data_ta['ttd']);
+    $ttd = $this->ta_model->get_seminar_approval_id($data_seminar['id']);
+    $ttd_img = json_encode($ttd);
     
     ?>
 
