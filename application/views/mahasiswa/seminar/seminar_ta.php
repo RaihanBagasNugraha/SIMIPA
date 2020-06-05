@@ -232,17 +232,6 @@ $(document).ready(function(){
 
             });
 
-    $(".passingID2").click(function () {
-                var id = $(this).attr('data-id');
-                $("#ID2").val( id );
-
-    });  
-
-    $(".passingIDPerbaikan").click(function () {
-                var id = $(this).attr('data-id');
-                $("#IDPerbaikan").val( id );
-
-    });  
               
      
 </script>

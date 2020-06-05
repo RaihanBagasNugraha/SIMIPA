@@ -640,4 +640,22 @@ class Mahasiswa extends CI_Controller {
 		
 	}
 	
+	function hapus_data_seminar()
+	{
+		$id = $this->input->post('id_seminar');
+		// echo "<pre>";
+		// print_r($data);
+
+		$data = array("id" => $id);
+		$data2 = array("id_pengajuan" => $id);
+		$data3 = array("id_seminar" => $id);
+		$this->ta_model->delete_seminar($data);
+		$this->ta_model->delete_approval_seminar($data2);
+		$this->ta_model->delete_berkas_seminar($id);
+		$this->ta_model->delete_lampiran_seminar($data3);
+		
+	    
+	    redirect(site_url("mahasiswa/tugas-akhir/seminar"));
+	}
+
 }

@@ -456,4 +456,25 @@ class Ta_model extends CI_Model
 		$this->db->where('id_pengajuan', $where);
 	    $this->db->update('seminar_sidang_approval', $data_approval);
 	}
+
+	function delete_seminar($data)
+	{
+		$this->db->delete('seminar_sidang', $data);
+	}
+
+	function delete_approval_seminar($data)
+	{
+		$this->db->delete('seminar_sidang_approval', $data);
+	}
+
+	function delete_berkas_seminar($data)
+	{
+		$query = $this->db->query('SELECT file FROM seminar_sidang_berkas WHERE id_seminar ='.$data);
+		$results = $query->result();
+
+		foreach ($results as $row)
+		{
+			unlink($row->file);
+		}
+	}	
 }
