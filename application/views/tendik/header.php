@@ -63,14 +63,31 @@
                                 <!-- Menu Admin Jurusan -->
                                 
                                 <li class="app-sidebar__heading">Admin Jurusan</li>
-                                <li <?php if($this->uri->segment(2) == "tugas-akhir") echo 'class="mm-active"' ?>>
-                                    <a href="<?php echo site_url("tendik/verifikasi-berkas") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas") echo 'class="mm-active"' ?>>
-                                        <i class="metismenu-icon pe-7s-note2"></i>
-                                        Verifikasi Berkas
-                                        
+                                <li <?php if($this->uri->segment(2) == "verifikasi-berkas") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-note"></i>
+                                        <?php echo "Verifikasi Berkas" ?>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("tendik/verifikasi-berkas") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas" && $this->uri->segment(3) != "seminar") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Tema
+                                                
+                                            </a>
+                                        </li> 
+                                        <li>
+                                            <a href="<?php echo site_url("tendik/verifikasi-berkas/seminar") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas" && $this->uri->segment(3) == "seminar") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Seminar
+                                                
+                                            </a>
+                                        </li>    
+                                    </ul>
                                     
                                 </li>
+                                
 
                                 <!-- Menu Staf Laboran -->
                                 

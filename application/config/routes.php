@@ -83,6 +83,7 @@ $route['mahasiswa/tambah_berkas_seminar'] = 'mahasiswa/tambah_berkas_seminar';
 $route['mahasiswa/hapus-berkas-seminar'] = 'mahasiswa/hapus_berkas_seminar';
 $route['mahasiswa/simpan-pengajuan-seminar'] = 'mahasiswa/add_seminar';
 $route['mahasiswa/hapus-data-seminar'] = 'mahasiswa/hapus_data_seminar';
+$route['mahasiswa/ajukan-data-seminar'] = 'mahasiswa/ajukan_data_seminar';
 
 // Dosen
 $route['dosen/kelola-akun'] = 'dosen/akun';
@@ -102,6 +103,11 @@ $route['dosen/tugas-akhir/tema/koordinator'] = 'dosen/tugas_akhir_koordinator';
 $route['dosen/tugas-akhir/tema/koordinator/form'] = 'dosen/form_tugas_akhir_koordinator';
 $route['dosen/simpan-pengajuan-ta'] = 'dosen/add_tugas_akhir';
 
+$route['dosen/tugas-akhir/seminar'] = 'dosen/seminar';
+$route['dosen/tugas-akhir/seminar/approve'] = 'dosen/seminar_approve';
+$route['dosen/tolak-data-seminar'] = 'dosen/seminar_decline';
+$route['dosen/tugas-akhir/seminar/approve-seminar/form'] = 'dosen/seminar_aksi';
+
 // Tendik
 $route['tendik/kelola-akun'] = 'tendik/akun';
 $route['tendik/ubah-data-akun'] = 'tendik/ubah_akun';
@@ -113,6 +119,10 @@ $route['tendik/verifikasi-berkas/biodata'] = 'tendik/akun';
 $route['tendik/verifikasi-berkas/decline'] = 'tendik/verifikasi_berkas_decline';
 $route['tendik/tugas-akhir/tema/approve-ta/form'] = 'tendik/tugas_akhir_aksi';
 $route['tendik/tugas-akhir/tema/approve'] = 'tendik/verifikasi_berkas_approve';
+
+$route['tendik/verifikasi-berkas/seminar'] = 'tendik/verifikasi_berkas_seminar';
+$route['tendik/verifikasi-berkas/seminar/decline'] = 'tendik/verifikasi_berkas_seminar_decline';
+
 
 
 $route['beranda'] = 'admin';

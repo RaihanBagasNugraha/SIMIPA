@@ -147,8 +147,15 @@
 
                                         <br>
                                         <h5><b>Komisi Pembimbing</b></h5>
-
-                                        <?php $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($ta->id_pengajuan); 
+                                        <input value="" readonly required name="Pembimbing_1" type="hidden" class="form-control input-mask-trigger" >
+                                        <input value="" readonly required name="Pembimbing_2" type="hidden" class="form-control input-mask-trigger" >
+                                        <input value="" readonly required name="Pembimbing_3" type="hidden" class="form-control input-mask-trigger" >
+                                        <input value="" readonly required name="Penguji_1" type="hidden" class="form-control input-mask-trigger" >
+                                        <input value="" readonly required name="Penguji_2" type="hidden" class="form-control input-mask-trigger" >
+                                        <input value="" readonly required name="Penguji_3" type="hidden" class="form-control input-mask-trigger" >
+                                        <?php 
+                                        //komisi
+                                        $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($ta->id_pengajuan); 
                                             
                                                 foreach($komisi_pembimbing as $kom) {
                                         ?>

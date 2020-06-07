@@ -121,18 +121,32 @@
                                              </td>
                                              <td class="align-top">
                                                 <?php 
-                                                    if($row->status == '-1') {
+                                                if($row->status == '-1') {
                                                         echo '<i>Belum diajukan</i>';
                                                     }
                                                 
+                                                if($row->status == '0') {
+                                                        echo '<i>Menunggu Approval</i>';
+                                                    }
+
+                                                if($row->status == '1') {
+                                                        echo '<i>Approval Pembimbing Akademik</i>';
+                                                    } 
                                                 
+                                                if($row->status == '2') {
+                                                        echo '<i>Approval Pembimbing & Penguji</i>';
+                                                    }    
+                                                    
+                                                if($row->status == '6') {
+                                                        echo '<i>Ditolak</i>';
+                                                    }            
                                                 ?>
                                              </td>
                                              <td class="align-top">
                                                 <?php
                                                 if(!empty($lampiran) && $row->status == '-1') { ?>
                                                     <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="passingID2" >
-                                                                <button type="button" class="btn-wide mb-1 btn btn-primary btn-sm btn-block"  data-toggle="modal" data-target="#">
+                                                                <button type="button" class="btn-wide mb-1 btn btn-primary btn-sm btn-block"  data-toggle="modal" data-target="#AjukanSeminar">
                                                                     Ajukan <?php  ?>
                                                                 </button>
                                                     </a>
@@ -148,7 +162,7 @@
                                                             </a>
                                                 <a href="<?php echo site_url("mahasiswa/tugas-akhir/seminar/lampiran?id=".$row->id) ?>" class="btn-wide mb-2 btn btn-focus btn-sm btn-block">Unggah Lampiran
                                                 </a>
-                                                <?php }  ?>
+                                                <?php } else{echo "Menunggu";}  ?>
                                              
                                              
                                              
@@ -231,6 +245,12 @@ $(document).ready(function(){
                 $("#ID").val( id );
 
             });
+
+     $(".passingID2").click(function () {
+                var id = $(this).attr('data-id');
+                $("#ID2").val( id );
+
+            });        
 
               
      

@@ -309,7 +309,7 @@
 
 <?php } ?>
 
-<?php if($this->uri->segment(1) == 'tendik' && $this->uri->segment(2) == 'verifikasi-berkas') { ?>
+<?php if($this->uri->segment(1) == 'tendik' && $this->uri->segment(2) == 'verifikasi-berkas' && $this->uri->segment(3) != 'seminar') { ?>
 
 <!-- verifikasi Berkas -->
 <div class="modal fade" id="Approval" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -372,6 +372,45 @@
                                                 <i class="fas fa-times fa-w-20"></i>
                                             </span>Batal</button>
                 <button type="submit" form="tolak-verif-berkas" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>
+
+<?php if($this->uri->segment(1) == 'tendik' && $this->uri->segment(2) == 'verifikasi-berkas' && $this->uri->segment(3) == 'seminar') { ?>
+
+<!-- tolak verifikasi berkas -->
+<div class="modal fade" id="seminar-tolak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tolak Pengajuan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="seminartolak" method="post" action="<?php echo site_url("tendik/verifikasi-berkas/seminar/decline") ?>">
+                    <input type="hidden" name="id_seminar" id="ID" value="">
+                    <!-- <input type="hidden" name="id_pengajuan" id="pengajuanID" value="">
+                    <input type="hidden" name="file_berkas" id="berkasFile" value=""> -->
+                    <p>Tolak Verifikasi Berkas Seminar ? </p>
+                    <textarea name="keterangan" cols="70" rows="3" placeholder="Keterangan Tolak"></textarea>
+                </form>
+                
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="seminartolak" class="btn btn-primary">
                     <span class="btn-icon-wrapper pr-2 opacity-7">
                                                 <i class="fas fa-check fa-w-20"></i>
                                             </span>Ya</button>
@@ -452,6 +491,80 @@
                     <span class="btn-icon-wrapper pr-2 opacity-7">
                                                 <i class="fas fa-check fa-w-20"></i>
                                             </span>Ya, hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ajukan tema -->
+<div class="modal fade" id="AjukanSeminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Pengajuan Seminar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="ajukan" method="post" action="<?php echo site_url("mahasiswa/ajukan-data-seminar") ?>">
+                    <input type="hidden" name="id_seminar" id="ID2" value="">
+                    <!-- <input type="hidden" name="id_pengajuan" id="pengajuanID" value="">
+                    <input type="hidden" name="file_berkas" id="berkasFile" value=""> -->
+                    <!-- <input type="text" class="form-control" name="ID" id="ID" value=""> -->
+                </form>
+                <p>Konfimasi Pengajuan ? </p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="ajukan" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>
+
+<?php if($this->uri->segment(1) == 'dosen' && $this->uri->segment(3) == 'seminar') { ?>
+
+<!-- tolak seminar -->
+<div class="modal fade" id="seminarTolak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Pengajuan Seminar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="tolak" method="post" action="<?php echo site_url("dosen/tolak-data-seminar") ?>">
+                    <input type="hidden" name="id_seminar" id="ID" value="">
+                    <input type="hidden" name="status" id="status" value="">
+                    <!-- <input type="hidden" name="id_pengajuan" id="pengajuanID" value="">
+                    <input type="hidden" name="file_berkas" id="berkasFile" value=""> -->
+                    <!-- <input type="text" class="form-control" name="ID" id="ID" value=""> -->
+                    <p>Tolak Pengajuan Seminar ? </p>
+                    <textarea name="keterangan" cols="70" rows="3" placeholder="Keterangan Tolak"></textarea>
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="tolak" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
             </div>
         </div>
     </div>

@@ -169,6 +169,12 @@ class User_model extends CI_Model
 		return $query->row();
 	}
 
+	function get_dosen_id($nip)
+	{
+		$result = $this->db->query('SELECT id_user FROM tbl_users_dosen WHERE nip_nik ='.$nip)->row()->id_user;
+		return $result;
+	}
+
 
 	
 	/* ------------------------------------

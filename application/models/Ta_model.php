@@ -72,7 +72,7 @@ class Ta_model extends CI_Model
 
 	function update($data, $where)
 	{
-	    $this->db->where('id_pengajuan', $where);
+		$this->db->where('id_pengajuan', $where);
 	    $this->db->update($this->table, $data);
 	}
 	// raihan
@@ -454,6 +454,7 @@ class Ta_model extends CI_Model
 		$this->db->update($this->table_seminar, $data_seminar);
 		
 		$this->db->where('id_pengajuan', $where);
+		$this->db->where('status_slug', 'Mahasiswa');
 	    $this->db->update('seminar_sidang_approval', $data_approval);
 	}
 
@@ -476,5 +477,164 @@ class Ta_model extends CI_Model
 		{
 			unlink($row->file);
 		}
-	}	
+	}
+	
+	function ajukan_seminar($where)
+	{
+		$this->db->where('id', $where);
+	    $this->db->update($this->table_seminar, array('status' => '0'));
+	}
+
+	function insert_approval_seminar($data)
+	{
+		$this->db->insert('seminar_sidang_approval', $data);
+	}
+
+	// seminar dosen
+	function get_approval_seminar_by_pa($id)
+	{
+		$query = $this->db->query('SELECT seminar_sidang.*,tugas_akhir.npm,tugas_akhir.judul1,tugas_akhir.judul2,tugas_akhir.judul_approve FROM seminar_sidang, tbl_users_mahasiswa, tugas_akhir WHERE seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND seminar_sidang.status = "0" AND tbl_users_mahasiswa.dosen_pa ='.$id);
+		return $query->result();
+	}
+
+	function get_approval_seminar_list($id)
+	{
+		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.*, seminar_sidang_approval.status_slug FROM seminar_sidang, tugas_akhir, seminar_sidang_approval WHERE seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.id = seminar_sidang_approval.id_pengajuan AND seminar_sidang_approval.ttd LIKE "" AND seminar_sidang.status = "1" AND seminar_sidang_approval.id_user ='.$id);
+		return $query->result();
+	}
+	
+	function decline_seminar($where,$dosenid,$status,$keterangan)
+	{
+		
+		if($status == 'pb1'){
+			$this->db->where('id_pengajuan', $where);
+			$this->db->update($this->table, array('status' => '6','keterangan' => $keterangan));
+
+		}
+		elseif($status == 'pa'){
+			$this->db->where('id', $where);
+			$this->db->update($this->table_seminar, array('status' => '6','keterangan_tolak' => $keterangan));
+
+		}
+		elseif($status == 'koor'){
+			$this->db->where('id_pengajuan', $where);
+			$this->db->update($this->table, array('status' => '6','no_penetapan' => NULL,'keterangan' => $keterangan));
+
+		}
+		
+	}
+
+	function get_seminar_by_id($id)
+	{
+		$this->db->select('*');
+		$this->db->from('tugas_akhir');
+		$this->db->join('seminar_sidang', 'tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir');
+		$this->db->where('seminar_sidang.id', $id);
+		
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function approve_seminar($where,$ttd,$status,$dosenid)
+	{
+		$result = $this->db->query('SELECT * FROM seminar_sidang_approval WHERE id_pengajuan ='.$where.' AND ttd LIKE ""');
+		$checks = $result->result();
+		$check = count($checks);
+
+		if($status == 'pb1'){
+			$this->db->where('id_pengajuan', $where);
+			$this->db->where('status_slug', 'Pembimbing Utama');
+			$this->db->where('id_user', $dosenid);
+			$this->db->update('seminar_sidang_approval', array('ttd' => $ttd));
+
+			if($check == 1){
+				$this->db->where('id', $where);
+				$this->db->update('seminar_sidang', array('status' => '2'));
+			}
+		}
+		elseif($status == 'pa'){
+			$this->db->where('id', $where);
+			$this->db->update($this->table_seminar, array('status' => '1'));
+
+			$data_approval = [
+				'id_pengajuan' => $where,
+				'status_slug'  => 'Pembimbing Akademik',
+				'id_user'  => $dosenid,
+				'ttd'  => $ttd
+			];
+
+			$this->db->insert('seminar_sidang_approval', $data_approval);
+		}
+		elseif($status == 'pb2'){
+			$this->db->where('id_pengajuan', $where);
+			$this->db->where('status_slug', 'Pembimbing 2');
+			$this->db->where('id_user', $dosenid);
+			$this->db->update('seminar_sidang_approval', array('ttd' => $ttd));
+
+			if($check == 1){
+				$this->db->where('id', $where);
+				$this->db->update('seminar_sidang', array('status' => '2'));
+			}
+		}
+		elseif($status == 'pb3'){
+			$this->db->where('id_pengajuan', $where);
+			$this->db->where('status_slug', 'Pembimbing 3');
+			$this->db->where('id_user', $dosenid);
+			$this->db->update('seminar_sidang_approval', array('ttd' => $ttd));
+
+			if($check == 1){
+				$this->db->where('id', $where);
+				$this->db->update('seminar_sidang', array('status' => '2'));
+			}
+		}
+		elseif($status == 'ps1'){
+			$this->db->where('id_pengajuan', $where);
+			$this->db->where('status_slug', 'Penguji 1');
+			$this->db->where('id_user', $dosenid);
+			$this->db->update('seminar_sidang_approval', array('ttd' => $ttd));
+
+			if($check == 1){
+				$this->db->where('id', $where);
+				$this->db->update('seminar_sidang', array('status' => '2'));
+			}
+		}
+		elseif($status == 'ps2'){
+			$this->db->where('id_pengajuan', $where);
+			$this->db->where('status_slug', 'Penguji 2');
+			$this->db->where('id_user', $dosenid);
+			$this->db->update('seminar_sidang_approval', array('ttd' => $ttd));
+
+			if($check == 1){
+				$this->db->where('id', $where);
+				$this->db->update('seminar_sidang', array('status' => '2'));
+			}
+		}
+		elseif($status == 'ps3'){
+			$this->db->where('id_pengajuan', $where);
+			$this->db->where('status_slug', 'Penguji 3');
+			$this->db->where('id_user', $dosenid);
+			$this->db->update('seminar_sidang_approval', array('ttd' => $ttd));
+
+			if($check == 1){
+				$this->db->where('id', $where);
+				$this->db->update('seminar_sidang', array('status' => '2'));
+			}
+		}
+		
+	}
+
+	function get_verifikasi_berkas_seminar($id) //tendik
+	{
+		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve, tugas_akhir.no_penetapan, tugas_akhir.npm FROM seminar_sidang, tugas_akhir, tbl_users_mahasiswa, tbl_users_tendik WHERE tbl_users_tendik.id_user ='.$id.' AND tbl_users_tendik.unit_kerja = tbl_users_mahasiswa.jurusan AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tugas_akhir.status = 4 AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.status = 2');
+		
+		return $query->result();
+
+	}
+
+	function decline_berkas_seminar($where,$dosenid,$keterangan) //tendik
+	{
+		$this->db->where('id', $where);
+		$this->db->update($this->table_seminar, array('status' => '5','keterangan_tolak' => $keterangan));
+	}
+
 }

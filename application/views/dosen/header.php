@@ -59,6 +59,12 @@
                                             </a>
                                         </li>
                                         <li>
+                                            <a href="<?php echo site_url("dosen/tugas-akhir/seminar") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "seminar") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Persetujuan Seminar
+                                            </a>
+                                        </li>
+                                        <li>
                                             <a href="#">
                                                 <i class="metismenu-icon">
                                                 </i>Kemajuan Bimbingan

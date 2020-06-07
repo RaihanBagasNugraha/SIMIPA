@@ -455,5 +455,78 @@ class Dosen extends CI_Controller {
 		redirect(site_url("dosen/tugas-akhir/tema/koordinator"));
 		
 	}
+
+	//Manajemen Seminar
+	function seminar()
+	{
+		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $data);
+		$this->load->view('dosen/header');
+
+		// $data['ta'] = $this->ta_model->get_approval_ta($this->session->userdata('userId'));
+		$data['pa'] = $this->ta_model->get_approval_seminar_by_pa($this->session->userdata('userId'));
+		$data['approve'] = $this->ta_model->get_approval_seminar_list($this->session->userdata('userId'));
+		
+		$this->load->view('dosen/seminar/seminar_ta',$data);
+		
+		//$this->load->view('dosen/tugas_akhir', $data);
+
+        $this->load->view('footer_global');
+	}
+
+	function seminar_approve()
+	{
+		$data = $this->input->post();
+
+		$id = $data['id'];
+		$ttd = $data['ttd'];
+		$status = $data['status'];
+		$dosenid = $this->session->userdata('userId');
+		// echo "<pre>";
+		// print_r($data);
+
+		$this->ta_model->approve_seminar($id,$ttd,$status,$dosenid);
+		redirect(site_url("dosen/tugas-akhir/seminar"));
+	}
+
+	function seminar_decline()
+	{
+		$id = $this->input->post('id_seminar');
+		$status = $this->input->post('status');
+		$keterangan = $this->input->post('keterangan');
+		$dosenid = $this->session->userdata('userId');
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		
+		$data = array("id" => $id);
+		$where = $data['id'];
+
+		$this->ta_model->decline_seminar($id,$dosenid,$status,$keterangan);
+		redirect(site_url("dosen/tugas-akhir/seminar"));
+	}
+
+	function seminar_aksi()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$id = $this->input->get('id');
+		$status = $this->input->get('status');
+		// echo "<pre>";
+		// print_r($id);
+		$seminar = $this->ta_model->get_seminar_by_id($id);
+		
+		$data['status'] = $status;
+		$data['seminar'] = $seminar[0];
+
+		// print_r($data);
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/seminar/approve_seminar',$data);
+		
+		$this->load->view('footer_global');
+		
+	}
 	
 }

@@ -49,69 +49,55 @@
                                     <table class="mb-0 table table-striped">
                                         <thead>
                                         <tr>
-                                            <th>Judul</th>
-                                            <th>Komisi Pembimbing</th>
-                                            <th>Komisi Pembahas</th>
+                                            <th>Jenis</th>
+                                            <th>NPM</th>
+                                            <th>Pelaksanaan</th>
+                                            
                                             <th>Berkas Lampiran</th>
-                                            <th>Keterangan</th>
+                                           
                                             <th>Aksi</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if(empty($ta) && empty($pa))
+                                        if(empty($seminar))
                                         {
                                             echo "<tr><td colspan='6'>Data tidak tersedia</td></tr>";
                                         }
                                         else
                                         {
-                                            foreach($ta as $row) {
+                                            foreach($seminar as $row) {
                                         ?>
                                             <tr>
-                                                <td>
-                                                    <?php echo $row->judul1 ?> 
-
-                                                    <?php if($row->judul2 != NULL){ echo "<br><br>$row->judul2"; } ?>
-                                                </td>
-                                                <td>
-                                                    <?php 
-                                                        $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing1);
-                                                        echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
-                                                    ?>
-                                                </td>
-                                                <td>-</td>
-                                                <td>
-                                                    <?php
-                                                        $lampiran = $this->ta_model->select_lampiran_by_ta($row->id_pengajuan, $row->npm);
-                                                        if(empty($lampiran)) {
-                                                            echo "<i>(Tidak Ada Lampiran)</i>";
-                                                        } else {
-                                                            echo "<ul style='margin-left: -20px;'>";
-                                                            foreach($lampiran as $rw) {
-                                                                echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
-                                                            }
-
-                                                            echo "</ul>";
+                                              <td class="align-top"><b><?php echo $row->jenis;?></b></td>
+                                              <td class="align-top"><?php echo $row->npm;?></td>
+                                              <td class="align-top"><?php echo "$row->tempat<br>$row->tgl_pelaksanaan<br>$row->waktu_pelaksanaan<br>";  ?></td>
+                                              <td class="align-top">
+                                              <?php 
+                                                $lampiran = $this->ta_model->select_lampiran_by_seminar($row->id);
+                                                    if(empty($lampiran)) {
+                                                        echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
+                                                    } else {
+                                                        echo "<ul style='margin-left: -20px;'>";
+                                                        foreach($lampiran as $rw) {
+                                                        $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
+                                                        echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
                                                         }
-                                                    ?>
-                                                </td>
-                                                <td>
-                                                <?php 
-
-                                                    echo "Tema Penelitian";
-                                                 
-                                                ?></td>
-                                                <td>
-                                                        
-                                                <a href="<?php echo site_url("tendik/tugas-akhir/tema/approve-ta/form?aksi=setuju&id=".$row->id_pengajuan) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                    
+                                                        echo "</ul>";
+                                                    }
+                                                ?>
+                                              </td>
+                                              <td class="align-top">
+                                              <a href="<?php echo site_url("tendik/verifikasi-berkas/seminar/form?&id=".$row->id) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                 </a>
                                                 
-                                                <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan ?>" class="passingID6" >
-                                                            <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalTolak">
+                                                <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="passingID6" >
+                                                            <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#seminar-tolak">
                                                                 Perbaiki <?php  ?>
                                                             </button>
                                                 </a>
-                                                </td>
+                                              </td>
                                             </tr>
                                         <?php
                                             }
@@ -186,15 +172,10 @@ $(document).ready(function(){
 </script>
 
 <script>
-    $(".passingID5").click(function () {
-                var id = $(this).attr('data-id');
-                $("#ID5").val( id );
-
-            });
 
     $(".passingID6").click(function () {
                 var id = $(this).attr('data-id');
-                $("#ID6").val( id );
+                $("#ID").val( id );
 
     });        
 </script>
