@@ -740,4 +740,16 @@ class Mahasiswa extends CI_Controller {
 		redirect(site_url("mahasiswa/tugas-akhir/seminar"));	
 	}
 
+	function ajukan_perbaikan_seminar()
+	{
+		$id = $this->input->post('id_seminar');
+		
+		// echo $id;
+		$data = array("id_pengajuan" => $id);
+		$where = $data['id_pengajuan'];
+
+		$this->ta_model->ajukan_seminar_perbaikan($id);
+		redirect(site_url("mahasiswa/tugas-akhir/seminar"));
+	}
+
 }

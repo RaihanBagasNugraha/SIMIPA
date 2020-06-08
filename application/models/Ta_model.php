@@ -485,6 +485,12 @@ class Ta_model extends CI_Model
 	    $this->db->update($this->table_seminar, array('status' => '0'));
 	}
 
+	function ajukan_seminar_perbaikan($where)
+	{
+		$this->db->where('id', $where);
+	    $this->db->update($this->table_seminar, array('status' => '2'));
+	}
+
 	function insert_approval_seminar($data)
 	{
 		$this->db->insert('seminar_sidang_approval', $data);

@@ -137,8 +137,14 @@
                                                         echo '<i>Approval Pembimbing & Penguji</i>';
                                                     }    
                                                     
+                                                if($row->status == '5') {
+                                                        echo '<i>Perbaiki</i>';
+                                                        echo "<br><br>$row->keterangan_tolak";
+                                                    }    
+                                                        
                                                 if($row->status == '6') {
                                                         echo '<i>Ditolak</i>';
+                                                        echo "<br><br>$row->keterangan_tolak";
                                                     }            
                                                 ?>
                                              </td>
@@ -152,7 +158,7 @@
                                                     </a>
                                                 <?php } ?>
 
-                                                <?php if($row->status == -1) { ?>
+                                                <?php if($row->status == '-1') { ?>
                                                 <a href="<?php echo site_url("mahasiswa/tugas-akhir/seminar/form?aksi=ubah&id=".$row->id) ?>" class="btn-wide mb-2 btn btn-warning btn-sm btn-block">Ubah
                                                 </a>
                                                 <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="passingID" >
@@ -162,7 +168,23 @@
                                                             </a>
                                                 <a href="<?php echo site_url("mahasiswa/tugas-akhir/seminar/lampiran?id=".$row->id) ?>" class="btn-wide mb-2 btn btn-focus btn-sm btn-block">Unggah Lampiran
                                                 </a>
-                                                <?php } else{echo "Menunggu";}  ?>
+                                                <?php } 
+                                                elseif($row->status == 5){ ?>
+                                                <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="passingIDPerbaikan" >
+                                                            <button type="button" class="btn-wide mb-1 btn btn-primary btn-sm btn-block"  data-toggle="modal" data-target="#AjukanPerbaikan">
+                                                                Ajukan <?php  ?>
+                                                            </button>
+                                                </a>
+
+                                                <a href="<?php echo site_url("mahasiswa/tugas-akhir/seminar/form?aksi=ubah&id=".$row->id) ?>" class="btn-wide mb-2 btn btn-warning btn-sm btn-block">Ubah
+                                                </a>
+
+                                                <a href="<?php echo site_url("mahasiswa/tugas-akhir/seminar/lampiran?id=".$row->id) ?>" class="btn-wide mb-2 btn btn-focus btn-sm btn-block">Unggah Lampiran
+                                                </a>
+
+                                            <?php    
+                                            }                                                
+                                                else{echo "Menunggu";}  ?>
                                              
                                              
                                              
@@ -250,7 +272,13 @@ $(document).ready(function(){
                 var id = $(this).attr('data-id');
                 $("#ID2").val( id );
 
-            });        
+            });      
+
+     $(".passingIDPerbaikan").click(function () {
+                var id = $(this).attr('data-id');
+                $("#IDPerbaikan").val( id );
+
+            });                
 
               
      

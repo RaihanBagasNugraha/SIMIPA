@@ -404,4 +404,24 @@ class Tendik extends CI_Controller {
 		$this->ta_model->decline_berkas_seminar($id,$dosenid,$keterangan);
 		redirect(site_url("tendik/verifikasi-berkas/seminar"));
 	}
+
+	function seminar_aksi()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$id = $this->input->get('id');
+		
+		// echo "<pre>";
+		// print_r($id);
+		$seminar = $this->ta_model->get_seminar_by_id($id);
+		$data['seminar'] = $seminar[0];
+
+		// print_r($data);
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('tendik/seminar/approve_seminar',$data);
+		
+		$this->load->view('footer_global');
+	}
 }
