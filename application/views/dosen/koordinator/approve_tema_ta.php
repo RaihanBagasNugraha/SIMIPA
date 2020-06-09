@@ -323,6 +323,76 @@
 <script src="<?php echo site_url("assets/scripts/jquery_3.4.1_jquery.min.js") ?>"></script>
 <script src="<?php echo site_url("assets/scripts/select2.full.js") ?>"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+    $(".readonly").on('keydown paste', function(e){
+        e.preventDefault();
+        $(this).blur();
+    });
+    
+    $(".readonly").mousedown(function(e){
+        e.preventDefault();
+        $(this).blur();
+        return false;
+        });
+
+    $("select").select2({
+        theme: "bootstrap"
+    });
+    $.ajaxSetup({
+        type:"POST",
+        url: "<?php echo site_url('mahasiswa/ambil_data') ?>",
+        cache: false,
+    });
+
+    $("#provinsi").change(function(){
+        var value=$(this).val();
+        
+        if(value>0){
+            $.ajax({
+                data:{modul:'kabupaten',id:value},
+                success: function(respond){
+ 
+                    $("#kota-kabupaten").html(respond);
+                }
+            })
+        }
+
+    });
+
+    $("#kota-kabupaten").change(function(){
+        var value=$(this).val();
+        
+        if(value>0){
+            $.ajax({
+                data:{modul:'kecamatan',id:value},
+                success: function(respond){
+                    
+                    $("#kecamatan").html(respond);
+                }
+            })
+        }
+
+    });
+
+    $("#kecamatan").change(function(){
+        var value=$(this).val();
+        
+        if(value>0){
+            $.ajax({
+                data:{modul:'kelurahan',id:value},
+                success: function(respond){
+                    
+                    $("#kelurahan-desa").html(respond);
+                }
+            })
+        }
+
+    });
+});
+
+</script>
+
+<script type="text/javascript">
     function edit_judul_1() {
          if( document.getElementById("inputother").readOnly = true){
            document.getElementById("inputother").readOnly = false;

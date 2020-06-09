@@ -116,10 +116,21 @@ class Ta_model extends CI_Model
 	    $this->db->update($this->table, array('status' => '0'));
 	}
 
-	function ajukan_ta_perbaikan($where)
+	function ajukan_ta_perbaikan($where,$status)
 	{
-		$this->db->where('id_pengajuan', $where);
-	    $this->db->update($this->table, array('status' => '2'));
+		if($status == "pb1"){
+			$this->db->where('id_pengajuan', $where);
+	    	$this->db->update($this->table, array('status' => '0'));
+		}
+		elseif($status == "pa"){
+			$this->db->where('id_pengajuan', $where);
+	    	$this->db->update($this->table, array('status' => '1'));
+		}
+		elseif($status == "admin"){
+			$this->db->where('id_pengajuan', $where);
+	    	$this->db->update($this->table, array('status' => '2'));
+		}
+		
 	}
 	
 	function get_approval_ta($id)
@@ -210,12 +221,12 @@ class Ta_model extends CI_Model
 
 		if($status == 'pb1'){
 			$this->db->where('id_pengajuan', $where);
-			$this->db->update($this->table, array('status' => '6','keterangan_tolak' => $keterangan));
+			$this->db->update($this->table, array('status' => '5','keterangan_tolak' => $keterangan));
 
 		}
 		elseif($status == 'pa'){
 			$this->db->where('id_pengajuan', $where);
-			$this->db->update($this->table, array('status' => '6','keterangan_tolak' => $keterangan));
+			$this->db->update($this->table, array('status' => '5','keterangan_tolak' => $keterangan));
 
 		}
 		elseif($status == 'koor'){
@@ -276,7 +287,7 @@ class Ta_model extends CI_Model
 	function approval_koordinator($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2)//koor
 	{
 		$this->db->where('id_pengajuan', $id);
-		$this->db->update($this->table, array('judul1' => $judul1,'judul2' => $judul2,'status' => '4','judul_approve' => $judul_approve,'no_penetapan' => $no_penetapan,'keterangan_tolak' => NULL));
+		$this->db->update($this->table, array('judul1' => $judul1,'judul2' => $judul2,'status' => '7','judul_approve' => $judul_approve,'no_penetapan' => $no_penetapan,'keterangan_tolak' => NULL));
 
 		$data_approval = [
 			'id_pengajuan' => $id,
@@ -641,6 +652,23 @@ class Ta_model extends CI_Model
 	{
 		$this->db->where('id', $where);
 		$this->db->update($this->table_seminar, array('status' => '5','keterangan_tolak' => $keterangan));
+	}
+
+	function approve_berkas_seminar($id,$dosenid,$ttd,$no_form,$no_undangan) //tendik
+	{
+		$nip = $this->db->query('SELECT nip_nik FROM tbl_users_tendik WHERE id_user ='.$dosenid)->row()->nip_nik;
+	
+		$this->db->where('id', $id);
+		$this->db->update($this->table_seminar, array('status' => '3','keterangan_tolak' => NULL,'no_form' => $no_form,'no_undangan' => $no_undangan));
+
+		$data_approval = [
+			'id_pengajuan' => $id,
+			'status_slug'  => 'Administrasi',
+			'id_user'  => $dosenid,
+			'ttd'  => $ttd
+		];
+
+		$this->db->insert('seminar_sidang_approval', $data_approval);
 	}
 
 }

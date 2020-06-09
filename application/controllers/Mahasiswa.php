@@ -362,11 +362,12 @@ class Mahasiswa extends CI_Controller {
 	function ajukan_data_ta_perbaikan()
 	{
 		$id = $this->input->post('id_perbaikan');
-		
+		$status = $this->input->post('status');
+
 		$data = array("id_pengajuan" => $id);
 		$where = $data['id_pengajuan'];
 
-		$this->ta_model->ajukan_ta_perbaikan($id);
+		$this->ta_model->ajukan_ta_perbaikan($id,$status);
 		redirect(site_url("mahasiswa/tugas-akhir/tema"));
 	}
 
@@ -615,7 +616,7 @@ class Mahasiswa extends CI_Controller {
 				'sks' => $data['sks'],
 				'toefl' => $data['toefl'],
 				'status' => '-1',
-				'keterangan' => NULL
+				'keterangan_tolak' => NULL
 				
 			);
 

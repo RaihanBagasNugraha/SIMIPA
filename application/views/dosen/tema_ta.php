@@ -126,7 +126,7 @@
                                                 
                                                 <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan."#$#$"."pb1" ?>" class="passingID4" >
                                                             <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalTolak">
-                                                                Tolak <?php  ?>
+                                                                Perbaiki <?php  ?>
                                                             </button>
                                                 </a> 
                                                 </td>
@@ -186,7 +186,7 @@
                                                 
                                                         <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan."#$#$"."pa" ?>" class="passingID4" >
                                                             <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalTolak">
-                                                                Tolak <?php  ?>
+                                                                Perbaiki <?php  ?>
                                                             </button>
                                                         </a> 
                                                         </td>

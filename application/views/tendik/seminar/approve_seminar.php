@@ -30,7 +30,7 @@
                          <div class="main-card mb-3 card">
                                 <div class="card-header">Approval Seminar</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('#') ?>" >
+                                <form method="post" action="<?php echo site_url('tendik/verifikasi-berkas/seminar/approve') ?>" >
                                     <input value="<?php echo $seminar->id ?>" type = "hidden" required name="id" id="id">
                                     
                                      <!-- No Form -->

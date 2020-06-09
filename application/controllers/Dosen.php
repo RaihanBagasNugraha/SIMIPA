@@ -336,13 +336,14 @@ class Dosen extends CI_Controller {
 		$status = $this->input->post('status');
 		$keterangan = $this->input->post('keterangan');
 		$dosenid = $this->session->userdata('userId');
+		$ket = $status."###".$keterangan;
 		// echo "<pre>";
 		// print_r($id);
 		
 		$data = array("id_pengajuan" => $id);
 		$where = $data['id_pengajuan'];
 
-		$this->ta_model->decline_ta($id,$dosenid,$status,$keterangan);
+		$this->ta_model->decline_ta($id,$dosenid,$status,$ket);
 		redirect(site_url("dosen/tugas-akhir/tema"));
 	}
 

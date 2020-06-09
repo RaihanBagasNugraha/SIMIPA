@@ -135,16 +135,26 @@
                                                 
                                                 if($row->status == '2') {
                                                         echo '<i>Approval Pembimbing & Penguji</i>';
-                                                    }    
+                                                    }  
+
+                                                if($row->status == '3') {
+                                                        echo '<i>Berkas Diverifikasi</i>';
+                                                    }   
+                                                
+                                                if($row->status == '4') {
+                                                        echo '<i>Disetujui</i>';
+                                                    }   
                                                     
                                                 if($row->status == '5') {
                                                         echo '<i>Perbaiki</i>';
-                                                        echo "<br><br>$row->keterangan_tolak";
+                                                        $ket = explode("###",$row->keterangan_tolak);
+                                                        echo "<br><br>".$ket[1];
                                                     }    
                                                         
                                                 if($row->status == '6') {
                                                         echo '<i>Ditolak</i>';
-                                                        echo "<br><br>$row->keterangan_tolak";
+                                                        $ket = explode("###",$row->keterangan_tolak);
+                                                        echo "<br><br>".$ket[1];
                                                     }            
                                                 ?>
                                              </td>

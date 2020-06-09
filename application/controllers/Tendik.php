@@ -348,11 +348,11 @@ class Tendik extends CI_Controller {
 		$id = $this->input->post('id_ta');
 		$keterangan = $this->input->post('keterangan');
 		$dosenid = $this->session->userdata('userId');
-
+		$ket = "admin###".$keterangan;
 		// echo $id;
 		// echo $keterangan;
 		// echo $dosenid;
-		$this->ta_model->decline_berkas_ta($id,$dosenid,$keterangan);
+		$this->ta_model->decline_berkas_ta($id,$dosenid,$ket);
 		redirect(site_url("tendik/verifikasi-berkas"));
 	}
 
@@ -402,6 +402,27 @@ class Tendik extends CI_Controller {
 		// echo $keterangan;
 		// echo $dosenid;
 		$this->ta_model->decline_berkas_seminar($id,$dosenid,$keterangan);
+		redirect(site_url("tendik/verifikasi-berkas/seminar"));
+	}
+
+	function verifikasi_berkas_seminar_approve()
+	{
+		$data = $this->input->post();
+		$id = $data['id'];
+		$ttd = $data['ttd'];
+		$form1 = $data['no_form'];
+		$form2 = $data['no_form_2'];
+		$undangan1 = $data['no_undangan'];
+		$undangan2 = $data['no_undangan_2'];
+
+		$no_form = $form1.$form2;
+		$no_undangan = $undangan1.$undangan2;
+
+		$dosenid = $this->session->userdata('userId');
+
+		// echo "<pre>";
+		// print_r($data);
+		$this->ta_model->approve_berkas_seminar($id,$dosenid,$ttd,$no_form,$no_undangan);
 		redirect(site_url("tendik/verifikasi-berkas/seminar"));
 	}
 

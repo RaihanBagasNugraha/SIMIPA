@@ -177,6 +177,7 @@
             <div class="modal-body">
                 <form id="ajukan-perbaikan" method="post" action="<?php echo site_url("mahasiswa/tugas-akhir/tema/ajukan-perbaikan") ?>">
                     <input type="hidden" name="id_perbaikan" id="IDPerbaikan" value="">
+                    <input type="hidden" name="status" id="Status" value="">
                     <!-- <input type="hidden" name="id_pengajuan" id="pengajuanID" value="">
                     <input type="hidden" name="file_berkas" id="berkasFile" value=""> -->
                     <!-- <input type="text" class="form-control" name="ID" id="ID" value=""> -->
@@ -543,6 +544,7 @@
             <div class="modal-body">
                 <form id="ajukan-perbaikan" method="post" action="<?php echo site_url("mahasiswa/ajukan-perbaikan-seminar") ?>">
                     <input type="hidden" name="id_seminar" id="IDPerbaikan" value="">
+                    
                     <!-- <input type="hidden" name="id_pengajuan" id="pengajuanID" value="">
                     <input type="hidden" name="file_berkas" id="berkasFile" value=""> -->
                     <!-- <input type="text" class="form-control" name="ID" id="ID" value=""> -->

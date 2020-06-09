@@ -164,14 +164,21 @@
                                                 echo '<i>Disetujui</i>';
                                             }
 
+                                            if($row->status == '7') {
+                                                echo '<i>Acc Koordinator</i>';
+                                            }
+
                                             if($row->status == '5') {
                                                 echo '<i>Perbaiki</i>';
-                                                echo "<br><br>$row->keterangan_tolak";
+                                                $ket = explode("###",$row->keterangan_tolak);
+                                                echo "<br><br>".$ket[1];
+                                                $ket_status = $ket[0];
                                             }
 
                                             if($row->status == '6') {
                                                 echo '<i>Ditolak</i>';
-                                                echo "<br><br>$row->keterangan_tolak";
+                                                $ket = explode("###",$row->keterangan_tolak);
+                                                echo "<br><br>".$ket[1];
                                             }
                                             ?>
                                             </td>
@@ -198,9 +205,9 @@
                                                 </a>
                                         <?php } 
                                         elseif($row->status == 5){ ?>
-                                                <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan ?>" class="passingIDPerbaikan" >
+                                                <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan ?>" ket_status = "<?php echo $ket_status ?>" class="passingIDPerbaikan" >
                                                             <button type="button" class="btn-wide mb-1 btn btn-primary btn-sm btn-block"  data-toggle="modal" data-target="#AjukanPerbaikan">
-                                                                Ajukan <?php  ?>
+                                                                Ajukan Perbaikan<?php  ?>
                                                             </button>
                                                 </a>
 
@@ -302,7 +309,9 @@ $(document).ready(function(){
 
     $(".passingIDPerbaikan").click(function () {
                 var id = $(this).attr('data-id');
+                var status = $(this).attr('ket_status');
                 $("#IDPerbaikan").val( id );
+                $("#Status").val( status );
 
     });  
               

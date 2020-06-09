@@ -125,6 +125,7 @@ $route['tendik/tugas-akhir/tema/approve'] = 'tendik/verifikasi_berkas_approve';
 $route['tendik/verifikasi-berkas/seminar'] = 'tendik/verifikasi_berkas_seminar';
 $route['tendik/verifikasi-berkas/seminar/form'] = 'tendik/seminar_aksi';
 $route['tendik/verifikasi-berkas/seminar/decline'] = 'tendik/verifikasi_berkas_seminar_decline';
+$route['tendik/verifikasi-berkas/seminar/approve'] = 'tendik/verifikasi_berkas_seminar_approve';
 
 
 

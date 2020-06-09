@@ -37,7 +37,7 @@
                                     <!-- No Penetapan -->
                                     <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label">No Penetapan</label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-1">
                                                 <?php 
                                                     $year = date("Y");
                                                     $jurusanid = $this->user_model->get_jurusan($ta->npm);
@@ -62,7 +62,7 @@
                                                     $nomor = $no.$year;
                                                     
                                                 ?>
-                                                <input type="number" value="<?php echo $ta->no_penetapan ?>" required name="no_penetapan" class="form-control" >
+                                                <input type="text" value="<?php echo $ta->no_penetapan ?>" required name="no_penetapan" class="form-control" >
                                                 <input type="hidden" value="<?php echo $nomor ?>" required name="nomor" id="nomor">
                                             </div>
                                             <?php echo "<h4>$nomor</h4>" ?>
