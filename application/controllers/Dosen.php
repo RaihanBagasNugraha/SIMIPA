@@ -223,6 +223,21 @@ class Dosen extends CI_Controller {
         $this->load->view('footer_global');
 	}
 
+	function seminar_struktural()
+	{
+		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $data);
+		$this->load->view('dosen/header');
+
+		$data['seminar'] = $this->ta_model->get_approval_seminar_kajur($this->session->userdata('userId'));
+		
+		$this->load->view('dosen/kajur/seminar_ta',$data);
+		
+		//$this->load->view('dosen/tugas_akhir', $data);
+
+        $this->load->view('footer_global');
+	}
+
 	function form_tugas_akhir()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
@@ -546,6 +561,24 @@ class Dosen extends CI_Controller {
 		$this->load->view('footer_global');
 	}
 
+	function form_seminar_struktural()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$id = $this->input->get('id');
+		$seminar = $this->ta_model->get_seminar_by_id($id);
+		$data['status'] = "kajur";
+		$data['seminar'] = $seminar[0];
+
+		// print_r($data);
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/approve_seminar',$data);
+		
+		$this->load->view('footer_global');
+	}
+
 	function add_tugas_akhir()
 	{
 		//echo "<pre>";
@@ -613,7 +646,11 @@ class Dosen extends CI_Controller {
 		$this->ta_model->approve_seminar($id,$ttd,$status,$dosenid);
 		if($status == 'Koordinator'){
 			redirect(site_url("dosen/tugas-akhir/seminar/koordinator"));
-		}else{
+		}
+		elseif($status == 'kajur'){
+			redirect(site_url("dosen/struktural/seminar"));
+		}
+		else{
 		redirect(site_url("dosen/tugas-akhir/seminar"));}
 	}
 

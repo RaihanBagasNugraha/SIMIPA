@@ -180,7 +180,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="<?php echo site_url("dosen/struktural/seminar") ?>" <?php if($this->uri->segment(3) == "seminar" && $this->uri->segment(2) == "struktural") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Seminar/Sidang
                                             </a>
