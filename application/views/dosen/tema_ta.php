@@ -59,7 +59,7 @@
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if(empty($ta) && empty($pa))
+                                        if(empty($ta) && empty($pa) && empty($approve))
                                         {
                                             echo "<tr><td colspan='6'>Data tidak tersedia</td></tr>";
                                         }
@@ -68,19 +68,19 @@
                                             foreach($ta as $row) {
                                         ?>
                                             <tr>
-                                                <td>
+                                                <td class="align-top">
                                                     <?php echo $row->judul1 ?> 
 
                                                     <?php if($row->judul2 != NULL){ echo "<br><br>$row->judul2"; } ?>
                                                 </td>
-                                                <td>
+                                                <td class="align-top">
                                                     <?php 
                                                         $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing1);
                                                         echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
                                                     ?>
                                                 </td>
-                                                <td>-</td>
-                                                <td>
+                                                <td class="align-top">-</td>
+                                                <td class="align-top">
                                                     <?php
                                                         $lampiran = $this->ta_model->select_lampiran_by_ta($row->id_pengajuan, $row->npm);
                                                         if(empty($lampiran)) {
@@ -95,7 +95,7 @@
                                                         }
                                                     ?>
                                                 </td>
-                                                <td>
+                                                <td class="align-top">
                                                 <?php 
                                                     $dosen_pa = $this->ta_model->get_dosen_pa($row->npm);
                                                     
@@ -110,7 +110,7 @@
                                                     // }
                                                  
                                                 ?></td>
-                                                <td>
+                                                <td class="align-top">
 
                                                 <a href="<?php echo site_url("dosen/tugas-akhir/tema/approve-ta/form?jenis=pb1&aksi=setuju&id=".$row->id_pengajuan) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                 </a>
@@ -136,19 +136,19 @@
                                             foreach($pa as $row) {
                                                 ?>
                                                     <tr>
-                                                        <td>
+                                                        <td class="align-top">
                                                             <?php echo $row->judul1 ?> 
         
                                                             <?php if($row->judul2 != NULL){ echo "<br><br>$row->judul2"; } ?>
                                                         </td>
-                                                        <td>
+                                                        <td class="align-top">
                                                             <?php 
                                                                 $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing1);
                                                                 echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
                                                             ?>
                                                         </td>
-                                                        <td>-</td>
-                                                        <td>
+                                                        <td class="align-top">-</td>
+                                                        <td class="align-top">
                                                             <?php
                                                                 $lampiran = $this->ta_model->select_lampiran_by_ta($row->id_pengajuan, $row->npm);
                                                                 if(empty($lampiran)) {
@@ -163,7 +163,7 @@
                                                                 }
                                                             ?>
                                                         </td>
-                                                        <td>
+                                                        <td class="align-top">
                                                         <?php 
                                                             $dosen_pa = $this->ta_model->get_dosen_pa($row->npm);
                                                             
@@ -178,7 +178,7 @@
                                                             // }
                                                          
                                                         ?></td>
-                                                        <td>
+                                                        <td class="align-top">
         
                                                         <a href="<?php echo site_url("dosen/tugas-akhir/tema/approve-ta/form?jenis=pa&aksi=setuju&id=".$row->id_pengajuan) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                         </a>
@@ -193,7 +193,93 @@
                                                     </tr>
                                                 <?php
                                                     }
-                                                        
+                                            foreach($approve as $row) {
+                                                        ?>
+                                                            <tr>
+                                                                <td class="align-top">
+
+                                                                    <?php 
+                                                                    if($row->judul_approve == 1){
+                                                                        echo $row->judul1; 
+                                                                    } else {echo $row->judul2;} ?> 
+                
+                                                            
+                                                                </td>
+                                                                <td class="align-top">
+                                                                <?php 
+                                                                    $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_pengajuan);
+
+                                                                     foreach($komisi_pembimbing as $kom) {
+                                                                        echo "<b>$kom->status</b><br>";
+                                                                        echo "$kom->name<br>";
+                                                                        echo "$kom->nip_nik<br>";
+                                                                        }
+                                                                ?>
+                                                                </td>
+                                                                <td class="align-top">
+                                                                <?php 
+                                                                     $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_pengajuan);
+
+                                                                    foreach($komisi_penguji as $kom) {
+                                                                        echo "<b>$kom->status</b><br>";
+                                                                        echo "$kom->name<br>";
+                                                                        echo "$kom->nip_nik<br>";
+                                                                        }
+                                                                ?>        
+                                                                </td>
+                                                                <td class="align-top">
+                                                                    <?php
+                                                                        $lampiran = $this->ta_model->select_lampiran_by_ta($row->id_pengajuan, $row->npm);
+                                                                        if(empty($lampiran)) {
+                                                                            echo "<i>(Tidak Ada Lampiran)</i>";
+                                                                        } else {
+                                                                            echo "<ul style='margin-left: -20px;'>";
+                                                                            foreach($lampiran as $rw) {
+                                                                                echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
+                                                                            }
+                
+                                                                            echo "</ul>";
+                                                                        }
+                                                                    ?>
+                                                                </td>
+                                                                <td class="align-top">
+                                                                <?php 
+                                                                    echo "$row->status_slug";
+                                                                    if($row->status_slug == 'Pembimbing Utama'){
+                                                                        $ket = "pb1";
+                                                                    }
+                                                                    elseif($row->status_slug == 'Pembimbing 2'){
+                                                                        $ket = "pb2";
+                                                                    }
+                                                                    elseif($row->status_slug == 'Pembimbing 3'){
+                                                                        $ket = "pb3";
+                                                                    }
+                                                                    elseif($row->status_slug == 'Penguji 1'){
+                                                                        $ket = "ps1";
+                                                                    }
+                                                                    elseif($row->status_slug == 'Penguji 2'){
+                                                                        $ket = "ps2";
+                                                                    }
+                                                                    elseif($row->status_slug == 'Penguji 3'){
+                                                                        $ket = "ps3";
+                                                                    }
+                                                                 
+                                                                ?></td>
+                                                                <td class="align-top">
+                
+                                                                <a href="<?php echo site_url("dosen/tugas-akhir/tema/approve-ta/form?jenis=$ket&id=".$row->id_pengajuan) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                                </a>
+        
+                                                                <!-- <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan."#$#$"."kom" ?>" class="passingID5" >
+                                                                    <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalTolakKomisi">
+                                                                        Tolak <?php  ?>
+                                                                    </button>
+                                                                </a>  -->
+                                                                </td>
+                                                            </tr>
+                                                        <?php
+                                                }
+                                                                                
                                         }
                                         ?>
                                     
@@ -279,6 +365,7 @@ $(document).ready(function(){
                 $("#ID4").val( data[0] );
                 $("#status2").val( data[1] );
 
-    });        
+    });      
+       
 </script>
                         

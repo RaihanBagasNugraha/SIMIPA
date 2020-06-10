@@ -59,7 +59,7 @@
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if(empty($ta))
+                                        if(empty($ta) && empty($pa))
                                         {
                                             echo "<tr><td colspan='6'>Data tidak tersedia</td></tr>";
                                         }
@@ -68,19 +68,36 @@
                                             foreach($ta as $row) {
                                         ?>
                                             <tr>
-                                                <td>
-                                                    <?php echo $row->judul1 ?> 
+                                                <td class="align-top">
+                                                <?php 
+                                                        if($row->judul_approve == 1){
+                                                            echo $row->judul1; 
+                                                        } else {echo $row->judul2;} ?> 
+                
+                                                </td>
+                                                <td class="align-top">
+                                                <?php 
+                                                    $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_pengajuan);
 
-                                                    <?php if($row->judul2 != NULL){ echo "<br><br>$row->judul2"; } ?>
+                                                    foreach($komisi_pembimbing as $kom) {
+                                                        echo "<b>$kom->status</b><br>";
+                                                        echo "$kom->name<br>";
+                                                        echo "$kom->nip_nik<br>";
+                                                    }
+                                                ?>
                                                 </td>
-                                                <td>
-                                                    <?php 
-                                                        $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing1);
-                                                        echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
-                                                    ?>
+                                                <td class="align-top">
+                                                <?php 
+                                                    $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_pengajuan);
+
+                                                    foreach($komisi_penguji as $kom) {
+                                                        echo "<b>$kom->status</b><br>";
+                                                        echo "$kom->name<br>";
+                                                        echo "$kom->nip_nik<br>";
+                                                    }
+                                                ?>
                                                 </td>
-                                                <td>-</td>
-                                                <td>
+                                                <td class="align-top">
                                                     <?php
                                                         $lampiran = $this->ta_model->select_lampiran_by_ta($row->id_pengajuan, $row->npm);
                                                         if(empty($lampiran)) {
@@ -95,20 +112,14 @@
                                                         }
                                                     ?>
                                                 </td>
-                                                <td>
+                                                <td class="align-top">
                                                 <?php 
                                                     echo "Tema Penelitian";
                                                 ?></td>
-                                                <td>
+                                                <td class="align-top">
 
-                                                <a href="<?php echo site_url("dosen/tugas-akhir/tema/koordinator/form?aksi=setuju&id=".$row->id_pengajuan) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                <a href="<?php echo site_url("dosen/struktural/tema/form?id=".$row->id_pengajuan) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                 </a>
-
-                                                <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan ?>" class="passingIDKoor" >
-                                                            <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalTolakKoor">
-                                                                Tolak <?php  ?>
-                                                            </button>
-                                                </a> 
                                                 </td>
                                             </tr>
                                         <?php

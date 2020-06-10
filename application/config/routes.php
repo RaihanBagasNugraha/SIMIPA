@@ -110,6 +110,15 @@ $route['dosen/tugas-akhir/seminar/approve'] = 'dosen/seminar_approve';
 $route['dosen/tolak-data-seminar'] = 'dosen/seminar_decline';
 $route['dosen/tugas-akhir/seminar/approve-seminar/form'] = 'dosen/seminar_aksi';
 
+$route['dosen/struktural/tema'] = 'dosen/tugas_akhir_struktural';
+$route['dosen/struktural/tema/form'] = 'dosen/form_tugas_akhir_struktural';
+$route['dosen/struktural/tema/form/approve'] = 'dosen/tugas_akhir_approve_struktural';
+
+$route['dosen/tugas-akhir/seminar/koordinator'] = 'dosen/seminar_koordinator';
+$route['dosen/tugas-akhir/seminar/koordinator/decline'] = 'dosen/seminar_decline';
+$route['dosen/tugas-akhir/seminar/koordinator/form'] = 'dosen/seminar_aksi_koor';
+$route['dosen/tugas-akhir/seminar/koordinator/approve'] = 'dosen/seminar_approve';
+
 // Tendik
 $route['tendik/kelola-akun'] = 'tendik/akun';
 $route['tendik/ubah-data-akun'] = 'tendik/ubah_akun';

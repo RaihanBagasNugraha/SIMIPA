@@ -6,8 +6,8 @@
                                         <i class="pe-7s-file icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Approval Tema Penelitian
-                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan Tema Penelitian
+                                    <div>Approval Seminar
+                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan Seminar
                                         </div>
                                     </div>
                                 </div>
@@ -28,116 +28,120 @@
                         <div class="row">
                         <div class="col-md-12">
                          <div class="main-card mb-3 card">
-                                <div class="card-header">Approval Tema Penelitian</div>
+                                <div class="card-header">Approval Seminar</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('dosen/tugas-akhir/tema/approve') ?>" >
-                                    <input value="<?php echo $ta->id_pengajuan ?>" type = "hidden" required name="id_pengajuan" id="id_pengajuan">
-                                    <input value="<?php echo $aksi ?>" type = "hidden" required name="aksi" id="aksi">
-                                    <input value="<?php echo $jenis ?>" type = "hidden" required name="jenis" id="jenis">
+                                <form method="post" action="<?php echo site_url('dosen/tugas-akhir/seminar/koordinator/approve') ?>" >
+                                    <input value="<?php echo $seminar->id ?>" type = "hidden" required name="id" id="id">
+                                    <input value="<?php echo $status ?>" type = "hidden" required name="status" id="status">
 
 
                                     <!-- NPM -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Npm</label>
+                                            <label class="col-sm-3 col-form-label"><b>Npm</b></label>
                                             <div class="col-sm-3">
-                                                <input value="<?php echo $ta->npm ?>" required name="npm" class="form-control input-mask-trigger" readonly >
+                                                <input value="<?php echo $seminar->npm ?>" required name="npm" class="form-control input-mask-trigger" readonly >
                                             </div>
                                     </div>
 
                                     <!-- NAMA -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Nama</label>
+                                            <label class="col-sm-3 col-form-label"><b>Nama</b></label>
                                             <div class="col-sm-9">
-                                                <input value="<?php echo $this->user_model->get_mahasiswa_name($ta->npm) ?>" required name="nama" class="form-control input-mask-trigger" readonly >
+                                                <input value="<?php echo $this->user_model->get_mahasiswa_name($seminar->npm) ?>" required name="nama" class="form-control input-mask-trigger" readonly >
                                             </div>
                                     </div>
 
                                     <!-- Judul -->
-                                    <?php 
-                                        if($jenis == 'pa' || $jenis == 'pb1'){ ?>
                                     <div class="position-relative row form-group">
-                                            <label for="prodi" class="col-sm-3 col-form-label" >Judul Utama</label>
+                                            <label for="prodi" class="col-sm-3 col-form-label" ><b>Judul Utama</b></label>
                                             <div class="col-sm-9">
-                                                <textarea required name="judul1" class="form-control" readonly placeholder="Judul Utama" id="inputother"><?php echo $ta->judul1 ?></textarea>
-                                            </div>
-                                    </div>
-                                    <div class="position-relative row form-group">
-                                            <label for="prodi" class="col-sm-3 col-form-label">Judul Alternatif </label>
-                                            <div class="col-sm-9">
-                                                <textarea required name="judul2" class="form-control" readonly placeholder="Judul Alternatif" id="inputother2"><?php echo $ta->judul2 == NULL ? "-":$ta->judul2; ?></textarea>
-                                            </div>
-                                    </div>    
-                                    <?php        
-                                        } else{ 
-                                    ?>
-                                    <div class="position-relative row form-group">
-                                            <label for="prodi" class="col-sm-3 col-form-label" >Judul</label>
-                                            <div class="col-sm-9">
-                                                <?php if($ta->judul_approve == '1') {?>
-                                                <textarea required name="judul" class="form-control" readonly placeholder="Judul Utama" id="inputother"><?php echo $ta->judul1 ?></textarea>
-                                                <?php } else {?>
-                                                <textarea required name="judul" class="form-control" readonly placeholder="Judul Utama" id="inputother"><?php echo $ta->judul2 ?></textarea>
+                                                <?php if($seminar->judul_approve == 1){?>
+                                                    <textarea required name="judul" class="form-control" readonly placeholder="Judul Utama" id="inputother"><?php echo $seminar->judul1 ?></textarea>
+                                                <?php } elseif($seminar->judul_approve == 2){?>
+                                                    <textarea required name="judul" class="form-control" readonly placeholder="Judul Utama" id="inputother"><?php echo $seminar->judul2 ?></textarea>
                                                 <?php } ?>
                                             </div>
-                                    </div> 
-
-                                    <?php } ?>
-                                   
+                                    </div>
 
                                     <!-- IPK -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">IPK</label>
+                                            <label class="col-sm-3 col-form-label"><b>IPK</b></label>
                                             <div class="col-sm-3">
-                                                <input value="<?php echo $ta->ipk ?>" required name="ipk" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '9.99'" im-insert="true">
+                                                <input value="<?php echo $seminar->ipk ?>" required name="ipk" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '9.99'" im-insert="true">
                                             </div>
                                     </div>
 
                                     <!-- SKS -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Jumlah SKS</label>
+                                            <label class="col-sm-3 col-form-label"><b>Jumlah SKS</b></label>
                                             <div class="col-sm-3">
-                                                <input value="<?php echo $ta->ipk ?>" required name="sks" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
+                                                <input value="<?php echo $seminar->ipk ?>" required name="sks" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
                                             </div>
                                     </div>
 
                                      <!-- TOEFL -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Nilai TOEFL</label>
+                                            <label class="col-sm-3 col-form-label"><b>Nilai TOEFL</b></label>
                                             <div class="col-sm-3">
-                                                <input value="<?php echo $ta->toefl ?>" name="toefl" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
+                                                <input value="<?php echo $seminar->toefl ?>" name="toefl" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
                                             </div>
                                     </div>
-
-                                    <!-- Dosen Pembimbing -->
-                                    <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Pembimbing Utama</label>
-                                            <div class="col-sm-9">
-                                            <?php $dosen = $this->user_model->get_dosen_name($ta->pembimbing1);?>
-                                                <input value="<?php echo $ta->pembimbing1; ?>" type ="hidden" name="pembimbing1" class="form-control" readonly>
-                                                <input value="<?php echo $dosen->name; ?>" name="pembimbing_name" class="form-control" readonly>
-                                            </div>
-                                    </div>
-
                                     
                                     <!-- Status -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Status</label>
+                                            <label class="col-sm-3 col-form-label"><b>Status</b></label>
                                             <div class="col-sm-9">
-                                                <?php if($jenis == 'pa'){ echo "<input class=\"form-control\" value=\"Pembimbing Akademik\" readonly>";}
-                                                elseif($jenis == 'pb1'){echo "<input class=\"form-control\" value=\"Calon Pembimbing Utama\" readonly>";}
-                                                elseif($jenis == 'pb2'){echo "<input class=\"form-control\" value=\"Pembimbing 2\" readonly>";}
-                                                elseif($jenis == 'pb3'){echo "<input class=\"form-control\" value=\"Pembimbing 3\" readonly>";}
-                                                elseif($jenis == 'ps1'){echo "<input class=\"form-control\" value=\"Penguji 1\" readonly>";}
-                                                elseif($jenis == 'ps2'){echo "<input class=\"form-control\" value=\"Penguji 2\" readonly>";}
-                                                elseif($jenis == 'ps3'){echo "<input class=\"form-control\" value=\"Penguji 3\" readonly>";}
-                                                
-                                                ?>
+                                            <input value="Koordinator" name="status" class="form-control" readonly >
                                             </div>
                                     </div>
 
+                                    <!-- Komisi Pebimbing -->
+                                    <br>
+                                    <h5><b>Komisi Pembimbing</b></h5>
+                                        <input value="" readonly required name="Pembimbing_1" type="hidden" class="form-control input-mask-trigger" >
+                                        <input value="" readonly required name="Pembimbing_2" type="hidden" class="form-control input-mask-trigger" >
+                                        <input value="" readonly required name="Pembimbing_3" type="hidden" class="form-control input-mask-trigger" >
+                                        <input value="" readonly required name="Penguji_1" type="hidden" class="form-control input-mask-trigger" >
+                                        <input value="" readonly required name="Penguji_2" type="hidden" class="form-control input-mask-trigger" >
+                                        <input value="" readonly required name="Penguji_3" type="hidden" class="form-control input-mask-trigger" >
+
+                                     <?php 
+                                        //komisi
+                                        $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($seminar->id_tugas_akhir); 
+                                            
+                                            foreach($komisi_pembimbing as $kom) {
+                                        ?>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="nama" class="col-sm-3 col-form-label"><b><?php echo $kom->status; ?></b></label>
+                                            <div class="col-sm-9">
+                                                <input value="<?php echo $kom->name; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
+                                                <input value="<?php echo $this->user_model->get_dosen_id($kom->nip_nik); ?>" readonly required name="<?php echo $kom->status; ?>" type="hidden" class="form-control input-mask-trigger" >
+                                            </div>
+                                        </div>
+
+                                    <?php } ?>
+
+                                    <br>
+                                        <h5><b>Komisi Penguji</b></h5>
+
+                                        <?php $komisi_penguji = $this->ta_model->get_penguji_ta($seminar->id_tugas_akhir); 
+                                                foreach($komisi_penguji as $kom) {
+                                        ?>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="nama" class="col-sm-3 col-form-label"><b><?php echo $kom->status; ?></b></label>
+                                            <div class="col-sm-9">
+                                                <input value="<?php echo $kom->name; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
+                                                <input value="<?php echo $this->user_model->get_dosen_id($kom->nip_nik); ?>" readonly required name="<?php echo $kom->status; ?>" type="hidden" class="form-control input-mask-trigger" >
+                                            </div>
+                                        </div>
+
+                                    <?php } ?>
+
 
                                     <!-- TTD -->
-                                    <div class="position-relative row form-group"><label for="ttd" class="col-sm-3 col-form-label">Tanda Tangan Digital</label>
+                                    <div class="position-relative row form-group"><label for="ttd" class="col-sm-3 col-form-label"><b>Tanda Tangan Digital</b></label>
                                             <div class="col-sm-4">
                                             <canvas style="border: 1px solid #aaa; height: 200px; background-color: #efefef;" id="signature-pad" class="signature-pad col-sm-12" height="200px"></canvas>
                                             <small class="form-text text-muted">Silahkan tanda tangan pada canvas di atas, jangan lupa Klik <b>Oke</b> sebelum menyimpan data.</small>

@@ -398,6 +398,7 @@
             <div class="modal-body">
                 <form id="seminartolak" method="post" action="<?php echo site_url("tendik/verifikasi-berkas/seminar/decline") ?>">
                     <input type="hidden" name="id_seminar" id="ID" value="">
+                    <input type="hidden" name="status" id="status" value="admin">
                     <!-- <input type="hidden" name="id_pengajuan" id="pengajuanID" value="">
                     <input type="hidden" name="file_berkas" id="berkasFile" value=""> -->
                     <p>Tolak Verifikasi Berkas Seminar ? </p>
@@ -544,7 +545,7 @@
             <div class="modal-body">
                 <form id="ajukan-perbaikan" method="post" action="<?php echo site_url("mahasiswa/ajukan-perbaikan-seminar") ?>">
                     <input type="hidden" name="id_seminar" id="IDPerbaikan" value="">
-                    
+                    <input type="hidden" name="status" id="Status" value="">
                     <!-- <input type="hidden" name="id_pengajuan" id="pengajuanID" value="">
                     <input type="hidden" name="file_berkas" id="berkasFile" value=""> -->
                     <!-- <input type="text" class="form-control" name="ID" id="ID" value=""> -->
@@ -598,6 +599,41 @@
                                                 <i class="fas fa-times fa-w-20"></i>
                                             </span>Batal</button>
                 <button type="submit" form="tolak" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- tolak approval tema Koor -->
+<div class="modal fade" id="ApprovalTolakKoor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tolak Pengajuan Seminar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="tolak-approval-koor" method="post" action="<?php echo site_url("dosen/tugas-akhir/seminar/koordinator/decline") ?>">
+                    <input type="hidden" name="id_seminar" id="IDKoor" value="">
+                    <input type="hidden" name="status" id="status" value="koor">
+                    <!-- <input type="hidden" name="id_pengajuan" id="pengajuanID" value="">
+                    <input type="hidden" name="file_berkas" id="berkasFile" value=""> -->
+                    <p>Tolak Pengajuan Seminar ? </p>
+                    <textarea name="keterangan" cols="70" rows="3" placeholder="Keterangan Tolak"></textarea>
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="tolak-approval-koor" class="btn btn-primary">
                     <span class="btn-icon-wrapper pr-2 opacity-7">
                                                 <i class="fas fa-check fa-w-20"></i>
                                             </span>Ya</button>

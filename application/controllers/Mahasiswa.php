@@ -641,72 +641,6 @@ class Mahasiswa extends CI_Controller {
 				$this->ta_model->insert_approval_seminar($data_approval);
 			}
 
-			if($pb2 != NULL){
-				$result = $this->db->query('SELECT id_user FROM `tbl_users_dosen` WHERE nip_nik = '.$pb2)->row()->id_user;
-
-				$data_approval = array(
-					'id_pengajuan' => $insert_id,
-					'status_slug' => 'Pembimbing 2',
-					'id_user' => $result,
-					'ttd' => '',	
-				);
-
-				$this->ta_model->insert_approval_seminar($data_approval);
-			}
-
-			if($pb3 != NULL){
-				$result = $this->db->query('SELECT id_user FROM `tbl_users_dosen` WHERE nip_nik = '.$pb3)->row()->id_user;
-
-				$data_approval = array(
-					'id_pengajuan' => $insert_id,
-					'status_slug' => 'Pembimbing 3',
-					'id_user' => $result,
-					'ttd' => '',	
-				);
-
-				$this->ta_model->insert_approval_seminar($data_approval);
-			}
-
-			if($ps1 != NULL){
-				$result = $this->db->query('SELECT id_user FROM `tbl_users_dosen` WHERE nip_nik = '.$ps1)->row()->id_user;
-
-				$data_approval = array(
-					'id_pengajuan' => $insert_id,
-					'status_slug' => 'Penguji 1',
-					'id_user' => $result,
-					'ttd' => '',	
-				);
-
-				$this->ta_model->insert_approval_seminar($data_approval);
-			}
-
-			if($ps2 != NULL){
-				$result = $this->db->query('SELECT id_user FROM `tbl_users_dosen` WHERE nip_nik = '.$ps2)->row()->id_user;
-
-				$data_approval = array(
-					'id_pengajuan' => $insert_id,
-					'status_slug' => 'Penguji 2',
-					'id_user' => $result,
-					'ttd' => '',	
-				);
-
-				$this->ta_model->insert_approval_seminar($data_approval);
-			}
-
-			if($ps3 != NULL){
-				$result = $this->db->query('SELECT id_user FROM `tbl_users_dosen` WHERE nip_nik = '.$ps3)->row()->id_user;
-
-				$data_approval = array(
-					'id_pengajuan' => $insert_id,
-					'status_slug' => 'Penguji 3',
-					'id_user' => $result,
-					'ttd' => '',	
-				);
-
-				$this->ta_model->insert_approval_seminar($data_approval);
-			}
-
-			
 		}
 		redirect(site_url("mahasiswa/tugas-akhir/seminar"));
 		
@@ -744,12 +678,13 @@ class Mahasiswa extends CI_Controller {
 	function ajukan_perbaikan_seminar()
 	{
 		$id = $this->input->post('id_seminar');
-		
+		$status = $this->input->post('status');
 		// echo $id;
-		$data = array("id_pengajuan" => $id);
-		$where = $data['id_pengajuan'];
+		// echo $status;
+		// $data = array("id_pengajuan" => $id);
+		// $where = $data['id_pengajuan'];
 
-		$this->ta_model->ajukan_seminar_perbaikan($id);
+		$this->ta_model->ajukan_seminar_perbaikan($id,$status);
 		redirect(site_url("mahasiswa/tugas-akhir/seminar"));
 	}
 

@@ -116,7 +116,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="<?php echo site_url("dosen/tugas-akhir/seminar/koordinator") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "seminar" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Seminar/Sidang
                                             </a>
@@ -166,7 +166,7 @@
                                 <!-- Menu Kajur/Sekjur -->
 
                                 <li class="app-sidebar__heading">Ketua/Sekretaris Jurusan</li>
-                                <li <?php if($this->uri->segment(2) == "tugas-akhir") echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "struktural") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-pen"></i>
                                         Asese
@@ -174,7 +174,7 @@
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="<?php echo site_url("dosen/tugas-akhir/tema") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "tema") echo 'class="mm-active"' ?>>
+                                            <a href="<?php echo site_url("dosen/struktural/tema") ?>" <?php if($this->uri->segment(3) == "tema" && $this->uri->segment(2) == "struktural") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Tema
                                             </a>

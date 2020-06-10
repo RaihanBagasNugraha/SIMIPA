@@ -199,8 +199,24 @@ class Dosen extends CI_Controller {
 
 		$data['ta'] = $this->ta_model->get_approval_ta($this->session->userdata('userId'));
 		$data['pa'] = $this->ta_model->get_approval_ta_by_pa($this->session->userdata('userId'));
+		$data['approve'] = $this->ta_model->get_approval_ta_list($this->session->userdata('userId'));
 		
 		$this->load->view('dosen/tema_ta', $data);
+		
+		//$this->load->view('dosen/tugas_akhir', $data);
+
+        $this->load->view('footer_global');
+	}
+
+	function tugas_akhir_struktural()
+	{
+		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $data);
+		$this->load->view('dosen/header');
+
+		$data['ta'] = $this->ta_model->get_approval_ta_kajur($this->session->userdata('userId'));
+		
+		$this->load->view('dosen/kajur/tema_ta', $data);
 		
 		//$this->load->view('dosen/tugas_akhir', $data);
 
@@ -319,15 +335,105 @@ class Dosen extends CI_Controller {
 	function tugas_akhir_approve()
 	{
 		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
 
 		$id = $data['id_pengajuan'];
 		$ttd = $data['ttd'];
 		$aksi = $data['aksi'];
 		$status = $data['jenis'];
-		$dosenid = $data['pembimbing1'];
+		$dosenid = $this->session->userdata('userId');
 
 		$this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
+
 		redirect(site_url("dosen/tugas-akhir/tema"));
+		
+	}
+
+	function tugas_akhir_approve_struktural()
+	{
+		$data = $this->input->post();
+
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $data['id_pengajuan'];
+		$ttd = $data['ttd'];
+		// $aksi = $data['aksi'];
+		$status = "kajur";
+
+		$pb1 = $data['Pembimbing_1'];
+		$pb2 = $data['Pembimbing_2'];
+		$pb3 = $data['Pembimbing_3'];
+		$ps1 = $data['Penguji_1'];
+		$ps2 = $data['Penguji_2'];
+		$ps3 = $data['Penguji_3'];
+
+		$dosenid = $this->session->userdata('userId');
+
+		$this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
+
+		if($pb2 != NULL){
+
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => 'Pembimbing 2',
+				'id_user' => $pb2,
+				'ttd' => '',	
+			);
+
+			$this->ta_model->insert_approval_ta($data_approval);
+		}
+
+		if($pb3 != NULL){
+
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => 'Pembimbing 3',
+				'id_user' => $pb3,
+				'ttd' => '',	
+			);
+
+			$this->ta_model->insert_approval_ta($data_approval);
+		}
+
+		if($ps1 != NULL){
+
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => 'Penguji 1',
+				'id_user' => $ps1,
+				'ttd' => '',	
+			);
+
+			$this->ta_model->insert_approval_ta($data_approval);
+		}
+
+		if($ps2 != NULL){
+
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => 'Penguji 2',
+				'id_user' => $ps2,
+				'ttd' => '',	
+			);
+
+			$this->ta_model->insert_approval_ta($data_approval);
+		}
+
+		if($ps3 != NULL){
+
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => 'Penguji 3',
+				'id_user' => $ps3,
+				'ttd' => '',	
+			);
+
+			$this->ta_model->insert_approval_ta($data_approval);
+		}
+
+		redirect(site_url("dosen/struktural/tema"));
 	}
 
 	function tugas_akhir_decline()
@@ -422,6 +528,24 @@ class Dosen extends CI_Controller {
 		$this->load->view('footer_global');
 	}
 
+	function form_tugas_akhir_struktural()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$id = $this->input->get('id');
+		$aksi = $this->input->get('aksi');
+
+		$data['ta'] = $this->ta_model->get_ta_by_id($id);
+
+		// print_r($data);
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/approve_tema_ta',$data);
+		
+		$this->load->view('footer_global');
+	}
+
 	function add_tugas_akhir()
 	{
 		//echo "<pre>";
@@ -487,7 +611,10 @@ class Dosen extends CI_Controller {
 		// print_r($data);
 
 		$this->ta_model->approve_seminar($id,$ttd,$status,$dosenid);
-		redirect(site_url("dosen/tugas-akhir/seminar"));
+		if($status == 'Koordinator'){
+			redirect(site_url("dosen/tugas-akhir/seminar/koordinator"));
+		}else{
+		redirect(site_url("dosen/tugas-akhir/seminar"));}
 	}
 
 	function seminar_decline()
@@ -496,15 +623,25 @@ class Dosen extends CI_Controller {
 		$status = $this->input->post('status');
 		$keterangan = $this->input->post('keterangan');
 		$dosenid = $this->session->userdata('userId');
-		// $data = $this->input->post();
+		$data = $this->input->post();
 		// echo "<pre>";
 		// print_r($data);
 		
-		$data = array("id" => $id);
-		$where = $data['id'];
+		// $data = array("id" => $id);
+		// $where = $data['id'];
 
 		$this->ta_model->decline_seminar($id,$dosenid,$status,$keterangan);
-		redirect(site_url("dosen/tugas-akhir/seminar"));
+
+		if($status == 'koor'){
+			redirect(site_url("dosen/tugas-akhir/seminar/koordinator"));
+		}
+		elseif($status == 'admin'){
+			redirect(site_url("tendik/verifikasi-berkas/seminar"));
+		}
+		else{
+			redirect(site_url("dosen/tugas-akhir/seminar"));
+		}
+
 	}
 
 	function seminar_aksi()
@@ -528,6 +665,44 @@ class Dosen extends CI_Controller {
 		
 		$this->load->view('footer_global');
 		
+	}
+
+	function seminar_aksi_koor()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$id = $this->input->get('id');
+		$status = $this->input->get('status');
+		// echo "<pre>";
+		// print_r($id);
+		$seminar = $this->ta_model->get_seminar_by_id($id);
+		
+		$data['status'] = $status;
+		$data['seminar'] = $seminar[0];
+
+		// print_r($data);
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/approve_seminar',$data);
+		
+		$this->load->view('footer_global');
+		
+	}
+
+	function seminar_koordinator()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->ta_model->get_approval_seminar_koordinator($this->session->userdata('userId'));
+
+		// print_r($data);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/seminar_koordinator',$data);
+		
+		$this->load->view('footer_global');
 	}
 	
 }

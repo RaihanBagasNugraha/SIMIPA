@@ -396,12 +396,13 @@ class Tendik extends CI_Controller {
 	{
 		$id = $this->input->post('id_seminar');
 		$keterangan = $this->input->post('keterangan');
+		$status = $this->input->post('status');
 		$dosenid = $this->session->userdata('userId');
 
 		// echo $id;
 		// echo $keterangan;
-		// echo $dosenid;
-		$this->ta_model->decline_berkas_seminar($id,$dosenid,$keterangan);
+		// echo $status;
+		$this->ta_model->decline_seminar($id,$dosenid,$status,$keterangan);
 		redirect(site_url("tendik/verifikasi-berkas/seminar"));
 	}
 
