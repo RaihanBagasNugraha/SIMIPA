@@ -124,6 +124,11 @@
                                             ?>
                                             </td>
                                             <td class="align-top">
+                                            <?php 
+                                                if($row->status == 0){
+                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>";
+                                                }
+                                            ?>
                                             <?php
                                             $lampiran = $this->ta_model->select_lampiran_by_ta($row->id_pengajuan, $this->session->userdata('username'));
                                             if(empty($lampiran)) {
@@ -225,6 +230,8 @@
                                         <?php    
                                         }
                                         elseif($row->status == 4){echo"Selesai";}
+                                        elseif($row->status == 0){echo "Diajukan";}
+
                                         else{echo "Menunggu";} ?>
                                             </td>
                                         </tr>

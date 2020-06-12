@@ -688,4 +688,5 @@ class Mahasiswa extends CI_Controller {
 		redirect(site_url("mahasiswa/tugas-akhir/seminar"));
 	}
 
+
 }

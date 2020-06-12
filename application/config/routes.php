@@ -86,6 +86,8 @@ $route['mahasiswa/hapus-data-seminar'] = 'mahasiswa/hapus_data_seminar';
 $route['mahasiswa/ajukan-data-seminar'] = 'mahasiswa/ajukan_data_seminar';
 $route['mahasiswa/ajukan-perbaikan-seminar'] = 'mahasiswa/ajukan_perbaikan_seminar';
 
+$route['mahasiswa/tugas-akhir/tema/form_pdf'] = 'pdf_ta/set_pdf';
+
 
 // Dosen
 $route['dosen/kelola-akun'] = 'dosen/akun';

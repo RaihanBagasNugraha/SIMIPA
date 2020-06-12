@@ -31,7 +31,7 @@ class Pdf extends FPDF
         $this->footer = $mode;
     }
     
-    function setting_page_footer($numPage, $qrCode, $numCode)
+    function setting_page_footers($numPage, $qrCode, $numCode)
     {
         $this->numPage = $numPage;
         $this->qrCode = $qrCode;

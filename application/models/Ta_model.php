@@ -328,6 +328,8 @@ class Ta_model extends CI_Model
 		return $dosen_pa;
 	}
 	
+	
+	
 	function get_verifikasi_berkas($id) //tendik
 	{
 		// $this->db->select('*'); 
@@ -749,5 +751,32 @@ class Ta_model extends CI_Model
 	
 		return $query->result();
 	}
+
+
+	//PDF
+	function get_jurusan($npm)
+	{
+		$result = $this->db->query('SELECT jurusan.nama FROM tbl_users_mahasiswa, jurusan WHERE tbl_users_mahasiswa.npm ='.$npm.' AND jurusan.id_jurusan = tbl_users_mahasiswa.jurusan')->row()->nama;
+        return $result;
+	}
+
+	function get_dosen_pa_detail($id){
+		$query = $this->db->query('SELECT tbl_users_dosen.*, tbl_users.* FROM tugas_akhir, tbl_users_mahasiswa, tbl_users_dosen, tbl_users WHERE tugas_akhir.id_pengajuan = '.$id.' AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_mahasiswa.dosen_pa = tbl_users_dosen.id_user AND tbl_users_dosen.id_user = tbl_users.userId');
+
+		return $query->result();
+	}
+
+	function get_dosen_pb1($id){
+		$query = $this->db->query('SELECT tbl_users_dosen.*, tbl_users.name FROM tugas_akhir, tbl_users_dosen, tbl_users WHERE tugas_akhir.id_pengajuan ='.$id.' AND tugas_akhir.pembimbing1 = tbl_users_dosen.id_user AND tbl_users_dosen.id_user = tbl_users.userId');
+
+		return $query->result();
+	}
+
+	function get_mahasiswa_detail($npm){
+		$query = $this->db->query('SELECT tbl_users_mahasiswa.*, tbl_users.name FROM tbl_users_mahasiswa, tbl_users WHERE tbl_users_mahasiswa.npm ='.$npm.' AND tbl_users_mahasiswa.id_user = tbl_users.userId');
+
+		return $query->result();
+	}
+
 
 }
