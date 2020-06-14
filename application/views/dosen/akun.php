@@ -23,7 +23,7 @@
                             echo '<div class="alert alert-success fade show" role="alert">Akun Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Biodata</a> sebelum menggunakan layanan.</div>';
                         }
                         ?>
-                        
+
                          <div class="main-card mb-3 card">
                                 <div class="card-header">Form Kelola Akun</div>
                                 <div class="card-body">

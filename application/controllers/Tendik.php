@@ -330,16 +330,22 @@ class Tendik extends CI_Controller {
 	{
 		$data = $this->input->post();
 
+		// echo "<pre>";
+		// print_r($data);
+		
 		$id = $data['id_pengajuan'];
 		$ttd = $data['ttd'];
 		$no = $data['no_penetapan'];
 		$nomor = $data['nomor'];
+		$update = $data['update'];
 
 		$no_penetapan = $no.$nomor;
 
 		$dosenid = $this->session->userdata('userId');
 
-		$this->ta_model->approve_berkas_ta($id,$dosenid,$ttd,$no_penetapan);
+		$this->ta_model->staff_surat($id,$no_penetapan);
+		$this->ta_model->approve_berkas_ta($id,$dosenid,$ttd,$no_penetapan,$update);
+		
 		redirect(site_url("tendik/verifikasi-berkas"));
 	}
 

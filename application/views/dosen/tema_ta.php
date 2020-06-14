@@ -58,6 +58,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
+                                       
                                         <?php
                                         if(empty($ta) && empty($pa) && empty($approve))
                                         {
@@ -66,6 +67,7 @@
                                         else
                                         {
                                             foreach($ta as $row) {
+                                               
                                         ?>
                                             <tr>
                                                 <td class="align-top">
@@ -134,7 +136,9 @@
                                         <?php
                                             }
                                             foreach($pa as $row) {
+                                                
                                                 ?>
+                                                
                                                     <tr>
                                                         <td class="align-top">
                                                             <?php echo $row->judul1 ?> 

@@ -60,6 +60,10 @@
                                         {
                                             foreach($ta as $row) {
                                         ?>
+                                        <!-- <?php 
+                                        echo '<img src="'.$row->ttd.'" />';
+                                        // echo $row->ttd;
+                                        ?> -->
                                         <tr>
                                             <?php if($row->status == 4){ ?>
                                                 <?php if($row->judul_approve == 1) {?>
@@ -80,7 +84,7 @@
 
                                             <td class="align-top">
                                             <?php
-                                            if($row->status <> 4)
+                                            if($row->status == -1 || $row->status == 0 || $row->status == 1 || $row->status == 2 || $row->status == 3)
                                             {
                                                 $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing1);
                                                 echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
@@ -89,13 +93,13 @@
                                             elseif($row->status == 4 || $row->status == 8 || $row->status == 7)
                                             {
                                                 $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_pengajuan);
-
+                                                
                                                 // echo "<b>Pembimbing Utama :</b> <br>";
                                                 // echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
                                                 
                                                 foreach($komisi_pembimbing as $kom) {
                                                     echo "<b>$kom->status</b><br>";
-                                                    echo "$kom->name<br>";
+                                                    echo "$kom->nama<br>";
                                                     echo "$kom->nip_nik<br>";
                                                 }
 
@@ -105,19 +109,19 @@
                                             </td>
                                             <td class="align-top">
                                             <?php
-                                            if($row->status <> 4) {
+                                            if($row->status == -1 || $row->status == 0 || $row->status == 1 || $row->status == 2 || $row->status == 3) {
                                                 echo "<i>(Belum disetujui)</i>";
                                             }
                                             elseif($row->status == 4 || $row->status == 8 || $row->status == 7)
                                             {
                                                 $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_pengajuan);
-
+                                                
                                                 // echo "<b>Pembimbing Utama :</b> <br>";
                                                 // echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
                                                 
                                                 foreach($komisi_penguji as $kom) {
                                                     echo "<b>$kom->status</b><br>";
-                                                    echo "$kom->name<br>";
+                                                    echo "$kom->nama<br>";
                                                     echo "$kom->nip_nik<br>";
                                                 }
                                             }
@@ -125,8 +129,11 @@
                                             </td>
                                             <td class="align-top">
                                             <?php 
-                                                if($row->status == 0){
-                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>";
+                                                if($row->status >= 0 ){
+                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>";   
+                                                }
+                                                if($row->status == 3 ){
+                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_verifikasi&id=$row->id_pengajuan").">Form Verifikasi</a></li>";   
                                                 }
                                             ?>
                                             <?php
@@ -154,7 +161,7 @@
                                             }
 
                                             if($row->status == '1') {
-                                                echo '<i>ACC Pembimbing Utama</i>';
+                                                echo '<i>ACC Pembimbing Akademik</i>';
                                             }
 
                                             if($row->status == '2') {

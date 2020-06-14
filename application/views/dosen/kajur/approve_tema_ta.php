@@ -114,8 +114,8 @@
                                         <div class="position-relative row form-group">
                                             <label for="nama" class="col-sm-3 col-form-label"><b><?php echo $kom->status; ?></b></label>
                                             <div class="col-sm-9">
-                                                <input value="<?php echo $kom->name; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
-                                                <input value="<?php echo $this->user_model->get_dosen_id($kom->nip_nik); ?>" readonly required name="<?php echo $kom->status; ?>" type="hidden" class="form-control input-mask-trigger" >
+                                                <input value="<?php echo $kom->nama; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
+                                                <input value="<?php echo $kom->id_user; ?>" readonly required name="<?php echo $kom->status; ?>" type="hidden" class="form-control input-mask-trigger" >
                                             </div>
                                         </div>
 
@@ -131,8 +131,8 @@
                                         <div class="position-relative row form-group">
                                             <label for="nama" class="col-sm-3 col-form-label"><b><?php echo $kom->status; ?></b></label>
                                             <div class="col-sm-9">
-                                                <input value="<?php echo $kom->name; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
-                                                <input value="<?php echo $this->user_model->get_dosen_id($kom->nip_nik); ?>" readonly required name="<?php echo $kom->status; ?>" type="hidden" class="form-control input-mask-trigger" >
+                                                <input value="<?php echo $kom->nama; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
+                                                <input value="<?php echo $kom->id_user; ?>" readonly required name="<?php echo $kom->status; ?>" type="hidden" class="form-control input-mask-trigger" >
                                             </div>
                                         </div>
 

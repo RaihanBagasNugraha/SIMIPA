@@ -136,7 +136,7 @@ class Ta_model extends CI_Model
 	function get_approval_ta($id)
 	{
 		$this->db->where(array('pembimbing1' => $id));
-		$this->db->where('status =', '0');
+		$this->db->where('status =', '1');
 		$query = $this->db->get($this->table);
 		return $query->result();
 	}
@@ -160,7 +160,7 @@ class Ta_model extends CI_Model
 		$this->db->select('*'); 
 		$this->db->from('tugas_akhir');
 		$this->db->join('tbl_users_mahasiswa', 'tbl_users_mahasiswa.npm = tugas_akhir.npm');
-		$this->db->where('status =', '1');
+		$this->db->where('status =', '0');
 		$this->db->where('tbl_users_mahasiswa.dosen_pa',$id);
 
 		$query = $this->db->get();
@@ -178,6 +178,7 @@ class Ta_model extends CI_Model
 	{
 		$result = $this->db->query('SELECT pembimbing1 FROM tugas_akhir WHERE id_pengajuan ='.$where)->row()->pembimbing1;
 		$nip = $this->db->query('SELECT nip_nik FROM tbl_users_dosen WHERE id_user ='.$dosenid)->row()->nip_nik;
+		$nama = $this->db->query('SELECT name FROM tbl_users WHERE userId ='.$dosenid)->row()->name;
 
 
 		$result2 = $this->db->query('SELECT * FROM tugas_akhir_approval WHERE id_pengajuan ='.$where.' AND ttd LIKE ""');
@@ -186,7 +187,7 @@ class Ta_model extends CI_Model
 
 		if($status == 'pb1'){
 			$this->db->where('id_pengajuan', $where);
-			$this->db->update($this->table, array('status' => '1'));
+			$this->db->update($this->table, array('status' => '2'));
 
 			$data_approval = [
 				'id_pengajuan' => $where,
@@ -201,14 +202,23 @@ class Ta_model extends CI_Model
 				'id_tugas_akhir' => $where,
 				'status'  => 'Pembimbing 1',
 				'nip_nik'  => $nip,
+				'id_user'  => $dosenid,
+				'nama'  => $nama,
 			];
 
 			$this->db->insert('tugas_akhir_komisi', $data_komisi);
 
+			$data_surat = [
+				'jenis' => '1',
+				'id_jenis'  => $where,
+			];
+
+			$this->db->insert('staff_surat', $data_surat);
+
 		}
 		elseif($status == 'pa'){
 			$this->db->where('id_pengajuan', $where);
-			$this->db->update($this->table, array('status' => '2'));
+			$this->db->update($this->table, array('status' => '1'));
 
 			$data_approval = [
 				'id_pengajuan' => $where,
@@ -222,6 +232,20 @@ class Ta_model extends CI_Model
 		elseif($status == 'kajur'){
 			$this->db->where('id_pengajuan', $where);
 			$this->db->update($this->table, array('status' => '8'));
+
+			$data_approval = [
+				'id_pengajuan' => $where,
+				'status_slug'  => 'Ketua Jurusan',
+				'id_user'  => $dosenid,
+				'ttd'  => $ttd
+			];
+
+			$this->db->insert('tugas_akhir_approval', $data_approval);
+		}
+
+		elseif($status == 'kajur_acc'){
+			$this->db->where('id_pengajuan', $where);
+			$this->db->update($this->table, array('status' => '4'));
 
 			$data_approval = [
 				'id_pengajuan' => $where,
@@ -345,7 +369,7 @@ class Ta_model extends CI_Model
 
 	}
 
-	function approve_berkas_ta($where,$dosenid,$ttd,$no_penetapan) //tendik
+	function approve_berkas_ta($where,$dosenid,$ttd,$no_penetapan,$update) //tendik
 	{
 		$nip = $this->db->query('SELECT nip_nik FROM tbl_users_tendik WHERE id_user ='.$dosenid)->row()->nip_nik;
 	
@@ -360,6 +384,13 @@ class Ta_model extends CI_Model
 		];
 
 		$this->db->insert('tugas_akhir_approval', $data_approval);
+	}
+
+	function staff_surat($id, $no_penetapan)
+	{
+		$this->db->where('jenis', '1');
+		$this->db->where('id_jenis', $id);
+		$this->db->update('staff_surat', array('nomor' => $no_penetapan));
 	}
 
 	function decline_berkas_ta($where,$dosenid,$keterangan) //tendik
@@ -391,19 +422,21 @@ class Ta_model extends CI_Model
 	{
 		//pb1
 		$nip_pb1 = $this->db->query('SELECT nip_nik FROM tbl_users_dosen WHERE id_user ='.$pb1)->row()->nip_nik;
-		
+		$nama1 = $this->db->query('SELECT name FROM tbl_users WHERE userId ='.$pb1)->row()->name;
 		$this->db->where('id_tugas_akhir', $id);
 		$this->db->where('status', 'Pembimbing 1');
-		$this->db->update('tugas_akhir_komisi', array('nip_nik' => $nip_pb1));
+		$this->db->update('tugas_akhir_komisi', array('nip_nik' => $nip_pb1,'id_user' => $pb1,'nama' => $nama1));
 
 		//pb2
 		if($pb2 != NULL){
 			$nip_pb2 = $this->db->query('SELECT nip_nik FROM tbl_users_dosen WHERE id_user ='.$pb2)->row()->nip_nik;
-		
+			$nama = $this->db->query('SELECT name FROM tbl_users WHERE userId ='.$pb2)->row()->name;
 			$data_komisi = [
 				'id_tugas_akhir' => $id,
 				'status'  => 'Pembimbing 2',
 				'nip_nik'  => $nip_pb2,
+				'id_user'  => $pb2,
+				'nama' => $nama
 			];
 
 			$this->db->insert('tugas_akhir_komisi', $data_komisi);
@@ -412,11 +445,13 @@ class Ta_model extends CI_Model
 		//pb3
 		if($pb3 != NULL){
 			$nip_pb3 = $this->db->query('SELECT nip_nik FROM tbl_users_dosen WHERE id_user ='.$pb3)->row()->nip_nik;
-		
+			$nama = $this->db->query('SELECT name FROM tbl_users WHERE userId ='.$pb3)->row()->name;
 			$data_komisi = [
 				'id_tugas_akhir' => $id,
 				'status'  => 'Pembimbing 3',
 				'nip_nik'  => $nip_pb3,
+				'id_user'  => $pb3,
+				'nama' => $nama
 			];
 
 			$this->db->insert('tugas_akhir_komisi', $data_komisi);
@@ -425,11 +460,13 @@ class Ta_model extends CI_Model
 		//ps1
 		if($ps1 != NULL){
 			$nip_ps1 = $this->db->query('SELECT nip_nik FROM tbl_users_dosen WHERE id_user ='.$ps1)->row()->nip_nik;
-				
+			$nama = $this->db->query('SELECT name FROM tbl_users WHERE userId ='.$ps1)->row()->name;	
 			$data_komisi = [
 				'id_tugas_akhir' => $id,
 				'status'  => 'Penguji 1',
 				'nip_nik'  => $nip_ps1,
+				'id_user'  => $ps1,
+				'nama' => $nama
 			];
 		
 			$this->db->insert('tugas_akhir_komisi', $data_komisi);
@@ -438,11 +475,13 @@ class Ta_model extends CI_Model
 		//ps2
 		if($ps2 != NULL){
 			$nip_ps2 = $this->db->query('SELECT nip_nik FROM tbl_users_dosen WHERE id_user ='.$ps2)->row()->nip_nik;
-				
+			$nama = $this->db->query('SELECT name FROM tbl_users WHERE userId ='.$ps2)->row()->name;	
 			$data_komisi = [
 				'id_tugas_akhir' => $id,
 				'status'  => 'Penguji 2',
 				'nip_nik'  => $nip_ps2,
+				'id_user'  => $ps2,
+				'nama' => $nama
 			];
 		
 			$this->db->insert('tugas_akhir_komisi', $data_komisi);
@@ -451,27 +490,42 @@ class Ta_model extends CI_Model
 		//ps3
 		if($ps3 != NULL){
 			$nip_ps3 = $this->db->query('SELECT nip_nik FROM tbl_users_dosen WHERE id_user ='.$ps3)->row()->nip_nik;
-						
+			$nama = $this->db->query('SELECT name FROM tbl_users WHERE userId ='.$ps3)->row()->name;			
 			$data_komisi = [
 				'id_tugas_akhir' => $id,
 				'status'  => 'Penguji 3',
 				'nip_nik'  => $nip_ps3,
+				'id_user'  => $ps3,
+				'nama' => $nama
 			];
 				
 			$this->db->insert('tugas_akhir_komisi', $data_komisi);
 		}
 	}
 
+	function set_komisi_alter($id,$nip,$nama,$status)
+	{
+		$data_komisi = [
+			'id_tugas_akhir' => $id,
+			'status'  => $status,
+			'nip_nik'  => $nip,
+			'id_user'  => '',
+			'nama' => $nama
+		];
+			
+		$this->db->insert('tugas_akhir_komisi', $data_komisi);
+	}
+
 	// get komisi
 	function get_pembimbing_ta($id)
 	{
-		$query = $this->db->query('SELECT * FROM tugas_akhir_komisi, tbl_users_dosen, tbl_users WHERE tugas_akhir_komisi.id_tugas_akhir ='.$id.' AND tbl_users_dosen.nip_nik = tugas_akhir_komisi.nip_nik AND tbl_users.userId = tbl_users_dosen.id_user AND tugas_akhir_komisi.status LIKE "Pembimbing%"');
+		$query = $this->db->query('SELECT * FROM tugas_akhir_komisi WHERE status LIKE "Pembimbing%" AND id_tugas_akhir ='.$id);
 		return $query->result();
 	} 
 
 	function get_penguji_ta($id)
 	{
-		$query = $this->db->query('SELECT * FROM tugas_akhir_komisi, tbl_users_dosen, tbl_users WHERE tugas_akhir_komisi.id_tugas_akhir ='.$id.' AND tbl_users_dosen.nip_nik = tugas_akhir_komisi.nip_nik AND tbl_users.userId = tbl_users_dosen.id_user AND tugas_akhir_komisi.status LIKE "Penguji%"');
+		$query = $this->db->query('SELECT * FROM tugas_akhir_komisi WHERE status LIKE "Penguji%" AND id_tugas_akhir ='.$id);
 		return $query->result();
 
 	} 	
@@ -722,6 +776,13 @@ class Ta_model extends CI_Model
 
 	}
 
+	function get_surat($id) // tendik ta
+	{
+		$query = $this->db->query('SELECT * FROM staff_surat WHERE jenis = 1 AND id_jenis ='.$id);
+		
+		return $query->result();
+	}
+
 	function decline_berkas_seminar($where,$dosenid,$keterangan) //tendik
 	{
 		$this->db->where('id', $where);
@@ -760,21 +821,42 @@ class Ta_model extends CI_Model
         return $result;
 	}
 
-	function get_dosen_pa_detail($id){
+	function get_dosen_pa_detail($id)
+	{
 		$query = $this->db->query('SELECT tbl_users_dosen.*, tbl_users.* FROM tugas_akhir, tbl_users_mahasiswa, tbl_users_dosen, tbl_users WHERE tugas_akhir.id_pengajuan = '.$id.' AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_mahasiswa.dosen_pa = tbl_users_dosen.id_user AND tbl_users_dosen.id_user = tbl_users.userId');
 
 		return $query->result();
 	}
 
-	function get_dosen_pb1($id){
+	function get_admin_detail($id)
+	{
+		$query = $this->db->query('SELECT tbl_users_tendik.*, tbl_users.name, tugas_akhir_approval.ttd FROM tugas_akhir_approval, tbl_users_tendik, tbl_users WHERE tugas_akhir_approval.id_pengajuan = '.$id.' AND tugas_akhir_approval.status_slug = "Administrasi" AND tbl_users_tendik.id_user = tugas_akhir_approval.id_user AND tugas_akhir_approval.id_user = tbl_users.userId');
+
+		return $query->result();
+	}
+
+	function get_dosen_pb1($id)
+	{
 		$query = $this->db->query('SELECT tbl_users_dosen.*, tbl_users.name FROM tugas_akhir, tbl_users_dosen, tbl_users WHERE tugas_akhir.id_pengajuan ='.$id.' AND tugas_akhir.pembimbing1 = tbl_users_dosen.id_user AND tbl_users_dosen.id_user = tbl_users.userId');
 
 		return $query->result();
 	}
 
-	function get_mahasiswa_detail($npm){
+	function get_mahasiswa_detail($npm)
+	{
 		$query = $this->db->query('SELECT tbl_users_mahasiswa.*, tbl_users.name FROM tbl_users_mahasiswa, tbl_users WHERE tbl_users_mahasiswa.npm ='.$npm.' AND tbl_users_mahasiswa.id_user = tbl_users.userId');
 
+		return $query->result();
+	}
+
+	function get_ttd_approval($id,$status_slug)
+	{
+		$this->db->select('ttd');
+		$this->db->from('tugas_akhir_approval');
+		$this->db->where('id_pengajuan', $id);
+		$this->db->where('status_slug', $status_slug);
+
+		$query = $this->db->get();
 		return $query->result();
 	}
 

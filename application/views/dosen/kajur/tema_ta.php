@@ -81,7 +81,7 @@
 
                                                     foreach($komisi_pembimbing as $kom) {
                                                         echo "<b>$kom->status</b><br>";
-                                                        echo "$kom->name<br>";
+                                                        echo "$kom->nama<br>";
                                                         echo "$kom->nip_nik<br>";
                                                     }
                                                 ?>
@@ -92,7 +92,7 @@
 
                                                     foreach($komisi_penguji as $kom) {
                                                         echo "<b>$kom->status</b><br>";
-                                                        echo "$kom->name<br>";
+                                                        echo "$kom->nama<br>";
                                                         echo "$kom->nip_nik<br>";
                                                     }
                                                 ?>

@@ -34,6 +34,18 @@
                                     <input value="<?php echo $ta->id_pengajuan ?>" type = "hidden" required name="id_pengajuan" id="id_pengajuan">
                                     <input value="<?php echo $aksi ?>" type = "hidden" required name="aksi" id="aksi">
 
+                                    <input value="" readonly required name="pb2_alter_nip" type="hidden" class="form-control" >
+                                    <input value="" readonly required name="pb2_alter_nama" type="hidden" class="form-control" >
+                                    <input value="" readonly required name="pb3_alter_nip" type="hidden" class="form-control" >
+                                    <input value="" readonly required name="pb3_alter_nama" type="hidden" class="form-control" >
+                                    <input value="" readonly required name="ps1_alter_nip" type="hidden" class="form-control" >
+                                    <input value="" readonly required name="ps1_alter_nama" type="hidden" class="form-control" >
+                                    <input value="" readonly required name="ps2_alter_nip" type="hidden" class="form-control" >
+                                    <input value="" readonly required name="ps2_alter_nama" type="hidden" class="form-control" >
+                                    <input value="" readonly required name="ps3_alter_nip" type="hidden" class="form-control" >
+                                    <input value="" readonly required name="ps3_alter_nama" type="hidden" class="form-control" >
+                                    
+
                                     <!-- No Penetapan -->
                                     <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label">No Penetapan</label>
@@ -170,6 +182,22 @@
                                                 ?>
 
                                                 </select>
+                                            </div>
+                                    </div>
+
+                                    <!-- Pembimbing 2 Alternatif -->
+                                    <div class="position-relative row form-group">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nip / Nik</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="pb2_alter_nip" class="form-control" >
+                                            </div>
+                                    </div>
+
+                                     <!-- Pembimbing 2 Alternatif -->
+                                     <div class="position-relative row form-group">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="pb2_alter_nama" class="form-control" >
                                             </div>
                                     </div>
 

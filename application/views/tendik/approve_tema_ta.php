@@ -33,6 +33,7 @@
                                 <form method="post" action="<?php echo site_url('tendik/tugas-akhir/tema/approve') ?>" >
                                     <input value="<?php echo $ta->id_pengajuan ?>" type = "hidden" required name="id_pengajuan" id="id_pengajuan">
                                     <input value="<?php echo $aksi ?>" type = "hidden" required name="aksi" id="aksi">
+                                    <input value="<?php echo $ta->updated_at ?>" type = "hidden" required name="update">
                                     
                                     <!-- No Penetapan -->
                                     <div class="position-relative row form-group">

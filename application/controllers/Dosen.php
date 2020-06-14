@@ -369,13 +369,12 @@ class Dosen extends CI_Controller {
 	{
 		$data = $this->input->post();
 
-		// echo "<pre>";
-		// print_r($data);
+		echo "<pre>";
+		print_r($data);
 
 		$id = $data['id_pengajuan'];
 		$ttd = $data['ttd'];
-		// $aksi = $data['aksi'];
-		$status = "kajur";
+		
 
 		$pb1 = $data['Pembimbing_1'];
 		$pb2 = $data['Pembimbing_2'];
@@ -383,12 +382,38 @@ class Dosen extends CI_Controller {
 		$ps1 = $data['Penguji_1'];
 		$ps2 = $data['Penguji_2'];
 		$ps3 = $data['Penguji_3'];
+		$fill = 0;
+		$null = 0;
+
+		//check null nor not
+		if($pb1 != NULL){$fill++;}
+		if($pb2 != NULL){$fill++;}
+		if($pb3 != NULL){$fill++;}
+		if($ps1 != NULL){$fill++;}
+		if($ps2 != NULL){$fill++;}
+		if($ps3 != NULL){$fill++;}
+
+		if($pb1 == '0'){$null++;}
+		if($pb2 == '0'){$null++;}
+		if($pb3 == '0'){$null++;}
+		if($ps1 == '0'){$null++;}
+		if($ps2 == '0'){$null++;}
+		if($ps3 == '0'){$null++;}
+
+		$check = $fill - $null;
 
 		$dosenid = $this->session->userdata('userId');
 
-		$this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
+		if($check == '1'){
+			$status = "kajur_acc";
+			$this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
+		}
+		else{
+			$status = "kajur";
+			$this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
+		}	
 
-		if($pb2 != NULL){
+		if($pb2 != NULL && $pb2 != '0'){
 
 			$data_approval = array(
 				'id_pengajuan' => $id,
@@ -400,7 +425,7 @@ class Dosen extends CI_Controller {
 			$this->ta_model->insert_approval_ta($data_approval);
 		}
 
-		if($pb3 != NULL){
+		if($pb3 != NULL && $pb3 != '0'){
 
 			$data_approval = array(
 				'id_pengajuan' => $id,
@@ -412,7 +437,7 @@ class Dosen extends CI_Controller {
 			$this->ta_model->insert_approval_ta($data_approval);
 		}
 
-		if($ps1 != NULL){
+		if($ps1 != NULL && $ps1 != '0'){
 
 			$data_approval = array(
 				'id_pengajuan' => $id,
@@ -424,7 +449,7 @@ class Dosen extends CI_Controller {
 			$this->ta_model->insert_approval_ta($data_approval);
 		}
 
-		if($ps2 != NULL){
+		if($ps2 != NULL && $ps2 != '0'){
 
 			$data_approval = array(
 				'id_pengajuan' => $id,
@@ -436,7 +461,7 @@ class Dosen extends CI_Controller {
 			$this->ta_model->insert_approval_ta($data_approval);
 		}
 
-		if($ps3 != NULL){
+		if($ps3 != NULL && $ps3 != '0'){
 
 			$data_approval = array(
 				'id_pengajuan' => $id,
@@ -586,8 +611,8 @@ class Dosen extends CI_Controller {
 		//echo $this->session->userdata('username');
 
 		$data = $this->input->post();
-		// echo "<pre>";
-		// print_r($data);
+		echo "<pre>";
+		print_r($data);
 		$no = $data['no_penetapan'];
 		$nomor = $data['nomor'];
 
@@ -606,6 +631,16 @@ class Dosen extends CI_Controller {
 		$ps1 = $data['pembahas1'];
 		$ps2 = $data['pembahas2'];
 		$ps3 = $data['pembahas3'];
+
+		$pb2_nip = $data['pb2_alter_nip'];
+		$pb2_nama = $data['pb2_alter_nama'];
+
+		if($pb2 == NULL && ($pb2_nip != NULL && $pb2_nama != NULL)){
+			$status = "Pembimbing 2";
+			$this->ta_model->set_komisi_alter($id,$pb2_nip,$pb2_nama,$status);
+		}
+
+		
 
 		$this->ta_model->approval_koordinator($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2);
 		$this->ta_model->set_komisi($id,$pb1,$pb2,$pb3,$ps1,$ps2,$ps3);
