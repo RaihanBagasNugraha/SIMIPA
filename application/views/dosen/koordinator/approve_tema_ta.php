@@ -162,10 +162,10 @@
                                     </div>
 
                                      <!-- Pembimbing 2 -->
-                                     <div class="position-relative row form-group">
-                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Pembimbing 2</label>
+                                     <div class="position-relative row form-group" >
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Pembimbing 2 &nbsp;&nbsp;<label class="btn btn-secondary" onClick="add_pb2();" id="add_pb2"><i class="fas fa-plus"></i></label></label>
                                             <div class="col-sm-9">
-                                                <select name="pembimbing2" class=" form-control">
+                                                <select name="pembimbing2" class=" form-control" id="pb2">
                                                 <option value="">-- Pilih Dosen Pembimbing 2 --</option>
                                                 <?php
                                                 $list = $this->user_model->select_list_dosen();
@@ -182,11 +182,12 @@
                                                 ?>
 
                                                 </select>
+                                                <input type="hidden" name="pembimbing2" value="" id="pb2d" disabled = "true"/>
                                             </div>
                                     </div>
 
                                     <!-- Pembimbing 2 Alternatif -->
-                                    <div class="position-relative row form-group">
+                                    <div class="position-relative row form-group" id="pb2_alt_nip" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Nip / Nik</label>
                                             <div class="col-sm-9">
                                                 <input value="" name="pb2_alter_nip" class="form-control" >
@@ -194,7 +195,7 @@
                                     </div>
 
                                      <!-- Pembimbing 2 Alternatif -->
-                                     <div class="position-relative row form-group">
+                                     <div class="position-relative row form-group" id="pb2_alt_nama" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
                                             <div class="col-sm-9">
                                                 <input value="" name="pb2_alter_nama" class="form-control" >
@@ -203,9 +204,9 @@
 
                                     <!-- Pembimbing 3 -->
                                     <div class="position-relative row form-group">
-                                            <label for="dosen_pb3" class="col-sm-3 col-form-label">Pembimbing 3</label>
+                                            <label for="dosen_pb3" class="col-sm-3 col-form-label">Pembimbing 3 &nbsp;&nbsp;<label class="btn btn-secondary" onClick="add_pb3();" id="add_pb3"><i class="fas fa-plus"></i></label></label>
                                             <div class="col-sm-9">
-                                                <select name="pembimbing3" class=" form-control">
+                                                <select name="pembimbing3" class=" form-control" id="pb3">
                                                 <option value="">-- Pilih Dosen Pembimbing 3 --</option>
                                                 <?php
                                                 $list = $this->user_model->select_list_dosen();
@@ -222,6 +223,23 @@
                                                 ?>
 
                                                 </select>
+                                                <input type="hidden" name="pembimbing3" value="" id="pb3d" disabled = "true"/>
+                                            </div>
+                                    </div>
+
+                                    <!-- Pembimbing 3 Alternatif -->
+                                    <div class="position-relative row form-group" id="pb3_alt_nip" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nip / Nik</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="pb3_alter_nip" class="form-control" >
+                                            </div>
+                                    </div>
+
+                                     <!-- Pembimbing 3 Alternatif -->
+                                     <div class="position-relative row form-group" id="pb3_alt_nama" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="pb3_alter_nama" class="form-control" >
                                             </div>
                                     </div>
 
@@ -230,9 +248,9 @@
                                     
                                     <!-- Pembahas 1 -->
                                     <div class="position-relative row form-group">
-                                            <label for="dosen_ps1" class="col-sm-3 col-form-label">Pembahas 1</label>
+                                            <label for="dosen_ps1" class="col-sm-3 col-form-label">Pembahas 1 &nbsp;&nbsp;<label class="btn btn-secondary" onClick="add_ps1();" id="add_ps1"><i class="fas fa-plus"></i></label></label>
                                             <div class="col-sm-9">
-                                                <select name="pembahas1" class=" form-control">
+                                                <select name="pembahas1" class=" form-control" id="ps1">
                                                 <option value="">-- Pilih Dosen Pembahas 1 --</option>
                                                 <?php
                                                 $list = $this->user_model->select_list_dosen();
@@ -249,14 +267,31 @@
                                                 ?>
 
                                                 </select>
+                                                <input type="hidden" name="pembahas1" value="" id="ps1d" disabled = "true"/>
                                             </div>    
+                                    </div>
+
+                                    <!-- Pembahas 1 Alternatif -->
+                                    <div class="position-relative row form-group" id="ps1_alt_nip" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nip / Nik</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps1_alter_nip" class="form-control" >
+                                            </div>
+                                    </div>
+
+                                     <!-- Pembahas 1 Alternatif -->
+                                     <div class="position-relative row form-group" id="ps1_alt_nama" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps1_alter_nama" class="form-control" >
+                                            </div>
                                     </div>
 
                                      <!-- Pembahas 2 -->
                                      <div class="position-relative row form-group">
-                                            <label for="dosen_ps2" class="col-sm-3 col-form-label">Pembahas 2</label>
+                                            <label for="dosen_ps2" class="col-sm-3 col-form-label">Pembahas 2 &nbsp;&nbsp;<label class="btn btn-secondary" onClick="add_ps2();" id="add_ps2"><i class="fas fa-plus"></i></label></label>
                                             <div class="col-sm-9">
-                                                <select name="pembahas2" class=" form-control">
+                                                <select name="pembahas2" class="form-control" id="ps2">
                                                 <option value="">-- Pilih Dosen Pembahas 2 --</option>
                                                 <?php
                                                 $list = $this->user_model->select_list_dosen();
@@ -273,14 +308,31 @@
                                                 ?>
 
                                                 </select>
+                                                <input type="hidden" name="pembahas2" value="" id="ps2d" disabled = "true"/>
+                                            </div>
+                                    </div>
+
+                                     <!-- Pembahas 2 Alternatif -->
+                                     <div class="position-relative row form-group" id="ps2_alt_nip" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nip / Nik</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps2_alter_nip" class="form-control" >
+                                            </div>
+                                    </div>
+
+                                     <!-- Pembahas 2 Alternatif -->
+                                     <div class="position-relative row form-group" id="ps2_alt_nama" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps2_alter_nama" class="form-control" >
                                             </div>
                                     </div>
 
                                     <!-- Pembahas 3 -->
                                     <div class="position-relative row form-group">
-                                            <label for="dosen_ps3" class="col-sm-3 col-form-label">Pembahas 3</label>
+                                            <label for="dosen_ps3" class="col-sm-3 col-form-label">Pembahas 3 &nbsp;&nbsp;<label class="btn btn-secondary" onClick="add_ps3();" id="add_ps3"><i class="fas fa-plus"></i></label></label>
                                             <div class="col-sm-9">
-                                                <select name="pembahas3" class=" form-control">
+                                                <select name="pembahas3" class=" form-control" id="ps3">
                                                 <option value="">-- Pilih Dosen Pembahas 3 --</option>
                                                 <?php
                                                 $list = $this->user_model->select_list_dosen();
@@ -297,6 +349,23 @@
                                                 ?>
 
                                                 </select>
+                                                <input type="hidden" name="pembahas3" value="" id="ps3d" disabled = "true"/>
+                                            </div>
+                                    </div>
+
+                                    <!-- Pembahas 3 Alternatif -->
+                                    <div class="position-relative row form-group" id="ps3_alt_nip" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nip / Nik</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps3_alter_nip" class="form-control" >
+                                            </div>
+                                    </div>
+
+                                     <!-- Pembahas 3 Alternatif -->
+                                     <div class="position-relative row form-group" id="ps3_alt_nama" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps3_alter_nama" class="form-control" >
                                             </div>
                                     </div>
 
@@ -491,6 +560,116 @@ document.getElementById('undo').addEventListener('click', function () {
     data.pop(); // remove the last dot or line
     signaturePad.fromData(data);
   }
+});
+
+</script>
+
+<script>
+
+//pb2
+function add_pb2() {
+    if( document.getElementById("pb2_alt_nama").style.display=='none' && document.getElementById("pb2_alt_nip").style.display=='none'){
+           document.getElementById("pb2_alt_nama").style.display = '';
+           document.getElementById("pb2_alt_nip").style.display = '';
+           document.getElementById("pb2").disabled = true;
+           document.getElementById("pb2d").disabled = false;
+        //    document.getElementById("pb2").value = "My value";
+    }else{
+            document.getElementById("pb2_alt_nama").style.display = 'none';
+            document.getElementById("pb2_alt_nip").style.display = 'none';
+            document.getElementById("pb2").disabled = false;
+            document.getElementById("pb2d").disabled = true;
+         }
+    }
+
+$(document).ready(function(){
+    $('#add_pb2').click(function(){
+    $('#pb2').prop('selectedIndex',0);
+    })
+});
+
+//pb3
+function add_pb3() {
+    if( document.getElementById("pb3_alt_nama").style.display=='none' && document.getElementById("pb3_alt_nip").style.display=='none'){
+           document.getElementById("pb3_alt_nama").style.display = '';
+           document.getElementById("pb3_alt_nip").style.display = '';
+           document.getElementById("pb3").disabled = true;
+           document.getElementById("pb3d").disabled = false;
+    }else{
+            document.getElementById("pb3_alt_nama").style.display = 'none';
+            document.getElementById("pb3_alt_nip").style.display = 'none';
+            document.getElementById("pb3").disabled = false;
+            document.getElementById("pb3d").disabled = true;
+         }
+    }
+
+$(document).ready(function(){
+    $('#add_pb3').click(function(){
+    $('#pb3').prop('selectedIndex',0);
+    })
+});
+
+//ps1
+function add_ps1() {
+    if( document.getElementById("ps1_alt_nama").style.display=='none' && document.getElementById("ps1_alt_nip").style.display=='none'){
+           document.getElementById("ps1_alt_nama").style.display = '';
+           document.getElementById("ps1_alt_nip").style.display = '';
+           document.getElementById("ps1").disabled = true;
+           document.getElementById("ps1d").disabled = false;
+    }else{
+            document.getElementById("ps1_alt_nama").style.display = 'none';
+            document.getElementById("ps1_alt_nip").style.display = 'none';
+            document.getElementById("ps1").disabled = false;
+            document.getElementById("ps1d").disabled = true;
+         }
+    }
+
+$(document).ready(function(){
+    $('#add_ps1').click(function(){
+    $('#ps1').prop('selectedIndex',0);
+    })
+});
+
+//ps2
+function add_ps2() {
+    if( document.getElementById("ps2_alt_nama").style.display=='none' && document.getElementById("ps2_alt_nip").style.display=='none'){
+           document.getElementById("ps2_alt_nama").style.display = '';
+           document.getElementById("ps2_alt_nip").style.display = '';
+           document.getElementById("ps2").disabled = true;
+           document.getElementById("ps2d").disabled = false;
+    }else{
+            document.getElementById("ps2_alt_nama").style.display = 'none';
+            document.getElementById("ps2_alt_nip").style.display = 'none';
+            document.getElementById("ps2").disabled = false;
+            document.getElementById("ps2d").disabled = true;
+         }
+    }
+
+$(document).ready(function(){
+    $('#add_ps2').click(function(){
+    $('#ps2').prop('selectedIndex',0);
+    })
+});
+
+//ps3
+function add_ps3() {
+    if( document.getElementById("ps3_alt_nama").style.display=='none' && document.getElementById("ps3_alt_nip").style.display=='none'){
+           document.getElementById("ps3_alt_nama").style.display = '';
+           document.getElementById("ps3_alt_nip").style.display = '';
+           document.getElementById("ps3").disabled = true;
+           document.getElementById("ps3d").disabled = false;
+    }else{
+            document.getElementById("ps3_alt_nama").style.display = 'none';
+            document.getElementById("ps3_alt_nip").style.display = 'none';
+            document.getElementById("ps3").disabled = false;
+            document.getElementById("ps3d").disabled = true;
+         }
+    }
+
+$(document).ready(function(){
+    $('#add_ps3').click(function(){
+    $('#ps3').prop('selectedIndex',0);
+    })
 });
 
 </script>

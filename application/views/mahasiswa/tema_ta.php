@@ -129,11 +129,14 @@
                                             </td>
                                             <td class="align-top">
                                             <?php 
-                                                if($row->status >= 0 ){
+                                                if($row->status >= 0 && $row->status != 6 ){
                                                     echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>";   
                                                 }
-                                                if($row->status == 3 ){
+                                                if($row->status >= 3 && $row->status != 6){
                                                     echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_verifikasi&id=$row->id_pengajuan").">Form Verifikasi</a></li>";   
+                                                }
+                                                if($row->status == 4 ){
+                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_penetapan&id=$row->id_pengajuan").">Form Penetapan</a></li>";   
                                                 }
                                             ?>
                                             <?php

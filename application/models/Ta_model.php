@@ -845,19 +845,75 @@ class Ta_model extends CI_Model
 	function get_mahasiswa_detail($npm)
 	{
 		$query = $this->db->query('SELECT tbl_users_mahasiswa.*, tbl_users.name FROM tbl_users_mahasiswa, tbl_users WHERE tbl_users_mahasiswa.npm ='.$npm.' AND tbl_users_mahasiswa.id_user = tbl_users.userId');
-
 		return $query->result();
 	}
 
 	function get_ttd_approval($id,$status_slug)
 	{
-		$this->db->select('ttd');
+		$this->db->select('*');
 		$this->db->from('tugas_akhir_approval');
 		$this->db->where('id_pengajuan', $id);
 		$this->db->where('status_slug', $status_slug);
 
 		$query = $this->db->get();
 		return $query->result();
+	}
+
+	function get_komisi($id)
+	{
+		$query = $this->db->query('SELECT * FROM tugas_akhir_approval, tugas_akhir_komisi WHERE tugas_akhir_approval.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND (tugas_akhir_approval.status_slug LIKE "Pembimbing%" OR tugas_akhir_approval.status_slug LIKE "Penguji%") AND tugas_akhir_approval.status_slug NOT LIKE "Pembimbing Akademik" AND tugas_akhir_approval.id_user = tugas_akhir_komisi.id_user AND tugas_akhir_approval.id_pengajuan ='.$id);
+		return $query->result();
+	}
+	
+	function get_tgl_acc($id)
+	{
+		$query = $this->db->query('SELECT * FROM tugas_akhir_approval WHERE status_slug = "Koordinator" AND id_pengajuan ='.$id)->row()->created_at;
+
+		$date = explode('-',substr($query,0,10));
+		$month = $date[1];       
+
+		switch($month)
+        {
+			case "01":
+            	$bulan = "Januari";
+			break;
+			case "02":
+            	$bulan = "Februari";
+			break;
+			case "03":
+            	$bulan = "Maret";
+			break;
+			case "04":
+            	$bulan = "April";
+			break;
+			case "05":
+            	$bulan = "Mei";
+			break;
+			case "06":
+            	$bulan = "Juni";
+			break;
+			case "07":
+            	$bulan = "Juli";
+			break;
+			case "08":
+            	$bulan = "Agustus";
+			break;
+			case "09":
+            	$bulan = "September";
+			break;
+			case "10":
+            	$bulan = "Oktober";
+			break;
+			case "11":
+            	$bulan = "November";
+			break;
+			case "12":
+            	$bulan = "Desember";
+            break;
+		}
+        
+		$tgl = $date[2].' '.$bulan.' '.$date[0];
+		return $tgl;
 	}
 
 

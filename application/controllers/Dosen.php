@@ -369,8 +369,8 @@ class Dosen extends CI_Controller {
 	{
 		$data = $this->input->post();
 
-		echo "<pre>";
-		print_r($data);
+		// echo "<pre>";
+		// print_r($data);
 
 		$id = $data['id_pengajuan'];
 		$ttd = $data['ttd'];
@@ -413,65 +413,6 @@ class Dosen extends CI_Controller {
 			$this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
 		}	
 
-		if($pb2 != NULL && $pb2 != '0'){
-
-			$data_approval = array(
-				'id_pengajuan' => $id,
-				'status_slug' => 'Pembimbing 2',
-				'id_user' => $pb2,
-				'ttd' => '',	
-			);
-
-			$this->ta_model->insert_approval_ta($data_approval);
-		}
-
-		if($pb3 != NULL && $pb3 != '0'){
-
-			$data_approval = array(
-				'id_pengajuan' => $id,
-				'status_slug' => 'Pembimbing 3',
-				'id_user' => $pb3,
-				'ttd' => '',	
-			);
-
-			$this->ta_model->insert_approval_ta($data_approval);
-		}
-
-		if($ps1 != NULL && $ps1 != '0'){
-
-			$data_approval = array(
-				'id_pengajuan' => $id,
-				'status_slug' => 'Penguji 1',
-				'id_user' => $ps1,
-				'ttd' => '',	
-			);
-
-			$this->ta_model->insert_approval_ta($data_approval);
-		}
-
-		if($ps2 != NULL && $ps2 != '0'){
-
-			$data_approval = array(
-				'id_pengajuan' => $id,
-				'status_slug' => 'Penguji 2',
-				'id_user' => $ps2,
-				'ttd' => '',	
-			);
-
-			$this->ta_model->insert_approval_ta($data_approval);
-		}
-
-		if($ps3 != NULL && $ps3 != '0'){
-
-			$data_approval = array(
-				'id_pengajuan' => $id,
-				'status_slug' => 'Penguji 3',
-				'id_user' => $ps3,
-				'ttd' => '',	
-			);
-
-			$this->ta_model->insert_approval_ta($data_approval);
-		}
 
 		redirect(site_url("dosen/struktural/tema"));
 	}
@@ -611,8 +552,8 @@ class Dosen extends CI_Controller {
 		//echo $this->session->userdata('username');
 
 		$data = $this->input->post();
-		echo "<pre>";
-		print_r($data);
+		// echo "<pre>";
+		// print_r($data);
 		$no = $data['no_penetapan'];
 		$nomor = $data['nomor'];
 
@@ -632,18 +573,101 @@ class Dosen extends CI_Controller {
 		$ps2 = $data['pembahas2'];
 		$ps3 = $data['pembahas3'];
 
+		// pb ps alt
 		$pb2_nip = $data['pb2_alter_nip'];
 		$pb2_nama = $data['pb2_alter_nama'];
+		$pb3_nip = $data['pb3_alter_nip'];
+		$pb3_nama = $data['pb3_alter_nama'];
+		$ps1_nip = $data['ps1_alter_nip'];
+		$ps1_nama = $data['ps1_alter_nama'];
+		$ps2_nip = $data['ps2_alter_nip'];
+		$ps2_nama = $data['ps2_alter_nama'];
+		$ps3_nip = $data['ps3_alter_nip'];
+		$ps3_nama = $data['ps3_alter_nama'];
 
 		if($pb2 == NULL && ($pb2_nip != NULL && $pb2_nama != NULL)){
 			$status = "Pembimbing 2";
 			$this->ta_model->set_komisi_alter($id,$pb2_nip,$pb2_nama,$status);
 		}
-
-		
+		if($pb3 == NULL && ($pb3_nip != NULL && $pb3_nama != NULL)){
+			$status = "Pembimbing 3";
+			$this->ta_model->set_komisi_alter($id,$pb3_nip,$pb3_nama,$status);
+		}
+		if($ps1 == NULL && ($ps1_nip != NULL && $ps1_nama != NULL)){
+			$status = "Penguji 1";
+			$this->ta_model->set_komisi_alter($id,$ps1_nip,$ps1_nama,$status);
+		}
+		if($ps2 == NULL && ($ps2_nip != NULL && $ps2_nama != NULL)){
+			$status = "Penguji 2";
+			$this->ta_model->set_komisi_alter($id,$ps2_nip,$ps2_nama,$status);
+		}
+		if($ps3 == NULL && ($ps3_nip != NULL && $ps3_nama != NULL)){
+			$status = "Penguji 3";
+			$this->ta_model->set_komisi_alter($id,$ps3_nip,$ps3_nama,$status);
+		}
 
 		$this->ta_model->approval_koordinator($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2);
 		$this->ta_model->set_komisi($id,$pb1,$pb2,$pb3,$ps1,$ps2,$ps3);
+
+		if($pb2 != NULL && $pb2 != '0'){
+
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => 'Pembimbing 2',
+				'id_user' => $pb2,
+				'ttd' => '',	
+			);
+
+			$this->ta_model->insert_approval_ta($data_approval);
+		}
+
+		if($pb3 != NULL && $pb3 != '0'){
+
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => 'Pembimbing 3',
+				'id_user' => $pb3,
+				'ttd' => '',	
+			);
+
+			$this->ta_model->insert_approval_ta($data_approval);
+		}
+
+		if($ps1 != NULL && $ps1 != '0'){
+
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => 'Penguji 1',
+				'id_user' => $ps1,
+				'ttd' => '',	
+			);
+
+			$this->ta_model->insert_approval_ta($data_approval);
+		}
+
+		if($ps2 != NULL && $ps2 != '0'){
+
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => 'Penguji 2',
+				'id_user' => $ps2,
+				'ttd' => '',	
+			);
+
+			$this->ta_model->insert_approval_ta($data_approval);
+		}
+
+		if($ps3 != NULL && $ps3 != '0'){
+
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => 'Penguji 3',
+				'id_user' => $ps3,
+				'ttd' => '',	
+			);
+
+			$this->ta_model->insert_approval_ta($data_approval);
+		}
 
 		redirect(site_url("dosen/tugas-akhir/tema/koordinator"));
 		

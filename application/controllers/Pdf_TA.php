@@ -88,6 +88,9 @@ class Pdf_TA extends CI_Controller {
             case "form_verifikasi":
                 $this->form_verifikasi($ta,$jurusan);
                 break;
+            case "form_penetapan":
+                $this->form_penetapan($ta,$jurusan);
+                break;    
         }
        
     }
@@ -103,11 +106,15 @@ class Pdf_TA extends CI_Controller {
         $mhs = $mhs_data[0];
 
         //ttd
+        if($ta->status >= 1){
         $ttd_pa = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Pembimbing Akademik');
         $ttd_pa = $ttd_pa[0];
+        }
+        if($ta->status >= 2){
         $ttd_pb1 = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Pembimbing Utama');
         $ttd_pb1 = $ttd_pb1[0];
-
+        }
+        
         $blank_image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=";
 
         $tanggal = date("d");
@@ -172,7 +179,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Ln(8);   
             $pdf->Cell(45, $spasi,"TTD PEMBIMBING", 0, 0, 'L');
             $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-            $pdf->Cell(50, $spasi,$pdf->Image("$ta->ttd",$pdf->GetX()+5, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+            $pdf->Cell(50, $spasi,$pdf->Image("$ttd_pb1->ttd",$pdf->GetX(), $pdf->GetY()-3,40,0,'PNG'), 0, 0, 'L');
             $pdf->Ln(30);
         }
 
@@ -330,6 +337,276 @@ class Pdf_TA extends CI_Controller {
 
             $pdf->Output();
         }
+
+        elseif($ta->jenis == "Tesis"){
+            //to be added
+        }
+    }
+
+    function form_penetapan($ta,$jurusan){
+
+        $mhs_data = $this->ta_model->get_mahasiswa_detail($ta->npm);
+        $komisi = $this->ta_model->get_komisi($ta->id_pengajuan);
+        
+        $mhs = $mhs_data[0];
+
+        $tgl_acc = $this->ta_model->get_tgl_acc($ta->id_pengajuan);
+
+        if($ta->status != 7){
+            $ttd_kajur = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Ketua Jurusan');
+            $kajur_approve = $ttd_kajur[0];
+            $kajur_data = $this->user_model->get_dosen_data($kajur_approve->id_user);
+        }
+
+        $ttd_koor = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Koordinator');
+        $koor_approve = $ttd_koor[0];
+
+        $koor_data = $this->user_model->get_dosen_data($koor_approve->id_user);
+        // print_r($kajur_data);
+
+        $pdf = new FPDF('P','mm','A4');
+        $numPage = '';
+        $kode = '';
+        $spasi = 6;
+        $bullet = chr(149);
+
+        $jurusan_upper = strtoupper($jurusan);
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+
+        if($ta->jenis != ""){
+            $pdf->AddPage();
+            $pdf->page_type('undangan');
+            $pdf->SetFont('Times','B',11);
+            $pdf->MultiCell(150, $spasi, "FORMULIR PENETAPAN\nTEMA PENELITIAN DAN PEMBIMBING/PEMBAHAS ".strtoupper($ta->jenis)."\nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",1,'C',false); 
+            $pdf->SetFont('Times','',11);
+            $pdf->Ln(3);
+            $pdf->Cell(150, $spasi,"NO : ".$ta->no_penetapan, 0, 0, 'C');
+            $pdf->Ln(7);
+
+            $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
+            $pdf->SetAligns(array('L','C','L','L','C','L'));
+            $pdf->RowNoBorder(array('NAMA',':',$mhs->name,'NPM',':',$mhs->npm));
+            $pdf->Ln(2);
+            $pdf->Cell(45, $spasi,"PROGRAM STUDI", 0, 0, 'L');
+            $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+            $pdf->Cell(50, $spasi,$jurusan, 0, 0, 'L');
+            $pdf->Ln(8);
+
+            $pdf->Cell(45, $spasi,"Menyetujui Tema Penelitian ".$ta->jenis." Dengan", 0,0, 'L');
+            $pdf->Ln(8);
+            $pdf->SetWidths(array(45,5, 100));
+            $pdf->SetAligns(array('L','C','J'));
+                if($ta->judul_approve == '1'){
+                    $pdf->RowNoBorder(array('JUDUL',':',$ta->judul1));
+                }
+                else{
+                    $pdf->RowNoBorder(array('JUDUL',':',$ta->judul2));
+                }
+            $pdf->Ln(8);
+
+            $pdf->Cell(45, $spasi,"Dan Menetapkan", 0,0, 'L');
+            $pdf->Ln(8);
+            $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
+            $pdf->SetAligns(array('L','C','L','L','C','L'));
+
+            //komisi pembimbing & penguji
+            foreach($komisi as $kom){
+                $pdf->RowNoBorder(array('PEMBIMBING UTAMA',':',$kom->nama,'NIP',':',$kom->nip_nik));
+                $pdf->Ln(1);
+                $pdf->Cell(45, $spasi,"TANDA TANGAN", 0, 0, 'L');
+                $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+
+                $image = $kom->ttd;
+                if($image == NULL){
+                    $image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=";
+                }
+
+                $pdf->Cell(50, $spasi,$pdf->Image("$image",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+                $pdf->Ln(20);
+            }
+
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Bandar Lampung, ".$tgl_acc, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(45, $spasi,"Menyetujui", 0, 0, 'L');
+            $pdf->Ln(5);
+            $pdf->Cell(90, $spasi,"Ketua Jurusan,", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Koordinator ", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            if($ta->status != 7){
+                $pdf->Cell(90, $spasi,$pdf->Image("$kajur_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+            }
+            else{
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            }
+
+            $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+            $pdf->Ln(20);
+
+            if($ta->status != 7){
+                $pdf->Cell(90, $spasi,$kajur_data[0]->name, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data[0]->name, 0, 0, 'L');
+                $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"NIP. ".$kajur_data[0]->nip_nik, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$koor_data[0]->nip_nik, 0, 0, 'L');
+                $pdf->Ln(10);
+            }
+            else{
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data[0]->name, 0, 0, 'L');
+                $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$koor_data[0]->nip_nik, 0, 0, 'L');
+                $pdf->Ln(10);
+            }
+
+           
+
+
+            $pdf->Output();
+        }
+
+    }
+
+    function form_penetapan2($ta,$jurusan){
+
+        $mhs_data = $this->ta_model->get_mahasiswa_detail($ta->npm);
+        $komisi = $this->ta_model->get_komisi($ta->id_pengajuan);
+ 
+        $mhs = $mhs_data[0];
+
+        $tgl_acc = $this->ta_model->get_tgl_acc($ta->id_pengajuan);
+
+        if($ta->status != 7){
+            $ttd_kajur = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Ketua Jurusan');
+            $kajur_approve = $ttd_kajur[0];
+            $kajur_data = $this->user_model->get_dosen_data($kajur_approve->id_user);
+        }
+
+        $ttd_koor = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Koordinator');
+        $koor_approve = $ttd_koor[0];
+
+        $koor_data = $this->user_model->get_dosen_data($koor_approve->id_user);
+        // print_r($kajur_data);
+
+        $pdf = new FPDF('P','mm','A4');
+        $numPage = '';
+        $kode = '';
+        $spasi = 6;
+        $bullet = chr(149);
+
+        $jurusan_upper = strtoupper($jurusan);
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+
+        if($ta->jenis != ""){
+            $pdf->AddPage();
+            $pdf->page_type('undangan');
+            $pdf->SetFont('Times','B',11);
+            $pdf->MultiCell(150, $spasi, "FORMULIR PENETAPAN\nTEMA PENELITIAN DAN PEMBIMBING/PEMBAHAS ".strtoupper($ta->jenis)."\nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",1,'C',false); 
+            $pdf->SetFont('Times','',11);
+            $pdf->Ln(3);
+            $pdf->Cell(150, $spasi,"NO : ".$ta->no_penetapan, 0, 0, 'C');
+            $pdf->Ln(7);
+
+            $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
+            $pdf->SetAligns(array('L','C','L','L','C','L'));
+            $pdf->RowNoBorder(array('NAMA',':',$mhs->name,'NPM',':',$mhs->npm));
+            $pdf->Ln(2);
+            $pdf->Cell(45, $spasi,"PROGRAM STUDI", 0, 0, 'L');
+            $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+            $pdf->Cell(50, $spasi,$jurusan, 0, 0, 'L');
+            $pdf->Ln(8);
+
+            $pdf->Cell(45, $spasi,"Menyetujui Tema Penelitian ".$ta->jenis." Dengan", 0,0, 'L');
+            $pdf->Ln(8);
+            $pdf->SetWidths(array(45,5, 100));
+            $pdf->SetAligns(array('L','C','J'));
+                if($ta->judul_approve == '1'){
+                    $pdf->RowNoBorder(array('JUDUL',':',$ta->judul1));
+                }
+                else{
+                    $pdf->RowNoBorder(array('JUDUL',':',$ta->judul2));
+                }
+            $pdf->Ln(8);
+
+            $pdf->Cell(45, $spasi,"Dan Menetapkan", 0,0, 'L');
+            $pdf->Ln(8);
+            $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
+            $pdf->SetAligns(array('L','C','L','L','C','L'));
+
+            //komisi pembimbing & penguji
+            foreach($komisi as $kom){
+                $pdf->RowNoBorder(array('PEMBIMBING UTAMA',':',$kom->nama,'NIP',':',$kom->nip_nik));
+                $pdf->Ln(1);
+                $pdf->Cell(45, $spasi,"TANDA TANGAN", 0, 0, 'L');
+                $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+
+                $image = $kom->ttd;
+                if($image == NULL){
+                    $image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=";
+                }
+
+                $pdf->Cell(50, $spasi,$pdf->Image("$image",$pdf->GetX(), $pdf->GetY(),30,0,'PNG'), 0, 0, 'L');
+                $pdf->Ln(20);
+            }
+
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Bandar Lampung, ".$tgl_acc, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(45, $spasi,"Menyetujui", 0, 0, 'L');
+            $pdf->Ln(5);
+            $pdf->Cell(90, $spasi,"Ketua Jurusan,", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Koordinator ", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            if($ta->status != 7){
+                $pdf->Cell(90, $spasi,$pdf->Image("$kajur_approve->ttd",$pdf->GetX(), $pdf->GetY(),30,0,'PNG'), 0, 0, 'L');
+            }
+            else{
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            }
+
+            $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),30,0,'PNG'), 0, 0, 'L');
+            $pdf->Ln(20);
+
+            if($ta->status != 7){
+                $pdf->Cell(90, $spasi,$kajur_data[0]->name, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data[0]->name, 0, 0, 'L');
+                $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"NIP. ".$kajur_data[0]->nip_nik, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$koor_data[0]->nip_nik, 0, 0, 'L');
+                $pdf->Ln(10);
+            }
+            else{
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data[0]->name, 0, 0, 'L');
+                $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$koor_data[0]->nip_nik, 0, 0, 'L');
+                $pdf->Ln(10);
+            }
+
+           
+
+
+            $pdf->Output();
+        }
+
     }
 }
 

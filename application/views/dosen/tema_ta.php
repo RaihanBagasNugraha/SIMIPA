@@ -89,6 +89,7 @@
                                                             echo "<i>(Tidak Ada Lampiran)</i>";
                                                         } else {
                                                             echo "<ul style='margin-left: -20px;'>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>";
                                                             foreach($lampiran as $rw) {
                                                                 echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
                                                             }
@@ -155,10 +156,13 @@
                                                         <td class="align-top">
                                                             <?php
                                                                 $lampiran = $this->ta_model->select_lampiran_by_ta($row->id_pengajuan, $row->npm);
+                                                                
                                                                 if(empty($lampiran)) {
                                                                     echo "<i>(Tidak Ada Lampiran)</i>";
                                                                 } else {
+                                                                    
                                                                     echo "<ul style='margin-left: -20px;'>";
+                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>";
                                                                     foreach($lampiran as $rw) {
                                                                         echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
                                                                     }
@@ -215,7 +219,7 @@
 
                                                                      foreach($komisi_pembimbing as $kom) {
                                                                         echo "<b>$kom->status</b><br>";
-                                                                        echo "$kom->name<br>";
+                                                                        echo "$kom->nama<br>";
                                                                         echo "$kom->nip_nik<br>";
                                                                         }
                                                                 ?>
@@ -226,7 +230,7 @@
 
                                                                     foreach($komisi_penguji as $kom) {
                                                                         echo "<b>$kom->status</b><br>";
-                                                                        echo "$kom->name<br>";
+                                                                        echo "$kom->nama<br>";
                                                                         echo "$kom->nip_nik<br>";
                                                                         }
                                                                 ?>        
@@ -238,6 +242,7 @@
                                                                             echo "<i>(Tidak Ada Lampiran)</i>";
                                                                         } else {
                                                                             echo "<ul style='margin-left: -20px;'>";
+                                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_penetapan&id=$row->id_pengajuan").">Form Penetapan</a></li>";
                                                                             foreach($lampiran as $rw) {
                                                                                 echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
                                                                             }

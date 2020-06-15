@@ -86,7 +86,7 @@
 
                                                     foreach($komisi_pembimbing as $kom) {
                                                         echo "<b>$kom->status</b><br>";
-                                                        echo "$kom->name<br>";
+                                                        echo "$kom->nama<br>";
                                                         echo "$kom->nip_nik<br>";
                                                     }
                                                 ?>
@@ -97,7 +97,7 @@
 
                                                     foreach($komisi_penguji as $kom) {
                                                         echo "<b>$kom->status</b><br>";
-                                                        echo "$kom->name<br>";
+                                                        echo "$kom->nama<br>";
                                                         echo "$kom->nip_nik<br>";
                                                     }
                                                 ?>
@@ -108,6 +108,9 @@
                                                     if(empty($lampiran)) {
                                                         echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                     } else {
+                                                        if($row->status >= 0){
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
+                                                        }
                                                         echo "<ul style='margin-left: -20px;'>";
                                                         foreach($lampiran as $rw) {
                                                             $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
