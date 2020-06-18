@@ -87,6 +87,12 @@
                                                         echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                     } else {
                                                         echo "<ul style='margin-left: -20px;'>";
+                                                        if($row->jenis != 'Seminar Tugas Akhir'){
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
+                                                        
+                                                        }
                                                             foreach($lampiran as $rw) {
                                                                 $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
                                                                     echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";

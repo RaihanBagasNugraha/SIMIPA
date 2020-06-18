@@ -108,9 +108,18 @@
                                                     if(empty($lampiran)) {
                                                         echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                     } else {
-                                                        if($row->status >= 0){
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
+                                                        if($row->jenis != 'Seminar Tugas Akhir'){
+                                                            if($row->status >= 0){
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
+                                                            }
+                                                            if($row->status >= 3){
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
+                                                            }
+                                                            if($row->status == 7 || $row->status == 4){
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
+                                                            }
                                                         }
+                                                       
                                                         echo "<ul style='margin-left: -20px;'>";
                                                         foreach($lampiran as $rw) {
                                                             $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
@@ -159,7 +168,12 @@
                                                         echo '<i>Ditolak</i>';
                                                         $ket = explode("#",$row->keterangan_tolak);
                                                         echo "<br><br>".$ket[1];
-                                                    }            
+                                                    }    
+                                                if($row->status == '7'){
+                                                        echo '<i>Approval Koordinator<br><br></i>';
+
+                                                        echo '<i>Menunggu Acc Ketua Jurusan</i>';
+                                                }            
                                                 ?>
                                              </td>
                                              <td class="align-top">

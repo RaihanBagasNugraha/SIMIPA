@@ -429,6 +429,7 @@ class Tendik extends CI_Controller {
 
 		// echo "<pre>";
 		// print_r($data);
+		$this->ta_model->staff_surat_seminar($id,$no_form);
 		$this->ta_model->approve_berkas_seminar($id,$dosenid,$ttd,$no_form,$no_undangan);
 		redirect(site_url("tendik/verifikasi-berkas/seminar"));
 	}

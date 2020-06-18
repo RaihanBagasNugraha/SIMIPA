@@ -36,7 +36,7 @@
                                      <!-- No Form -->
                                      <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label"><b>No Form</b></label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-1">
                                                 <?php 
                                                     $year = date("Y");
                                                     $jurusanid = $this->user_model->get_jurusan($seminar->npm);
@@ -61,7 +61,7 @@
                                                     $nomor = $no.$year;
                                                     
                                                 ?>
-                                                <input type="number" value="<?php echo $seminar->no_form ?>" required name="no_form" class="form-control" >
+                                                <input type="text" value="<?php echo $seminar->no_form ?>" required name="no_form" class="form-control" >
                                                 <input type="hidden" value="<?php echo $nomor ?>" required name="no_form_2" id="nomor">
                                             </div>
                                             <?php echo "<h4>$nomor</h4>" ?>
@@ -70,7 +70,7 @@
                                     <!-- No Undangan -->
                                     <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label"><b>No Undangan</b></label>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-1">
                                                 <?php 
                                                     $year = date("Y");
                                                     $jurusanid = $this->user_model->get_jurusan($seminar->npm);
@@ -95,7 +95,7 @@
                                                     $nomor2 = $no2.$year;
                                                     
                                                 ?>
-                                                <input type="number" value="<?php echo $seminar->no_undangan ?>" required name="no_undangan" class="form-control" >
+                                                <input type="text" value="<?php echo $seminar->no_undangan ?>" required name="no_undangan" class="form-control" >
                                                 <input type="hidden" value="<?php echo $nomor2 ?>" required name="no_undangan_2" id="nomor">
                                             </div>
                                             <?php echo "<h4>$nomor2</h4>" ?>

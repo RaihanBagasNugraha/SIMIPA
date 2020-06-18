@@ -1911,10 +1911,11 @@ function set_footer($mode) {
 	$this->footer = $mode;
 }
 
-function setting_page_footer($numPage,$numCode)
+function setting_page_footer($numPage,$numCode, $pageType)
 {
 	$this->numPage = $numPage;
 	$this->numCode = $numCode;
+	$this->pageType = $pageType;
 }
 
 function number_footer($number_footer)
@@ -2228,7 +2229,7 @@ function Footer()
 	// Arial italic 8
 	$this->SetFont('Times','',11);
 	// Page number
-	$this->Cell(90,5,'F-'.sprintf('%02d', $this->PageNo()).$this->numPage,0,0,'L');
+	$this->Cell(90,5,'F-'.sprintf('%02d', $this->PageNo()+$this->numCode).$this->numPage,0,0,'L');
 	$this->SetY(-30);
     $this->Image('assets/images/logo_kan.png',160,$this->GetY(),40);
 }

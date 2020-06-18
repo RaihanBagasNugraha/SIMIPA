@@ -393,6 +393,13 @@ class Ta_model extends CI_Model
 		$this->db->update('staff_surat', array('nomor' => $no_penetapan));
 	}
 
+	function staff_surat_seminar($id, $no_form)
+	{
+		$this->db->where('jenis', '2');
+		$this->db->where('id_jenis', $id);
+		$this->db->update('staff_surat', array('nomor' => $no_form));
+	}
+
 	function decline_berkas_ta($where,$dosenid,$keterangan) //tendik
 	{
 		$ttd = $this->db->query('SELECT ttd FROM tbl_users WHERE userId ='.$dosenid)->row()->ttd;
@@ -600,6 +607,13 @@ class Ta_model extends CI_Model
 		return $query->result_array();
 	}
 
+	function get_seminar_id($id)
+	{
+		$this->db->where(array('id' => $id));
+		$query = $this->db->get($this->table_seminar);
+		return $query->Row();
+	}
+
 	function get_seminar_approval_id($id)
 	{
 		$result = $this->db->query('SELECT ttd FROM seminar_sidang_approval WHERE id_pengajuan ='.$id)->row()->ttd;
@@ -733,6 +747,28 @@ class Ta_model extends CI_Model
 
 				$this->db->where('id', $where);
 				$this->db->update('seminar_sidang', array('status' => '2'));
+			
+				$data_surat = [
+					'jenis' => '2',
+					'id_jenis'  => $where,
+				];
+	
+				$this->db->insert('staff_surat', $data_surat);
+
+		}
+
+		elseif($status == 'pa'){
+			$data = [
+				'id_pengajuan' => $where,
+				'status_slug'  => 'Pembimbing Akademik',
+				'id_user'  => $dosenid,
+				'ttd'  => $ttd
+			];
+
+			$this->db->insert('seminar_sidang_approval', $data);
+
+				$this->db->where('id', $where);
+				$this->db->update('seminar_sidang', array('status' => '1'));
 
 		}
 
@@ -780,7 +816,14 @@ class Ta_model extends CI_Model
 	{
 		$query = $this->db->query('SELECT * FROM staff_surat WHERE jenis = 1 AND id_jenis ='.$id);
 		
-		return $query->result();
+		return $query->row();
+	}
+
+	function get_surat_seminar($id) // tendik seminar
+	{
+		$query = $this->db->query('SELECT * FROM staff_surat WHERE jenis = 2 AND id_jenis ='.$id);
+		
+		return $query->row();
 	}
 
 	function decline_berkas_seminar($where,$dosenid,$keterangan) //tendik
@@ -825,27 +868,27 @@ class Ta_model extends CI_Model
 	{
 		$query = $this->db->query('SELECT tbl_users_dosen.*, tbl_users.* FROM tugas_akhir, tbl_users_mahasiswa, tbl_users_dosen, tbl_users WHERE tugas_akhir.id_pengajuan = '.$id.' AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_mahasiswa.dosen_pa = tbl_users_dosen.id_user AND tbl_users_dosen.id_user = tbl_users.userId');
 
-		return $query->result();
+		return $query->row();
 	}
 
 	function get_admin_detail($id)
 	{
 		$query = $this->db->query('SELECT tbl_users_tendik.*, tbl_users.name, tugas_akhir_approval.ttd FROM tugas_akhir_approval, tbl_users_tendik, tbl_users WHERE tugas_akhir_approval.id_pengajuan = '.$id.' AND tugas_akhir_approval.status_slug = "Administrasi" AND tbl_users_tendik.id_user = tugas_akhir_approval.id_user AND tugas_akhir_approval.id_user = tbl_users.userId');
 
-		return $query->result();
+		return $query->row();
 	}
 
 	function get_dosen_pb1($id)
 	{
 		$query = $this->db->query('SELECT tbl_users_dosen.*, tbl_users.name FROM tugas_akhir, tbl_users_dosen, tbl_users WHERE tugas_akhir.id_pengajuan ='.$id.' AND tugas_akhir.pembimbing1 = tbl_users_dosen.id_user AND tbl_users_dosen.id_user = tbl_users.userId');
 
-		return $query->result();
+		return $query->row();
 	}
 
 	function get_mahasiswa_detail($npm)
 	{
 		$query = $this->db->query('SELECT tbl_users_mahasiswa.*, tbl_users.name FROM tbl_users_mahasiswa, tbl_users WHERE tbl_users_mahasiswa.npm ='.$npm.' AND tbl_users_mahasiswa.id_user = tbl_users.userId');
-		return $query->result();
+		return $query->row();
 	}
 
 	function get_ttd_approval($id,$status_slug)
@@ -856,7 +899,18 @@ class Ta_model extends CI_Model
 		$this->db->where('status_slug', $status_slug);
 
 		$query = $this->db->get();
-		return $query->result();
+		return $query->row();
+	}
+
+	function get_ttd_approval_seminar($id,$status_slug)
+	{
+		$this->db->select('*');
+		$this->db->from('seminar_sidang_approval');
+		$this->db->where('id_pengajuan', $id);
+		$this->db->where('status_slug', $status_slug);
+
+		$query = $this->db->get();
+		return $query->row();
 	}
 
 	function get_komisi($id)

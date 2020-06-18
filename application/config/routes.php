@@ -88,6 +88,7 @@ $route['mahasiswa/ajukan-perbaikan-seminar'] = 'mahasiswa/ajukan_perbaikan_semin
 
 //PDF TA
 $route['mahasiswa/tugas-akhir/tema/form_pdf'] = 'pdf_ta/set_pdf';
+$route['mahasiswa/tugas-akhir/seminar/form_pdf'] = 'pdf_ta/set_pdf_seminar';
 
 
 // Dosen
