@@ -2228,10 +2228,17 @@ function Footer()
 	$this->SetX(15);
 	// Arial italic 8
 	$this->SetFont('Times','',11);
-	// Page number
-	$this->Cell(90,5,'F-'.sprintf('%02d', $this->PageNo()+$this->numCode).$this->numPage,0,0,'L');
-	$this->SetY(-30);
-    $this->Image('assets/images/logo_kan.png',160,$this->GetY(),40);
+	//page number
+	if($this->pageType == "Fixed"){
+		$this->Cell(90,5,'F-'.sprintf('%02d', $this->numCode).$this->numPage,0,0,'L');
+		$this->SetY(-30);
+		$this->Image('assets/images/logo_kan.png',160,$this->GetY(),40);
+	}
+	else{
+		$this->Cell(90,5,'F-'.sprintf('%02d', $this->PageNo()+$this->numCode).$this->numPage,0,0,'L');
+		$this->SetY(-30);
+		$this->Image('assets/images/logo_kan.png',160,$this->GetY(),40);
+	}
 }
 
 	var $widths;

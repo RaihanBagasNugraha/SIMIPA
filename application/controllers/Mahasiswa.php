@@ -575,6 +575,8 @@ class Mahasiswa extends CI_Controller {
 		// echo "<pre>";
 		// print_r($data);
 
+		// echo $data['jenis'];
+
 		$ttd = $data['ttd'];
 		$aksi = $data['aksi'];
 

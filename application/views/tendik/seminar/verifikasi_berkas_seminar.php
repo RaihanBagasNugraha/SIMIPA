@@ -46,7 +46,7 @@
                          <div class="main-card mb-3 card">
                                 <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="mb-0 table table-striped">
+                                    <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
                                             <th>Jenis</th>
@@ -115,7 +115,12 @@
                             </div>
 <script src="<?php echo site_url("assets/scripts/jquery_3.4.1_jquery.min.js") ?>"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.js"></script>
+<script src="<?php echo site_url("assets/scripts/dataTables.bootstrap4.min.js") ?>"></script>
+<script src="<?php echo site_url("assets/scripts/DataTables-1.10.21/jquery.dataTables.min.js") ?>"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
 $(document).ready(function(){
     $("select").select2({
         theme: "bootstrap"

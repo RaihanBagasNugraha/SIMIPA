@@ -407,7 +407,52 @@ class Pdf_TA extends CI_Controller {
         }
 
         elseif($ta->jenis == "Tesis"){
-            //to be added
+            //edit
+            if($jurusan == "Matematika"){
+                $pdf->AddPage('P');
+                $pdf->Ln(5);
+                $pdf->SetFont('Times','B',11);
+                $pdf->MultiCell(150, $spasi, "FORM VERIFIKASI BERKAS PERSYARATAN ".strtoupper($ta->jenis)."\nPENGAJUAN TEMA PENELITIAN DAN PEMBIMBING/PEMBAHAS",1,'C',false); 
+                $pdf->SetFont('Times','',11);
+                $pdf->Ln(10);
+                $pdf->Cell(45, $spasi,"Nama Mahasiswa", 0, 0, 'L');
+                $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+                $pdf->Cell(50, $spasi,$mhs->name, 0, 0, 'L');
+                $pdf->Ln(8);
+                $pdf->Cell(45, $spasi,"NPM", 0, 0, 'L');
+                $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+                $pdf->Cell(50, $spasi,$mhs->npm, 0, 0, 'L');
+                $pdf->Ln(8);
+                $pdf->Cell(45, $spasi,"Fakultas/Jurusan", 0, 0, 'L');
+                $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+                $pdf->Cell(50, $spasi,"Matematika dan Ilmu Pengetahuan Alam / ".$jurusan, 0, 0, 'L');
+                $pdf->Ln(8);
+                $pdf->Cell(45, $spasi,"Tanggal Masuk Berkas", 0, 0, 'L');
+                $pdf->Cell(5, $spasi,':'.$tgl, 0, 0, 'C');
+                $pdf->Ln(18);
+                
+                $pdf->Cell(45, $spasi,"Kelengkapan Persyaratan", 0, 0, 'L');
+                $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+                $pdf->Ln(8);
+                $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                $pdf->MultiCell(150, $spasi, "Transkrip Akademik (1 lembar) yang telah ditandatangani oleh Wakil Dekan Bidang Akademik dan Kerjasama dan telah diberi cap stempel fakultas, dengan ketentuan telah lulus semua mata kuliah wajib dan pilihan yang mendukung topik tesis",0,'J',false);
+                $pdf->Ln(1);
+                $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                $pdf->MultiCell(150, $spasi, "Telah menyelesaikan minimal  seluruh mata kuliah di semester ke-1 (11 SKS) dengan IPK > 3,00, dan atau sedang mengambil seluruh mata kuliah di semester ke-2 (9-12 SKS) ",0,'J',false);
+                $pdf->Ln(1);
+                $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                $pdf->MultiCell(150, $spasi, "Terdaftar sebagai mahasiswa, yang dibuktikan dengan fotocopy KTM (1 lembar)",0,'J',false);
+                $pdf->Ln(1);
+                $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                $pdf->MultiCell(150, $spasi, "Mengajukan permohonan kepada Ketua Program Studi Magister Matematika dengan mengisi Form. PENGAJUAN TEMA PENELITIAN DAN PEMBIMBING/PENGUJI",0,'J',false);
+                $pdf->Ln(1);
+                $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                $pdf->MultiCell(150, $spasi, "Fotocopy bukti lunas pembayaran SPP dari Semester 1 sampai dengan terakhir (1 lembar)",0,'J',false);
+                $pdf->Ln(1);
+                $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                $pdf->MultiCell(150, $spasi, "Semua berkas dimasukkan kedalam map warna kuning.",0,'J',false);
+                $pdf->Ln(5);
+            }
         }
 
         $pdf->Cell(90, $spasi,"", 0, 0, 'L');
@@ -1216,8 +1261,8 @@ class Pdf_TA extends CI_Controller {
             break;
         }
         
-        $kode = 0;
-        $type = 'Single';
+        $kode = 3;
+        $type = 'Fixed';
         $mhs = $this->ta_model->get_mahasiswa_detail($ta_seminar->npm);
         $komisi = $this->ta_model->get_komisi($ta_seminar->id_pengajuan);
 
