@@ -970,5 +970,16 @@ class Ta_model extends CI_Model
 		return $tgl;
 	}
 
+	//rekap koor
+	function get_ta_rekap($id)
+	{
+		$query = $this->db->query('SELECT tugas_akhir.* FROM tugas_akhir, tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user ='.$id.' AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND (tugas_akhir.status = 4)');
+		return $query->result();
+	}
 
+	function get_ta_acc_date($id)
+	{
+		$query = $this->db->query('SELECT tugas_akhir_approval.created_at FROM tugas_akhir_approval, tugas_akhir WHERE tugas_akhir.id_pengajuan = tugas_akhir_approval.id_pengajuan AND tugas_akhir_approval.status_slug LIKE "%Koordinator%" AND tugas_akhir.id_pengajuan ='. $id);
+		return $query->row();
+	}
 }

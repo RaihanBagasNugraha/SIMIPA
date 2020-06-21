@@ -800,5 +800,22 @@ class Dosen extends CI_Controller {
 		
 		$this->load->view('footer_global');
 	}
+
+
+	// rekap koordinator
+	function rekap_ta()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['ta'] = $this->ta_model->get_ta_rekap($this->session->userdata('userId'));
+		// print_r($data);
+		// $jml = count($data);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/rekap/rekap_ta',$data);
+		
+		$this->load->view('footer_global');
+	}
 	
 }

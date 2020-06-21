@@ -48,20 +48,33 @@
                                 <li <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(4) != "koordinator") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note"></i>
-                                        Manajemen Tugas Akhir
+                                        <?php 
+                                            $ta = count($this->ta_model->get_approval_ta($this->session->userdata('userId')));
+                                            $ta_pa = count($this->ta_model->get_approval_ta_by_pa($this->session->userdata('userId')));
+                                            $ta_approve = count($this->ta_model->get_approval_ta_list($this->session->userdata('userId')));
+                                            $persetujan_tema = $ta+$ta_pa+$ta_approve;
+
+                                            $smr_pa = count($this->ta_model->get_approval_seminar_by_pa($this->session->userdata('userId')));
+                                            $smr = count($this->ta_model->get_approval_seminar_list($this->session->userdata('userId')));
+                                            $persetujan_seminar = $smr + $smr_pa;
+
+                                            $manajemen_ta = $persetujan_seminar + $persetujan_tema;
+                                        
+                                        ?>
+                                        Manajemen Tugas Akhir <span class="badge badge-danger"><?php echo $manajemen_ta > 0 ? $manajemen_ta : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
                                             <a href="<?php echo site_url("dosen/tugas-akhir/tema") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "tema") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Persetujuan Tema
+                                                </i>Persetujuan Tema <span class="badge badge-danger"><?php echo $persetujan_tema > 0 ? $persetujan_tema : "" ?></span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="<?php echo site_url("dosen/tugas-akhir/seminar") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "seminar") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Persetujuan Seminar
+                                                </i>Persetujuan Seminar <span class="badge badge-danger"><?php echo $persetujan_seminar > 0 ? $persetujan_seminar : "" ?></span>
                                             </a>
                                         </li>
                                         <li>
@@ -105,20 +118,27 @@
                                 <li <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-pen"></i>
-                                        Validasi
+                                        <?php 
+                                            $ta_koor = count($this->ta_model->get_approval_ta_koordinator($this->session->userdata('userId')));
+                                            $smr_koor = count($this->ta_model->get_approval_seminar_koordinator($this->session->userdata('userId')));
+
+                                            $validasi = $ta_koor + $smr_koor;
+                                        
+                                        ?>
+                                        Validasi <span class="badge badge-danger"><?php echo $validasi > 0 ? $validasi : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
                                             <a href="<?php echo site_url("dosen/tugas-akhir/tema/koordinator") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "tema" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Tema
+                                                </i>Tema <span class="badge badge-danger"><?php echo $ta_koor > 0 ? $ta_koor: "" ?></span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="<?php echo site_url("dosen/tugas-akhir/seminar/koordinator") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "seminar" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Seminar/Sidang
+                                                </i>Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_koor > 0 ? $smr_koor : "" ?></span>
                                             </a>
                                         </li>
                                        
@@ -134,23 +154,27 @@
                                     
                                 </li>
 
-                                <li >
+                                <li <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-copy-file"></i>
-                                        Rekap
+                                        <!-- <?php 
+                                            $rekap = count($this->ta_model->get_ta_rekap($this->session->userdata('userId')));
+                                        ?> -->
+                                        Rekap 
+                                        <!-- <span class="badge badge-danger"><?php echo $jml?></span> -->
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="#" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "tema") echo 'class="mm-active"' ?>>
+                                            <a href="#">
                                                 <i class="metismenu-icon">
                                                 </i>KP/PKL
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                        <a href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Tugas Akhir
+                                                 </i>Tugas Akhir <!--<span class="badge badge-danger"><?php echo $rekap > 0 ? $rekap : "" ?></span> -->
                                             </a>
                                         </li>
                                         <li>
@@ -169,20 +193,28 @@
                                 <li <?php if($this->uri->segment(2) == "struktural") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-pen"></i>
-                                        Asese
+                                        <?php 
+                                            $ta_kajur = count($this->ta_model->get_approval_ta_kajur($this->session->userdata('userId')));
+                                            $smr_kajur = count($this->ta_model->get_approval_seminar_kajur($this->session->userdata('userId')));
+
+                                            $asese = $ta_kajur + $smr_kajur;
+                                        
+                                        ?>
+
+                                        Asese <span class="badge badge-danger"><?php echo $asese > 0 ? $asese : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/tema") ?>" <?php if($this->uri->segment(3) == "tema" && $this->uri->segment(2) == "struktural") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Tema
+                                                </i>Tema <span class="badge badge-danger"><?php echo $ta_kajur > 0 ? $ta_kajur : "" ?></span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/seminar") ?>" <?php if($this->uri->segment(3) == "seminar" && $this->uri->segment(2) == "struktural") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Seminar/Sidang
+                                                </i>Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_kajur > 0 ? $smr_kajur : "" ?></span>
                                             </a>
                                         </li>
                                        
@@ -221,7 +253,7 @@
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="#" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "tema") echo 'class="mm-active"' ?>>
+                                            <a href="#" >
                                                 <i class="metismenu-icon">
                                                 </i>KP/PKL
                                             </a>

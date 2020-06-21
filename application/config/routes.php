@@ -127,6 +127,9 @@ $route['dosen/struktural/seminar'] = 'dosen/seminar_struktural';
 $route['dosen/struktural/seminar/form'] = 'dosen/form_seminar_struktural';
 $route['dosen/struktural/seminar/approve'] = 'dosen/seminar_approve';
 
+    //rekap ta
+$route['dosen/koordinator/rekap/tugas-akhir'] = 'dosen/rekap_ta';
+
 
 
 // Tendik

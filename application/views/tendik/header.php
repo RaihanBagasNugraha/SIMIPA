@@ -66,21 +66,28 @@
                                 <li <?php if($this->uri->segment(2) == "verifikasi-berkas") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note"></i>
-                                        <?php echo "Verifikasi Berkas" ?>
+                                        <?php 
+                                            $ta_admin = count($this->ta_model->get_verifikasi_berkas($this->session->userdata('userId')));
+                                            $smr_admin = count($this->ta_model->get_verifikasi_berkas_seminar($this->session->userdata('userId')));
+
+                                            $berkas = $ta_admin + $smr_admin;
+                                        
+                                        ?>
+                                        Verifikasi Berkas <span class="badge badge-danger"><?php echo $berkas > 0 ? $berkas : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
                                             <a href="<?php echo site_url("tendik/verifikasi-berkas") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas" && $this->uri->segment(3) != "seminar") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon pe-7s-note2"></i>
-                                                Tema
+                                                Tema <span class="badge badge-danger"><?php echo $ta_admin > 0 ? $ta_admin : "" ?></span>
                                                 
                                             </a>
                                         </li> 
                                         <li>
                                             <a href="<?php echo site_url("tendik/verifikasi-berkas/seminar") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas" && $this->uri->segment(3) == "seminar") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon pe-7s-note2"></i>
-                                                Seminar
+                                                Seminar <span class="badge badge-danger"><?php echo $smr_admin > 0 ? $smr_admin : "" ?></span>
                                                 
                                             </a>
                                         </li>    
