@@ -2520,7 +2520,34 @@ function Footer()
         $this->Write(5,$txt,$URL);
         $this->SetStyle('U',false);
         $this->SetTextColor(0);
-    }
+	}
+	
+	function DumpFont($FontName)
+	{
+		$this->AddPage();
+		// Title
+		$this->SetFont('Arial','',16);
+		$this->Cell(0,6,$FontName,0,1,'C');
+		// Print all characters in columns
+		$this->SetCol(0);
+		for($i=32;$i<=255;$i++)
+		{
+			$this->SetFont('Arial','',14);
+			$this->Cell(12,5.5,"$i : ");
+			$this->SetFont($FontName);
+			$this->Cell(0,5.5,chr($i),0,1);
+		}
+		$this->SetCol(0);
+	}
+
+	function symbol($no)
+	{
+		$this->SetFont("Symbol");
+		$symbol = chr($no);
+		$this->SetFont("Times");
+		return $symbol;
+	}
+
 
 }
 

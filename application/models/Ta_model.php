@@ -918,6 +918,12 @@ class Ta_model extends CI_Model
 		$query = $this->db->query('SELECT * FROM tugas_akhir_approval, tugas_akhir_komisi WHERE tugas_akhir_approval.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND (tugas_akhir_approval.status_slug LIKE "Pembimbing%" OR tugas_akhir_approval.status_slug LIKE "Penguji%") AND tugas_akhir_approval.status_slug NOT LIKE "Pembimbing Akademik" AND tugas_akhir_approval.id_user = tugas_akhir_komisi.id_user AND tugas_akhir_approval.id_pengajuan ='.$id);
 		return $query->result();
 	}
+
+	function get_komisi_by_id($id,$user)
+	{
+		$query = $this->db->query('SELECT * FROM tugas_akhir_approval, tugas_akhir_komisi WHERE tugas_akhir_approval.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND (tugas_akhir_approval.status_slug LIKE "Pembimbing%" OR tugas_akhir_approval.status_slug LIKE "Penguji%") AND tugas_akhir_approval.status_slug NOT LIKE "Pembimbing Akademik" AND tugas_akhir_approval.id_user = tugas_akhir_komisi.id_user AND tugas_akhir_approval.id_pengajuan ='.$id.' AND tugas_akhir_approval.id_user ='.$user);
+		return $query->row();
+	}
 	
 	function get_tgl_acc($id)
 	{
@@ -968,6 +974,13 @@ class Ta_model extends CI_Model
         
 		$tgl = $date[2].' '.$bulan.' '.$date[0];
 		return $tgl;
+	}
+
+	//rekap dosen
+	function get_rekap_seminar($id)
+	{
+		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2,tugas_akhir.judul_approve, tugas_akhir_komisi.status, tugas_akhir_komisi.nip_nik, tugas_akhir_komisi.id_user, tugas_akhir_komisi.nama FROM seminar_sidang, tugas_akhir, tugas_akhir_komisi WHERE tugas_akhir_komisi.id_user ='.$id.' AND tugas_akhir_komisi.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir AND seminar_sidang.status = 4');
+		return $query->result();
 	}
 
 	//rekap koor

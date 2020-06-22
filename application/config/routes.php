@@ -127,7 +127,10 @@ $route['dosen/struktural/seminar'] = 'dosen/seminar_struktural';
 $route['dosen/struktural/seminar/form'] = 'dosen/form_seminar_struktural';
 $route['dosen/struktural/seminar/approve'] = 'dosen/seminar_approve';
 
-    //rekap ta
+    //rekap dosen
+$route['dosen/tugas-akhir/rekap-seminar'] = 'dosen/rekap_seminar';
+
+    //rekap koor
 $route['dosen/koordinator/rekap/tugas-akhir'] = 'dosen/rekap_ta';
 
 

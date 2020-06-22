@@ -58,7 +58,8 @@
                                             $smr = count($this->ta_model->get_approval_seminar_list($this->session->userdata('userId')));
                                             $persetujan_seminar = $smr + $smr_pa;
 
-                                            $manajemen_ta = $persetujan_seminar + $persetujan_tema;
+                                            $smr_rekap = count($this->ta_model->get_rekap_seminar($this->session->userdata('userId')));
+                                            $manajemen_ta = $persetujan_seminar + $persetujan_tema + $smr_rekap;
                                         
                                         ?>
                                         Manajemen Tugas Akhir <span class="badge badge-danger"><?php echo $manajemen_ta > 0 ? $manajemen_ta : "" ?></span>
@@ -84,9 +85,9 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                        <a href="<?php echo site_url("dosen/tugas-akhir/rekap-seminar") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "rekap-seminar") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Rekap Seminar/Sidang
+                                                </i>Rekap Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_rekap > 0 ? $smr_rekap : "" ?></span>
                                             </a>
                                         </li>
                                        
