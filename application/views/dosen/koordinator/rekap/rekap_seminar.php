@@ -7,7 +7,7 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Rekap Tema Penelitian
+                                    <div>Rekap Seminar
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
@@ -41,8 +41,9 @@
                                     <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
+                                            <th>Jenis</th>
                                             <th>Npm<br>Nama</th>
-                                            <th>Judul</th>
+                                            <th>Pelaksanaan</th>
                                             <th>Komisi<br>Pembimbing</th>
                                             <th>Komisi<br>Pembahas</th>
                                             <th>Berkas<br>Lampiran</th>
@@ -53,35 +54,31 @@
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if(empty($ta))
+                                        if(empty($seminar))
                                         {
                                             echo "<tr><td colspan='6'>Data tidak tersedia</td></tr>";
                                         }
                                         else
                                         {
-                                            foreach($ta as $row) {
+                                            foreach($seminar as $row) {
                                         ?>
                                             <tr>
+                                                <td class="align-top">
+                                                    <?php echo $row->jenis; ?>
+                                                   
+                                                </td>
                                                 <td class="align-top">
                                                     <?php 
                                                         $name = $this->user_model->get_mahasiswa_name($row->npm);
                                                         echo "$row->npm<br>$name"; 
-                                                    ?>
+                                                   ?>
+                                                </td>
+                                                <td class="align-top">
+                                                    <?php echo "$row->tempat<br>$row->tgl_pelaksanaan<br>$row->waktu_pelaksanaan<br>";  ?>
                                                 </td>
                                                 <td class="align-top">
                                                     <?php 
-                                                        if($row->judul_approve == 1){
-                                                            echo $row->judul1;
-                                                        }
-                                                        elseif($row->judul_approve == 2){
-                                                            echo $row->judul2;
-                                                        }
-                                                    
-                                                    ?>
-                                                </td>
-                                                <td class="align-top">
-                                                    <?php 
-                                                        $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_pengajuan);
+                                                        $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_tugas_akhir);
 
                                                         foreach($komisi_pembimbing as $kom) {
                                                             echo "<b>$kom->status</b><br>";
@@ -92,39 +89,43 @@
                                                 </td>
                                                 <td class="align-top">
                                                     <?php 
-                                                        $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_pengajuan);
+                                                        $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_tugas_akhir);
 
                                                         foreach($komisi_penguji as $kom) {
                                                             echo "<b>$kom->status</b><br>";
                                                             echo "$kom->nama<br>";
                                                             echo "$kom->nip_nik<br>";
                                                         }
-                                                    ?>
+                                                    ?>    
                                                 </td>
                                                 <td class="align-top">
-                                                    <?php
-                                                        $lampiran = $this->ta_model->select_lampiran_by_ta($row->id_pengajuan, $row->npm);
+                                                    <?php 
+                                                        $lampiran = $this->ta_model->select_lampiran_by_seminar($row->id);
                                                         if(empty($lampiran)) {
                                                             echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                         } else {
                                                             echo "<ul style='margin-left: -20px;'>";
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>";
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_verifikasi&id=$row->id_pengajuan").">Form Verifikasi</a></li>";
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_penetapan&id=$row->id_pengajuan").">Form Penetapan</a></li>"; 
+                                                            if($row->jenis != 'Seminar Tugas Akhir'){
+                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
+                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
+                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
+                                                            }
                                                             echo "<br>";
                                                             foreach($lampiran as $rw) {
-                                                                echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
+                                                                $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
+                                                                echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
                                                             }
-
+            
                                                             echo "</ul>";
                                                         }
-                                                    ?>   
+                                                    ?>
                                                 </td>
                                                 <td class="align-top">
                                                     <?php echo substr($row->created_at,0,10);?>
                                                 </td>
+
                                                 <td class="align-top">
-                                                    <?php echo  substr($this->ta_model->get_ta_acc_date($row->id_pengajuan)->created_at,0,10)?>
+                                                <?php echo  substr($this->ta_model->get_smr_acc_date($row->id)->created_at,0,10)?>
                                                 </td>
                                                 
                                             </tr>
@@ -211,11 +212,7 @@ $(document).ready(function(){
 </script>
 
 <script>
-    $(".passingIDKoor").click(function () {
-                var id = $(this).attr('data-id');
-                $("#IDKoor").val( id );
 
-            });
       
 </script>
                         

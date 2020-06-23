@@ -34,6 +34,14 @@
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
+                        elseif(!empty($_GET['status']) && $_GET['status'] == 'gagal') {
+
+                            echo '<div class="alert alert-danger fade show" role="alert">Terdapat Duplikasi Data</div>';
+                        }
+                        elseif(!empty($_GET['status']) && $_GET['status'] == 'berhasil') {
+
+                            echo '<div class="alert alert-success fade show" role="alert">Data Berhasil Ditambahkan</div>';
+                        }
                         ?>
                         
                          <div class="main-card mb-3 card">
@@ -167,8 +175,8 @@
                                                         
                                                 if($row->status == '6') {
                                                         echo '<i>Ditolak</i>';
-                                                        $ket = explode("#",$row->keterangan_tolak);
-                                                        echo "<br><br>".$ket[1];
+                                                        // $ket = explode("#",$row->keterangan_tolak);
+                                                        // echo "<br><br>".$ket[1];
                                                     }    
                                                 if($row->status == '7'){
                                                         echo '<i>Approval Koordinator<br><br></i>';

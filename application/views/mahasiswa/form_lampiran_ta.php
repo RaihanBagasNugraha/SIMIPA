@@ -24,6 +24,10 @@
 
                             echo '<div class="alert alert-success fade show" role="alert">Berkas lampiran telah diunggah.</div>';
                         }
+                        elseif(!empty($_GET['status']) && $_GET['status'] == 'gagal') {
+
+                            echo '<div class="alert alert-danger fade show" role="alert">Ukuran atau Format Berkas Tidak Sesuai</div>';
+                        }
                         ?>
                         <div class="row">
                         <div class="col-md-8">
@@ -112,8 +116,10 @@
                                             </div>
                                                 
                                                 <div class="position-relative row form-group">
-                                                <div class="col-sm-12"><input oninvalid="this.setCustomValidity('Anda belum memilih berkas!')" oninput="this.setCustomValidity('')" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx" name="file" id="file" type="file" class="form-control-file">
-                                                        </div>
+                                                <div class="col-sm-12"><input oninvalid="this.setCustomValidity('Anda belum memilih berkas!')" oninput="this.setCustomValidity('')" accept=".pdf" name="file" id="file" type="file" class="form-control-file">
+                                                </div>
+                                                <br>
+                                                <div class="col-sm-12"><span style="color:red">*File Maksimal 1 Mb dan Diunggah Dalam Format PDF</span></div>
                                                 </div>
 
                                                                

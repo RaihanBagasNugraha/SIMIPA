@@ -264,6 +264,10 @@ class Mahasiswa extends CI_Controller {
 		print_r($_POST);
 		print_r($_FILES);
 
+		$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+		
 		$data = array(
 			'id_pengajuan' => $this->input->post('id_pengajuan'),
 			'nama_berkas' => $this->input->post('nama_berkas'),
@@ -271,18 +275,26 @@ class Mahasiswa extends CI_Controller {
 		);
 
 		if(!empty($_FILES)) {
-			$file = $_FILES['file']['tmp_name']; 
-			$sourceProperties = getimagesize($file);
-			$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$this->input->post('id_pengajuan');
-			$folderPath = "assets/uploads/berkas-ta/";
-			$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+			if($file1 == '%PDF' && $size <= 105000){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$this->input->post('id_pengajuan');
+				$folderPath = "assets/uploads/berkas-ta/";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
-			$data['file'] = $folderPath. $fileNewName. ".". $ext;
-			move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+				$data['file'] = $folderPath. $fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				$this->ta_model->insert_lampiran($data);
+				redirect(site_url("mahasiswa/tugas-akhir/tema/lampiran?id=".$this->input->post('id_pengajuan')."&status=sukses"));
+			}
+			else{
+				redirect(site_url("mahasiswa/tugas-akhir/tema/lampiran?id=".$this->input->post('id_pengajuan')."&status=gagal"));
+			}
+
 		}
 		
-		$this->ta_model->insert_lampiran($data);
-		redirect(site_url("mahasiswa/tugas-akhir/tema/lampiran?id=".$this->input->post('id_pengajuan')."&status=sukses"));
+		
 		
 	}
 
@@ -533,24 +545,35 @@ class Mahasiswa extends CI_Controller {
 		// print_r($_POST);
 		// print_r($_FILES);
 
+		$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+
 		$data = array(
 			'id_seminar' => $this->input->post('id_seminar'),
 			'jenis_berkas' => $this->input->post('jenis_berkas')
 		);
 
 		if(!empty($_FILES)) {
-			$file = $_FILES['file']['tmp_name']; 
-			$sourceProperties = getimagesize($file);
-			$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$this->input->post('id_seminar');
-			$folderPath = "assets/uploads/berkas-seminar/";
-			$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+			if($file1 == '%PDF' && $size <= 2100000){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$this->input->post('id_seminar');
+				$folderPath = "assets/uploads/berkas-seminar/";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
-			$data['file'] = $folderPath. $fileNewName. ".". $ext;
-			move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+				$data['file'] = $folderPath. $fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				$this->ta_model->insert_lampiran_seminar($data);
+				redirect(site_url("mahasiswa/tugas-akhir/seminar/lampiran?id=".$this->input->post('id_seminar')."&status=sukses"));
+			}
+			else{
+				redirect(site_url("mahasiswa/tugas-akhir/seminar/lampiran?id=".$this->input->post('id_seminar')."&status=gagal"));
+			}
 		}
 
-		$this->ta_model->insert_lampiran_seminar($data);
-		redirect(site_url("mahasiswa/tugas-akhir/seminar/lampiran?id=".$this->input->post('id_seminar')."&status=sukses"));
+		
 	}
 
 	function hapus_berkas_seminar()
@@ -575,7 +598,8 @@ class Mahasiswa extends CI_Controller {
 		// echo "<pre>";
 		// print_r($data);
 
-		// echo $data['jenis'];
+		//check
+		
 
 		$ttd = $data['ttd'];
 		$aksi = $data['aksi'];
@@ -608,6 +632,13 @@ class Mahasiswa extends CI_Controller {
 			$where = $data['id_seminar'];
 			$this->ta_model->update_seminar($data_seminar,$data_approval, $where);
 		} else {
+			$cek = $this->ta_model->cek_seminar($data['id_tugas_akhir'],$data['jenis']);
+			// print_r($cek);
+			// echo "aaa"
+			if(!empty($cek)){
+				redirect(site_url("mahasiswa/tugas-akhir/seminar?status=gagal"));
+			}
+			else{
 			$data_seminar = array(
 				'id_tugas_akhir' => $data['id_tugas_akhir'],
 				'jenis' => $data['jenis'],
@@ -641,10 +672,11 @@ class Mahasiswa extends CI_Controller {
 				);
 
 				$this->ta_model->insert_approval_seminar($data_approval);
+				}
 			}
 
 		}
-		redirect(site_url("mahasiswa/tugas-akhir/seminar"));
+		redirect(site_url("mahasiswa/tugas-akhir/seminar?status=berhasil"));
 		
 	}
 	

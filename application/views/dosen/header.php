@@ -173,9 +173,15 @@
                                             </a>
                                         </li>
                                         <li>
-                                        <a href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>
+                                            <a href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                  </i>Tugas Akhir <!--<span class="badge badge-danger"><?php echo $rekap > 0 ? $rekap : "" ?></span> -->
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/koordinator/rekap/seminar") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "seminar") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Seminar
                                             </a>
                                         </li>
                                         <li>

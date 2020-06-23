@@ -132,6 +132,7 @@ $route['dosen/tugas-akhir/rekap-seminar'] = 'dosen/rekap_seminar';
 
     //rekap koor
 $route['dosen/koordinator/rekap/tugas-akhir'] = 'dosen/rekap_ta';
+$route['dosen/koordinator/rekap/seminar'] = 'dosen/rekap_seminar_koor';
 
 
 

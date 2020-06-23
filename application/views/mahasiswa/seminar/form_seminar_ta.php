@@ -24,6 +24,7 @@
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
+                       
                         ?>
                         <div class="row">
                         <div class="col-md-12">

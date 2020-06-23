@@ -298,9 +298,12 @@ class Pdf_TA extends CI_Controller {
         $surat = $this->ta_model->get_surat($ta->id_pengajuan);
         $mhs= $this->ta_model->get_mahasiswa_detail($ta->npm);
         $admin = $this->ta_model->get_admin_detail($ta->id_pengajuan);
-        // $mhs = $mhs_data[0];
-        // $admin = $admin_data[0];
-        // $surat = $surat1[0];
+
+        if($ta->status == 7 || $ta->status == 4){
+            $koor_approve  = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Koordinator');
+            $koor_data = $this->user_model->get_dosen_data($koor_approve->id_user);
+        }
+        
         $b =  substr("$surat->created_at",0,10);
         $a = explode('-',$b);
         $tgl = $a[2].'-'.$a[1].'-'.$a[0];
@@ -467,26 +470,49 @@ class Pdf_TA extends CI_Controller {
         $pdf->Cell(30, $spasi,"Bandar Lampung, ".$tgl_acc, 0, 0, 'L');
         $pdf->Ln(7);
 
-        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-        $pdf->Cell(30, $spasi,"Mengetahui", 0, 0, 'L');
-        $pdf->Ln(5);
+        if($ta->status < 7 && $ta->status != 4 ){
+            $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+            $pdf->Ln(5);
 
-        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-        $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
-        $pdf->Ln(5);
+            $pdf->Cell(90, $spasi,"Koordinator Seminar,", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
+            $pdf->Ln(5);
 
-        //ttd
-        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-        $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+            //ttd
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
 
-        $pdf->Ln(26);
-        $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-        $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
-        $pdf->Ln(5);
+            $pdf->Ln(26);
+            $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
+            $pdf->Ln(5);
 
-        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-        $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
-        $pdf->Ln(10);
+            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
+            $pdf->Ln(10);
+        }
+        else{
+            $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"Koordinator Seminar,", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            //ttd
+            $pdf->Cell(90, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+
+            $pdf->Ln(25);
+            $pdf->Cell(90, $spasi,$koor_data->name, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
+            $pdf->Ln(10);
+
+        }
         
 
         $pdf->Output();

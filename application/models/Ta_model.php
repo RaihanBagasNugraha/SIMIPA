@@ -584,6 +584,12 @@ class Ta_model extends CI_Model
 		return $query->result();
 	}
 
+	function cek_seminar($id,$jenis)
+	{
+		$result = $this->db->query("SELECT * FROM seminar_sidang WHERE id_tugas_akhir = $id AND jenis = '$jenis' AND (status = 4 OR status != 6 )");
+		return $result->result();
+	}
+
 	function insert_seminar($data_seminar, $data_approval)
 	{
 		$this->db->trans_start();
@@ -990,9 +996,21 @@ class Ta_model extends CI_Model
 		return $query->result();
 	}
 
+	function get_seminar_rekap_koor($id)
+	{
+		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve FROM seminar_sidang, tugas_akhir, tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user ='.$id.' AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.status = 4');
+		return $query->result();
+	}
+
 	function get_ta_acc_date($id)
 	{
 		$query = $this->db->query('SELECT tugas_akhir_approval.created_at FROM tugas_akhir_approval, tugas_akhir WHERE tugas_akhir.id_pengajuan = tugas_akhir_approval.id_pengajuan AND tugas_akhir_approval.status_slug LIKE "%Koordinator%" AND tugas_akhir.id_pengajuan ='. $id);
+		return $query->row();
+	}
+
+	function get_smr_acc_date($id)
+	{
+		$query = $this->db->query('SELECT seminar_sidang_approval.created_at FROM seminar_sidang_approval, seminar_sidang WHERE seminar_sidang.id = seminar_sidang_approval.id_pengajuan AND seminar_sidang_approval.status_slug LIKE "%Koordinator%" AND seminar_sidang.id ='. $id);
 		return $query->row();
 	}
 }
