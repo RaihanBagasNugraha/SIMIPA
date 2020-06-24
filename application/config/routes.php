@@ -86,6 +86,8 @@ $route['mahasiswa/hapus-data-seminar'] = 'mahasiswa/hapus_data_seminar';
 $route['mahasiswa/ajukan-data-seminar'] = 'mahasiswa/ajukan_data_seminar';
 $route['mahasiswa/ajukan-perbaikan-seminar'] = 'mahasiswa/ajukan_perbaikan_seminar';
 
+$route['mahasiswa/tugas-akhir/bimbingan'] = 'mahasiswa/bimbingan';
+
 //PDF TA
 $route['mahasiswa/tugas-akhir/tema/form_pdf'] = 'pdf_ta/set_pdf';
 $route['mahasiswa/tugas-akhir/seminar/form_pdf'] = 'pdf_ta/set_pdf_seminar';
@@ -179,3 +181,8 @@ $route['hapus-pengguna'] = 'admin/hapus_pengguna';
 $route['detail-peserta/(:num)'] = 'admin/detail_peserta/$1';
 $route['add-item-pelanggaran/(:num)'] = 'admin/add_item_pelanggaran/$1';
 $route['edit-item-pelanggaran/(:num)/(:num)'] = 'admin/edit_item_pelanggaran/$1/$1';
+
+
+$route['approval/ta?(:any)'] = 'approval/approval_alter';
+$route['approval/simpan-ta'] = 'approval/simpan_data';
+$route['email-test'] = 'approval/send';

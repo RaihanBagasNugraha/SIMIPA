@@ -321,9 +321,29 @@ class Ta_model extends CI_Model
 				$this->db->update('tugas_akhir', array('status' => '4'));
 			}
 		}
+	}
 
+	function approve_ta_alter($where,$ttd,$status,$token)
+	{
+		$result = $this->db->query('SELECT * FROM tugas_akhir_approval WHERE id_pengajuan ='.$where.' AND ttd LIKE ""');
+		$checks = $result->result();
+		$check = count($checks);
 
-		
+		$this->db->where('id_pengajuan', $where);
+		$this->db->where('status_slug', $status);
+		$this->db->update('tugas_akhir_approval', array('ttd' => $ttd));
+
+		if($check == 1){
+			$this->db->where('id_pengajuan', $where);
+			$this->db->update('tugas_akhir', array('status' => '4'));
+		}
+
+		if($token != NULL){
+			$this->db->where('id_tugas_akhir', $where);
+			$this->db->where('status', $status);
+			$this->db->where('token', $token);
+			$this->db->update('tugas_akhir_komisi_alternatif', array('ket' => '1'));
+		}
 	}
 
 	function decline_ta($where,$dosenid,$status,$keterangan)
@@ -521,6 +541,24 @@ class Ta_model extends CI_Model
 		];
 			
 		$this->db->insert('tugas_akhir_komisi', $data_komisi);
+	}
+
+	function set_komisi_alter_access($id,$nip,$nama,$status,$email)
+	{
+		$keys = "nyhggmkfz12";
+		$date = date("Y-m-d H:i:s");
+		$token = md5($keys.$nip.$status.$nama.$date);
+		$data_komisi = [
+			'id_tugas_akhir' => $id,
+			'status'  => $status,
+			'nip_nik'  => $nip,
+			'nama' => $nama,
+			'email' => $email,
+			'token' => $token,
+			'ket' => '0',
+		];
+			
+		$this->db->insert('tugas_akhir_komisi_alternatif', $data_komisi);
 	}
 
 	// get komisi
@@ -1012,5 +1050,24 @@ class Ta_model extends CI_Model
 	{
 		$query = $this->db->query('SELECT seminar_sidang_approval.created_at FROM seminar_sidang_approval, seminar_sidang WHERE seminar_sidang.id = seminar_sidang_approval.id_pengajuan AND seminar_sidang_approval.status_slug LIKE "%Koordinator%" AND seminar_sidang.id ='. $id);
 		return $query->row();
+	}
+
+
+	function get_komisi_alter($token)
+	{
+		$query = $this->db->query("SELECT tugas_akhir.*, tugas_akhir_komisi.* FROM tugas_akhir_komisi_alternatif, tugas_akhir_komisi, tugas_akhir WHERE tugas_akhir_komisi_alternatif.token = '$token' AND tugas_akhir_komisi_alternatif.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir_komisi_alternatif.status = tugas_akhir_komisi.status AND tugas_akhir_komisi_alternatif.id_tugas_akhir = tugas_akhir_komisi.id_tugas_akhir AND tugas_akhir.status = 8");
+		return $query->row();
+	}
+
+	function cek_token($token)
+	{
+		$query = $this->db->query("SELECT * FROM tugas_akhir_komisi_alternatif WHERE token = '$token' AND ket = 0");
+		return $query->row();
+	}
+
+	function get_komisi_alter_id($id)
+	{
+		$query = $this->db->query("SELECT * FROM `tugas_akhir_komisi_alternatif` WHERE id_tugas_akhir = $id AND ket = 0");
+		return $query->result();
 	}
 }

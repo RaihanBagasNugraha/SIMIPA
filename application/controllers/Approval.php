@@ -1,0 +1,83 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Approval extends CI_Controller {
+
+    public function __construct()
+	{
+        parent::__construct();
+		// $this->load->model('wilayah_model');
+		// $this->load->model('parameter_model');
+		$this->load->model('jurusan_model');
+		$this->load->model('user_model');
+		$this->load->model('ta_model');
+    }
+
+    function approval_alter()
+	{
+        $token = $this->input->get('token');
+
+        $check = $this->ta_model->cek_token($token);
+        if(!empty($check)){
+            $data['ta'] = $this->ta_model->get_komisi_alter($token);
+            $this->load->view('approval/header_global');
+            $this->load->view('approval/header');
+            $this->load->view('approval/approval',$data);
+            $this->load->view('footer_global');
+        }
+        else{
+            echo "<script>alert('Token Salah Atau Sudah Tidak Berlaku');javascript:history.back();</script>";
+        }
+    }
+    
+    function simpan_data()
+    {
+        $data = $this->input->post();
+		// echo "<pre>";
+        // print_r($data);
+        
+        $id = $data['id_pengajuan'];
+        $ttd = $data['ttd'];
+        $status = $data['status'];
+        $token = $data['token']; 
+        // echo $id;
+        // echo $ttd;
+        // echo $status;
+
+        $this->ta_model->approve_ta_alter($id,$ttd,$status,$token);
+        
+        echo "<script>window.alert('Approval Berhasil');
+        window.location='/simipa';</script>"; //ganti url
+    }
+
+    function send()  
+    {  
+        $config = Array(  
+            'protocol' => 'smtp',  
+            'smtp_host' => 'ssl://smtp.googlemail.com',  
+            'smtp_port' => 465,  
+            'smtp_user' => 'irishia02@gmail.com',   
+            'smtp_pass' => 'bagas123',   
+            'mailtype' => 'html',   
+            'charset' => 'iso-8859-1'  
+           );  
+           $this->load->library('email', $config);  
+           $this->email->set_newline("\r\n");  
+           $this->email->from('simipa@gmail.com', 'Admin Re:Code');   
+           $this->email->to('raihanbn02@gmail.com');   
+           $this->email->subject('Percobaan email');   
+           $this->email->message('Ini adalahs email percobaan untuk Tutorial CodeIgniter: Mengirim Email via Gmail SMTP menggunakan Email Library CodeIgniter @ recodeku.blogspot.com');  
+           if (!$this->email->send()) {  
+            show_error($this->email->print_debugger());   
+           }else{  
+            echo 'Success to send email';   
+           }  
+          }  
+}  
+
+
+
+
+
+
+?>

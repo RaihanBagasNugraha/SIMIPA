@@ -607,7 +607,7 @@ class Pdf_TA extends CI_Controller {
 
             //komisi pembimbing & penguji
             foreach($komisi as $kom){
-                $pdf->RowNoBorder(array('PEMBIMBING UTAMA',':',$kom->nama,'NIP',':',$kom->nip_nik));
+                $pdf->RowNoBorder(array(strtoupper($kom->status),':',$kom->nama,'NIP',':',$kom->nip_nik));
                 $pdf->Ln(1);
                 $pdf->Cell(45, $spasi,"TANDA TANGAN", 0, 0, 'L');
                 $pdf->Cell(5, $spasi,':', 0, 0, 'C');

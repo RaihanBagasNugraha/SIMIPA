@@ -175,8 +175,8 @@
                                                         
                                                 if($row->status == '6') {
                                                         echo '<i>Ditolak</i>';
-                                                        // $ket = explode("#",$row->keterangan_tolak);
-                                                        // echo "<br><br>".$ket[1];
+                                                        $ket = explode("#",$row->keterangan_tolak);
+                                                        echo "<br><br>".$ket[1];
                                                     }    
                                                 if($row->status == '7'){
                                                         echo '<i>Approval Koordinator<br><br></i>';

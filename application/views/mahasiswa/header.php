@@ -104,7 +104,7 @@ switch($strata)
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="<?php echo site_url("mahasiswa/tugas-akhir/bimbingan") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "bimbingan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Bimbingan
                                             </a>

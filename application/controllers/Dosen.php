@@ -368,13 +368,13 @@ class Dosen extends CI_Controller {
 	function tugas_akhir_approve_struktural()
 	{
 		$data = $this->input->post();
-
+		
 		// echo "<pre>";
 		// print_r($data);
 
 		$id = $data['id_pengajuan'];
 		$ttd = $data['ttd'];
-		
+		$alter = $this->ta_model->get_komisi_alter_id($id);		
 
 		$pb1 = $data['Pembimbing_1'];
 		$pb2 = $data['Pembimbing_2'];
@@ -382,39 +382,75 @@ class Dosen extends CI_Controller {
 		$ps1 = $data['Penguji_1'];
 		$ps2 = $data['Penguji_2'];
 		$ps3 = $data['Penguji_3'];
-		$fill = 0;
-		$null = 0;
+		// $fill = 0;
+		// $null = 0;
 
-		//check null nor not
-		if($pb1 != NULL){$fill++;}
-		if($pb2 != NULL){$fill++;}
-		if($pb3 != NULL){$fill++;}
-		if($ps1 != NULL){$fill++;}
-		if($ps2 != NULL){$fill++;}
-		if($ps3 != NULL){$fill++;}
+		// if($pb1 != NULL){$fill++;}
+		// if($pb2 != NULL){$fill++;}
+		// if($pb3 != NULL){$fill++;}
+		// if($ps1 != NULL){$fill++;}
+		// if($ps2 != NULL){$fill++;}
+		// if($ps3 != NULL){$fill++;}
 
-		if($pb1 == '0'){$null++;}
-		if($pb2 == '0'){$null++;}
-		if($pb3 == '0'){$null++;}
-		if($ps1 == '0'){$null++;}
-		if($ps2 == '0'){$null++;}
-		if($ps3 == '0'){$null++;}
+		// if($pb1 == '0'){$null++;}
+		// if($pb2 == '0'){$null++;}
+		// if($pb3 == '0'){$null++;}
+		// if($ps1 == '0'){$null++;}
+		// if($ps2 == '0'){$null++;}
+		// if($ps3 == '0'){$null++;}
 
-		$check = $fill - $null;
+		// $check = $fill - $null;
 
 		$dosenid = $this->session->userdata('userId');
 
-		if($check == '1'){
-			$status = "kajur_acc";
-			$this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
-		}
-		else{
+		// if($check == '1'){
+		// 	$status = "kajur_acc";
+		// 	$this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
+		// }
+		// else{
 			$status = "kajur";
 			$this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
-		}	
+		// }	
+		
+		//send email
+		if(!empty($alter)){
+			$config = Array(  
+				'protocol' => 'smtp',  
+				'smtp_host' => 'ssl://smtp.googlemail.com',  
+				'smtp_port' => 465,  
+				'smtp_user' => 'irishia02@gmail.com',   
+				'smtp_pass' => 'bagas123',   
+				'mailtype' => 'html',   
+				'charset' => 'iso-8859-1'  
+			);  
+			
+			foreach($alter as $row){
+				$this->load->library('email', $config);
+				$this->email->set_newline("\r\n");  
+				$this->email->from('simipa@gmail.com', 'SIMIPA');   
+				$this->email->to($row->email);   
+				$this->email->subject('Approve Tema Penelitian Fakultas Matematika dan Ilmu Pengetahuan Alam');   
+				$this->email->message("
+				Kepada Yth. $row->nama
+				<br>
+				Untuk Melakukan Approval Tema Penelitian Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Silahkan Klik Link Berikut :<br>
+				http://localhost/simipa/approval/ta?token=$row->token
+				<br><br>
+				Terimakasih.
+				
+				");
+				if (!$this->email->send()) {  
+					echo "error";   
+				   }else{  
+					redirect(site_url("dosen/struktural/tema"));  
+				}   
+			}
+		}
+		else{
+			redirect(site_url("dosen/struktural/tema"));
+		}
 
-
-		redirect(site_url("dosen/struktural/tema"));
+		
 	}
 
 	function tugas_akhir_decline()
@@ -576,6 +612,7 @@ class Dosen extends CI_Controller {
 		// pb ps alt
 		$pb2_nip = $data['pb2_alter_nip'];
 		$pb2_nama = $data['pb2_alter_nama'];
+		$pb2_email = $data['pb2_alter_email'];
 		$pb3_nip = $data['pb3_alter_nip'];
 		$pb3_nama = $data['pb3_alter_nama'];
 		$ps1_nip = $data['ps1_alter_nip'];
@@ -588,6 +625,15 @@ class Dosen extends CI_Controller {
 		if($pb2 == NULL && ($pb2_nip != NULL && $pb2_nama != NULL)){
 			$status = "Pembimbing 2";
 			$this->ta_model->set_komisi_alter($id,$pb2_nip,$pb2_nama,$status);
+			$this->ta_model->set_komisi_alter_access($id,$pb2_nip,$pb2_nama,$status,$pb2_email);
+
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => $status,
+				'id_user' => '0',
+				'ttd' => '',	
+			);
+			$this->ta_model->insert_approval_ta($data_approval);
 		}
 		if($pb3 == NULL && ($pb3_nip != NULL && $pb3_nama != NULL)){
 			$status = "Pembimbing 3";
@@ -848,4 +894,7 @@ class Dosen extends CI_Controller {
 		$this->load->view('footer_global');
 	}
 	
+
+	
+
 }

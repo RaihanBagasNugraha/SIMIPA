@@ -12,6 +12,8 @@ class Mahasiswa extends CI_Controller {
 		$this->load->model('user_model');
 		$this->load->model('ta_model');
 		$this->load->library('pdf');
+		$this->load->library('encryption');
+		// $this->load->library('encryption');
 		
 		if($this->session->has_userdata('username')) {
 		    if($this->session->userdata('state') <> 3) {
@@ -722,5 +724,24 @@ class Mahasiswa extends CI_Controller {
 		redirect(site_url("mahasiswa/tugas-akhir/seminar"));
 	}
 
+	//bimbingan mahasiswa
+	function bimbingan()
+	{
+		
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		// $data['lampiran'] = $this->ta_model->select_lampiran_by_seminar($this->input->get('id'));
+		// $teks = $this->encryption->encode('Your data');
+		// $this->encryption->decode('Your encrypted data');
+		$data = array('planet' => 'asw');
+		
+		
+		// echo $data;
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/bimbingan',$data);
+
+        $this->load->view('footer_global');
+	}
 
 }
