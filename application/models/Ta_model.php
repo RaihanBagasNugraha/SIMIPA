@@ -200,7 +200,7 @@ class Ta_model extends CI_Model
 
 			$data_komisi = [
 				'id_tugas_akhir' => $where,
-				'status'  => 'Pembimbing 1',
+				'status'  => 'Pembimbing Utama',
 				'nip_nik'  => $nip,
 				'id_user'  => $dosenid,
 				'nama'  => $nama,
@@ -959,7 +959,7 @@ class Ta_model extends CI_Model
 
 	function get_komisi($id)
 	{
-		$query = $this->db->query('SELECT * FROM tugas_akhir_approval, tugas_akhir_komisi WHERE tugas_akhir_approval.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND (tugas_akhir_approval.status_slug LIKE "Pembimbing%" OR tugas_akhir_approval.status_slug LIKE "Penguji%") AND tugas_akhir_approval.status_slug NOT LIKE "Pembimbing Akademik" AND tugas_akhir_approval.id_user = tugas_akhir_komisi.id_user AND tugas_akhir_approval.id_pengajuan ='.$id);
+		$query = $this->db->query('SELECT * FROM tugas_akhir_approval, tugas_akhir_komisi WHERE tugas_akhir_approval.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND (tugas_akhir_approval.status_slug LIKE "Pembimbing%" OR tugas_akhir_approval.status_slug LIKE "Penguji%") AND tugas_akhir_approval.status_slug NOT LIKE "Pembimbing Akademik" AND tugas_akhir_approval.id_user = tugas_akhir_komisi.id_user AND tugas_akhir_approval.status_slug = tugas_akhir_komisi.status AND tugas_akhir_approval.id_pengajuan ='.$id);
 		return $query->result();
 	}
 

@@ -433,7 +433,7 @@ class Dosen extends CI_Controller {
 				$this->email->message("
 				Kepada Yth. $row->nama
 				<br>
-				Untuk Melakukan Approval Tema Penelitian Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Silahkan Klik Link Berikut :<br>
+				Untuk Melakukan Approval Tema Penelitian Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai $row->status Silahkan Klik Link Berikut :<br>
 				http://localhost/simipa/approval/ta?token=$row->token
 				<br><br>
 				Terimakasih.
@@ -442,13 +442,13 @@ class Dosen extends CI_Controller {
 				if (!$this->email->send()) {  
 					echo "error";   
 				   }else{  
-					redirect(site_url("dosen/struktural/tema"));  
+					  
 				}   
 			}
 		}
-		else{
+		
 			redirect(site_url("dosen/struktural/tema"));
-		}
+		
 
 		
 	}

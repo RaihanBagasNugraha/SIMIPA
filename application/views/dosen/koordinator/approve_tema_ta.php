@@ -257,7 +257,7 @@
                                     </div>
 
                                     <!-- Pembimbing 3 Alternatif -->
-                                    <div class="position-relative row form-group" id="pb2_alt_email" style="display:none">
+                                    <div class="position-relative row form-group" id="pb3_alt_email" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Email</label>
                                             <div class="col-sm-9">
                                                 <input value="" name="pb3_alter_email" class="form-control" type = "email" placeholder = "Email Dosen Untuk Mengirim Permintaan Approval">
@@ -309,7 +309,7 @@
                                     </div>
 
                                     <!-- Pembahas 1 Alternatif -->
-                                    <div class="position-relative row form-group" id="pb2_alt_email" style="display:none">
+                                    <div class="position-relative row form-group" id="ps1_alt_email" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Email</label>
                                             <div class="col-sm-9">
                                                 <input value="" name="ps1_alter_email" class="form-control" type = "email" placeholder = "Email Dosen Untuk Mengirim Permintaan Approval">
@@ -358,7 +358,7 @@
                                     </div>
 
                                     <!-- Pembahas 2 Alternatif -->
-                                    <div class="position-relative row form-group" id="pb2_alt_email" style="display:none">
+                                    <div class="position-relative row form-group" id="ps2_alt_email" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Email</label>
                                             <div class="col-sm-9">
                                                 <input value="" name="ps2_alter_email" class="form-control" type = "email" placeholder = "Email Dosen Untuk Mengirim Permintaan Approval">
@@ -407,7 +407,7 @@
                                     </div>
 
                                     <!-- Pembahas 3 Alternatif -->
-                                    <div class="position-relative row form-group" id="pb2_alt_email" style="display:none">
+                                    <div class="position-relative row form-group" id="ps3_alt_email" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Email</label>
                                             <div class="col-sm-9">
                                                 <input value="" name="ps3_alter_email" class="form-control" type = "email" placeholder = "Email Dosen Untuk Mengirim Permintaan Approval">
