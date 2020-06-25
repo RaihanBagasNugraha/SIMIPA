@@ -545,7 +545,7 @@ class Ta_model extends CI_Model
 
 	function set_komisi_alter_access($id,$nip,$nama,$status,$email)
 	{
-		$keys = "nyhggmkfz12";
+		$keys = "raihanbagasnugraha";
 		$date = date("Y-m-d H:i:s");
 		$token = md5($keys.$nip.$status.$nama.$date);
 		$data_komisi = [

@@ -203,7 +203,7 @@
                                      <div class="position-relative row form-group" id="pb2_alt_nama" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
                                             <div class="col-sm-9">
-                                                <input value="" name="pb2_alter_nama" class="form-control" placeholder = "Nama Dosen">
+                                                <input value="" name="pb2_alter_nama" class="form-control" placeholder = "Nama Lengkap dan Gelar">
                                             </div>
                                     </div>
 
@@ -244,7 +244,7 @@
                                     <div class="position-relative row form-group" id="pb3_alt_nip" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Nip / Nik</label>
                                             <div class="col-sm-9">
-                                                <input value="" name="pb3_alter_nip" class="form-control" >
+                                                <input value="" name="pb3_alter_nip" class="form-control" placeholder = "NIP Dosen">
                                             </div>
                                     </div>
 
@@ -252,7 +252,15 @@
                                      <div class="position-relative row form-group" id="pb3_alt_nama" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
                                             <div class="col-sm-9">
-                                                <input value="" name="pb3_alter_nama" class="form-control" >
+                                                <input value="" name="pb3_alter_nama" class="form-control" placeholder = "Nama Lengkap dan Gelar">
+                                            </div>
+                                    </div>
+
+                                    <!-- Pembimbing 3 Alternatif -->
+                                    <div class="position-relative row form-group" id="pb2_alt_email" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Email</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="pb3_alter_email" class="form-control" type = "email" placeholder = "Email Dosen Untuk Mengirim Permintaan Approval">
                                             </div>
                                     </div>
 
@@ -288,7 +296,7 @@
                                     <div class="position-relative row form-group" id="ps1_alt_nip" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Nip / Nik</label>
                                             <div class="col-sm-9">
-                                                <input value="" name="ps1_alter_nip" class="form-control" >
+                                                <input value="" name="ps1_alter_nip" class="form-control" placeholder = "NIP Dosen">
                                             </div>
                                     </div>
 
@@ -296,7 +304,15 @@
                                      <div class="position-relative row form-group" id="ps1_alt_nama" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
                                             <div class="col-sm-9">
-                                                <input value="" name="ps1_alter_nama" class="form-control" >
+                                                <input value="" name="ps1_alter_nama" class="form-control" placeholder = "Nama Lengkap dan Gelar">
+                                            </div>
+                                    </div>
+
+                                    <!-- Pembahas 1 Alternatif -->
+                                    <div class="position-relative row form-group" id="pb2_alt_email" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Email</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps1_alter_email" class="form-control" type = "email" placeholder = "Email Dosen Untuk Mengirim Permintaan Approval">
                                             </div>
                                     </div>
 
@@ -329,7 +345,7 @@
                                      <div class="position-relative row form-group" id="ps2_alt_nip" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Nip / Nik</label>
                                             <div class="col-sm-9">
-                                                <input value="" name="ps2_alter_nip" class="form-control" >
+                                                <input value="" name="ps2_alter_nip" class="form-control" placeholder = "NIP Dosen">
                                             </div>
                                     </div>
 
@@ -337,7 +353,15 @@
                                      <div class="position-relative row form-group" id="ps2_alt_nama" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
                                             <div class="col-sm-9">
-                                                <input value="" name="ps2_alter_nama" class="form-control" >
+                                                <input value="" name="ps2_alter_nama" class="form-control" placeholder = "Nama Lengkap dan Gelar">
+                                            </div>
+                                    </div>
+
+                                    <!-- Pembahas 2 Alternatif -->
+                                    <div class="position-relative row form-group" id="pb2_alt_email" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Email</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps2_alter_email" class="form-control" type = "email" placeholder = "Email Dosen Untuk Mengirim Permintaan Approval">
                                             </div>
                                     </div>
 
@@ -370,7 +394,7 @@
                                     <div class="position-relative row form-group" id="ps3_alt_nip" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Nip / Nik</label>
                                             <div class="col-sm-9">
-                                                <input value="" name="ps3_alter_nip" class="form-control" >
+                                                <input value="" name="ps3_alter_nip" class="form-control" placeholder = "NIP Dosen">
                                             </div>
                                     </div>
 
@@ -378,7 +402,15 @@
                                      <div class="position-relative row form-group" id="ps3_alt_nama" style="display:none">
                                             <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
                                             <div class="col-sm-9">
-                                                <input value="" name="ps3_alter_nama" class="form-control" >
+                                                <input value="" name="ps3_alter_nama" class="form-control" placeholder = "Nama Lengkap dan Gelar">
+                                            </div>
+                                    </div>
+
+                                    <!-- Pembahas 3 Alternatif -->
+                                    <div class="position-relative row form-group" id="pb2_alt_email" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Email</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps3_alter_email" class="form-control" type = "email" placeholder = "Email Dosen Untuk Mengirim Permintaan Approval">
                                             </div>
                                     </div>
 
@@ -608,11 +640,13 @@ function add_pb3() {
     if( document.getElementById("pb3_alt_nama").style.display=='none' && document.getElementById("pb3_alt_nip").style.display=='none'){
            document.getElementById("pb3_alt_nama").style.display = '';
            document.getElementById("pb3_alt_nip").style.display = '';
+           document.getElementById("pb3_alt_email").style.display = '';
            document.getElementById("pb3").disabled = true;
            document.getElementById("pb3d").disabled = false;
     }else{
             document.getElementById("pb3_alt_nama").style.display = 'none';
             document.getElementById("pb3_alt_nip").style.display = 'none';
+            document.getElementById("pb3_alt_email").style.display = 'none';
             document.getElementById("pb3").disabled = false;
             document.getElementById("pb3d").disabled = true;
          }
@@ -629,11 +663,13 @@ function add_ps1() {
     if( document.getElementById("ps1_alt_nama").style.display=='none' && document.getElementById("ps1_alt_nip").style.display=='none'){
            document.getElementById("ps1_alt_nama").style.display = '';
            document.getElementById("ps1_alt_nip").style.display = '';
+           document.getElementById("ps1_alt_email").style.display = '';
            document.getElementById("ps1").disabled = true;
            document.getElementById("ps1d").disabled = false;
     }else{
             document.getElementById("ps1_alt_nama").style.display = 'none';
             document.getElementById("ps1_alt_nip").style.display = 'none';
+            document.getElementById("ps1_alt_email").style.display = 'none';
             document.getElementById("ps1").disabled = false;
             document.getElementById("ps1d").disabled = true;
          }
@@ -650,11 +686,13 @@ function add_ps2() {
     if( document.getElementById("ps2_alt_nama").style.display=='none' && document.getElementById("ps2_alt_nip").style.display=='none'){
            document.getElementById("ps2_alt_nama").style.display = '';
            document.getElementById("ps2_alt_nip").style.display = '';
+           document.getElementById("ps2_alt_email").style.display = '';
            document.getElementById("ps2").disabled = true;
            document.getElementById("ps2d").disabled = false;
     }else{
             document.getElementById("ps2_alt_nama").style.display = 'none';
             document.getElementById("ps2_alt_nip").style.display = 'none';
+            document.getElementById("ps2_alt_email").style.display = 'none';
             document.getElementById("ps2").disabled = false;
             document.getElementById("ps2d").disabled = true;
          }
@@ -671,11 +709,13 @@ function add_ps3() {
     if( document.getElementById("ps3_alt_nama").style.display=='none' && document.getElementById("ps3_alt_nip").style.display=='none'){
            document.getElementById("ps3_alt_nama").style.display = '';
            document.getElementById("ps3_alt_nip").style.display = '';
+           document.getElementById("ps3_alt_email").style.display = '';
            document.getElementById("ps3").disabled = true;
            document.getElementById("ps3d").disabled = false;
     }else{
             document.getElementById("ps3_alt_nama").style.display = 'none';
             document.getElementById("ps3_alt_nip").style.display = 'none';
+            document.getElementById("ps3_alt_email").style.display = '';
             document.getElementById("ps3").disabled = false;
             document.getElementById("ps3d").disabled = true;
          }
