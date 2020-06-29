@@ -936,7 +936,413 @@ class Dosen extends CI_Controller {
 		$this->load->view('footer_global');
 	}
 	
+	function komposisi_nilai()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 
+		$data['nilai'] = $this->ta_model->get_komposisi_nilai($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/komposisi_nilai/komposisi_nilai',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function komposisi_nilai_tambah()
+	{
+		
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$data['nilai'] = $this->ta_model->get_komposisi_nilai($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/komposisi_nilai/komposisi_nilai_add',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function komposisi_nilai_simpan()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$jml = count($data['ujian_komponen']);
+		$jml2 = count($data['skripsi_komponen']);
+		$ujian = 0;
+		$skripsi = 0;
+		//check
+		for($i=0; $i<$jml; $i++){
+			$ujian += $data['ujian_nilai'][$i];
+		}
+		for($i=0; $i<$jml2; $i++){
+			$skripsi += $data['skripsi_nilai'][$i];
+		}
+		$persentase =  $ujian + $skripsi;
+		$cek = $this->ta_model->cek_komposisi_nilai($data['jurusan'],$data['jenis']);
+
+		if(!empty($cek)){
+			redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=duplikat"));
+		}
+		else{
+
+		if($data['jenis'] == "Skripsi"){
+			$total1 = $data['skripsi_pb1_1'] + $data['skripsi_pb2_1'] + $data['skripsi_ps1_1'];
+			$total2 = $data['skripsi_pb1_2'] + $data['skripsi_ps1_2'] + $data['skripsi_ps2_2']; 
+			// echo $total1;
+			// echo $total2;
+			if($total1 < 100 || $total2 < 100){
+				redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=kurang"));
+			}
+			elseif($total1 > 100 || $total2 > 100){
+				redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=lebih"));
+			}
+			else{
+				$bobot = $data['skripsi_pb1_1'].'-'.$data['skripsi_pb2_1'].'-'.$data['skripsi_ps1_1'].'#'.$data['skripsi_pb1_2'].'-'.$data['skripsi_ps1_2'].'-'.$data['skripsi_ps2_2'];
+			}
+
+		}
+
+		elseif($data['jenis'] == "Tugas Akhir"){
+			$total = $data['ta_pb1'] + $data['ta_ps1'];
+
+			if($total < 100){
+				redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=kurang"));
+			}
+			elseif($total > 100){
+				redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=lebih"));
+			}
+			else{
+				$bobot = $data['ta_pb1'].'-'.$data['ta_ps1'];
+			}
+		}
+
+		elseif($data['jenis'] == "Tesis"){
+			if($data['tesis_pb1'] == NULL){
+				$data['tesis_pb1'] = 0;
+			}
+			if($data['tesis_pb2'] == NULL){
+				$data['tesis_pb2'] = 0;
+			}
+			if($data['tesis_pb3'] == NULL){
+				$data['tesis_pb3'] = 0;
+			}
+			if($data['tesis_ps1'] == NULL){
+				$data['tesis_ps1'] = 0;
+			}
+			if($data['tesis_ps2'] == NULL){
+				$data['tesis_ps2'] = 0;
+			}
+			if($data['tesis_ps3'] == NULL){
+				$data['tesis_ps3'] = 0;
+			}
+			$total = $data['tesis_pb1'] + $data['tesis_pb2']+ $data['tesis_pb3'] + $data['tesis_ps1'] + $data['tesis_ps2'] + $data['tesis_ps3'];
+			
+			// if($total < 100){
+			// 	redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=kurang"));
+			// }
+			// elseif($total > 100){
+			// 	redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=lebih"));
+			// }
+			// else{
+				$bobot = $data['tesis_pb1'].'-'.$data['tesis_pb2'].'-'.$data['tesis_pb3'].'-'.$data['tesis_ps1'].'-'.$data['tesis_ps2'].'-'.$data['tesis_ps3'];
+			// }
+
+		}
+
+		elseif($data['jenis'] == "Disertasi"){
+			if($data['disertasi_pb1'] == NULL){
+				$data['disertasi_pb1'] = 0;
+			}
+			if($data['disertasi_pb2'] == NULL){
+				$data['disertasi_pb2'] = 0;
+			}
+			if($data['disertasi_pb3'] == NULL){
+				$data['disertasi_pb3'] = 0;
+			}
+			if($data['disertasi_ps1'] == NULL){
+				$data['disertasi_ps1'] = 0;
+			}
+			if($data['disertasi_ps2'] == NULL){
+				$data['disertasi_ps2'] = 0;
+			}
+			if($data['disertasi_ps3'] == NULL){
+				$data['disertasi_ps3'] = 0;
+			}
+			$total = $data['disertasi_pb1'] + $data['disertasi_pb2']+ $data['disertasi_pb3'] + $data['disertasi_ps1'] + $data['disertasi_ps2'] + $data['disertasi_ps3'];
+			
+			// if($total < 100){
+			// 	redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=kurang"));
+			// }
+			// elseif($total > 100){
+			// 	redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=lebih"));
+			// }
+			// else{
+				$bobot = $data['disertasi_pb1'].'-'.$data['disertasi_pb2'].'-'.$data['disertasi_pb3'].'-'.$data['disertasi_ps1'].'-'.$data['disertasi_ps2'].'-'.$data['disertasi_ps3'];
+			// }
+
+		}
+
+		if($persentase < 100){
+			redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=kurang"));
+		}
+		elseif($persentase > 100){
+			redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=lebih"));
+		}
+		elseif($persentase = 100){
+			$komponen_nilai = array(
+				'id_prodi' => $data['jurusan'],
+				'semester' => $data['semester'],
+				'tahun_akademik' => $data['tahun_akademik'],
+				'jenis' => $data['jenis'],
+				'bobot' => $bobot,
+				'status' => '0',	
+			);
+	
+			$lastid = $this->ta_model->komposisi_nilai_save($komponen_nilai);
+	
+			// echo $jml;
+			for($i=0; $i<$jml; $i++){
+				// echo $data['ujian_komponen'][$i];
+				// echo $data['ujian_nilai'][$i];
+	
+				$data_ujian = array(
+					'id_komponen' => $lastid,
+					'unsur' => 'Ujian',
+					'attribut' => $data['ujian_komponen'][$i],
+					'persentase' => $data['ujian_nilai'][$i],
+				);
+				$this->ta_model->komposisi_nilai_meta_save($data_ujian);
+	
+			}
+	
+			for($i=0; $i<$jml2; $i++){
+				$data_ujian = array(
+					'id_komponen' => $lastid,
+					'unsur' => $data['jenis'],
+					'attribut' => $data['skripsi_komponen'][$i],
+					'persentase' => $data['skripsi_nilai'][$i],
+				);
+				$this->ta_model->komposisi_nilai_meta_save($data_ujian);
+			}
+
+
+			redirect(site_url("dosen/struktural/komposisi-nilai"));
+		}
+		}
+	}
+
+	function komponen_nilai()
+	{
+		$id = $this->input->get('id');
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['komponen'] = $this->ta_model->get_komposisi_nilai_id($id);
+		$data['meta'] = $this->ta_model->get_komposisi_nilai_meta_id($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/komposisi_nilai/show_komponen_nilai',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function komposisi_nilai_nonaktif()
+	{
+		$data = $this->input->post();
+
+		$id = $data['id'];
+		$this->ta_model->nonaktifkan_komposisi($id);
+
+		redirect(site_url("dosen/struktural/komposisi_nilai/komposisi-nilai"));
+	}
+
+	function komposisi_nilai_ubah()
+	{
+		$id = $this->input->get('id');
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['komponen'] = $this->ta_model->get_komposisi_nilai_id($id);
+		$data['meta'] = $this->ta_model->get_komposisi_nilai_meta_id($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/komposisi_nilai/komposisi_nilai_ubah',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function komposisi_nilai_edit()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $data['id'];
+
+		$jml = count($data['ujian_komponen']);
+		$jml2 = count($data['skripsi_komponen']);
+		$ujian = 0;
+		$skripsi = 0;
+		//check
+		for($i=0; $i<$jml; $i++){
+			$ujian += $data['ujian_nilai'][$i];
+		}
+		for($i=0; $i<$jml2; $i++){
+			$skripsi += $data['skripsi_nilai'][$i];
+		}
+		$persentase =  $ujian + $skripsi;
+
+		if($data['jenis'] == "Skripsi"){
+			$total1 = $data['skripsi_pb1_1'] + $data['skripsi_pb2_1'] + $data['skripsi_ps1_1'];
+			$total2 = $data['skripsi_pb1_2'] + $data['skripsi_ps1_2'] + $data['skripsi_ps2_2']; 
+			// echo $total1;
+			// echo $total2;
+			if($total1 < 100 || $total2 < 100){
+				redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=kurang"));
+			}
+			elseif($total1 > 100 || $total2 > 100){
+				redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=lebih"));
+			}
+			else{
+				$bobot = $data['skripsi_pb1_1'].'-'.$data['skripsi_pb2_1'].'-'.$data['skripsi_ps1_1'].'#'.$data['skripsi_pb1_2'].'-'.$data['skripsi_ps1_2'].'-'.$data['skripsi_ps2_2'];
+			}
+		}
+
+		elseif($data['jenis'] == "Tugas Akhir"){
+			$total = $data['ta_pb1'] + $data['ta_ps1'];
+
+			if($total < 100){
+				redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=kurang"));
+			}
+			elseif($total > 100){
+				redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=lebih"));
+			}
+			else{
+				$bobot = $data['ta_pb1'].'-'.$data['ta_ps1'];
+			}
+		}
+
+		elseif($data['jenis'] == "Tesis"){
+			if($data['tesis_pb1'] == NULL){
+				$data['tesis_pb1'] = 0;
+			}
+			if($data['tesis_pb2'] == NULL){
+				$data['tesis_pb2'] = 0;
+			}
+			if($data['tesis_pb3'] == NULL){
+				$data['tesis_pb3'] = 0;
+			}
+			if($data['tesis_ps1'] == NULL){
+				$data['tesis_ps1'] = 0;
+			}
+			if($data['tesis_ps2'] == NULL){
+				$data['tesis_ps2'] = 0;
+			}
+			if($data['tesis_ps3'] == NULL){
+				$data['tesis_ps3'] = 0;
+			}
+			$total = $data['tesis_pb1'] + $data['tesis_pb2']+ $data['tesis_pb3'] + $data['tesis_ps1'] + $data['tesis_ps2'] + $data['tesis_ps3'];
+			$bobot = $data['tesis_pb1'].'-'.$data['tesis_pb2'].'-'.$data['tesis_pb3'].'-'.$data['tesis_ps1'].'-'.$data['tesis_ps2'].'-'.$data['tesis_ps3'];
+			// if($total < 100){
+			// 	redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=kurang"));
+			// }
+			// elseif($total > 100){
+			// 	redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=lebih"));
+			// }
+			// else{
+				// $bobot = $data['tesis_pb1'].'-'.$data['tesis_pb2'].'-'.$data['tesis_pb3'].'-'.$data['tesis_ps1'].'-'.$data['tesis_ps2'].'-'.$data['tesis_ps3'];
+			// }
+
+		}
+
+		elseif($data['jenis'] == "Disertasi"){
+			if($data['disertasi_pb1'] == NULL){
+				$data['disertasi_pb1'] = 0;
+			}
+			if($data['disertasi_pb2'] == NULL){
+				$data['disertasi_pb2'] = 0;
+			}
+			if($data['disertasi_pb3'] == NULL){
+				$data['disertasi_pb3'] = 0;
+			}
+			if($data['disertasi_ps1'] == NULL){
+				$data['disertasi_ps1'] = 0;
+			}
+			if($data['disertasi_ps2'] == NULL){
+				$data['disertasi_ps2'] = 0;
+			}
+			if($data['disertasi_ps3'] == NULL){
+				$data['disertasi_ps3'] = 0;
+			}
+			$total = $data['disertasi_pb1'] + $data['disertasi_pb2']+ $data['disertasi_pb3'] + $data['disertasi_ps1'] + $data['disertasi_ps2'] + $data['disertasi_ps3'];
+			$bobot = $data['disertasi_pb1'].'-'.$data['disertasi_pb2'].'-'.$data['disertasi_pb3'].'-'.$data['disertasi_ps1'].'-'.$data['disertasi_ps2'].'-'.$data['disertasi_ps3'];
+			// if($total < 100){
+			// 	redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=kurang"));
+			// }
+			// elseif($total > 100){
+			// 	redirect(site_url("/dosen/struktural/komposisi-nilai/add?status=lebih"));
+			// }
+			// else{
+				// $bobot = $data['disertasi_pb1'].'-'.$data['disertasi_pb2'].'-'.$data['disertasi_pb3'].'-'.$data['disertasi_ps1'].'-'.$data['disertasi_ps2'].'-'.$data['disertasi_ps3'];
+			// }
+
+		}
+
+		if($persentase < 100){
+			redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=kurang"));
+		}
+		elseif($persentase > 100){
+			redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=lebih"));
+		}
+		elseif($persentase = 100){
+			
+			$komponen_nilai = array(
+				'id_prodi' => $data['jurusan'],
+				'semester' => $data['semester'],
+				'tahun_akademik' => $data['tahun_akademik'],
+				'jenis' => $data['jenis'],
+				'bobot' => $bobot,
+				'status' => '0',	
+			);
+	
+			$this->ta_model->update_komposisi($id,$komponen_nilai);
+			$this->ta_model->delete_komposisi_meta($id);
+			// echo $jml;
+			for($i=0; $i<$jml; $i++){
+				// echo $data['ujian_komponen'][$i];
+				// echo $data['ujian_nilai'][$i];
+	
+				$data_ujian = array(
+					'id_komponen' => $id,
+					'unsur' => 'Ujian',
+					'attribut' => $data['ujian_komponen'][$i],
+					'persentase' => $data['ujian_nilai'][$i],
+				);
+				$this->ta_model->komposisi_nilai_meta_save($data_ujian);
+	
+			}
+	
+			for($i=0; $i<$jml2; $i++){
+				$data_ujian = array(
+					'id_komponen' => $id,
+					'unsur' => $data['jenis'],
+					'attribut' => $data['skripsi_komponen'][$i],
+					'persentase' => $data['skripsi_nilai'][$i],
+				);
+				$this->ta_model->komposisi_nilai_meta_save($data_ujian);
+			}
+
+
+			redirect(site_url("dosen/struktural/komposisi-nilai"));
+		}
+
+	}
 	
 
 }

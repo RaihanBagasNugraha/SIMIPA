@@ -129,6 +129,14 @@ $route['dosen/struktural/seminar'] = 'dosen/seminar_struktural';
 $route['dosen/struktural/seminar/form'] = 'dosen/form_seminar_struktural';
 $route['dosen/struktural/seminar/approve'] = 'dosen/seminar_approve';
 
+$route['dosen/struktural/komposisi-nilai'] = 'dosen/komposisi_nilai';
+$route['dosen/struktural/komposisi-nilai/add'] = 'dosen/komposisi_nilai_tambah';
+$route['dosen/struktural/komposisi-nilai/save'] = 'dosen/komposisi_nilai_simpan';
+$route['dosen/struktural/komposisi-nilai/komponen'] = 'dosen/komponen_nilai';
+$route['dosen/struktural/komposisi-nilai/nonaktifkan'] = 'dosen/komposisi_nilai_nonaktif';
+$route['dosen/struktural/komposisi-nilai/ubah'] = 'dosen/komposisi_nilai_ubah';
+$route['dosen/struktural/komposisi-nilai/edit'] = 'dosen/komposisi_nilai_edit';
+
     //rekap dosen
 $route['dosen/tugas-akhir/rekap-seminar'] = 'dosen/rekap_seminar';
 

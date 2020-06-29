@@ -187,6 +187,12 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
+	function get_dosen_jur($id)
+	{
+		$result = $this->db->query('SELECT jurusan.* FROM tbl_users_dosen, jurusan WHERE tbl_users_dosen.id_user ='.$id.' AND tbl_users_dosen.jurusan = jurusan.id_jurusan');
+		return $result->row();
+	}
+
 
 
 	

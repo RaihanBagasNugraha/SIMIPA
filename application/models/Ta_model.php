@@ -1070,4 +1070,64 @@ class Ta_model extends CI_Model
 		$query = $this->db->query("SELECT * FROM `tugas_akhir_komisi_alternatif` WHERE id_tugas_akhir = $id AND ket = 0");
 		return $query->result();
 	}
+
+	function get_komposisi_nilai($dosenid)
+	{
+		$query = $this->db->query("SELECT seminar_sidang_komponen.* FROM seminar_sidang_komponen, tbl_users_dosen WHERE tbl_users_dosen.id_user = $dosenid AND tbl_users_dosen.jurusan = seminar_sidang_komponen.id_prodi");
+		return $query->result();
+	}
+
+	function komposisi_nilai_save($data)
+	{
+		$this->db->trans_start();
+		$this->db->insert('seminar_sidang_komponen', $data);
+		$insert_id = $this->db->insert_id();
+
+		$this->db->trans_complete();
+		
+		return $insert_id;
+	}
+
+	function komposisi_nilai_meta_save($data)
+	{
+		$this->db->trans_start();
+		$this->db->insert('seminar_sidang_komponen_meta', $data);
+		$this->db->trans_complete();	
+	}
+
+	function get_komposisi_nilai_meta_id($id)
+	{
+		$query = $this->db->query("SELECT * FROM seminar_sidang_komponen_meta WHERE id_komponen =".$id);
+		return $query->result();
+	}
+
+	function get_komposisi_nilai_id($id)
+	{
+		$query = $this->db->query("SELECT * FROM seminar_sidang_komponen WHERE id =".$id);
+		return $query->row();
+	}
+	
+
+	function cek_komposisi_nilai($prodi,$jenis)
+	{
+		$query = $this->db->query("SELECT * FROM seminar_sidang_komponen WHERE id_prodi = $prodi AND jenis = '$jenis' AND status = 0");
+		return $query->row();
+	}
+
+	function nonaktifkan_komposisi($id)
+	{
+		$this->db->where('id', $id);
+		$this->db->update('seminar_sidang_komponen', array('status' => '1'));
+	}
+
+	function delete_komposisi_meta($id)
+	{
+	    $this->db->delete('seminar_sidang_komponen_meta', array('id_komponen' => $id));
+	}
+
+	function update_komposisi($id,$data)
+	{
+		$this->db->where('id', $id);
+	    $this->db->update("seminar_sidang_komponen", $data);
+	}
 }

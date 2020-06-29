@@ -224,6 +224,12 @@
                                                 </i>Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_kajur > 0 ? $smr_kajur : "" ?></span>
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/struktural/komposisi-nilai") ?>" <?php if( $this->uri->segment(2) == "struktural" && $this->uri->segment(3) == "komposisi-nilai") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Komposisi Nilai
+                                            </a>
+                                        </li>
                                        
                                     </ul>
                                 </li>
@@ -277,7 +283,7 @@
                                 </li>
                                 
                                 <li>
-                                    <a href="<?php echo site_url('keluar-sistem') ?>">
+                                    <a href="#">
                                         <i class="metismenu-icon pe-7s-config"></i>
                                         Pengaturan
                                     </a>
