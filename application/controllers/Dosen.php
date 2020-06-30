@@ -1313,10 +1313,9 @@ class Dosen extends CI_Controller {
 	
 			$this->ta_model->update_komposisi($id,$komponen_nilai);
 			$this->ta_model->delete_komposisi_meta($id);
-			// echo $jml;
+			
 			for($i=0; $i<$jml; $i++){
-				// echo $data['ujian_komponen'][$i];
-				// echo $data['ujian_nilai'][$i];
+				
 	
 				$data_ujian = array(
 					'id_komponen' => $id,
