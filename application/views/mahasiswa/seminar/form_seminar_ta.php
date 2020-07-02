@@ -148,7 +148,7 @@
 
                                         <br>
                                         <h5><b>Komisi Pembimbing</b></h5>
-                                        <input value="" readonly required name="Pembimbing_1" type="hidden" class="form-control input-mask-trigger" >
+                                        <input value="" readonly required name="Pembimbing_Utama" type="hidden" class="form-control input-mask-trigger" >
                                         <input value="" readonly required name="Pembimbing_2" type="hidden" class="form-control input-mask-trigger" >
                                         <input value="" readonly required name="Pembimbing_3" type="hidden" class="form-control input-mask-trigger" >
                                         <input value="" readonly required name="Penguji_1" type="hidden" class="form-control input-mask-trigger" >

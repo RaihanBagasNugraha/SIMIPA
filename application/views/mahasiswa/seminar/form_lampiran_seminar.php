@@ -121,7 +121,7 @@
                                                 <div class="col-sm-12"><input oninvalid="this.setCustomValidity('Anda belum memilih berkas!')" oninput="this.setCustomValidity('')" accept=".pdf" name="file" id="file" type="file" class="form-control-file">
                                                 </div>
                                                 <br>
-                                                <div class="col-sm-12"><span style="color:red">*File Maksimal 2 Mb dan Diunggah Dalam Format PDF</span></div>
+                                                <div class="col-sm-12"><span style="color:red">*File Maksimal 2 MB dan Diunggah Dalam Format PDF</span></div>
                                                 </div>
 
                                                                

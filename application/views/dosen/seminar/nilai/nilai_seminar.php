@@ -7,7 +7,7 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Rekap Seminar/Sidang Penelitian
+                                    <div>Nilai Seminar/Sidang Penelitian
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>

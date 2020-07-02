@@ -606,7 +606,7 @@ class Mahasiswa extends CI_Controller {
 		$ttd = $data['ttd'];
 		$aksi = $data['aksi'];
 
-		$pb1 = $data['Pembimbing_1'];
+		$pb1 = $data['Pembimbing_Utama'];
 		$pb2 = $data['Pembimbing_2'];
 		$pb3 = $data['Pembimbing_3'];
 		$ps1 = $data['Penguji_1'];

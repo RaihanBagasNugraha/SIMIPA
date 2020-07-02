@@ -58,8 +58,8 @@
                                             $smr = count($this->ta_model->get_approval_seminar_list($this->session->userdata('userId')));
                                             $persetujan_seminar = $smr + $smr_pa;
 
-                                            $smr_rekap = count($this->ta_model->get_rekap_seminar($this->session->userdata('userId')));
-                                            $manajemen_ta = $persetujan_seminar + $persetujan_tema + $smr_rekap;
+                                            $smr_nilai = count($this->ta_model->get_nilai_seminar($this->session->userdata('userId')));
+                                            $manajemen_ta = $persetujan_seminar + $persetujan_tema + $smr_nilai;
                                         
                                         ?>
                                         Manajemen Tugas Akhir <span class="badge badge-danger"><?php echo $manajemen_ta > 0 ? $manajemen_ta : "" ?></span>
@@ -85,9 +85,9 @@
                                             </a>
                                         </li>
                                         <li>
-                                        <a href="<?php echo site_url("dosen/tugas-akhir/rekap-seminar") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "rekap-seminar") echo 'class="mm-active"' ?>>
+                                        <a href="<?php echo site_url("dosen/tugas-akhir/nilai-seminar") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "nilai-seminar") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Rekap Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_rekap > 0 ? $smr_rekap : "" ?></span>
+                                                </i>Nilai Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_nilai > 0 ? $smr_nilai : "" ?></span>
                                             </a>
                                         </li>
                                        

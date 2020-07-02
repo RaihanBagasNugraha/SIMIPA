@@ -137,8 +137,8 @@ $route['dosen/struktural/komposisi-nilai/nonaktifkan'] = 'dosen/komposisi_nilai_
 $route['dosen/struktural/komposisi-nilai/ubah'] = 'dosen/komposisi_nilai_ubah';
 $route['dosen/struktural/komposisi-nilai/edit'] = 'dosen/komposisi_nilai_edit';
 
-    //rekap dosen
-$route['dosen/tugas-akhir/rekap-seminar'] = 'dosen/rekap_seminar';
+    //nilai semina dosen
+$route['dosen/tugas-akhir/nilai-seminar'] = 'dosen/nilai_seminar';
 
     //rekap koor
 $route['dosen/koordinator/rekap/tugas-akhir'] = 'dosen/rekap_ta';
