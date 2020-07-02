@@ -109,7 +109,38 @@
                                                     ?>
                                                 </td>
                                                 <td class="align-top">
-                                                        Nilai
+                                                    <?php 
+                                                    switch($row->status){
+                                                        case "Pembimbing Utama":
+                                                        $status = "pb1";
+                                                        break;
+                                                        case "Pembimbing 2":
+                                                        $status = "pb2";
+                                                        break;
+                                                        case "Pembimbing 3":
+                                                        $status = "pb3";
+                                                        break;
+                                                        case "Penguji 1":
+                                                        $status = "ps1";
+                                                        break;
+                                                        case "Penguji 2":
+                                                        $status = "ps2";
+                                                        break;
+                                                        case "Penguji 3":
+                                                        $status = "ps3";
+                                                        break;
+                                                    }
+
+                                                    $date_now = new DateTime();
+                                                    $date_smr = new DateTime("$row->tgl_pelaksanaan");
+                                                    if($date_now >= $date_smr){
+                                                    ?>
+                                                        <a href="<?php echo site_url("dosen/tugas-akhir/nilai-seminar/add?id=$row->id&status=$status") ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Nilai
+                                                    <?php        
+                                                    } else{echo "Menunggu";}?>
+
+                                                   
+                                                    </a>
                                                 </td>
                                                        
                                             </tr>

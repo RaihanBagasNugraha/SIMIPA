@@ -795,6 +795,18 @@ class Dosen extends CI_Controller {
 			redirect(site_url("dosen/tugas-akhir/seminar/koordinator"));
 		}
 		elseif($status == 'kajur'){
+			$data = $this->ta_model->get_komisi_seminar_id($id);
+
+			foreach($data as $row){
+				$data_cek = array(
+					'status' => $row->status,
+					'saran' => '',
+					'ket' => '0',
+					'id_seminar' => $id,	
+				);
+				$this->ta_model->insert_seminar_nilai_check($data_cek);
+			}
+
 			redirect(site_url("dosen/struktural/seminar"));
 		}
 		else{
@@ -890,7 +902,8 @@ class Dosen extends CI_Controller {
 	}
 
 	//nilai seminar dosen
-	function nilai_seminar(){
+	function nilai_seminar()
+	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		$data['seminar'] = $this->ta_model->get_nilai_seminar($this->session->userdata('userId'));
 		// print_r($data);
@@ -900,6 +913,48 @@ class Dosen extends CI_Controller {
 		$this->load->view('dosen/header');
 
 		$this->load->view('dosen/seminar/nilai/nilai_seminar',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function nilai_seminar_add()
+	{
+		$id = $this->input->get('id');
+		$status = $this->input->get('status');
+
+		switch($status){
+			case "pb1":
+			$status = "Pembimbing Utama";
+			break;
+			case "pb2":
+			$status = "Pembimbing 2";
+			break;
+			case "pb3":
+			$status = "Pembimbing 3";
+			break;
+			case "ps1":
+			$status = "Penguji 1";
+			break;
+			case "ps2":
+			$status = "Penguji 2";
+			break;
+			case "ps3":
+			$status = "Penguji 3";
+			break;
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->ta_model->get_seminar_id($id);
+		$data['ta'] = $this->ta_model->get_tugas_akhir_seminar_id($id);
+		$data['status'] = $status;
+
+		// print_r($data);
+		// $jml = count($data);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/seminar/nilai/add_nilai_seminar',$data);
 		
 		$this->load->view('footer_global');
 	}
@@ -1204,10 +1259,10 @@ class Dosen extends CI_Controller {
 			// echo $total1;
 			// echo $total2;
 			if($total1 < 100 || $total2 < 100){
-				redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=kurang"));
+				redirect(site_url("/dosen/struktural/komposisi-nilai/ubah?id=$id&status=kurang"));
 			}
 			elseif($total1 > 100 || $total2 > 100){
-				redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=lebih"));
+				redirect(site_url("/dosen/struktural/komposisi-nilai/ubah?id=$id&status=lebih"));
 			}
 			else{
 				$bobot = $data['skripsi_pb1_1'].'-'.$data['skripsi_pb2_1'].'-'.$data['skripsi_ps1_1'].'#'.$data['skripsi_pb1_2'].'-'.$data['skripsi_ps1_2'].'-'.$data['skripsi_ps2_2'];
@@ -1218,10 +1273,10 @@ class Dosen extends CI_Controller {
 			$total = $data['ta_pb1'] + $data['ta_ps1'];
 
 			if($total < 100){
-				redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=kurang"));
+				redirect(site_url("/dosen/struktural/komposisi-nilai/ubah?status=kurang"));
 			}
 			elseif($total > 100){
-				redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=lebih"));
+				redirect(site_url("/dosen/struktural/komposisi-nilai/ubah?status=lebih"));
 			}
 			else{
 				$bobot = $data['ta_pb1'].'-'.$data['ta_ps1'];
@@ -1295,10 +1350,10 @@ class Dosen extends CI_Controller {
 		}
 
 		if($persentase < 100){
-			redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=kurang"));
+			redirect(site_url("/dosen/struktural/komposisi-nilai/ubah?id=$id&status=kurang"));
 		}
 		elseif($persentase > 100){
-			redirect(site_url("/dosen/struktural/komposisi-nilai/edit?status=lebih"));
+			redirect(site_url("/dosen/struktural/komposisi-nilai/ubah?id=$id&status=lebih"));
 		}
 		elseif($persentase = 100){
 			
@@ -1341,6 +1396,40 @@ class Dosen extends CI_Controller {
 			redirect(site_url("dosen/struktural/komposisi-nilai"));
 		}
 
+	}
+
+	function nilai_seminar_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $data['id'];
+		$status = $data['status'];
+		$saran = $data['saran'];
+		$id_komponen = $data['id_komponen'];
+		$ttd = $data['ttd'];
+
+		$jml = $data['jml'];
+
+		$nilai = $data['nilai'];
+		$attribut = $data['attribut'];
+
+		for($i=1;$i<$jml;$i++)
+		{
+			$data = array(
+				'id_seminar_sidang' => $id,
+				'id_komponen' => $id_komponen,
+				'komponen' => $attribut[$i],
+				'nilai' => $nilai[$i],
+				'status' => $status,
+			);
+			$this->ta_model->insert_seminar_nilai($data);
+		}
+
+		$this->ta_model->update_nilai_seminar_check($id,$status,$saran,$ttd);
+		
+		redirect(site_url("dosen/tugas-akhir/nilai-seminar"));
 	}
 	
 

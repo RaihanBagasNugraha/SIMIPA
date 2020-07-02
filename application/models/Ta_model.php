@@ -843,6 +843,8 @@ class Ta_model extends CI_Model
 
 				$this->db->where('id', $where);
 				$this->db->update('seminar_sidang', array('status' => '4'));
+			
+				
 
 		}
 		
@@ -1023,7 +1025,7 @@ class Ta_model extends CI_Model
 	//nilai seminar dosen
 	function get_nilai_seminar($id)
 	{
-		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2,tugas_akhir.judul_approve, tugas_akhir_komisi.status, tugas_akhir_komisi.nip_nik, tugas_akhir_komisi.id_user, tugas_akhir_komisi.nama FROM seminar_sidang, tugas_akhir, tugas_akhir_komisi WHERE tugas_akhir_komisi.id_user ='.$id.' AND tugas_akhir_komisi.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir AND seminar_sidang.status = 4');
+		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2,tugas_akhir.judul_approve, tugas_akhir_komisi.status, tugas_akhir_komisi.nip_nik, tugas_akhir_komisi.id_user, tugas_akhir_komisi.nama FROM seminar_sidang_nilai_check,seminar_sidang, tugas_akhir, tugas_akhir_komisi WHERE tugas_akhir_komisi.id_user ='.$id.' AND tugas_akhir_komisi.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir AND seminar_sidang.status = 4 AND seminar_sidang_nilai_check.id_seminar = seminar_sidang.id AND seminar_sidang_nilai_check.status = tugas_akhir_komisi.status AND seminar_sidang_nilai_check.ket = 0');
 		return $query->result();
 	}
 
@@ -1129,5 +1131,45 @@ class Ta_model extends CI_Model
 	{
 		$this->db->where('id', $id);
 	    $this->db->update("seminar_sidang_komponen", $data);
+	}
+
+	function get_tugas_akhir_seminar_id($id)
+	{
+		$query = $this->db->query("SELECT tugas_akhir.* FROM tugas_akhir, seminar_sidang WHERE seminar_sidang.id = $id AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan");
+		return $query->row();
+	}
+
+	function get_komponen_nilai_meta($npm,$jenis)
+	{
+		$query = $this->db->query("SELECT seminar_sidang_komponen_meta.* FROM seminar_sidang_komponen, seminar_sidang_komponen_meta, tbl_users_mahasiswa, tugas_akhir WHERE tbl_users_mahasiswa.npm = $npm AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.jenis = '$jenis' AND tbl_users_mahasiswa.jurusan = seminar_sidang_komponen.id_prodi AND seminar_sidang_komponen.id = seminar_sidang_komponen_meta.id_komponen AND tugas_akhir.jenis = seminar_sidang_komponen.jenis ORDER BY seminar_sidang_komponen_meta.id");
+		return $query->result();
+	}
+
+	function get_komisi_seminar_id($id)
+	{
+		$query = $this->db->query("SELECT tugas_akhir_komisi.* FROM tugas_akhir_komisi, seminar_sidang WHERE seminar_sidang.id = $id AND seminar_sidang.id_tugas_akhir = tugas_akhir_komisi.id_tugas_akhir");
+		return $query->result();
+	}
+
+	function insert_seminar_nilai_check($data)
+	{
+		$this->db->trans_start();
+		$this->db->insert('seminar_sidang_nilai_check', $data);
+		$this->db->trans_complete();	
+	}
+
+	function insert_seminar_nilai($data)
+	{
+		$this->db->trans_start();
+		$this->db->insert('seminar_sidang_nilai', $data);
+		// $this->db->insert('seminar_sidang_nilai_check', $data_cek);
+		$this->db->trans_complete();	
+	}
+
+	function update_nilai_seminar_check($id,$status,$saran,$ttd)
+	{
+		$this->db->where('id_seminar', $id);
+		$this->db->where('status', $status);
+	    $this->db->update('seminar_sidang_nilai_check', array('saran' => $saran, 'ket' => '1','ttd' => $ttd));
 	}
 }
