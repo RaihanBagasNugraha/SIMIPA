@@ -119,7 +119,11 @@ class Pdf_TA extends CI_Controller {
             case "undangan_seminar_dosen":
                 $user = $this->input->get('user');
                 $this->undangan_seminar_dosen($seminar,$jurusan,$ta_seminar,$user);
-                break;              
+                break; 
+            case "undangan_dosen_alter":
+                $status = $this->input->get('status');
+                $this->undangan_dosen($seminar,$jurusan,$ta_seminar,$status);
+                break;                    
         }
 
     }
@@ -1488,6 +1492,202 @@ class Pdf_TA extends CI_Controller {
         $type = 'Fixed';
         $mhs = $this->ta_model->get_mahasiswa_detail($ta_seminar->npm);
         $kom = $this->ta_model->get_komisi_by_id($ta_seminar->id_pengajuan,$user);
+
+        if($seminar->status == 7 || $seminar->status == 4){
+            $koor_approve  = $this->ta_model->get_ttd_approval_seminar($seminar->id,'Koordinator');
+            $koor_data = $this->user_model->get_dosen_data($koor_approve->id_user);
+        }
+        if($seminar->status == 4){
+            $kajur_approve  = $this->ta_model->get_ttd_approval_seminar($seminar->id,'Ketua Jurusan');
+            $kajur_data = $this->user_model->get_dosen_data($kajur_approve->id_user);
+        }
+
+        
+
+        $dates = substr("$seminar->created_at",0,10);
+        $dates = explode('-',$dates);
+        $bulan = $this->get_month($dates[1]);
+
+        $pdf = new FPDF('P','mm','A4');
+        $spasi = 6;
+        $bullet = chr(149);
+
+        $jurusan_upper = strtoupper($jurusan);
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode,$type);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+
+
+            $pdf->AddPage('P');
+            $pdf->SetFont('Times','B',11);
+            $pdf->MultiCell(150, $spasi, "UNDANGAN SEMINAR ".strtoupper($seminar->jenis)."\nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",1,'C',false); 
+            $pdf->SetFont('Times','',11);
+            $pdf->Ln(3);
+            $pdf->Cell(150, $spasi,"NO: ".$seminar->no_undangan, 0, 0, 'C');
+            $pdf->Ln(15);
+
+            $pdf->Cell(150, $spasi,"Kepada Yth.", 0, 0, 'L');
+            $pdf->Ln(8);
+            $pdf->Cell(150, $spasi,"Bapak/Ibu/Sdr/i ".$kom->nama, 0, 0, 'L');
+            $pdf->Ln(8);
+
+            $pdf->Cell(150, $spasi,"Di Tempat", 0, 0, 'L');
+            $pdf->Ln(15);
+            $pdf->Cell(150, $spasi,"Dengan Hormat,", 0, 0, 'L');
+            $pdf->Ln(8);
+            $pdf->MultiCell(150, $spasi, 'Bersama ini kami mengundang Bapak/Ibu/Sdr/i, untuk menghadiri '.$seminar->jenis.' penelitian oleh mahasiswa berikut sebagai',0,'J',false);
+            $pdf->Ln(4);
+            
+            $pdf->SetFont('Times','B',11);
+            $pdf->Cell(150, $spasi,"$kom->status_slug", 0, 0, 'L');
+            $pdf->Ln(10);
+            $pdf->SetFont('Times','',11);
+            $pdf->SetWidths(array(30,5, 100));
+            $pdf->SetAligns(array('L','C','J'));
+            $pdf->RowNoBorder(array('Nama / NPM',':',$mhs->name.' / '.$mhs->npm));
+            $pdf->Ln(4);
+            $pdf->SetWidths(array(30,5, 100));
+            $pdf->SetAligns(array('L','C','J'));
+            if($ta_seminar->judul_approve == 1){
+                $pdf->RowNoBorder(array('Judul Skripsi',':',$ta_seminar->judul1));
+            }
+            elseif($ta_seminar->judul_approve == 2){
+                $pdf->RowNoBorder(array('Judul Skripsi',':',$ta_seminar->judul2));
+            }
+            $pdf->Ln(4);
+            $pdf->Cell(150, $spasi,'Pelaksanaan '.$seminar->jenis.' :', 0, 0, 'L');
+            $pdf->Ln(8);
+
+            $pdf->SetWidths(array(30,5, 100));
+            $pdf->SetAligns(array('L','C','J'));
+            $tgl = explode('-',$seminar->tgl_pelaksanaan);
+            $pdf->RowNoBorder(array('Hari / Tanggal',':',$hari.' / '.$tgl[2].'-'.$tgl[1].'-'.$tgl[0]));
+            $pdf->Ln(4);
+
+            $pdf->SetWidths(array(30,5, 100));
+            $pdf->SetAligns(array('L','C','J'));
+            $pdf->RowNoBorder(array('Waktu',':',$seminar->waktu_pelaksanaan.' WIB'));
+            $pdf->Ln(4);
+            
+            $pdf->SetWidths(array(30,5, 100));
+            $pdf->SetAligns(array('L','C','J'));
+            $pdf->RowNoBorder(array('Tempat',':',$seminar->tempat));
+
+            $pdf->Ln(7);
+            $pdf->Cell(150, $spasi,"Bandar Lampung, ".$dates[2]." ".$bulan." ".$dates[0]."", 0, 0, 'R');
+            $pdf->Ln(7);
+
+            $pdf->Cell(90, $spasi,"Mengetahui,", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Menyetujui,", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            if($seminar->status == 3){
+                $pdf->Cell(90, $spasi,"Ketua Jurusan ".$jurusan, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"Koordinator ".$seminar->jenis, 0, 0, 'L');
+                $pdf->Ln(30);
+
+                $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+                $pdf->Cell(30, $spasi,'', 0, 0, 'L');
+                $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ", 0, 0, 'L');
+                $pdf->Ln(5);
+            }
+
+            elseif($seminar->status == 7){
+                $pdf->Cell(90, $spasi,"Ketua Jurusan ".$jurusan, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"Koordinator ".$seminar->jenis, 0, 0, 'L');
+                $pdf->Ln(5);
+
+                //ttd
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+
+                $pdf->Ln(25);
+                $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
+                $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
+                $pdf->Ln(5);
+            }
+
+            elseif($seminar->status == 4){
+                $pdf->Cell(90, $spasi,"Ketua Jurusan ".$jurusan, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"Koordinator ".$seminar->jenis, 0, 0, 'L');
+                $pdf->Ln(5);
+
+                //ttd
+                $pdf->Cell(90, $spasi,$pdf->Image("$kajur_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+
+                $pdf->Ln(25);
+                $pdf->Cell(90, $spasi,$kajur_data->name, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
+                $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
+                $pdf->Ln(5);
+            }
+
+        
+        $pdf->Output();
+    }
+
+    function undangan_dosen($seminar,$jurusan,$ta_seminar,$status)
+    {
+        $date = strtotime($seminar->tgl_pelaksanaan);
+        $date = date('l', $date);
+        $hari = $this->get_day($date);
+
+        switch($jurusan)
+        {
+            case "Doktor MIPA":
+            $numPage = '';
+            break;
+            case "Kimia":
+            $numPage = '/SOP/MIPA/7.1/II/12';
+            break;
+            case "Biologi":
+            $numPage = '/SOP/FMIPA/7.2/IV/01';
+            break;
+            case "Matematika":
+            $numPage = '/PM/MIPA/3/08';
+            break;
+            case "Fisika":
+            $numPage = '/SOP/MIPA/17.04/II/12/001';
+            break;
+            case "Ilmu Komputer":
+            $numPage = '/SOP/MIPA/7.5/II/11/002';
+            break;
+        }
+
+        switch($status)
+        {
+            case "pb2":
+            $status = 'Pembimbing 2';
+            break;
+            case "pb3":
+            $status = 'Pembimbing 3';
+            break;
+            case "ps1":
+            $status = 'Penguji 1';
+            break;
+            case "ps2":
+            $status = 'Penguji 2';
+            break;
+            case "ps3":
+            $status = 'Penguji 3';
+            break;
+        }
+        
+        $kode = 3;
+        $type = 'Fixed';
+        $mhs = $this->ta_model->get_mahasiswa_detail($ta_seminar->npm);
+        $kom = $this->ta_model->get_komisi_by_status_slug($ta_seminar->id_pengajuan,$status);
 
         if($seminar->status == 7 || $seminar->status == 4){
             $koor_approve  = $this->ta_model->get_ttd_approval_seminar($seminar->id,'Koordinator');

@@ -970,6 +970,12 @@ class Ta_model extends CI_Model
 		$query = $this->db->query('SELECT * FROM tugas_akhir_approval, tugas_akhir_komisi WHERE tugas_akhir_approval.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND (tugas_akhir_approval.status_slug LIKE "Pembimbing%" OR tugas_akhir_approval.status_slug LIKE "Penguji%") AND tugas_akhir_approval.status_slug NOT LIKE "Pembimbing Akademik" AND tugas_akhir_approval.id_user = tugas_akhir_komisi.id_user AND tugas_akhir_approval.id_pengajuan ='.$id.' AND tugas_akhir_approval.id_user ='.$user);
 		return $query->row();
 	}
+
+	function get_komisi_by_status_slug($id,$status)
+	{
+		$query = $this->db->query("SELECT * FROM tugas_akhir_approval, tugas_akhir_komisi WHERE tugas_akhir_approval.id_pengajuan = $id AND tugas_akhir_approval.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND tugas_akhir_komisi.status = '$status' AND tugas_akhir_komisi.status = tugas_akhir_approval.status_slug");
+		return $query->row();
+	}
 	
 	function get_tgl_acc($id)
 	{
@@ -1061,15 +1067,39 @@ class Ta_model extends CI_Model
 		return $query->row();
 	}
 
+	function get_komisi_seminar_alter($token)
+	{
+		$query = $this->db->query("SELECT tugas_akhir.*, seminar_sidang.*, tugas_akhir.jenis, tugas_akhir_komisi.status, tugas_akhir_komisi.nip_nik, tugas_akhir_komisi.nama FROM seminar_sidang_approval_alternatif, seminar_sidang, tugas_akhir_komisi, tugas_akhir WHERE seminar_sidang_approval_alternatif.token = '$token' AND seminar_sidang_approval_alternatif.id_seminar = seminar_sidang.id AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND tugas_akhir_komisi.status = seminar_sidang_approval_alternatif.status AND seminar_sidang.status = 4");
+		return $query->row();
+	}
+
 	function cek_token($token)
 	{
 		$query = $this->db->query("SELECT * FROM tugas_akhir_komisi_alternatif WHERE token = '$token' AND ket = 0");
 		return $query->row();
 	}
 
+	function cek_token_seminar($token)
+	{
+		$query = $this->db->query("SELECT * FROM seminar_sidang_approval_alternatif WHERE token = '$token' AND ket = 0");
+		return $query->row();
+	}
+
 	function get_komisi_alter_id($id)
 	{
 		$query = $this->db->query("SELECT * FROM `tugas_akhir_komisi_alternatif` WHERE id_tugas_akhir = $id AND ket = 0");
+		return $query->result();
+	}
+
+	function get_komisi_seminar_alter_id($id)
+	{
+		$query = $this->db->query("SELECT * FROM `seminar_sidang_approval_alternatif` WHERE id_seminar = $id AND ket = 0");
+		return $query->result();
+	}
+
+	function get_komisi_alter_seminar_id($id)
+	{
+		$query = $this->db->query("SELECT * FROM `tugas_akhir_komisi_alternatif` WHERE id_tugas_akhir = $id AND ket = 1");
 		return $query->result();
 	}
 
@@ -1171,5 +1201,29 @@ class Ta_model extends CI_Model
 		$this->db->where('id_seminar', $id);
 		$this->db->where('status', $status);
 	    $this->db->update('seminar_sidang_nilai_check', array('saran' => $saran, 'ket' => '1','ttd' => $ttd));
+	}
+
+	function cek_seminar_nilai_fill($id)
+	{
+		$query = $this->db->query("SELECT * FROM seminar_sidang_nilai_check WHERE id_seminar = $id AND ket = 0");
+		return $query->result();
+	}
+
+	function seminar_sidang_nilai_dosen_update($id)
+	{
+		$this->db->where('id', $id);
+	    $this->db->update('seminar_sidang', array('status' => '8'));
+	}
+
+	function insert_seminar_approval_alter($data)
+	{	
+		$this->db->insert('seminar_sidang_approval_alternatif', $data);	
+	}
+
+	function seminar_sidang_komisi_alter_update($id,$token)
+	{
+		$this->db->where('id_seminar', $id);
+		$this->db->where('token', $token);
+	    $this->db->update('seminar_sidang_approval_alternatif', array('ket' => '1'));
 	}
 }

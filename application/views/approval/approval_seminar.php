@@ -1,4 +1,3 @@
-
 <div class="app-page-title">
                         <div class="page-title-wrapper">
                                 <div class="page-title-heading">
@@ -6,8 +5,8 @@
                                         <i class="pe-7s-file icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Formulir Penilaian Seminar/Sidang
-                                        <div class="page-title-subheading">
+                                    <div>Approval Tema Penelitian
+                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan Tema Penelitian
                                         </div>
                                     </div>
                                 </div>
@@ -28,25 +27,27 @@
                         <div class="row">
                         <div class="col-md-12">
                          <div class="main-card mb-3 card">
-                                <div class="card-header">Form Penilaian</div>
+                                <div class="card-header">Approval Tema Penelitian</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('dosen/tugas-akhir/nilai-seminar/save') ?>" >
-                                    <input value="<?php echo $seminar->id ?>" type = "hidden" required name="id" id="id">
-                                    <input value="<?php echo $status ?>" type = "hidden" required name="status" id="status">
+                                <form method="post" action="<?php echo site_url('approval/simpan-seminar') ?>" >
+                                    <input value="<?php echo $smr->id ?>" type = "hidden" required name="id" id="id">
+                                    <input value="<?php echo $_GET['token'] ?>" type = "hidden" required name="token" id="token">
+                                    
+
 
                                     <!-- NPM -->
                                     <div class="position-relative row form-group">
-                                        <label class="col-sm-3 col-form-label"><b>Npm</b></label>
-                                        <div class="col-sm-3">
-                                            <input value="<?php echo $ta->npm ?>" required name="npm" class="form-control input-mask-trigger" readonly >
-                                        </div>
+                                            <label class="col-sm-3 col-form-label"><b>Npm</b></label>
+                                            <div class="col-sm-3">
+                                                <input value="<?php echo $smr->npm ?>" required name="npm" class="form-control input-mask-trigger" readonly >
+                                            </div>
                                     </div>
 
                                      <!-- NAMA -->
                                      <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label"><b>Nama</b></label>
                                             <div class="col-sm-9">
-                                                <input value="<?php echo $this->user_model->get_mahasiswa_name($ta->npm) ?>" required name="nama" class="form-control input-mask-trigger" readonly >
+                                                <input value="<?php echo $this->user_model->get_mahasiswa_name($smr->npm) ?>" required name="nama" class="form-control input-mask-trigger" readonly >
                                             </div>
                                     </div>
 
@@ -54,10 +55,10 @@
                                      <div class="position-relative row form-group">
                                             <label for="prodi" class="col-sm-3 col-form-label" ><b>Judul</b></label>
                                             <div class="col-sm-9">
-                                                <?php if($ta->judul_approve == 1){?>
-                                                    <textarea required name="judul" class="form-control" readonly placeholder="Judul Utama" id="inputother"><?php echo $ta->judul1 ?></textarea>
-                                                <?php } elseif($ta->judul_approve == 2){?>
-                                                    <textarea required name="judul" class="form-control" readonly placeholder="Judul Utama" id="inputother"><?php echo $ta->judul2 ?></textarea>
+                                                <?php if($smr->judul_approve == 1){?>
+                                                    <textarea required name="judul" class="form-control" readonly placeholder="Judul Utama" id="inputother"><?php echo $smr->judul1 ?></textarea>
+                                                <?php } elseif($smr->judul_approve == 2){?>
+                                                    <textarea required name="judul" class="form-control" readonly placeholder="Judul Utama" id="inputother"><?php echo $smr->judul2 ?></textarea>
                                                 <?php } ?>
                                             </div>
                                     </div>
@@ -66,15 +67,58 @@
                                     <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label"><b>Status</b></label>
                                             <div class="col-sm-9">
-                                                <input value="<?php echo $status ?>" required name="status" class="form-control" readonly >
+                                                <input value="<?php echo $smr->status ?>" required name="status" class="form-control" readonly >
+                                            </div>
+                                    </div>
+
+                                     <!-- Lampiran -->
+                                     <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Lampiran</b></label>
+                                            <div class="col-sm-3">
+                                                <?php
+                                                    switch($smr->status){
+                                                        case "Pembimbing 2":
+                                                            $sts = "pb2";
+                                                        break;
+                                                        case "Pembimbing 3":
+                                                            $sts = "pb3";
+                                                        break;
+                                                        case "Penguji 1":
+                                                            $sts = "ps1";
+                                                        break;
+                                                        case "Penguji 2":
+                                                            $sts = "ps2";
+                                                        break;
+                                                        case "Penguji 3":
+                                                            $sts = "ps3";
+                                                        break;
+                                                    }
+
+                                                    $lampiran = $this->ta_model->select_lampiran_by_seminar($smr->id);
+                                                    if(empty($lampiran)) {
+                                                        echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
+                                                    } else {
+                                                        echo "<ul style='margin-left: -20px;'>";
+                                                            if($smr->jenis != 'Seminar Tugas Akhir'){
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_dosen_alter&id=$smr->id&status=$sts").">Undangan Seminar</a></li>";
+
+                                                            }
+                                                        foreach($lampiran as $rw) {
+                                                            $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
+                                                            echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
+                                                        }
+        
+                                                        echo "</ul>";
+                                                    }
+                                                ?>
                                             </div>
                                     </div>
 
                                     <br>
                                     <h5><b>Form Nilai</b></h5>                
                                     <br>
-                                    <?php $komposisi = $this->ta_model->get_komponen_nilai_meta($ta->npm,$ta->jenis); ?>
-
+                                    <?php $komposisi = $this->ta_model->get_komponen_nilai_meta($smr->npm,$smr->jenis); ?>
+                                     
                                     <table class="mb-0 table table-striped">
                                         <thead>
                                             <tr>
@@ -100,7 +144,7 @@
 
                                     <input value="<?php echo $n ?>" type = "hidden" name="jml" id="jml">
                                     <input value="<?php echo $komposisi[1]->id_komponen ?>" type = "hidden" name="id_komponen">  
-                                    
+
                                     <br><br>            
                                     <!-- Saran -->
                                     <div class="position-relative row form-group">
@@ -110,10 +154,7 @@
                                             </div>
                                     </div>
 
-                                    
-
                                     <!-- TTD -->
-                                    <br>
                                     <div class="position-relative row form-group"><label for="ttd" class="col-sm-3 col-form-label"><b>Tanda Tangan Digital</b></label>
                                             <div class="col-sm-4">
                                             <canvas style="border: 1px solid #aaa; height: 200px; background-color: #efefef;" id="signature-pad" class="signature-pad col-sm-12" height="200px"></canvas>
@@ -143,6 +184,12 @@
                                     
                                         </div>
 
+                                    <?php 
+                                    $date_now = new DateTime();
+                                    $date_smr = new DateTime("$smr->tgl_pelaksanaan");
+                                    
+                                    if($date_now >= $date_smr){
+                                    ?>
                                     <div class="position-relative row form-group">
                                             <div class="col-sm-9 offset-sm-3">
                                             <button value="<?php if($this->input->get('aksi') == "ubah") echo "ubah"; ?>" type="submit" class="btn-shadow btn btn-info">
@@ -153,7 +200,12 @@
                                         </button>
                                             </div>
                                     </div>
-                                
+                                    <?php } 
+                                    else{
+                                        echo "<h5><span style='color:white;background-color:red;'>&nbsp;Waktu Penilaian Belum Dibuka&nbsp;</span></h5>";
+                                    }
+                                    
+                                    ?>
                                 </form>
 
 

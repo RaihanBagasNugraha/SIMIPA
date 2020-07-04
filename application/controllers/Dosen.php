@@ -792,8 +792,30 @@ class Dosen extends CI_Controller {
 
 		$this->ta_model->approve_seminar($id,$ttd,$status,$dosenid);
 		if($status == 'Koordinator'){
+			$id_ta = $data['id_ta'];
+
+			$komisi = $this->ta_model->get_komisi_alter_seminar_id($id_ta);
+
+			foreach($komisi as $kom)
+			{
+				$keys = "raihanbagasnugraha";
+				$date = date("Y-m-d H:i:s");
+				$token = md5($keys.$kom->nip_nik.$kom->status.$kom->nama.$date);
+
+				$data_approval = array(
+					'id_seminar' => $id,
+					'status' => $kom->status,
+					'nip_nik' => $kom->nip_nik,
+					'nama' => $kom->nama,
+					'email' => $kom->email,	
+					'token' => $token	
+				);
+				$this->ta_model->insert_seminar_approval_alter($data_approval);
+			}
+
 			redirect(site_url("dosen/tugas-akhir/seminar/koordinator"));
 		}
+
 		elseif($status == 'kajur'){
 			$data = $this->ta_model->get_komisi_seminar_id($id);
 
@@ -805,6 +827,43 @@ class Dosen extends CI_Controller {
 					'id_seminar' => $id,	
 				);
 				$this->ta_model->insert_seminar_nilai_check($data_cek);
+			}
+
+		$alter = $this->ta_model->get_komisi_seminar_alter_id($id);
+
+		//send email
+		if(!empty($alter)){
+			$config = Array(  
+				'protocol' => 'smtp',  
+				'smtp_host' => 'ssl://smtp.googlemail.com',  
+				'smtp_port' => 465,  
+				'smtp_user' => 'irishia02@gmail.com',   
+				'smtp_pass' => 'bagas123',   
+				'mailtype' => 'html',   
+				'charset' => 'iso-8859-1'  
+			);  
+			
+			foreach($alter as $row){
+					$this->load->library('email', $config);
+					$this->email->set_newline("\r\n");  
+					$this->email->from('simipa@gmail.com', 'SIMIPA');   
+					$this->email->to($row->email);   
+					$this->email->subject('Penilaian Seminar/Sidang Fakultas Matematika dan Ilmu Pengetahuan Alam');   
+					$this->email->message("
+					Kepada Yth. $row->nama
+					<br>
+					Untuk Melakukan Penilaian Seminar/Sidang Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai $row->status Silahkan Klik Link Berikut :<br>
+					http://localhost/simipa/approval/seminar?token=$row->token
+					<br><br>
+					Terimakasih.
+					
+					");
+					if (!$this->email->send()) {  
+						echo "error";   
+					}else{  
+						
+					}   
+				}
 			}
 
 			redirect(site_url("dosen/struktural/seminar"));
@@ -1403,6 +1462,7 @@ class Dosen extends CI_Controller {
 		$data = $this->input->post();
 		// echo "<pre>";
 		// print_r($data);
+		
 
 		$id = $data['id'];
 		$status = $data['status'];
@@ -1415,6 +1475,10 @@ class Dosen extends CI_Controller {
 		$nilai = $data['nilai'];
 		$attribut = $data['attribut'];
 
+		$counts = $this->ta_model->cek_seminar_nilai_fill($id);
+		$count = count($counts);
+
+		// echo $count;
 		for($i=1;$i<$jml;$i++)
 		{
 			$data = array(
@@ -1426,9 +1490,11 @@ class Dosen extends CI_Controller {
 			);
 			$this->ta_model->insert_seminar_nilai($data);
 		}
+		if($count == 1){
+			$this->ta_model->seminar_sidang_nilai_dosen_update($id);
+		}
 
 		$this->ta_model->update_nilai_seminar_check($id,$status,$saran,$ttd);
-		
 		redirect(site_url("dosen/tugas-akhir/nilai-seminar"));
 	}
 	

@@ -52,6 +52,7 @@ class Approval extends CI_Controller {
 
     function send()  
     {  
+
         $config = Array(  
             'protocol' => 'smtp',  
             'smtp_host' => 'ssl://smtp.googlemail.com',  
@@ -72,7 +73,72 @@ class Approval extends CI_Controller {
            }else{  
             echo 'Success to send email';   
            }  
-          }  
+    }  
+
+
+    
+    function approval_seminar()
+    {
+        $token = $this->input->get('token');
+
+        $check = $this->ta_model->cek_token_seminar($token);
+        if(!empty($check)){
+            $data['smr'] = $this->ta_model->get_komisi_seminar_alter($token);
+            $this->load->view('approval/header_global');
+            $this->load->view('approval/header');
+            $this->load->view('approval/approval_seminar',$data);
+            $this->load->view('footer_global');
+        }
+        else{
+            echo "<script>alert('Token Salah Atau Sudah Tidak Berlaku');javascript:history.back();</script>";
+        }
+    }
+
+    function simpan_seminar()
+    {
+        $data = $this->input->post();
+		// echo "<pre>";
+        // print_r($data);
+
+        $id = $data['id'];
+		$status = $data['status'];
+		$saran = $data['saran'];
+		$id_komponen = $data['id_komponen'];
+		$ttd = $data['ttd'];
+
+		$jml = $data['jml'];
+
+		$nilai = $data['nilai'];
+        $attribut = $data['attribut'];
+        $token = $data['token'];
+
+        $counts = $this->ta_model->cek_seminar_nilai_fill($id);
+		$count = count($counts);
+
+        for($i=1;$i<$jml;$i++)
+		{
+			$data = array(
+				'id_seminar_sidang' => $id,
+				'id_komponen' => $id_komponen,
+				'komponen' => $attribut[$i],
+				'nilai' => $nilai[$i],
+				'status' => $status,
+			);
+			$this->ta_model->insert_seminar_nilai($data);
+        }
+
+        $this->ta_model->update_nilai_seminar_check($id,$status,$saran,$ttd);
+		if($count == 1){
+			$this->ta_model->seminar_sidang_nilai_dosen_update($id);
+        }
+        $this->ta_model->seminar_sidang_komisi_alter_update($id,$token);
+        
+        echo "<script>window.alert('Approval Berhasil');
+        window.location='/simipa';</script>"; //ganti url
+    }
+
+
+
 }  
 
 

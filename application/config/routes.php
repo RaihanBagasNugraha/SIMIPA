@@ -137,7 +137,7 @@ $route['dosen/struktural/komposisi-nilai/nonaktifkan'] = 'dosen/komposisi_nilai_
 $route['dosen/struktural/komposisi-nilai/ubah'] = 'dosen/komposisi_nilai_ubah';
 $route['dosen/struktural/komposisi-nilai/edit'] = 'dosen/komposisi_nilai_edit';
 
-    //nilai semina dosen
+    //nilai seminar dosen
 $route['dosen/tugas-akhir/nilai-seminar'] = 'dosen/nilai_seminar';
 $route['dosen/tugas-akhir/nilai-seminar/add'] = 'dosen/nilai_seminar_add';
 $route['dosen/tugas-akhir/nilai-seminar/save'] = 'dosen/nilai_seminar_save';
@@ -196,3 +196,5 @@ $route['edit-item-pelanggaran/(:num)/(:num)'] = 'admin/edit_item_pelanggaran/$1/
 $route['approval/ta?(:any)'] = 'approval/approval_alter';
 $route['approval/simpan-ta'] = 'approval/simpan_data';
 $route['email-test'] = 'approval/send';
+$route['approval/seminar?(:any)'] = 'approval/approval_seminar';
+$route['approval/simpan-seminar'] = 'approval/simpan_seminar';

@@ -183,6 +183,10 @@
 
                                                         echo '<i>Menunggu Acc Ketua Jurusan</i>';
                                                 }            
+
+                                                if($row->status == '9'){
+                                                    echo '<i>Penilaian<br><br></i>';
+                                                }      
                                                 ?>
                                              </td>
                                              <td class="align-top">

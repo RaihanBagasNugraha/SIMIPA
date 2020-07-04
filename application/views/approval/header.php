@@ -1,6 +1,6 @@
 
 <ul class="vertical-nav-menu">
-                                <li class="app-sidebar__heading">Approval Tugas Akhir</li>
+                                <li class="app-sidebar__heading">Sistem Informasi Terpadu <br><br>Fakultas Matematika <br>dan Ilmu Pengetahuan Alam</li>
 
                             </ul>
                         </div> <!-- app-sidebar__inner -->
