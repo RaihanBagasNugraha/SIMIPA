@@ -184,7 +184,7 @@
                                                         echo '<i>Menunggu Acc Ketua Jurusan</i>';
                                                 }            
 
-                                                if($row->status == '9'){
+                                                if($row->status == '8'){
                                                     echo '<i>Penilaian<br><br></i>';
                                                 }      
                                                 ?>

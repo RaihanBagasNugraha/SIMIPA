@@ -1497,6 +1497,19 @@ class Dosen extends CI_Controller {
 		$this->ta_model->update_nilai_seminar_check($id,$status,$saran,$ttd);
 		redirect(site_url("dosen/tugas-akhir/nilai-seminar"));
 	}
+
+	function nilai_seminar_koor()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->ta_model->get_approval_nilai_seminar_koordinator($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/nilai_seminar/nilai_seminar',$data);
+		
+		$this->load->view('footer_global');
+	}
 	
 
 }

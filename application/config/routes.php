@@ -142,6 +142,8 @@ $route['dosen/tugas-akhir/nilai-seminar'] = 'dosen/nilai_seminar';
 $route['dosen/tugas-akhir/nilai-seminar/add'] = 'dosen/nilai_seminar_add';
 $route['dosen/tugas-akhir/nilai-seminar/save'] = 'dosen/nilai_seminar_save';
 
+$route['dosen/tugas-akhir/nilai-seminar/koordinator'] = 'dosen/nilai_seminar_koor';
+
     //rekap koor
 $route['dosen/koordinator/rekap/tugas-akhir'] = 'dosen/rekap_ta';
 $route['dosen/koordinator/rekap/seminar'] = 'dosen/rekap_seminar_koor';

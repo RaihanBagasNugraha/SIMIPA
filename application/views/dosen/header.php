@@ -142,6 +142,12 @@
                                                 </i>Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_koor > 0 ? $smr_koor : "" ?></span>
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/tugas-akhir/nilai-seminar/koordinator") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "nilai-seminar" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Nilai Seminar/Sidang 
+                                            </a>
+                                        </li>
                                        
                                     </ul>
                                 </li>
