@@ -8,7 +8,7 @@
                                         </i>
                                     </div>
                                     <div>Approval Nilai Seminar
-                                        <div class="page-title-subheading">
+                                        <div class="page-title-subheading"><?php  ?>
                                         </div>
                                     </div>
                                 </div>
@@ -73,26 +73,23 @@
                                                 </td>
                                                 <td class="align-top">
                                                 <?php 
-                                                $lampiran = $this->ta_model->select_lampiran_by_seminar($row->id);
-                                                    if(empty($lampiran)) {
-                                                        echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
-                                                    } else {
+                                                // $lampiran = $this->ta_model->select_lampiran_by_seminar($row->id);
+                                                   
                                                         echo "<ul style='margin-left: -20px;'>";
                                                         if($row->jenis != 'Seminar Tugas Akhir'){
-                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";
                                                         }
-                                                            foreach($lampiran as $rw) {
-                                                                $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
-                                                                    echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
-                                                                }
-                                                                    echo "</ul>";
-                                                                }
+
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$row->id").">Berita Acara</a></li>";
+                                                            
+                                                        echo "</ul>";
+                                                               
                                                 ?>
 
                                                 </td>
                                                 <td class="align-top"> 
 
-                                                <a href="#" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Approve
+                                                <a href="<?php echo base_url("dosen/tugas-akhir/nilai-seminar/koordinator/form/?id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Approve
                                                 </a>
                                                 </td>
                                             </tr>

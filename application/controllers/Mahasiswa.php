@@ -213,9 +213,12 @@ class Mahasiswa extends CI_Controller {
 		$data['biodata'] = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 3)->row();
 		$data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
 		
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
 		if($this->input->get('aksi') == "ubah")
 		{
-			$ta = $this->ta_model->select_ta_by_id($this->input->get('id'), $this->session->userdata('username'));
+			$ta = $this->ta_model->select_ta_by_id($id, $this->session->userdata('username'));
 			$data_ta = $ta[0];
 		}
 		else
@@ -247,8 +250,10 @@ class Mahasiswa extends CI_Controller {
 
 	function form_tugas_akhir_lampiran()
 	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['lampiran'] = $this->ta_model->select_lampiran_by_ta($this->input->get('id'), $this->session->userdata('username'));
+		$data['lampiran'] = $this->ta_model->select_lampiran_by_ta($id, $this->session->userdata('username'));
 		$data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
 		
 
@@ -494,10 +499,11 @@ class Mahasiswa extends CI_Controller {
 		$data_ta = $this->ta_model->get_approved_ta($this->session->userdata('username'));
 		$data['ta'] = $data_ta[0];
 		// $data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
-
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 		if($this->input->get('aksi') == "ubah")
 		{
-			$ta = $this->ta_model->select_seminar_by_id($this->input->get('id'));
+			$ta = $this->ta_model->select_seminar_by_id($id);
 			$data_seminar = $ta[0];
 		}
 		else
@@ -527,8 +533,10 @@ class Mahasiswa extends CI_Controller {
 
 	function lampiran_seminar()
 	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['lampiran'] = $this->ta_model->select_lampiran_by_seminar($this->input->get('id'));
+		$data['lampiran'] = $this->ta_model->select_lampiran_by_seminar($id);
 		// $data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
 		
 		// print_r($data);

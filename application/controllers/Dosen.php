@@ -12,6 +12,8 @@ class Dosen extends CI_Controller {
 		$this->load->model('user_model');
 		$this->load->model('ta_model');
 		$this->load->library('pdf');
+		$this->load->library('encrypt');
+
 		
 		if($this->session->has_userdata('username')) {
 		    if($this->session->userdata('state') <> 2) {
@@ -492,6 +494,7 @@ class Dosen extends CI_Controller {
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 
 		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 		$aksi = $this->input->get('aksi');
 		$jenis = $this->input->get('jenis');
 		// echo "<pre>";
@@ -531,6 +534,7 @@ class Dosen extends CI_Controller {
 		$data['ta'] = $this->ta_model->get_approval_ta_koordinator($this->session->userdata('userId'));
 
 		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 		$aksi = $this->input->get('aksi');
 
 		$data['ta'] = $this->ta_model->get_ta_by_id($id);
@@ -550,6 +554,8 @@ class Dosen extends CI_Controller {
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 
 		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
 		$aksi = $this->input->get('aksi');
 
 		$data['ta'] = $this->ta_model->get_ta_by_id($id);
@@ -568,6 +574,7 @@ class Dosen extends CI_Controller {
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 
 		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 		$seminar = $this->ta_model->get_seminar_by_id($id);
 		$data['status'] = "kajur";
 		$data['seminar'] = $seminar[0];
@@ -904,6 +911,7 @@ class Dosen extends CI_Controller {
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 
 		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 		$status = $this->input->get('status');
 		// echo "<pre>";
 		// print_r($id);
@@ -927,6 +935,7 @@ class Dosen extends CI_Controller {
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 
 		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 		$status = $this->input->get('status');
 		// echo "<pre>";
 		// print_r($id);
@@ -1252,6 +1261,7 @@ class Dosen extends CI_Controller {
 	function komponen_nilai()
 	{
 		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		$data['komponen'] = $this->ta_model->get_komposisi_nilai_id($id);
@@ -1278,6 +1288,7 @@ class Dosen extends CI_Controller {
 	function komposisi_nilai_ubah()
 	{
 		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		$data['komponen'] = $this->ta_model->get_komposisi_nilai_id($id);
@@ -1510,6 +1521,37 @@ class Dosen extends CI_Controller {
 		
 		$this->load->view('footer_global');
 	}
+
+	function nilai_seminar_koor_approve()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->ta_model->get_seminar_id($id);
+		$data['ta'] = $this->ta_model->get_tugas_akhir_seminar_id($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/nilai_seminar/nilai_seminar_approve',$data);
+		
+		$this->load->view('footer_global');
+
+	}
+
+	function encrypt($string)
+	{
+		$result = $this->encrypt->encode($string);
+		return $result;
+	}
+	function decrypt($string)
+	{
+		$result = $this->encrypt->decode($string);
+		return $result;
+	}
+
+	
 	
 
 }

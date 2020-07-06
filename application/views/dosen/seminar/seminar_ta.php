@@ -144,7 +144,7 @@
                                                                 <td class="align-top"><b><?php echo $row->status_slug ?></b></td>
                                                                 <td class="align-top">
 
-                                                                <a href="<?php echo site_url('dosen/tugas-akhir/seminar/approve-seminar/form?status=pb1&id='.$row->id) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                                <a href="<?php echo site_url('dosen/tugas-akhir/seminar/approve-seminar/form?status=pb1&id='.$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                                 </a>
         
                                                                

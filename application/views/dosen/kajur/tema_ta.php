@@ -122,7 +122,7 @@
                                                 ?></td>
                                                 <td class="align-top">
 
-                                                <a href="<?php echo site_url("dosen/struktural/tema/form?id=".$row->id_pengajuan) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                <a href="<?php echo site_url("dosen/struktural/tema/form?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                 </a>
                                                 </td>
                                             </tr>

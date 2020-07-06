@@ -126,6 +126,9 @@ class Pdf_TA extends CI_Controller {
                 break;   
             case "penilaian_seminar":
                 $this->penilaian_seminar($seminar,$jurusan,$ta_seminar);
+                break;    
+            case "berita_acara":
+                $this->berita_acara($seminar,$jurusan,$ta_seminar);
                 break;                     
         }
 
@@ -1985,6 +1988,11 @@ class Pdf_TA extends CI_Controller {
         }
 
             $pdf->Output();
+    }
+
+    function berita_acara($seminar,$jurusan,$ta_seminar)
+    {
+
     }
 }
 

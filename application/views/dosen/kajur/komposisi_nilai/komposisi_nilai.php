@@ -80,7 +80,7 @@
                                                     <?php echo $row->tahun_akademik;?>
                                                 </td>
                                                 <td class="align-top">
-                                                    <a href=<?php echo site_url("dosen/struktural/komposisi-nilai/komponen?id=$row->id") ?>><label class = "btn btn-primary"><?php echo "Komponen Nilai";?></label></a>
+                                                    <a href=<?php echo site_url("dosen/struktural/komposisi-nilai/komponen?id=".$this->encrypt->encode($row->id)) ?>><label class = "btn btn-primary"><?php echo "Komponen Nilai";?></label></a>
                                                 </td>
                                                 <td class="align-top">
                                                     <?php echo $row->status == 0 ? "Aktif" : "Nonaktif";?>
@@ -88,7 +88,7 @@
                                                 <td class="align-top">
 
                                                 <?php if($row->status != 1){?>
-                                                    <a href=<?php echo site_url("dosen/struktural/komposisi-nilai/ubah?id=$row->id") ?>><label class = "btn-wide mb-2 btn btn-warning btn-sm btn-block"><?php echo "Ubah";?></label></a>
+                                                    <a href=<?php echo site_url("dosen/struktural/komposisi-nilai/ubah?id=".$this->encrypt->encode($row->id)) ?>><label class = "btn-wide mb-2 btn btn-warning btn-sm btn-block"><?php echo "Ubah";?></label></a>
 
                                                     <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="passingID" >
                                                         <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#nonaktifkan">

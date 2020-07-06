@@ -276,7 +276,7 @@
                                                                 ?></td>
                                                                 <td class="align-top">
                 
-                                                                <a href="<?php echo site_url("dosen/tugas-akhir/tema/approve-ta/form?jenis=$ket&id=".$row->id_pengajuan) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                                <a href="<?php echo site_url("dosen/tugas-akhir/tema/approve-ta/form?jenis=$ket&id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                                 </a>
         
                                                                 <!-- <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan."#$#$"."kom" ?>" class="passingID5" >
