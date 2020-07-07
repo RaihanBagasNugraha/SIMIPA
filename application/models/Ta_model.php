@@ -964,6 +964,12 @@ class Ta_model extends CI_Model
 		return $query->result();
 	}
 
+	function count_pembimbing_seminar($id)
+	{
+		$query = $this->db->query('SELECT COUNT(*) as count FROM tugas_akhir_approval, tugas_akhir_komisi WHERE tugas_akhir_approval.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND (tugas_akhir_approval.status_slug LIKE "Pembimbing%") AND tugas_akhir_approval.status_slug NOT LIKE "Pembimbing Akademik" AND tugas_akhir_approval.id_user = tugas_akhir_komisi.id_user AND tugas_akhir_approval.status_slug = tugas_akhir_komisi.status AND tugas_akhir_approval.id_pengajuan ='.$id);
+		return $query->row();
+	}
+
 	function get_komisi_by_id($id,$user)
 	{
 		$query = $this->db->query('SELECT * FROM tugas_akhir_approval, tugas_akhir_komisi WHERE tugas_akhir_approval.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND (tugas_akhir_approval.status_slug LIKE "Pembimbing%" OR tugas_akhir_approval.status_slug LIKE "Penguji%") AND tugas_akhir_approval.status_slug NOT LIKE "Pembimbing Akademik" AND tugas_akhir_approval.id_user = tugas_akhir_komisi.id_user AND tugas_akhir_approval.id_pengajuan ='.$id.' AND tugas_akhir_approval.id_user ='.$user);
@@ -1251,16 +1257,40 @@ class Ta_model extends CI_Model
 		return $query->result();
 	}
 
+	function get_komponen_nilai_seminar_all($id,$status)
+	{
+		$query = $this->db->query("SELECT * FROM seminar_sidang_nilai JOIN seminar_sidang_komponen_meta ON seminar_sidang_nilai.komponen = seminar_sidang_komponen_meta.id WHERE id_seminar_sidang = $id AND seminar_sidang_nilai.status = '$status'");
+		return $query->result();
+	}
+
 	function get_unsur_distinct($id_komponen)
 	{
 		$query = $this->db->query("SELECT DISTINCT unsur FROM `seminar_sidang_komponen_meta` WHERE id_komponen = $id_komponen");
 		return $query->result();
 	}
 
+	function get_id_komponen_seminar($id_seminar)
+	{
+		$query = $this->db->query("SELECT DISTINCT id_komponen FROM `seminar_sidang_nilai` WHERE id_seminar_sidang = $id_seminar");
+		return $query->row();
+	}
+
+	function select_komponen_seminar_id($id)
+	{
+		$query = $this->db->query("SELECT * FROM `seminar_sidang_komponen` WHERE id = $id");
+		return $query->row();
+	}
+
 	function get_komisi_seminar_data($id,$status)
 	{
 		$query = $this->db->query("SELECT tugas_akhir_komisi.* FROM tugas_akhir_komisi, seminar_sidang WHERE seminar_sidang.id = $id AND seminar_sidang.id_tugas_akhir = tugas_akhir_komisi.id_tugas_akhir AND tugas_akhir_komisi.status = '$status'");
 		return $query->row();
+	}
+
+	function get_seminar_nilai_check_by_status($id,$status)
+	{
+		$query = $this->db->query("SELECT * FROM seminar_sidang_nilai_check WHERE seminar_sidang_nilai_check.status = '$status' AND seminar_sidang_nilai_check.id_seminar = $id");
+		return $query->row();	
 	}
 
 	
