@@ -31,12 +31,10 @@
                          <div class="main-card mb-3 card">
                                 <div class="card-header">Approval Nilai Seminar</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('dosen/tugas-akhir/nilai-seminar/koordinator/approve') ?>" >
+                                <form method="post" action="<?php echo site_url('dosen/struktural/nilai-seminar/kajur/approve') ?>" >
                                     <input value="<?php echo $seminar->id ?>" type = "hidden" required name="id" id="id">
                                     <input value="<?php echo $seminar->id_tugas_akhir ?>" type = "hidden" required name="id_ta" id="id">
                                    
-
-
                                     <!-- NPM -->
                                     <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label"><b>Npm</b></label>

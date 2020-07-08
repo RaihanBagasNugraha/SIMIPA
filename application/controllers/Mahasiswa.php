@@ -12,7 +12,7 @@ class Mahasiswa extends CI_Controller {
 		$this->load->model('user_model');
 		$this->load->model('ta_model');
 		$this->load->library('pdf');
-		$this->load->library('encryption');
+		$this->load->library('encrypt');
 		// $this->load->library('encryption');
 		
 		if($this->session->has_userdata('username')) {
@@ -219,6 +219,7 @@ class Mahasiswa extends CI_Controller {
 		if($this->input->get('aksi') == "ubah")
 		{
 			$ta = $this->ta_model->select_ta_by_id($id, $this->session->userdata('username'));
+
 			$data_ta = $ta[0];
 		}
 		else
@@ -274,9 +275,9 @@ class Mahasiswa extends CI_Controller {
 		$file1 = file_get_contents($_FILES['file']['tmp_name']);
 		$file1 = substr($file1,0,4);
 		$size = $_FILES['file']['size'];
-		
+		$id = $this->encrypt->decode($this->input->post('id_pengajuan'));
 		$data = array(
-			'id_pengajuan' => $this->input->post('id_pengajuan'),
+			'id_pengajuan' => $id,
 			'nama_berkas' => $this->input->post('nama_berkas'),
 			'jenis_berkas' => $this->input->post('jenis_berkas')
 		);
@@ -285,7 +286,7 @@ class Mahasiswa extends CI_Controller {
 			if($file1 == '%PDF' && $size <= 105000){
 				$file = $_FILES['file']['tmp_name']; 
 				$sourceProperties = getimagesize($file);
-				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$this->input->post('id_pengajuan');
+				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
 				$folderPath = "assets/uploads/berkas-ta/";
 				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
@@ -344,13 +345,14 @@ class Mahasiswa extends CI_Controller {
 	{
 		$id = $this->input->post('id_berkas');
 		$id_pengajuan = $this->input->post('id_pengajuan');
+		$id_pengajuan = $this->encrypt->decode($id);
 		$file = $this->input->post('file_berkas');
 		
 		$data = array("id" => $id);
 		$this->ta_model->delete_lampiran($data);
 		unlink($file);
 	    
-	    redirect(site_url("mahasiswa/tugas-akhir/tema/lampiran?id=".$id_pengajuan));
+	    redirect(site_url("mahasiswa/tugas-akhir/tema"));
 	}
 
 	function hapus_data_ta()
@@ -559,8 +561,9 @@ class Mahasiswa extends CI_Controller {
 		$file1 = substr($file1,0,4);
 		$size = $_FILES['file']['size'];
 
+		$id = $this->encrypt->decode($this->input->post('id_seminar'));
 		$data = array(
-			'id_seminar' => $this->input->post('id_seminar'),
+			'id_seminar' => $id,
 			'jenis_berkas' => $this->input->post('jenis_berkas')
 		);
 
@@ -568,7 +571,7 @@ class Mahasiswa extends CI_Controller {
 			if($file1 == '%PDF' && $size <= 2100000){
 				$file = $_FILES['file']['tmp_name']; 
 				$sourceProperties = getimagesize($file);
-				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$this->input->post('id_seminar');
+				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
 				$folderPath = "assets/uploads/berkas-seminar/";
 				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
@@ -599,7 +602,7 @@ class Mahasiswa extends CI_Controller {
 		$this->ta_model->delete_lampiran_seminar($data);
 		unlink($file);
 	    
-	    redirect(site_url("mahasiswa/tugas-akhir/seminar/lampiran?id=".$id_seminar));
+	    redirect(site_url("mahasiswa/tugas-akhir/seminar"));
 	}
 
 	function add_seminar()

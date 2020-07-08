@@ -120,11 +120,11 @@ class Ta_model extends CI_Model
 	{
 		if($status == "pb1"){
 			$this->db->where('id_pengajuan', $where);
-	    	$this->db->update($this->table, array('status' => '0'));
+	    	$this->db->update($this->table, array('status' => '1'));
 		}
 		elseif($status == "pa"){
 			$this->db->where('id_pengajuan', $where);
-	    	$this->db->update($this->table, array('status' => '1'));
+	    	$this->db->update($this->table, array('status' => '0'));
 		}
 		elseif($status == "admin"){
 			$this->db->where('id_pengajuan', $where);
@@ -1238,6 +1238,12 @@ class Ta_model extends CI_Model
 		return $query->result();
 	}
 
+	function get_approval_nilai_seminar_kajur($id)
+	{
+		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve  FROM seminar_sidang, tugas_akhir, tbl_users_mahasiswa, tbl_users_dosen WHERE seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tbl_users_dosen.id_user ='.$id.' AND seminar_sidang.status = 9 ORDER BY seminar_sidang.jenis');
+		return $query->result();
+	}
+
 	//pdf
 	function get_komisi_seminar_check($id)
 	{
@@ -1293,6 +1299,39 @@ class Ta_model extends CI_Model
 		return $query->row();	
 	}
 
+	function insert_nilai_seminar_koor($data)
+	{
+		$this->db->insert('seminar_sidang_nilai_check', $data);
+	}
+
+	function insert_nilai_seminar_kajur($data)
+	{
+		$this->db->insert('seminar_sidang_nilai_check', $data);
+	}
+
+	function update_nilai_seminar_koor($where)
+	{
+		$this->db->where('id', $where);
+	    $this->db->update($this->table_seminar, array('status' => '9'));
+	}
+
+	function update_nilai_seminar_kajur($where)
+	{
+		$this->db->where('id', $where);
+	    $this->db->update($this->table_seminar, array('status' => '10'));
+	}
+
+	function ttd_nilai_seminar_koor($id_seminar)
+	{
+		$query = $this->db->query("SELECT * FROM `seminar_sidang_nilai_check` WHERE seminar_sidang_nilai_check.status = 'Koordinator' AND id_seminar = $id_seminar");
+		return $query->row();		
+	}
+
+	function ttd_nilai_seminar_kajur($id_seminar)
+	{
+		$query = $this->db->query("SELECT * FROM `seminar_sidang_nilai_check` WHERE seminar_sidang_nilai_check.status = 'Ketua Jurusan' AND id_seminar = $id_seminar");
+		return $query->row();		
+	}
 	
 
 }

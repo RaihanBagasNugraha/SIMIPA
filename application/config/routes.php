@@ -144,6 +144,12 @@ $route['dosen/tugas-akhir/nilai-seminar/save'] = 'dosen/nilai_seminar_save';
 
 $route['dosen/tugas-akhir/nilai-seminar/koordinator'] = 'dosen/nilai_seminar_koor';
 $route['dosen/tugas-akhir/nilai-seminar/koordinator/form'] = 'dosen/nilai_seminar_koor_approve';
+$route['dosen/tugas-akhir/nilai-seminar/koordinator/approve'] = 'dosen/nilai_seminar_koor_approve_add';
+
+$route['dosen/struktural/nilai-seminar'] = 'dosen/nilai_seminar_kajur';
+$route['dosen/struktural/nilai-seminar/kajur/form'] = 'dosen/nilai_seminar_kajur_approve';
+$route['dosen/struktural/nilai-seminar/kajur/approve'] = 'dosen/nilai_seminar_kajur_approve_add';
+
 
     //rekap koor
 $route['dosen/koordinator/rekap/tugas-akhir'] = 'dosen/rekap_ta';

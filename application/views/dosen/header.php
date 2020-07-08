@@ -122,8 +122,9 @@
                                         <?php 
                                             $ta_koor = count($this->ta_model->get_approval_ta_koordinator($this->session->userdata('userId')));
                                             $smr_koor = count($this->ta_model->get_approval_seminar_koordinator($this->session->userdata('userId')));
+                                            $nilai_smr_koor = count($this->ta_model->get_approval_nilai_seminar_koordinator($this->session->userdata('userId')));    
 
-                                            $validasi = $ta_koor + $smr_koor;
+                                            $validasi = $ta_koor + $smr_koor + $nilai_smr_koor;
                                         
                                         ?>
                                         Validasi <span class="badge badge-danger"><?php echo $validasi > 0 ? $validasi : "" ?></span>
@@ -145,7 +146,7 @@
                                         <li>
                                             <a href="<?php echo site_url("dosen/tugas-akhir/nilai-seminar/koordinator") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "nilai-seminar" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Nilai Seminar/Sidang 
+                                                </i>Nilai Seminar/Sidang <span class="badge badge-danger"><?php echo $nilai_smr_koor > 0 ? $nilai_smr_koor : "" ?></span>
                                             </a>
                                         </li>
                                        
@@ -209,8 +210,8 @@
                                         <?php 
                                             $ta_kajur = count($this->ta_model->get_approval_ta_kajur($this->session->userdata('userId')));
                                             $smr_kajur = count($this->ta_model->get_approval_seminar_kajur($this->session->userdata('userId')));
-
-                                            $asese = $ta_kajur + $smr_kajur;
+                                            $nilai_smr_kajur = count($this->ta_model->get_approval_nilai_seminar_kajur($this->session->userdata('userId')));
+                                            $asese = $ta_kajur + $smr_kajur + $nilai_smr_kajur;
                                         
                                         ?>
 
@@ -228,6 +229,12 @@
                                             <a href="<?php echo site_url("dosen/struktural/seminar") ?>" <?php if($this->uri->segment(3) == "seminar" && $this->uri->segment(2) == "struktural") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_kajur > 0 ? $smr_kajur : "" ?></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/struktural/nilai-seminar") ?>" <?php if($this->uri->segment(3) == "nilai-seminar" && $this->uri->segment(2) == "struktural") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Nilai Seminar/Sidang <span class="badge badge-danger"><?php echo $nilai_smr_kajur > 0 ? $nilai_smr_kajur : "" ?></span>
                                             </a>
                                         </li>
                                         <li>

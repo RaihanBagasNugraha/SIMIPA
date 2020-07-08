@@ -356,6 +356,7 @@ class Dosen extends CI_Controller {
 		// print_r($data);
 
 		$id = $data['id_pengajuan'];
+		// $id = $this->encrypt->decode($id);
 		$ttd = $data['ttd'];
 		$aksi = $data['aksi'];
 		$status = $data['jenis'];
@@ -495,6 +496,7 @@ class Dosen extends CI_Controller {
 
 		$id = $this->input->get('id');
 		$id = $this->encrypt->decode($id);
+
 		$aksi = $this->input->get('aksi');
 		$jenis = $this->input->get('jenis');
 		// echo "<pre>";
@@ -1474,7 +1476,6 @@ class Dosen extends CI_Controller {
 		// echo "<pre>";
 		// print_r($data);
 		
-
 		$id = $data['id'];
 		$status = $data['status'];
 		$saran = $data['saran'];
@@ -1538,6 +1539,87 @@ class Dosen extends CI_Controller {
 		
 		$this->load->view('footer_global');
 
+	}
+
+	function nilai_seminar_koor_approve_add()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $data['id'];
+		$ttd = $data['ttd'];
+		$status = "Koordinator";
+		$user_id = $this->session->userdata('userId');
+
+		$data = array(
+			'status' => $status,
+			'saran' => '',
+			'ket' => $user_id,
+			'id_seminar' => $id,
+			'ttd' => $ttd,
+		);
+		$this->ta_model->insert_nilai_seminar_koor($data);
+
+		//update seminar
+		$this->ta_model->update_nilai_seminar_koor($id);
+		redirect(site_url("dosen/tugas-akhir/nilai-seminar/koordinator"));
+
+	}
+
+	function nilai_seminar_kajur()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->ta_model->get_approval_nilai_seminar_kajur($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/nilai_seminar/nilai_seminar',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function nilai_seminar_kajur_approve()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->ta_model->get_seminar_id($id);
+		$data['ta'] = $this->ta_model->get_tugas_akhir_seminar_id($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/nilai_seminar/nilai_seminar_approve',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function nilai_seminar_kajur_approve_add()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $data['id'];
+		$ttd = $data['ttd'];
+		$status = "Ketua Jurusan";
+		$user_id = $this->session->userdata('userId');
+
+		$data = array(
+			'status' => $status,
+			'saran' => '',
+			'ket' => $user_id,
+			'id_seminar' => $id,
+			'ttd' => $ttd,
+		);
+		$this->ta_model->insert_nilai_seminar_kajur($data);
+
+		//update seminar
+		$this->ta_model->update_nilai_seminar_kajur($id);
+		redirect(site_url("dosen/struktural/nilai-seminar"));
 	}
 
 	function encrypt($string)

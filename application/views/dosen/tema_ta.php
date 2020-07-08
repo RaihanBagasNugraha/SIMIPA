@@ -115,10 +115,10 @@
                                                 ?></td>
                                                 <td class="align-top">
 
-                                                <a href="<?php echo site_url("dosen/tugas-akhir/tema/approve-ta/form?jenis=pb1&aksi=setuju&id=".$row->id_pengajuan) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                <a href="<?php echo site_url("dosen/tugas-akhir/tema/approve-ta/form?jenis=pb1&aksi=setuju&id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                 </a>
 
-                                                <!-- <a href="<?php echo site_url("dosen/tugas-akhir/tema/approve-ta/form?aksi=tolak&id=".$row->id_pengajuan) ?>" class="btn mb-2 btn-wide btn-danger btn-sm btn-block">Tolak
+                                                <!-- <a href="<?php echo site_url("dosen/tugas-akhir/tema/approve-ta/form?aksi=tolak&id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn mb-2 btn-wide btn-danger btn-sm btn-block">Tolak
                                                 </a> -->
 
                                                 <!-- <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan."#$#$"."pb1" ?>" class="passingID3" >
@@ -188,7 +188,7 @@
                                                         ?></td>
                                                         <td class="align-top">
         
-                                                        <a href="<?php echo site_url("dosen/tugas-akhir/tema/approve-ta/form?jenis=pa&aksi=setuju&id=".$row->id_pengajuan) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                        <a href="<?php echo site_url("dosen/tugas-akhir/tema/approve-ta/form?jenis=pa&aksi=setuju&id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                         </a>
 
                                                 

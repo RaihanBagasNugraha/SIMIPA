@@ -2263,6 +2263,69 @@ class Pdf_TA extends CI_Controller {
             $pdf->Ln();
         }
 
+        elseif($seminar->status == 9){
+            $koor = $this->ta_model->ttd_nilai_seminar_koor($seminar->id);
+            $koor_data = $this->user_model->get_dosen_data($koor->ket);
+
+            $pdf->Ln(5);
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(120, $spasi,'Bandar Lampung, ', 0, 0, 'L');
+            $pdf->Ln(7);
+
+            $pdf->Cell(90, $spasi,"Mengetahui,", 0, 0, 'L');
+            $pdf->Cell(45, $spasi,"Menyetujui,", 0, 0, 'L');
+            $pdf->Ln(5);
+            $pdf->Cell(90, $spasi,"Ketua Jurusan", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Koordinator Seminar", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            //ttd
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pdf->Image("$koor->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+
+            $pdf->Ln(25);
+            $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
+            $pdf->Ln();
+        }
+
+        elseif($seminar->status == 10){
+            $koor = $this->ta_model->ttd_nilai_seminar_koor($seminar->id);
+            $koor_data = $this->user_model->get_dosen_data($koor->ket);
+
+            $kajur = $this->ta_model->ttd_nilai_seminar_kajur($seminar->id);
+            $kajur_data = $this->user_model->get_dosen_data($kajur->ket);
+
+            $pdf->Ln(5);
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(120, $spasi,'Bandar Lampung, ', 0, 0, 'L');
+            $pdf->Ln(7);
+
+            $pdf->Cell(90, $spasi,"Mengetahui,", 0, 0, 'L');
+            $pdf->Cell(45, $spasi,"Menyetujui,", 0, 0, 'L');
+            $pdf->Ln(5);
+            $pdf->Cell(90, $spasi,"Ketua Jurusan", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Koordinator Seminar", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            //ttd
+            $pdf->Cell(90, $spasi,$pdf->Image("$kajur->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pdf->Image("$koor->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+
+            $pdf->Ln(25);
+            $pdf->Cell(90, $spasi,$kajur_data->name, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
+            $pdf->Ln();
+        } 
+
         $pdf->Output();
     }
 

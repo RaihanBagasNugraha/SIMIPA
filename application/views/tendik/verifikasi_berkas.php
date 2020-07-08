@@ -104,7 +104,7 @@
                                                 ?></td>
                                                 <td>
                                                         
-                                                <a href="<?php echo site_url("tendik/tugas-akhir/tema/approve-ta/form?aksi=setuju&id=".$row->id_pengajuan) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                <a href="<?php echo site_url("tendik/tugas-akhir/tema/approve-ta/form?aksi=setuju&id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                 </a>
                                                 
                                                 <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan ?>" class="passingID6" >

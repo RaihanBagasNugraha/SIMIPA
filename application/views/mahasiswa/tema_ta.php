@@ -84,7 +84,7 @@
 
                                             <td class="align-top">
                                             <?php
-                                            if($row->status == -1 || $row->status == 0 || $row->status == 1 || $row->status == 2 || $row->status == 3)
+                                            if($row->status == -1 || $row->status == 0 || $row->status == 1 || $row->status == 2 || $row->status == 3 || $row->status == 5)
                                             {
                                                 $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing1);
                                                 echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
@@ -109,7 +109,7 @@
                                             </td>
                                             <td class="align-top">
                                             <?php
-                                            if($row->status == -1 || $row->status == 0 || $row->status == 1 || $row->status == 2 || $row->status == 3) {
+                                            if($row->status == -1 || $row->status == 0 || $row->status == 1 || $row->status == 2 || $row->status == 3 || $row->status == 5) {
                                                 echo "<i>(Belum disetujui)</i>";
                                             }
                                             elseif($row->status == 4 || $row->status == 8 || $row->status == 7)
@@ -134,10 +134,10 @@
                                                 echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                             } else {
                                                 echo "<ul style='margin-left: -20px;'>";
-                                                if($row->status >= 0 && $row->status != 6 ){
+                                                if($row->status >= 0 && $row->status != 6 && $row->status != 5 ){
                                                     echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>";   
                                                 }
-                                                if($row->status >= 3 && $row->status != 6){
+                                                if($row->status >= 3 && $row->status != 6 && $row->status != 5){
                                                     echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_verifikasi&id=$row->id_pengajuan").">Form Verifikasi</a></li>";   
                                                 }
                                                 if($row->status == 4 ){

@@ -93,7 +93,7 @@
                                                         </td>
                                                         <td class="align-top"><b>Pembimbing<br>Akademik</b></td>
                                                         <td class="align-top">
-                                                        <a href="<?php echo site_url("dosen/tugas-akhir/seminar/approve-seminar/form?status=pa&id=".$row->id) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                        <a href="<?php echo site_url("dosen/tugas-akhir/seminar/approve-seminar/form?status=pa&id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                         </a>
 
                                                 

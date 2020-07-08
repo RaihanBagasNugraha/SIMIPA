@@ -119,17 +119,29 @@
                                                         
                                                        
                                                         echo "<ul style='margin-left: -20px;'>";
+                                                                                                                
+                                                        if($row->status == 10 && $row->status != 5 && $row->status != 6)
+                                                        {
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$row->id").">Berita Acara</a></li>";
+
+                                                        }
+
+
                                                         if($row->jenis != 'Seminar Tugas Akhir'){
-                                                            if($row->status >= 0){
+                                                            if($row->status >= 0 && $row->status != 5 && $row->status != 6){
                                                                 echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
                                                             }
-                                                            if($row->status >= 3){
+                                                            if($row->status >= 3 && $row->status != 5 && $row->status != 6){
                                                                 echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
                                                             }
-                                                            if($row->status == 7 || $row->status == 4){
+                                                            if($row->status == 7 || $row->status == 4 && $row->status != 5 && $row->status != 6){
                                                                 echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
                                                             }
                                                         }
+
+                                                        echo "<br>";
+
                                                         foreach($lampiran as $rw) {
                                                             $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
                                                             echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
@@ -184,9 +196,14 @@
                                                         echo '<i>Menunggu Acc Ketua Jurusan</i>';
                                                 }            
 
-                                                if($row->status == '8'){
+                                                if($row->status == '8' || $row->status == '9'){
                                                     echo '<i>Penilaian<br><br></i>';
                                                 }      
+
+                                                if($row->status == '10'){
+                                                    echo '<i>Selesai<br><br></i>';
+                                                }    
+
                                                 ?>
                                              </td>
                                              <td class="align-top">

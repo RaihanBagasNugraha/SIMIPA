@@ -12,6 +12,7 @@ class Tendik extends CI_Controller {
 		$this->load->model('user_model');
 		$this->load->model('ta_model');
 		$this->load->library('pdf');
+		$this->load->library('encrypt');
 		
 		if($this->session->has_userdata('username')) {
 		    if($this->session->userdata('state') <> 4) {
@@ -367,6 +368,7 @@ class Tendik extends CI_Controller {
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 
 		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 		$aksi = $this->input->get('aksi');
 		$jenis = $this->input->get('jenis');
 		// echo "<pre>";
@@ -439,6 +441,7 @@ class Tendik extends CI_Controller {
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 
 		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
 		
 		// echo "<pre>";
 		// print_r($id);
