@@ -116,7 +116,16 @@
                                                 <input value="<?php echo $komponen->jenis?>" type = "text" name="jenis" readonly class="form-control">
                                             </div>
                                     </div>
+
+                                     <!-- Tipe -->
+                                     <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Seminar</b></label>
+                                            <div class="col-sm-3">
+                                                <input value="<?php echo $komponen->tipe?>" type = "text" name="tipe" readonly class="form-control">
+                                            </div>
+                                    </div>
                                     
+                                    <?php if($komponen->tipe != "Sidang Komprehensif") {  ?>
                                      <!-- komponen nilai -->
                                      <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label"><b>Komponen Nilai</b></label>
@@ -133,6 +142,28 @@
 
                                             </div>                                                     
                                     </div>
+
+                                    <?php } else { ?>
+
+                                        <div class="position-relative row form-group">
+                                                <label class="col-sm-3 col-form-label"><b>Komponen Nilai</b></label>
+                                                <div class="col-sm-8">
+                                                <h5><b>Ujian/Presentasi</h5>                                     
+                                                <ul class="container4">
+                                                    <li><input type="text" name="ujian_komponen_kompre[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="hidden" value = "0" name="ujian_nilai_kompre[]"placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-primary add_form_field_sub_kompre">+</label></li>
+                                                </ul>
+                                                <br>
+                                                <h5><b>Tugas Akhir/Skripsi/Tesis/Disertasi</h5>                                     
+                                                <ul class="container5">
+                                                    <li><input type="text" name="skripsi_komponen_kompre[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="hidden" value = "0" name="skripsi_nilai_kompre[]"placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-primary add_form_field_sub2_kompre">+</label></li>
+                                                </ul>
+
+                                                </div>                                                  
+                                        </div>
+
+                                    <?php } ?>
+
+
                                     <h6><b>Bobot Penilaian Pembimbing / Penguji </h6>
                                     <br>            
                                     <?php if($komponen->jenis == "Skripsi") { 
@@ -520,6 +551,51 @@ $(document).ready(function(){
     })
 
     $(wrapper).on("click", ".deletes", function(e) {
+        e.preventDefault();
+        $(this).parent('li').remove();
+        x--;
+    })
+});  
+</script>
+
+<script>
+$(document).ready(function() {
+    var max_fields = 10;
+    var wrapper_kompre = $(".container4");
+    var wrapper_sub_kompre = $(".container5");
+    var add_button = $(".add_form_field_sub2_kompre");
+    var add_button_sub = $(".add_form_field_sub_kompre");
+
+    var x = 1;
+
+    $(add_button_sub).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper_kompre).append('<li><input type="text" name="skripsi_komponen_kompre[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="hidden" value = "0" name="skripsi_nilai_kompre[]"placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-danger deletes" >-</label></li>'); //add input box
+        } else {
+            alert('You Reached the limits')
+        }
+    });
+
+    $(add_button).click(function(e) {
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            $(wrapper_sub_kompre).append('<li><input type="text" name="ujian_komponen_kompre[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="hidden" value = "0" name="ujian_nilai_kompre[]" size="10" placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-danger deletes" >-</label></li>'); //add input box
+        } else {
+            alert('You Reached the limits')
+        }
+    });
+
+
+    $(wrapper_sub_kompre).on("click", ".deletes", function(e) {
+        e.preventDefault();
+        $(this).parent('li').remove();
+        x--;
+    })
+
+    $(wrapper_kompre).on("click", ".deletes", function(e) {
         e.preventDefault();
         $(this).parent('li').remove();
         x--;

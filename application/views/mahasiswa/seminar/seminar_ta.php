@@ -116,8 +116,6 @@
                                                     if(empty($lampiran)) {
                                                         echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                     } else {
-                                                        
-                                                       
                                                         echo "<ul style='margin-left: -20px;'>";
                                                                                                                 
                                                         if($row->status == 10 && $row->status != 5 && $row->status != 6)
@@ -143,8 +141,8 @@
                                                         echo "<br>";
 
                                                         foreach($lampiran as $rw) {
-                                                            $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
-                                                            echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
+                                                            // $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
+                                                            echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
                                                         }
         
                                                         echo "</ul>";

@@ -25,6 +25,10 @@
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
+                        if(!empty($_GET['status']) && $_GET['status'] == 'null') {
+
+                            echo '<div class="alert alert-danger fade show" role="alert">Komposisi nilai seminar ini belum diisi oleh ketua jurusan</div>';
+                        }
                         ?>
                         <?php 
                         if ($akun->ttd == NULL){

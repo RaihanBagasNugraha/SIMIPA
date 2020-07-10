@@ -91,7 +91,7 @@
                                         <form method="post" action="<?php echo site_url('mahasiswa/tambah_berkas_ta') ?>" enctype="multipart/form-data" >
                                         <div class="position-relative row form-group">
                                             <div class="col-sm-12">
-                                                <input name="nama_berkas" class="form-control" type="text" placeholder="(Sesuaikan Nama Dengan Jenis)">
+                                                <input name="nama_berkas" class="form-control" type="text" placeholder="Nama Berkas">
                                                 <input type="hidden" name="id_pengajuan" value="<?php echo $this->input->get('id') ?>">
                                             </div>
                                         </div>

@@ -53,6 +53,7 @@
                                             </div>
                                 </div>
 
+
                                 <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label"><b>Jurusan</b></label>
                                             <div class="col-sm-3">
@@ -89,6 +90,13 @@
                                             <label class="col-sm-3 col-form-label"><b>Jenis</b></label>
                                             <div class="col-sm-3">
                                             <input value="<?php echo $komponen->jenis?>" type = "text" name="jns" readonly class="form-control">
+                                            </div>
+                                </div>
+
+                                <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Seminar</b></label>
+                                            <div class="col-sm-3">
+                                            <input value="<?php echo $komponen->tipe?>" type = "text" name="smr" readonly class="form-control">
                                             </div>
                                 </div>
 

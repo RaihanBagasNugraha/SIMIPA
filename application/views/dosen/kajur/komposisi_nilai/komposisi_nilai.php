@@ -51,6 +51,7 @@
                                         <tr>
                                             <th>Nomor</th>
                                             <th>Jenis</th>
+                                            <th>Keterangan</th>
                                             <th>Tahun Akademik</th>
                                             <th>Komponen Nilai</th>
                                             <th>Status</th>
@@ -75,6 +76,9 @@
                                                 </td>
                                                 <td class="align-top">
                                                     <?php echo $row->jenis;?>
+                                                </td>
+                                                <td class="align-top">
+                                                    <?php echo $row->tipe;?>
                                                 </td>
                                                 <td class="align-top">
                                                     <?php echo $row->tahun_akademik;?>

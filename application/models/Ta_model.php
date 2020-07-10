@@ -1074,7 +1074,7 @@ class Ta_model extends CI_Model
 
 	function get_komisi_seminar_alter($token)
 	{
-		$query = $this->db->query("SELECT tugas_akhir.*, seminar_sidang.*, tugas_akhir.jenis, tugas_akhir_komisi.status, tugas_akhir_komisi.nip_nik, tugas_akhir_komisi.nama FROM seminar_sidang_approval_alternatif, seminar_sidang, tugas_akhir_komisi, tugas_akhir WHERE seminar_sidang_approval_alternatif.token = '$token' AND seminar_sidang_approval_alternatif.id_seminar = seminar_sidang.id AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND tugas_akhir_komisi.status = seminar_sidang_approval_alternatif.status AND seminar_sidang.status = 4");
+		$query = $this->db->query("SELECT tugas_akhir.*, seminar_sidang.*, tugas_akhir.jenis, seminar_sidang.jenis as seminar_jenis, tugas_akhir_komisi.status, tugas_akhir_komisi.nip_nik, tugas_akhir_komisi.nama FROM seminar_sidang_approval_alternatif, seminar_sidang, tugas_akhir_komisi, tugas_akhir WHERE seminar_sidang_approval_alternatif.token = '$token' AND seminar_sidang_approval_alternatif.id_seminar = seminar_sidang.id AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND tugas_akhir_komisi.status = seminar_sidang_approval_alternatif.status AND seminar_sidang.status = 4");
 		return $query->row();
 	}
 
@@ -1145,9 +1145,9 @@ class Ta_model extends CI_Model
 	}
 	
 
-	function cek_komposisi_nilai($prodi,$jenis)
+	function cek_komposisi_nilai($prodi,$jenis,$tipe)
 	{
-		$query = $this->db->query("SELECT * FROM seminar_sidang_komponen WHERE id_prodi = $prodi AND jenis = '$jenis' AND status = 0");
+		$query = $this->db->query("SELECT * FROM seminar_sidang_komponen WHERE id_prodi = $prodi AND jenis = '$jenis' AND tipe = '$tipe' AND status = 0");
 		return $query->row();
 	}
 
@@ -1174,9 +1174,9 @@ class Ta_model extends CI_Model
 		return $query->row();
 	}
 
-	function get_komponen_nilai_meta($npm,$jenis)
+	function get_komponen_nilai_meta($npm,$jenis,$tipe)
 	{
-		$query = $this->db->query("SELECT seminar_sidang_komponen_meta.* FROM seminar_sidang_komponen, seminar_sidang_komponen_meta, tbl_users_mahasiswa, tugas_akhir WHERE tbl_users_mahasiswa.npm = $npm AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.jenis = '$jenis' AND tbl_users_mahasiswa.jurusan = seminar_sidang_komponen.id_prodi AND seminar_sidang_komponen.id = seminar_sidang_komponen_meta.id_komponen AND tugas_akhir.jenis = seminar_sidang_komponen.jenis ORDER BY seminar_sidang_komponen_meta.id");
+		$query = $this->db->query("SELECT seminar_sidang_komponen_meta.* FROM seminar_sidang_komponen, seminar_sidang_komponen_meta, tbl_users_mahasiswa, tugas_akhir WHERE tbl_users_mahasiswa.npm = $npm AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.jenis = '$jenis' AND tbl_users_mahasiswa.jurusan = seminar_sidang_komponen.id_prodi AND seminar_sidang_komponen.id = seminar_sidang_komponen_meta.id_komponen AND tugas_akhir.jenis = seminar_sidang_komponen.jenis AND seminar_sidang_komponen.tipe = '$tipe' ORDER BY seminar_sidang_komponen_meta.id");
 		return $query->result();
 	}
 

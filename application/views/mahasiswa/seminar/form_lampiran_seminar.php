@@ -58,7 +58,7 @@
                                                         <tr>
                                                         <?php $nama_berkas = $this->ta_model->get_berkas_name($row->jenis_berkas); ?>
                                                             <td><?php echo ++$no ?></td>
-                                                            <td><?php echo $nama_berkas ?></td>
+                                                            <td><?php echo $row->nama_berkas ?></td>
                                                             <td><?php echo $row->nama ?></td>
                                                             <td>
                                                             <a style="width: 60px;" href="<?php echo base_url($row->file) ?>" class="mr-1 mb-1 btn btn-info btn-sm" download>Unduh
@@ -90,12 +90,11 @@
                                     <div class="card-body">
   
                                         <form method="post" action="<?php echo site_url('mahasiswa/tambah_berkas_seminar') ?>" enctype="multipart/form-data" >
-                                        <!-- <div class="position-relative row form-group">
+                                        <div class="position-relative row form-group">
                                             <div class="col-sm-12">
-                                                <input name="nama_berkas" class="form-control" type="text" placeholder="(Sesuaikan Nama Dengan Jenis)">
-                                                
+                                                <input name="nama_berkas" class="form-control" type="text" placeholder="Nama Berkas">
                                             </div>
-                                        </div> -->
+                                        </div>
                                         <input type="hidden" name="id_seminar" value="<?php echo $this->input->get('id') ?>">
                                             <div class="position-relative row form-group">
                                                 <div class="col-sm-12">

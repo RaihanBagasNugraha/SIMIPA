@@ -320,7 +320,27 @@ class Mahasiswa extends CI_Controller {
 		$aksi = $data['aksi'];
 		unset($data['aksi']);
 
+		$npm = $this->session->userdata('username');
+		$npm = substr($npm,2,1);
+		switch($npm){
+			case "0":
+				$jenis = "Tugas Akhir";
+				break;
+			case "1":
+			case "5":
+				$jenis = "Skripsi";
+				break;	
+			case "2":
+				$jenis = "Tesis";
+				break;	
+			case "3":
+				$jenis = "Disertasi";
+				break;	
+		}
+		// echo "<pre>";
+		// print_r($data);
 		$data['npm'] = $this->session->userdata('username');
+		$data['jenis'] = $jenis;
 		if($aksi == "ubah") {
 			$where = $data['id_pengajuan'];
 			unset($data['id_pengajuan']);
@@ -333,8 +353,6 @@ class Mahasiswa extends CI_Controller {
 			);
 			$this->ta_model->insert($data, $data2);
 		}
-		
-
 		
 		redirect(site_url("mahasiswa/tugas-akhir/tema"));
 		
@@ -564,6 +582,7 @@ class Mahasiswa extends CI_Controller {
 		$id = $this->encrypt->decode($this->input->post('id_seminar'));
 		$data = array(
 			'id_seminar' => $id,
+			'nama_berkas' => $this->input->post('nama_berkas'),
 			'jenis_berkas' => $this->input->post('jenis_berkas')
 		);
 

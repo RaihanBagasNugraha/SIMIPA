@@ -73,7 +73,7 @@
                                     <br>
                                     <h5><b>Form Nilai</b></h5>                
                                     <br>
-                                    <?php $komposisi = $this->ta_model->get_komponen_nilai_meta($ta->npm,$ta->jenis); ?>
+                                    <?php $komposisi = $this->ta_model->get_komponen_nilai_meta($ta->npm,$ta->jenis,$seminar->jenis); ?>
 
                                     <table class="mb-0 table table-striped">
                                         <thead>

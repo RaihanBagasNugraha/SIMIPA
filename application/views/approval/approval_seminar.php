@@ -117,8 +117,9 @@
                                     <br>
                                     <h5><b>Form Nilai</b></h5>                
                                     <br>
-                                    <?php $komposisi = $this->ta_model->get_komponen_nilai_meta($smr->npm,$smr->jenis); ?>
-                                     
+                                    <?php $komposisi = $this->ta_model->get_komponen_nilai_meta($smr->npm,$smr->jenis,$smr->seminar_jenis); ?>
+
+                                    <?php if(!empty($komposisi)) {?> 
                                     <table class="mb-0 table table-striped">
                                         <thead>
                                             <tr>
@@ -141,10 +142,11 @@
                                             <?php $n++; } ?>
                                         </tbody>
                                     </table>
+                                    
 
                                     <input value="<?php echo $n ?>" type = "hidden" name="jml" id="jml">
                                     <input value="<?php echo $komposisi[1]->id_komponen ?>" type = "hidden" name="id_komponen">  
-
+                                   
                                     <br><br>            
                                     <!-- Saran -->
                                     <div class="position-relative row form-group">
@@ -153,7 +155,11 @@
                                                 <textarea name="saran" class="form-control" placeholder="Isi Jika Terdapat Saran / Masukan"></textarea>
                                             </div>
                                     </div>
-
+                                    <?php } else { 
+                                        echo "<h5><span style='color:white;background-color:red;'>&nbsp;Format Nilai Belum Diisi Oleh Ketua Jurusan. Harap Menunggu&nbsp;</span></h5>";    
+                                    }
+                                    ?>
+                                    
                                     <!-- TTD -->
                                     <div class="position-relative row form-group"><label for="ttd" class="col-sm-3 col-form-label"><b>Tanda Tangan Digital</b></label>
                                             <div class="col-sm-4">
@@ -188,7 +194,7 @@
                                     $date_now = new DateTime();
                                     $date_smr = new DateTime("$smr->tgl_pelaksanaan");
                                     
-                                    if($date_now >= $date_smr){
+                                    if($date_now >= $date_smr && !empty($komposisi)){
                                     ?>
                                     <div class="position-relative row form-group">
                                             <div class="col-sm-9 offset-sm-3">
@@ -202,7 +208,7 @@
                                     </div>
                                     <?php } 
                                     else{
-                                        echo "<h5><span style='color:white;background-color:red;'>&nbsp;Waktu Penilaian Belum Dibuka&nbsp;</span></h5>";
+                                        echo "<h5><span style='color:white;background-color:red'>&nbsp;Waktu Penilaian Belum Dibuka&nbsp;</span></h5>";
                                     }
                                     
                                     ?>

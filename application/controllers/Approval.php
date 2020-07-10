@@ -84,6 +84,8 @@ class Approval extends CI_Controller {
         $check = $this->ta_model->cek_token_seminar($token);
         if(!empty($check)){
             $data['smr'] = $this->ta_model->get_komisi_seminar_alter($token);
+            // echo "<pre>";
+            // print_r($data);
             $this->load->view('approval/header_global');
             $this->load->view('approval/header');
             $this->load->view('approval/approval_seminar',$data);

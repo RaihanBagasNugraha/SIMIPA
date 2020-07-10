@@ -1159,17 +1159,29 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Ln(1);
                 
                 $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
-                $pdf->MultiCell(150, $spasi, "Telah lulus semua mata kuliah wajib dan pilihan yang mendukung topik skripsi, dengan jumlah ≥ 120 SKS, dengan IPK ≥ 2,00.",0,'J',false);
+                $pdf->MultiCell(150, $spasi, "Transkrip Akademik (1 lembar) yang telah di tandatangani oleh Wakil Dekan 1 dan telah diberi cap stempel fakultas, dengan ketentuan telah lulus semua mata kuliah wajib dan pilihan yang mendukung topik skripsi.",0,'J',false);
                 $pdf->Ln(1);
-                
+
                 $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
-                $pdf->MultiCell(150, $spasi, "Menyerahkan 1 lembar Transkrip Akademik yang telah ditandatangani oleh Wakil Dekan 1 dan telah diberi cap fakultas.",0,'J',false);
+                $pdf->Cell(83, $spasi,"Telah menyelesaikan minimal 120 SKS, dengan IPK ", 0, 0, 'L');
+                    $pdf->SetFont("Symbol");
+                    $pdf->Cell(5, $spasi,chr(179)." 2,00", 0, 2, 'L');
+                    $pdf->SetFont('Times','',11);
+                    $pdf->Ln(1);
                 $pdf->Ln(1);
             }
                 
             if($jurusan != "Kimia"){
                 $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
-                $pdf->MultiCell(150, $spasi, "Transkrip Akademik (1 lembar) yang telah di tandatangani oleh Wakil Dekan 1 dan telah diberi cap stempel fakultas, dengan ketentuan telah lulus semua mata kuliah wajib dan pilihan yang mendukung topik skripsi, minimal 110 SKS, dengan IPK > 2,00.",0,'J',false);
+                $pdf->MultiCell(150, $spasi, "Transkrip Akademik (1 lembar) yang telah di tandatangani oleh Wakil Dekan 1 dan telah diberi cap stempel fakultas, dengan ketentuan telah lulus semua mata kuliah wajib dan pilihan yang mendukung topik skripsi.",0,'J',false);
+                $pdf->Ln(1);
+    
+                $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                $pdf->Cell(83, $spasi,"Telah menyelesaikan minimal 110 SKS, dengan IPK ", 0, 0, 'L');
+                    $pdf->SetFont("Symbol");
+                    $pdf->Cell(5, $spasi,chr(179)." 2,00", 0, 2, 'L');
+                    $pdf->SetFont('Times','',11);
+                    $pdf->Ln(1);
                 $pdf->Ln(1);
             }
                 
@@ -1295,11 +1307,59 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Ln(1);
             }
         }
+
+        elseif($seminar->jenis == "Seminar Tugas Akhir"){
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Mengisi formulir pengajuan Seminar Tugas Akhir",0,'J',false);
+            $pdf->Ln(1);
+
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Transkrip Akademik (1 lembar) yang telah di tandatangani oleh Wakil Dekan 1 dan telah diberi cap stempel fakultas, dengan ketentuan telah lulus semua mata kuliah wajib dan pilihan yang mendukung topik skripsi.",0,'J',false);
+            $pdf->Ln(1);
+
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->Cell(83, $spasi,"Telah menyelesaikan minimal 110 SKS, dengan IPK ", 0, 0, 'L');
+                $pdf->SetFont("Symbol");
+                $pdf->Cell(5, $spasi,chr(179)." 2,00", 0, 2, 'L');
+                $pdf->SetFont('Times','',11);
+                $pdf->Ln(1);
+            $pdf->Ln(1);
+
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Fotocopy bukti lunas pembayaran SPP terakhir (1 lembar)",0,'J',false);
+            $pdf->Ln(1);
+
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "KRS terakhir (1 lembar) yang telah ditandatangani oleh Pembimbing Akademik dan Pembantu Dekan 1 serta telah diberi cap stempel fakultas",0,'J',false);
+            $pdf->Ln(1);
+
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Telah Melaksanakan Verifikasi Program Tugas Akhir (ditandai dengan menunjukkan Berkas Verifikasi)",0,'J',false);
+            $pdf->Ln(1);
+
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Draft Tugas Akhir yang sudah lengkap dan ditandatangani oleh pembimbing utama.",0,'J',false);
+            $pdf->Ln(1);
+
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Pernah mengikuti Seminar Tugas Akhir minimal 10 kali (ditandai dengan menunjukkan Buku Kendali Akademik).",0,'J',false);
+            $pdf->Ln(1);
+
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "TOEFL",0,'J',false);
+            $pdf->Ln(1);
+
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Semua berkas dimasukkan ke dalam map warna BIRU",0,'J',false);
+            $pdf->Ln(1);
+        }
+
         
         $pdf->Cell(90, $spasi,"", 0, 0, 'L');
         $pdf->Cell(30, $spasi,"Bandar Lampung, ".$tgl_acc, 0, 0, 'L');
         $pdf->Ln(2);
 
+    if($seminar->jenis != "Seminar Usul"){
         if($seminar->status < 7 && $seminar->status != 4 ){
             $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
             $pdf->Ln(5);
@@ -1342,6 +1402,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
             $pdf->Ln(10);
         }
+    }
 
         $pdf->Output();
     }
