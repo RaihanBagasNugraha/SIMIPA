@@ -218,7 +218,7 @@
                                                             <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#delPengajuan">
                                                                 Hapus 
                                                             </button>
-                                                            </a>
+                                                </a>
                                                 <a href="<?php echo site_url("mahasiswa/tugas-akhir/tema/lampiran?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-2 btn btn-focus btn-sm btn-block">Unggah Lampiran
                                                 </a>
                                         <?php } 

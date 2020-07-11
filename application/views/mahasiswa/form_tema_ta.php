@@ -94,7 +94,7 @@
                                                 <select name="bidang_ilmu" required class=" form-control">
                                                 <option value="">-- Pilih Bidang Keilmuan --</option>
                                                 <?php
-                                                $list = $this->parameter_model->select_bidang_ilmu($biodata->jurusan);
+                                                $list = $this->parameter_model->select_bidang_ilmu($biodata->jurusan,$biodata->prodi);
                                                 foreach ($list as $row) {
                                                     $select = "";
                                                     if($data_ta['bidang_ilmu'] == $row->id) $select = "selected";

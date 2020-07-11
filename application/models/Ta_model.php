@@ -99,8 +99,6 @@ class Ta_model extends CI_Model
 	
 	function delete_berkas_ta($data)
 	{
-		
-
 		$query = $this->db->query('SELECT file FROM tugas_akhir_berkas WHERE id_pengajuan ='.$data);
 		$results = $query->result();
 
@@ -1332,6 +1330,14 @@ class Ta_model extends CI_Model
 		$query = $this->db->query("SELECT * FROM `seminar_sidang_nilai_check` WHERE seminar_sidang_nilai_check.status = 'Ketua Jurusan' AND id_seminar = $id_seminar");
 		return $query->row();		
 	}
-	
 
+	function insert_bidang_jurusan($data)
+	{
+		$this->db->insert('bidang_ilmu', $data);
+	}
+
+	function delete_bidang_jurusan($id)
+	{
+		$this->db->delete('bidang_ilmu', array('id' => $id));
+	}
 }

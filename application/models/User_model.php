@@ -193,6 +193,12 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
+	function get_dosen_prodi($id)
+	{
+		$result = $this->db->query("SELECT prodi.* FROM prodi, tbl_users_dosen WHERE tbl_users_dosen.id_user = $id AND tbl_users_dosen.jurusan = prodi.jurusan");
+		return $result->result();
+	}
+
 
 
 	

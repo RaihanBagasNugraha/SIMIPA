@@ -129,13 +129,18 @@ $route['dosen/struktural/seminar'] = 'dosen/seminar_struktural';
 $route['dosen/struktural/seminar/form'] = 'dosen/form_seminar_struktural';
 $route['dosen/struktural/seminar/approve'] = 'dosen/seminar_approve';
 
-$route['dosen/struktural/komposisi-nilai'] = 'dosen/komposisi_nilai';
+$route['dosen/struktural/bidang-nilai/komposisi-nilai'] = 'dosen/komposisi_nilai';
 $route['dosen/struktural/komposisi-nilai/add'] = 'dosen/komposisi_nilai_tambah';
 $route['dosen/struktural/komposisi-nilai/save'] = 'dosen/komposisi_nilai_simpan';
 $route['dosen/struktural/komposisi-nilai/komponen'] = 'dosen/komponen_nilai';
 $route['dosen/struktural/komposisi-nilai/nonaktifkan'] = 'dosen/komposisi_nilai_nonaktif';
 $route['dosen/struktural/komposisi-nilai/ubah'] = 'dosen/komposisi_nilai_ubah';
 $route['dosen/struktural/komposisi-nilai/edit'] = 'dosen/komposisi_nilai_edit';
+
+$route['dosen/struktural/bidang-nilai/bidang-jurusan'] = 'dosen/bidang_jurusan';
+$route['dosen/struktural/bidang-nilai/bidang-jurusan/show'] = 'dosen/bidang_jurusan_show';
+$route['dosen/struktural/bidang-nilai/bidang-jurusan/add'] = 'dosen/bidang_jurusan_add';
+$route['dosen/struktural/bidang-nilai/bidang-jurusan/delete'] = 'dosen/bidang_jurusan_delete';
 
     //nilai seminar dosen
 $route['dosen/tugas-akhir/nilai-seminar'] = 'dosen/nilai_seminar';

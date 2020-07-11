@@ -1298,7 +1298,7 @@ class Dosen extends CI_Controller {
 			}
 		}
 
-			redirect(site_url("dosen/struktural/komposisi-nilai"));
+			redirect(site_url("dosen/struktural/bidang-nilai/komposisi-nilai"));
 		}
 		}
 	}
@@ -1327,7 +1327,7 @@ class Dosen extends CI_Controller {
 		$id = $data['id'];
 		$this->ta_model->nonaktifkan_komposisi($id);
 
-		redirect(site_url("dosen/struktural/komposisi_nilai/komposisi-nilai"));
+		redirect(site_url("dosen/struktural/bidang-nilai/komposisi-nilai"));
 	}
 
 	function komposisi_nilai_ubah()
@@ -1539,7 +1539,7 @@ class Dosen extends CI_Controller {
 		}
 
 
-			redirect(site_url("dosen/struktural/komposisi-nilai"));
+			redirect(site_url("dosen/struktural/bidang-nilai/komposisi-nilai"));
 		}
 
 	}
@@ -1694,6 +1694,66 @@ class Dosen extends CI_Controller {
 		//update seminar
 		$this->ta_model->update_nilai_seminar_kajur($id);
 		redirect(site_url("dosen/struktural/nilai-seminar"));
+	}
+
+	function bidang_jurusan()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['bidang'] = $this->user_model->get_dosen_prodi($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/bidang/bidang_jurusan',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function bidang_jurusan_show()
+	{
+		$jurusan = $this->input->get('jurusan');
+		// $jurusan = $this->encrypt->decode($jurusan);
+
+		$prodi = $this->input->get('prodi');
+		// $prodi = $this->encrypt->decode($prodi);
+
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['bidang'] = $this->parameter_model->select_bidang_ilmu($jurusan,$prodi);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/bidang/bidang_jurusan_show',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function bidang_jurusan_add()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$prodi = $data['prodi'];
+		$jurusan = $data['jurusan'];
+		$nama = $data['nama'];
+
+		$this->ta_model->insert_bidang_jurusan($data);
+		redirect(site_url("dosen/struktural/bidang-nilai/bidang-jurusan/show?jurusan=$jurusan&prodi=$prodi"));
+	}
+
+	function bidang_jurusan_delete()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $data['id'];
+		$prodi = $data['prodi'];
+		$jurusan = $data['jurusan'];
+
+		$this->ta_model->delete_bidang_jurusan($id);
+		redirect(site_url("dosen/struktural/bidang-nilai/bidang-jurusan/show?jurusan=$jurusan&prodi=$prodi"));
 	}
 
 	function encrypt($string)

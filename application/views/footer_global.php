@@ -644,9 +644,9 @@
 
 <?php } ?>
 
-<?php if($this->uri->segment(1) == 'dosen' && $this->uri->segment(2) == 'struktural' && $this->uri->segment(3) == 'komposisi-nilai') { ?>
+<?php if($this->uri->segment(1) == 'dosen' && $this->uri->segment(2) == 'struktural' && $this->uri->segment(3) == 'bidang-nilai' && $this->uri->segment(4) == 'komposisi-nilai') { ?>
 
-    <div class="modal fade" id="nonaktifkan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="nonaktifkan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -675,5 +675,74 @@
         </div>
     </div>
 </div>
+
+<?php } ?>
+
+<?php if($this->uri->segment(1) == 'dosen' && $this->uri->segment(2) == 'struktural' && $this->uri->segment(3) == 'bidang-nilai' && $this->uri->segment(4) == 'bidang-jurusan' && $this->uri->segment(5) == 'show') { ?>
+
+<div class="modal fade" id="tambahbidang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="tambah-bidang" method="post" action="<?php echo site_url("dosen/struktural/bidang-nilai/bidang-jurusan/add") ?>">
+                    <input type="hidden" name="jurusan" id="Jurusan" value="">
+                    <input type="hidden" name="prodi" id="Prodi" value="">
+                    
+                    <input type="text" name="nama" value="" class = "form-control" placeholder="Nama Bidang">
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="tambah-bidang" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Tambah</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deletebidang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="delete-bidang" method="post" action="<?php echo site_url("dosen/struktural/bidang-nilai/bidang-jurusan/delete") ?>">
+                    <input type="hidden" name="id" id="ID" value="">
+                    <input type="hidden" name="jurusan" id="Jur" value="">
+                    <input type="hidden" name="prodi" id="Pro" value="">
+                Hapus Bidang Ilmu ?
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="delete-bidang" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <?php } ?>

@@ -29,9 +29,9 @@ class Parameter_model extends CI_Model
 		return $query->result();
 	}
 
-	function select_bidang_ilmu($jur)
+	function select_bidang_ilmu($jur,$pro)
 	{
-		$this->db->where(array("jurusan" => $jur));
+		$this->db->where(array("jurusan" => $jur,"prodi" => $pro));
 		$this->db->order_by('nama', 'ASC');
 		$query = $this->db->get('bidang_ilmu');
 		return $query->result();
