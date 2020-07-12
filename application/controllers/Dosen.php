@@ -1756,6 +1756,65 @@ class Dosen extends CI_Controller {
 		redirect(site_url("dosen/struktural/bidang-nilai/bidang-jurusan/show?jurusan=$jurusan&prodi=$prodi"));
 	}
 
+	function komposisi_ta()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['bidang'] = $this->parameter_model->get_bidang_ilmu_ta();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/komposisi_ta/komposisi_ta',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function komposisi_ta_add()
+	{
+		$id = $this->input->get('id');
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['wajib'] = $this->ta_model->get_verifikasi_ta_komponen_wajib($id);
+		$data['konten'] = $this->ta_model->get_verifikasi_ta_komponen_konten($id);
+		$data['bidang'] = $this->ta_model->get_bidang_ilmu_id($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/komposisi_ta/komposisi_ta_add',$data);
+		
+		$this->load->view('footer_global');
+
+	}
+
+	function komposisi_ta_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $data['bidang'];
+		// $ket = $data['ket'];
+		// $komponen = $data['nama'];
+
+		$this->ta_model->insert_komponen_ta($data);
+		redirect(site_url("dosen/struktural/bidang-nilai/komposisi-ta/add?id=$id"));
+
+	}
+
+	function komposisi_ta_delete()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $data['id'];
+		$bidang = $data['bidang'];
+
+		$this->ta_model->delete_komponen_ta($id,$bidang);
+		redirect(site_url("dosen/struktural/bidang-nilai/komposisi-ta/add?id=$bidang"));
+	}
+
 	function encrypt($string)
 	{
 		$result = $this->encrypt->encode($string);

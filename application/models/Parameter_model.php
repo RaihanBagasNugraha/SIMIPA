@@ -29,11 +29,33 @@ class Parameter_model extends CI_Model
 		return $query->result();
 	}
 
+	//edit raihan
 	function select_bidang_ilmu($jur,$pro)
 	{
 		$this->db->where(array("jurusan" => $jur,"prodi" => $pro));
 		$this->db->order_by('nama', 'ASC');
 		$query = $this->db->get('bidang_ilmu');
+		return $query->result();
+	}
+
+	// D3 Ilmu Komputer 
+	function get_bidang_ilmu_ta(){
+		$this->db->select('*'); 
+		$this->db->from('bidang_ilmu');
+		$this->db->where('jurusan', '5');
+		$this->db->where('prodi','11');
+
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function check_bidang_ilmu_ta($id)
+	{
+		$this->db->select('*'); 
+		$this->db->from('verifikasi_ta_komponen');
+		$this->db->where('bidang', $id);
+
+		$query = $this->db->get();
 		return $query->result();
 	}
 	

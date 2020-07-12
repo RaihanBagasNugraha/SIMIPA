@@ -1340,4 +1340,34 @@ class Ta_model extends CI_Model
 	{
 		$this->db->delete('bidang_ilmu', array('id' => $id));
 	}
+
+	function get_verifikasi_ta_komponen_wajib($id)
+	{
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_komponen WHERE bidang = $id AND ket LIKE 'Wajib'");
+		return $query->result();	
+	}
+
+	function get_verifikasi_ta_komponen_konten($id)
+	{
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_komponen WHERE bidang = $id AND ket LIKE 'Konten Program'");
+		return $query->result();	
+	}
+
+	function get_bidang_ilmu_id($id)
+	{
+		$query = $this->db->query("SELECT * FROM bidang_ilmu WHERE id = $id");
+		return $query->row();	
+	}
+
+	function insert_komponen_ta($data)
+	{
+		$this->db->insert('verifikasi_ta_komponen', $data);
+	}
+
+	function delete_komponen_ta($id,$bidang)
+	{
+		$this->db->delete('verifikasi_ta_komponen', array('id' => $id,'bidang' => $bidang));
+	}
+
+
 }

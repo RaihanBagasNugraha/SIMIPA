@@ -260,7 +260,7 @@
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/bidang-nilai/bidang-jurusan") ?>" <?php if( $this->uri->segment(2) == "struktural" && $this->uri->segment(3) == "bidang-nilai" && $this->uri->segment(4) == "bidang-jurusan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Bidang Jurusan
+                                                </i>Bidang Ilmu Jurusan
                                             </a>
                                         </li>
 
@@ -268,6 +268,13 @@
                                             <a href="<?php echo site_url("dosen/struktural/bidang-nilai/komposisi-nilai") ?>" <?php if( $this->uri->segment(2) == "struktural" && $this->uri->segment(3) == "bidang-nilai" && $this->uri->segment(4) == "komposisi-nilai") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Komposisi Nilai
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/struktural/bidang-nilai/komposisi-ta") ?>" <?php if( $this->uri->segment(2) == "struktural" && $this->uri->segment(3) == "bidang-nilai" && $this->uri->segment(4) == "komposisi-ta") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Komposisi Nilai Verifikasi TA
                                             </a>
                                         </li>
 
