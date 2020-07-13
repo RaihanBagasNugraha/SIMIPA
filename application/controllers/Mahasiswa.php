@@ -754,6 +754,21 @@ class Mahasiswa extends CI_Controller {
 		redirect(site_url("mahasiswa/tugas-akhir/seminar"));
 	}
 
+	//verifikasi program ta
+	function verifikasi_ta()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		// $data['lampiran'] = $this->ta_model->select_lampiran_by_seminar($id);
+		
+		// print_r($data);
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/verifikasi-ta/verifikasi_ta');
+
+        $this->load->view('footer_global');
+	}
+
 	//bimbingan mahasiswa
 	function bimbingan()
 	{
@@ -762,7 +777,7 @@ class Mahasiswa extends CI_Controller {
 		// $data['lampiran'] = $this->ta_model->select_lampiran_by_seminar($this->input->get('id'));
 		// $teks = $this->encryption->encode('Your data');
 		// $this->encryption->decode('Your encrypted data');
-		$data = array('planet' => 'asw');
+		$data = array('planet' => 'aa');
 		
 		
 		// echo $data;

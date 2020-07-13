@@ -146,6 +146,13 @@ class Ta_model extends CI_Model
 		return $query->result();
 	}
 
+	function get_approval_ta_kaprodi($id)
+	{
+		$query = $this->db->query('SELECT * FROM tugas_akhir JOIN tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user ='.$id.' AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tugas_akhir.status = 9 AND tugas_akhir.npm = tbl_users_mahasiswa.npm');
+	
+		return $query->result();
+	}
+
 	function get_approval_seminar_kajur($id)
 	{
 		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve FROM tugas_akhir, seminar_sidang, tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user ='.$id.' AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND seminar_sidang.status = 7 AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir');
@@ -443,6 +450,23 @@ class Ta_model extends CI_Model
 
 	}
 
+	function approval_koordinator_ta($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2)//koor
+	{
+		$this->db->where('id_pengajuan', $id);
+		$this->db->update($this->table, array('judul1' => $judul1,'judul2' => $judul2,'status' => '9','judul_approve' => $judul_approve,'no_penetapan' => $no_penetapan,'keterangan_tolak' => NULL));
+
+		$data_approval = [
+			'id_pengajuan' => $id,
+			'status_slug'  => 'Koordinator',
+			'id_user'  => $dosenid,
+			'ttd'  => $ttd
+		];
+
+		$this->db->insert('tugas_akhir_approval', $data_approval);
+
+	}
+
+
 	function set_komisi($id,$pb1,$pb2,$pb3,$ps1,$ps2,$ps3) //koor
 	{
 		//pb1
@@ -526,6 +550,50 @@ class Ta_model extends CI_Model
 				
 			$this->db->insert('tugas_akhir_komisi', $data_komisi);
 		}
+	}
+
+	function set_komisi_ta($id,$pb1,$ps1,$ps2) //koor
+	{
+		//pb1
+		$nip_pb1 = $this->db->query('SELECT nip_nik FROM tbl_users_dosen WHERE id_user ='.$pb1)->row()->nip_nik;
+		$nama1 = $this->db->query('SELECT name FROM tbl_users WHERE userId ='.$pb1)->row()->name;
+		$this->db->where('id_tugas_akhir', $id);
+		$this->db->where('status', 'Pembimbing 1');
+		$this->db->update('tugas_akhir_komisi', array('nip_nik' => $nip_pb1,'id_user' => $pb1,'nama' => $nama1));
+
+		//ps1
+		if($ps1 != NULL){
+			$nip_ps1 = $this->db->query('SELECT nip_nik FROM tbl_users_dosen WHERE id_user ='.$ps1)->row()->nip_nik;
+			$nama = $this->db->query('SELECT name FROM tbl_users WHERE userId ='.$ps1)->row()->name;	
+			$data_komisi = [
+				'id_tugas_akhir' => $id,
+				'status'  => 'Penguji 1',
+				'nip_nik'  => $nip_ps1,
+				'id_user'  => $ps1,
+				'nama' => $nama
+			];
+		
+			$this->db->insert('tugas_akhir_komisi', $data_komisi);
+		}
+
+		//ps2
+		if($ps2 != NULL){
+			$nip_ps2 = $this->db->query('SELECT nip_nik FROM tbl_users_dosen WHERE id_user ='.$ps2)->row()->nip_nik;
+			$nama = $this->db->query('SELECT name FROM tbl_users WHERE userId ='.$ps2)->row()->name;	
+
+			$data_verif = [
+				'id_ta' => $id,
+				'id_dosen'  => $ps2,
+				'nilai'  => "",
+				'ket'  => "0",
+				'nip_nik'  => $nip_ps2,
+				'nama' => $nama,
+				'ttd'  => ""
+			];
+		
+			$this->db->insert('verifikasi_ta_nilai', $data_verif);
+		}
+
 	}
 
 	function set_komisi_alter($id,$nip,$nama,$status)
@@ -1367,6 +1435,23 @@ class Ta_model extends CI_Model
 	function delete_komponen_ta($id,$bidang)
 	{
 		$this->db->delete('verifikasi_ta_komponen', array('id' => $id,'bidang' => $bidang));
+	}
+
+	function get_dosen_verifikator($id)
+	{
+		$query = $this->db->query("SELECT * FROM `verifikasi_ta_nilai` WHERE id_ta = $id");
+		return $query->row();	
+	}
+
+	function approve_ta_kaprodi($id)
+	{
+		$this->db->where('id_pengajuan', $id);
+	    $this->db->update($this->table, array('status' => '7'));
+	}
+
+	function insert_approve_ta_kaprodi($data)
+	{
+		$this->db->insert('tugas_akhir_approval', $data);
 	}
 
 

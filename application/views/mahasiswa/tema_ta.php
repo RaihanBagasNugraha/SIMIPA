@@ -90,7 +90,7 @@
                                                 echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
                                                 echo "<br><i>(Calon pembimbing utama)</i>";
                                             }
-                                            elseif($row->status == 4 || $row->status == 8 || $row->status == 7)
+                                            elseif($row->status == 4 || $row->status == 8 || $row->status == 7 || $row->status == 9)
                                             {
                                                 $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_pengajuan);
                                                 
@@ -112,7 +112,7 @@
                                             if($row->status == -1 || $row->status == 0 || $row->status == 1 || $row->status == 2 || $row->status == 3 || $row->status == 5) {
                                                 echo "<i>(Belum disetujui)</i>";
                                             }
-                                            elseif($row->status == 4 || $row->status == 8 || $row->status == 7)
+                                            elseif($row->status == 4 || $row->status == 8 || $row->status == 7 || $row->status == 9)
                                             {
                                                 $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_pengajuan);
                                                 
@@ -123,6 +123,14 @@
                                                     echo "<b>$kom->status</b><br>";
                                                     echo "$kom->nama<br>";
                                                     echo "$kom->nip_nik<br>";
+                                                }
+
+                                                if($row->jenis == "Tugas Akhir"){
+                                                    echo "<br>";
+                                                    $verifikator = $this->ta_model->get_dosen_verifikator($row->id_pengajuan);
+                                                    echo "<b>Dosen Verifikasi TA</b><br>";
+                                                    echo "$verifikator->nama<br>";
+                                                    echo "$verifikator->nip_nik<br>";
                                                 }
                                             }
                                             ?>
@@ -197,6 +205,11 @@
                                                 echo '<i>Ditolak</i>';
                                                 $ket = explode("###",$row->keterangan_tolak);
                                                 echo "<br><br>".$row->keterangan_tolak;
+                                            }
+
+                                            if($row->status == '9') {
+                                                echo '<i>Menunggu Acc Kaprodi</i>';
+                                                
                                             }
                                             ?>
                                             </td>

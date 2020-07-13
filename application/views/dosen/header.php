@@ -1,4 +1,8 @@
+<?php 
 
+$biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'));
+
+?>
 <ul class="vertical-nav-menu">
                                 <li class="app-sidebar__heading">Profil</li>
                                 <li>
@@ -204,7 +208,7 @@
                                 <!-- Menu Kajur/Sekjur -->
 
                                 <li class="app-sidebar__heading">Ketua/Sekretaris Jurusan</li>
-                                <li <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) != "bidang-nilai") echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) != "bidang-nilai" && $this->uri->segment(3) != "kaprodi") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-pen"></i>
                                         <?php 
@@ -339,6 +343,30 @@
                                         Pengaturan
                                     </a>
                                 </li>
+
+                                <!-- Menu Kaprodi -->
+
+                                <li class="app-sidebar__heading">Ketua Program Studi</li>
+                                <li <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) == "kaprodi") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-pen"></i>
+                                        Asese
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                    <?php if($biodata->jurusan == "5"){ ?>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/struktural/kaprodi/tugas-akhir") ?>" <?php if($this->uri->segment(3) == "kaprodi" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Tugas Akhir
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+                                        
+                                       
+                                    </ul>
+                                </li>
+
 
                                 <!-- Menu Dekan -->
 

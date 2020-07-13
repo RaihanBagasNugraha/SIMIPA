@@ -7,19 +7,19 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Verifikasi Berkas
-                                        <div class="page-title-subheading">Verifikasi Pengajuan Berkas Administrasi Jurusan
+                                    <div>Kelola Tema Penelitian
+                                        <div class="page-title-subheading">Lorem ipsum.
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="page-title-actions">
+                                <div class="page-title-actions">
                                     <a href="<?php echo site_url("mahasiswa/tugas-akhir/tema/form") ?>" class="btn-shadow btn btn-success">
                                             <span class="btn-icon-wrapper pr-2 opacity-7">
                                                 <i class="fas fa-file fa-w-20"></i>
                                             </span>
                                             Form Pengajuan Tema
                                     </a>
-                                </div> -->
+                                </div>
                                 
                             </div>
                         </div> <!-- app-page-title -->
@@ -37,7 +37,7 @@
                         if ($akun->ttd == NULL){
                             echo "<script>
                             alert('Silahkan Lengkapi Informasi Akun & Biodata Anda Terlebih Dahulu');
-                            window.location.href='akun';
+                            window.location.href='biodata';
                             </script>";
                         } 
                         
@@ -46,7 +46,7 @@
                          <div class="main-card mb-3 card">
                                 <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="mb-0 table table-striped" id="example">
+                                    <table class="mb-0 table table-striped"  id="example">
                                         <thead>
                                         <tr>
                                             <th>Judul</th>
@@ -59,7 +59,7 @@
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if(empty($ta) && empty($pa))
+                                        if(empty($ta))
                                         {
                                             echo "<tr><td colspan='6'>Data tidak tersedia</td></tr>";
                                         }
@@ -68,26 +68,54 @@
                                             foreach($ta as $row) {
                                         ?>
                                             <tr>
-                                                <td>
-                                                    <?php echo $row->judul1 ?> 
+                                                <td class="align-top">
+                                                <?php 
+                                                        if($row->judul_approve == 1){
+                                                            echo $row->judul1; 
+                                                        } else {echo $row->judul2;} ?> 
+                
+                                                </td>
+                                                <td class="align-top">
+                                                <?php 
+                                                    $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_pengajuan);
 
-                                                    <?php if($row->judul2 != NULL){ echo "<br><br>$row->judul2"; } ?>
+                                                    foreach($komisi_pembimbing as $kom) {
+                                                        echo "<b>$kom->status</b><br>";
+                                                        echo "$kom->nama<br>";
+                                                        echo "$kom->nip_nik<br>";
+                                                    }
+                                                ?>
                                                 </td>
-                                                <td>
-                                                    <?php 
-                                                        $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing1);
-                                                        echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
-                                                    ?>
+                                                <td class="align-top">
+                                                <?php 
+                                                    $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_pengajuan);
+
+                                                    foreach($komisi_penguji as $kom) {
+                                                        echo "<b>$kom->status</b><br>";
+                                                        echo "$kom->nama<br>";
+                                                        echo "$kom->nip_nik<br>";
+                                                    }
+
+                                                    if($row->jenis == "Tugas Akhir"){
+                                                        echo "<br>";
+                                                        $verifikator = $this->ta_model->get_dosen_verifikator($row->id_pengajuan);
+                                                        echo "<b>Dosen Verifikasi TA</b><br>";
+                                                        echo "$verifikator->nama<br>";
+                                                        echo "$verifikator->nip_nik<br>";
+                                                    }
+                                                ?>
                                                 </td>
-                                                <td>-</td>
-                                                <td>
+                                                <td class="align-top">
                                                     <?php
                                                         $lampiran = $this->ta_model->select_lampiran_by_ta($row->id_pengajuan, $row->npm);
                                                         if(empty($lampiran)) {
                                                             echo "<i>(Tidak Ada Lampiran)</i>";
                                                         } else {
+                                                            $dosenid = $this->session->userdata('userId');
                                                             echo "<ul style='margin-left: -20px;'>";
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>"; 
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_verifikasi&id=$row->id_pengajuan").">Form Verifikasi</a></li>"; 
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_penetapan&id=$row->id_pengajuan").">Form Penetapan</a></li>";
                                                             foreach($lampiran as $rw) {
                                                                 echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
                                                             }
@@ -96,26 +124,18 @@
                                                         }
                                                     ?>
                                                 </td>
-                                                <td>
+                                                <td class="align-top">
                                                 <?php 
-
                                                     echo "$row->jenis";
-                                                 
                                                 ?></td>
-                                                <td>
-                                                        
-                                                <a href="<?php echo site_url("tendik/tugas-akhir/tema/approve-ta/form?aksi=setuju&id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
-                                                </a>
-                                                
-                                                <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan ?>" class="passingID6" >
-                                                            <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalTolak">
-                                                                Perbaiki <?php  ?>
-                                                            </button>
+                                                <td class="align-top">
+
+                                                <a href="<?php echo site_url("dosen/struktural/kaprodi/tugas-akhir/form?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                 </a>
                                                 </td>
                                             </tr>
                                         <?php
-                                            }
+                                            }       
                                         }
                                         ?>
                                     
@@ -192,16 +212,11 @@ $(document).ready(function(){
 </script>
 
 <script>
-    $(".passingID5").click(function () {
+    $(".passingIDKoor").click(function () {
                 var id = $(this).attr('data-id');
-                $("#ID5").val( id );
+                $("#IDKoor").val( id );
 
             });
-
-    $(".passingID6").click(function () {
-                var id = $(this).attr('data-id');
-                $("#ID6").val( id );
-
-    });        
+      
 </script>
                         

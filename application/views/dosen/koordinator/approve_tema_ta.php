@@ -32,6 +32,7 @@
                                 <div class="card-body">
                                 <form method="post" action="<?php echo site_url('dosen/simpan-pengajuan-ta') ?>" >
                                     <input value="<?php echo $ta->id_pengajuan ?>" type = "hidden" required name="id_pengajuan" id="id_pengajuan">
+                                    <input value="<?php echo $ta->jenis ?>" type = "hidden" required name="jenis" id="jenis">
                                     <input value="<?php echo $aksi ?>" type = "hidden" required name="aksi" id="aksi">
 
                                     <input value="" readonly required name="pb2_alter_nip" type="hidden" class="form-control" >
@@ -140,8 +141,9 @@
                                     </div>
 
                                     <br>
+                                <?php if($ta->jenis != "Tugas Akhir") {?>      
                                     <h5>Komisi Pembimbing</h5>
-                                    
+                                  
                                     <!-- Pembimbing 1 -->
                                     <div class="position-relative row form-group">
                                             <label for="dosen_pb1" class="col-sm-3 col-form-label">Pembimbing Utama</label>
@@ -413,6 +415,115 @@
                                                 <input value="" name="ps3_alter_email" class="form-control" type = "email" placeholder = "Email Dosen Untuk Mengirim Permintaan Approval">
                                             </div>
                                     </div>
+
+                                    <?php } else { ?>
+
+                                        <h5>Komisi Pembimbing</h5>
+                                  
+                                        <!-- Pembimbing 1 -->
+                                        <div class="position-relative row form-group">
+                                                <label for="dosen_pb1" class="col-sm-3 col-form-label">Pembimbing Utama</label>
+                                                <div class="col-sm-9">
+                                                    <select required name="pembimbing1" class=" form-control">
+                                                    <option value="">-- Pilih Dosen Pembimbing Utama --</option>
+                                                    <?php
+                                                    $list = $this->user_model->select_list_dosen();
+                                                    foreach ($list as $row) {
+                                                        $nama_dosen = "";
+                                                        if($row->gelar_depan != "") $nama_dosen .= $row->gelar_depan." ";
+                                                        $nama_dosen .= $row->name;
+                                                        if($row->gelar_belakang != "") $nama_dosen .= " ".$row->gelar_belakang;
+                                                        $select = "";
+                                                        if($ta->pembimbing1 == $row->id_user) $select = "selected";
+                                                        
+                                                        echo "<option ".$select." value='".$row->id_user."'>".$nama_dosen."</option>";
+                                                        }
+                                                    ?>
+
+                                                    </select>
+                                                </div>    
+                                        </div>
+
+                                        <h5>Komisi Pembahas</h5>
+                                    
+                                    <!-- Pembahas 1 -->
+                                    <div class="position-relative row form-group">
+                                            <label for="dosen_ps1" class="col-sm-3 col-form-label">Pembahas &nbsp;&nbsp;<label class="btn btn-secondary" onClick="add_ps1();" id="add_ps1"><i class="fas fa-plus"></i></label></label>
+                                            <div class="col-sm-9">
+                                                <select name="pembahas1" class=" form-control" id="ps1">
+                                                <option value="">-- Pilih Dosen Pembahas --</option>
+                                                <?php
+                                                $list = $this->user_model->select_list_dosen();
+                                                foreach ($list as $row) {
+                                                    $nama_dosen = "";
+                                                    if($row->gelar_depan != "") $nama_dosen .= $row->gelar_depan." ";
+                                                    $nama_dosen .= $row->name;
+                                                    if($row->gelar_belakang != "") $nama_dosen .= " ".$row->gelar_belakang;
+                                                    $select = "";
+                                                    // if($ta->pembimbing1 == $row->id_user) $select = "selected";
+                                                    
+                                                    echo "<option ".$select." value='".$row->id_user."'>".$nama_dosen."</option>";
+                                                    }
+                                                ?>
+
+                                                </select>
+                                                <input type="hidden" name="pembahas1" value="" id="ps1d" disabled = "true"/>
+                                            </div>    
+                                    </div>
+
+                                    <!-- Pembahas 1 Alternatif -->
+                                    <div class="position-relative row form-group" id="ps1_alt_nip" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nip / Nik</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps1_alter_nip" class="form-control" placeholder = "NIP Dosen">
+                                            </div>
+                                    </div>
+
+                                     <!-- Pembahas 1 Alternatif -->
+                                     <div class="position-relative row form-group" id="ps1_alt_nama" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Nama</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps1_alter_nama" class="form-control" placeholder = "Nama Lengkap dan Gelar">
+                                            </div>
+                                    </div>
+
+                                    <!-- Pembahas 1 Alternatif -->
+                                    <div class="position-relative row form-group" id="ps1_alt_email" style="display:none">
+                                            <label for="dosen_pb2" class="col-sm-3 col-form-label">Email</label>
+                                            <div class="col-sm-9">
+                                                <input value="" name="ps1_alter_email" class="form-control" type = "email" placeholder = "Email Dosen Untuk Mengirim Permintaan Approval">
+                                            </div>
+                                    </div>
+
+                                     <!-- verifikator -->
+                                     <div class="position-relative row form-group">
+                                            <label for="dosen_ps2" class="col-sm-3 col-form-label">Dosen Verifikasi </label>
+                                            <div class="col-sm-9">
+                                                <select name="pembahas2" class="form-control" id="ps2">
+                                                <option value="">-- Pilih Dosen Verifikasi --</option>
+                                                <?php
+                                                $list = $this->user_model->select_list_dosen();
+                                                foreach ($list as $row) {
+                                                    $nama_dosen = "";
+                                                    if($row->gelar_depan != "") $nama_dosen .= $row->gelar_depan." ";
+                                                    $nama_dosen .= $row->name;
+                                                    if($row->gelar_belakang != "") $nama_dosen .= " ".$row->gelar_belakang;
+                                                    $select = "";
+                                                    // if($ta->pembimbing1 == $row->id_user) $select = "selected";
+                                                    
+                                                    echo "<option ".$select." value='".$row->id_user."'>".$nama_dosen."</option>";
+                                                    }
+                                                ?>
+
+                                                </select>
+                                                <input type="hidden" name="pembahas2" value="" id="ps2d" disabled = "true"/>
+                                            </div>
+                                    </div>
+                                    <input value="" readonly required name="pembimbing2" type="hidden" class="form-control" >
+                                    <input value="" readonly required name="pembimbing3" type="hidden" class="form-control" >
+                                    <input value="" readonly required name="pembahas3" type="hidden" class="form-control" >
+                                    
+                                    <?php } ?>
 
                                     <!-- TTD -->
                                     <div class="position-relative row form-group"><label for="ttd" class="col-sm-3 col-form-label">Tanda Tangan Digital</label>

@@ -99,7 +99,7 @@
                                                 </td>
                                                 <td>
                                                 <?php 
-                                                    echo "Tema Penelitian";
+                                                    echo "$row->jenis";
                                                 ?></td>
                                                 <td>
 

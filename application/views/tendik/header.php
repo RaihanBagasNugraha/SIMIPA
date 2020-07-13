@@ -51,7 +51,7 @@
                                 <!-- Menu Admin Fakultas -->
                                 
                                 <li class="app-sidebar__heading">Admin Fakultas</li>
-                                <li <?php if($this->uri->segment(2) == "tugas-akhir") echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note2"></i>
                                         Verifikasi Berkas
@@ -99,7 +99,7 @@
                                 <!-- Menu Staf Laboran -->
                                 
                                 <li class="app-sidebar__heading">Staf Laboran</li>
-                                <li <?php if($this->uri->segment(2) == "tugas-akhir") echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note2"></i>
                                         Verifikasi Bebas Lab
@@ -111,7 +111,7 @@
                                 <!-- Menu Staf Ruang Baca -->
                                 
                                 <li class="app-sidebar__heading">Staf Ruang Baca</li>
-                                <li <?php if($this->uri->segment(2) == "tugas-akhir") echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note2"></i>
                                         Verifikasi Bebas Ruang Baca

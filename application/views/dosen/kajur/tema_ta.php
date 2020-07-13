@@ -118,7 +118,7 @@
                                                 </td>
                                                 <td class="align-top">
                                                 <?php 
-                                                    echo "Tema Penelitian";
+                                                    echo "$row->jenis";
                                                 ?></td>
                                                 <td class="align-top">
 

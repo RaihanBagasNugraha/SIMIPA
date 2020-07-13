@@ -537,10 +537,75 @@ class Pdf_TA extends CI_Controller {
             }
         }
 
+        elseif($ta->jenis == "Tugas Akhir"){
+            $pdf->AddPage('P');
+            $pdf->Ln(5);
+            $pdf->SetFont('Times','B',11);
+            $pdf->MultiCell(150, $spasi, "FORM VERIFIKASI BERKAS PERSYARATAN ".strtoupper($ta->jenis)."\nPENGAJUAN TEMA PENELITIAN DAN PEMBIMBING/PEMBAHAS",1,'C',false); 
+            $pdf->SetFont('Times','',11);
+            $pdf->Ln(10);
+
+            $pdf->Cell(45, $spasi,"Nama Mahasiswa", 0, 0, 'L');
+            $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+            $pdf->Cell(50, $spasi,$mhs->name, 0, 0, 'L');
+            $pdf->Ln(8);
+            $pdf->Cell(45, $spasi,"NPM", 0, 0, 'L');
+            $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+            $pdf->Cell(50, $spasi,$mhs->npm, 0, 0, 'L');
+            $pdf->Ln(8);
+            $pdf->Cell(45, $spasi,"Fakultas/Jurusan", 0, 0, 'L');
+            $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+            $pdf->Cell(50, $spasi,"Matematika dan Ilmu Pengetahuan Alam / ".$jurusan, 0, 0, 'L');
+            $pdf->Ln(8);
+            $pdf->Cell(45, $spasi,"Tanggal Masuk Berkas", 0, 0, 'L');
+            $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+            $pdf->Cell(50, $spasi, $tgl, 0, 0, 'L');
+            $pdf->Ln(18);
+
+            $pdf->Cell(45, $spasi,"Kelengkapan Persyaratan", 0, 0, 'L');
+            $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+            $pdf->Ln(8);
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            //transkrip
+            $pdf->MultiCell(150, $spasi, "Transkrip Akademik (1 lembar) yang telah ditandatangani oleh Pembantu Dekan 1 dan telah diberi cap stempel fakultas, dengan ketentuan telah lulus semua mata kuliah wajib dan pilihan yang mendukung topik skripsi",0,'J',false);
+            $pdf->Ln(1);
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+
+             //sks
+                $pdf->Cell(83, $spasi,"Telah menyelesaikan minimal 100 SKS, dengan IPK ", 0, 0, 'L');
+                $pdf->SetFont("Symbol");
+                $pdf->Cell(5, $spasi,chr(179)." 2,00", 0, 2, 'L');
+                $pdf->SetFont('Times','',11);
+                // $pdf->MultiCell(150, $spasi, "Telah menyelesaikan minimal 100 SKS, dengan IPK > 2,00",0,'J',false);
+                $pdf->Ln(1);
+
+            //ktm
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Terdaftar sebagai mahasiswa, yang dibuktikan dengan 1 lembar fotocopy KTM",0,'J',false);
+            $pdf->Ln(1);
+            //form pengajuan tema
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Mengajukan permohonan kepada Ketua Jurusan dengan mengisi Form PENGAJUAN TEMA PENELITIAN DAN PEMBIMBING/PENGUJI",0,'J',false);
+            $pdf->Ln(1);
+            //fotocopy ukt
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Fotocopy bukti lunas pembayaran SPP dari Semester 1 sampai dengan terakhir (1 lembar)",0,'J',false);
+            $pdf->Ln(1);
+            //krs
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "KRS terakhir (1 lembar) yang telah ditandatangani oleh Pembimbing Akademik dan Pembantu Dekan 1 serta telah diberi cap stempel fakultas",0,'J',false);
+            $pdf->Ln(1);
+            //amplop
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Semua berkas dimasukkan kedalam map warna kuning.",0,'J',false);
+            $pdf->Ln(10);
+        }
+
         $pdf->Cell(90, $spasi,"", 0, 0, 'L');
         $pdf->Cell(30, $spasi,"Bandar Lampung, ".$tgl_acc, 0, 0, 'L');
         $pdf->Ln(7);
 
+    if($ta->jenis != "Tugas Akhir"){
         if($ta->status < 7 && $ta->status != 4 ){
             $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
             $pdf->Ln(5);
@@ -584,7 +649,55 @@ class Pdf_TA extends CI_Controller {
             $pdf->Ln(10);
 
         }
-        
+    }
+    else{
+        if($ta->status < 7 && $ta->status != 4 ){
+            $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"Ketua Program Studi,", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            //ttd
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+
+            $pdf->Ln(26);
+            $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
+            $pdf->Ln(10);
+        }
+        else{
+            $kaprodi = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Ketua Program Studi');
+            $kaprodi_data = $this->user_model->get_dosen_data($kaprodi->id_user);
+
+            $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"Ketua Program Studi,", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            //ttd
+            $pdf->Cell(90, $spasi,$pdf->Image("$kaprodi->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+
+            $pdf->Ln(25);
+            $pdf->Cell(90, $spasi,$kaprodi_data->name, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ".$kaprodi_data->nip_nik, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
+            $pdf->Ln(10);
+
+        }
+    }
 
         $pdf->Output();
     }
@@ -597,7 +710,7 @@ class Pdf_TA extends CI_Controller {
 
         $tgl_acc = $this->ta_model->get_tgl_acc($ta->id_pengajuan);
 
-        if($ta->status != 7){
+        if($ta->status != 7 && $ta->status != 9){
             $kajur_approve= $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Ketua Jurusan');
             $kajur_data = $this->user_model->get_dosen_data($kajur_approve->id_user);
         }
@@ -703,7 +816,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(30, $spasi,"Koordinator ", 0, 0, 'L');
             $pdf->Ln(5);
 
-            if($ta->status != 7){
+            if($ta->status != 7 && $ta->status != 9){
                 $pdf->Cell(90, $spasi,$pdf->Image("$kajur_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
             }
             else{
@@ -713,7 +826,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
             $pdf->Ln(20);
 
-            if($ta->status != 7){
+            if($ta->status != 7 && $ta->status != 9){
                 $pdf->Cell(90, $spasi,$kajur_data->name, 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
                 $pdf->Ln(5);

@@ -86,6 +86,8 @@ $route['mahasiswa/hapus-data-seminar'] = 'mahasiswa/hapus_data_seminar';
 $route['mahasiswa/ajukan-data-seminar'] = 'mahasiswa/ajukan_data_seminar';
 $route['mahasiswa/ajukan-perbaikan-seminar'] = 'mahasiswa/ajukan_perbaikan_seminar';
 
+$route['mahasiswa/tugas-akhir/verifikasi-ta'] = 'mahasiswa/verifikasi_ta';
+
 $route['mahasiswa/tugas-akhir/bimbingan'] = 'mahasiswa/bimbingan';
 
 //PDF TA
@@ -129,6 +131,11 @@ $route['dosen/struktural/seminar'] = 'dosen/seminar_struktural';
 $route['dosen/struktural/seminar/form'] = 'dosen/form_seminar_struktural';
 $route['dosen/struktural/seminar/approve'] = 'dosen/seminar_approve';
 
+    //approval kaprodi
+$route['dosen/struktural/kaprodi/tugas-akhir'] = 'dosen/tugas_akhir_kaprodi';
+$route['dosen/struktural/kaprodi/tugas-akhir/form'] = 'dosen/tugas_akhir_kaprodi_form';
+$route['dosen/struktural/kaprodi/tugas-akhir/approve'] = 'dosen/tugas_akhir_kaprodi_approve';
+
     //komposisi nilai kajur
 $route['dosen/struktural/bidang-nilai/komposisi-nilai'] = 'dosen/komposisi_nilai';
 $route['dosen/struktural/komposisi-nilai/add'] = 'dosen/komposisi_nilai_tambah';
@@ -160,6 +167,8 @@ $route['dosen/tugas-akhir/nilai-seminar/koordinator/approve'] = 'dosen/nilai_sem
 $route['dosen/struktural/nilai-seminar'] = 'dosen/nilai_seminar_kajur';
 $route['dosen/struktural/nilai-seminar/kajur/form'] = 'dosen/nilai_seminar_kajur_approve';
 $route['dosen/struktural/nilai-seminar/kajur/approve'] = 'dosen/nilai_seminar_kajur_approve_add';
+
+
 
 
     //rekap koor
