@@ -173,6 +173,8 @@ $route['dosen/struktural/nilai-seminar/kajur/approve'] = 'dosen/nilai_seminar_ka
 $route['dosen/tugas-akhir/nilai-verifikasi-ta'] = 'dosen/nilai_verifikasi';
 $route['dosen/tugas-akhir/nilai-verifikasi-ta/form'] = 'dosen/nilai_verifikasi_form';
 $route['dosen/tugas-akhir/nilai-verifikasi-ta/save'] = 'dosen/nilai_verifikasi_save';
+$route['dosen/tugas-akhir/nilai-verifikasi-ta/nilai'] = 'dosen/nilai_verifikasi_nilai';
+$route['dosen/tugas-akhir/nilai-verifikasi-ta/verifikasi'] = 'dosen/nilai_verifikasi_verifikasi';
 
 
 

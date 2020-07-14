@@ -1525,4 +1525,16 @@ class Ta_model extends CI_Model
 		return $query->row();
 	}
 
+	function cek_verfikasi_ta_pertemuan($id)
+	{
+		$query = $this->db->query("SELECT * FROM `verifikasi_ta_pertemuan` WHERE id_tugas_akhir = $id AND pertemuan = 0");
+		return $query->result();
+	}
+
+	function update_verifikasi_ta_nilai($id_ta, $nilai, $ttd, $nilai_date)
+	{
+		$this->db->where('id_ta', $id_ta);
+	    $this->db->update('verifikasi_ta_nilai', array('nilai' => $nilai,'ket' => '2','ttd' => $ttd, 'nilai_date' => $nilai_date));
+	}
+
 }

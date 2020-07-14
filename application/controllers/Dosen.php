@@ -1930,6 +1930,51 @@ class Dosen extends CI_Controller {
 		redirect(site_url("dosen/tugas-akhir/nilai-verifikasi-ta"));
 	}
 
+	function nilai_verifikasi_nilai()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['ta'] = $this->ta_model->get_ta_by_id($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/verifikasi_ta/verifikasi_ta_ttd',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function nilai_verifikasi_verifikasi()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $data['id_pengajuan'];
+		$id_encode = $data['id_encode'];
+		$nilai = $data['nilai'];
+		$ttd = $data['ttd'];
+		$nilai_date = date("Y-m-d H:i:s",strtotime('+7 hours'));
+
+		$cek = is_numeric($nilai);
+		if($cek == 1){
+			if($nilai <= 0 || $nilai >= 100){
+				redirect(site_url("dosen/tugas-akhir/nilai-verifikasi-ta/nilai?id=$id_encode&status=error"));
+			}
+			else{
+				$this->ta_model->update_verifikasi_ta_nilai($id, $nilai, $ttd, $nilai_date);
+				redirect(site_url("dosen/tugas-akhir/nilai-verifikasi-ta"));
+			}
+		}
+		else{
+			redirect(site_url("dosen/tugas-akhir/nilai-verifikasi-ta/nilai?id=$id_encode&status=error"));
+		}
+
+	}
+
+
 	function encrypt($string)
 	{
 		$result = $this->encrypt->encode($string);

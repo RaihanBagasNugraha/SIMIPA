@@ -25,6 +25,10 @@
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
+                        if(!empty($_GET['status']) && $_GET['status'] == 'error') {
+
+                            echo '<div class="alert alert-danger fade show" role="alert">Error</div>';
+                        }
                         ?>
                         <?php 
                         if ($akun->ttd == NULL){
@@ -75,16 +79,20 @@
                                                 <td class="align-top">
                                                     <?php echo $this->ta_model->get_created_verifikasi_ta($row->id_pengajuan)->created ?>
                                                 </td>
-                                                <td class="align-top">
-                                                    <?php echo $row->judul_approve == 1 ? $row->judul1 : $row->judul2 ?>
-                                                </td>
                                                 
                                                 <td class="align-top">
                                                     <?php echo $row->ket == 2 ? "Selesai" : "Penilaian" ?>
                                                 </td>
                                                 <td class="align-top">
-                                                    <a href="<?php echo site_url("dosen/tugas-akhir/nilai-verifikasi-ta/form?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Nilai
-                                                    </a>
+                                                    <a href="<?php echo site_url("dosen/tugas-akhir/nilai-verifikasi-ta/form?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Isi Pertemuan
+                                                    </a>  
+                                                    <?php $check = $this->ta_model->cek_verfikasi_ta_pertemuan($row->id_pengajuan);
+                                                        if(empty($check)){
+                                                    ?>
+                                                        <a href="<?php echo site_url("dosen/tugas-akhir/nilai-verifikasi-ta/nilai?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-danger btn-sm btn-block">Nilai
+                                                        </a>
+                                                    <?php } ?>
+                                                         
                                                 </td>
                                         
                                         <?php }
