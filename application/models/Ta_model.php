@@ -1454,5 +1454,75 @@ class Ta_model extends CI_Model
 		$this->db->insert('tugas_akhir_approval', $data);
 	}
 
+	function get_verifikasi_program_ta($npm)
+	{
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_nilai, tugas_akhir WHERE tugas_akhir.npm = $npm AND tugas_akhir.jenis = 'Tugas Akhir' AND tugas_akhir.id_pengajuan = verifikasi_ta_nilai.id_ta AND tugas_akhir.status = 4");
+		return $query->row();	
+	}
+
+	function get_verifikasi_program_ta_dosen($id)
+	{
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_nilai, tugas_akhir WHERE id_dosen = $id AND tugas_akhir.jenis = 'Tugas Akhir' AND tugas_akhir.id_pengajuan = verifikasi_ta_nilai.id_ta AND tugas_akhir.status = 4 AND verifikasi_ta_nilai.ket = 1 ORDER BY verifikasi_ta_nilai.created_at");
+		return $query->result();	
+	}
+
+	function get_verifikasi_program_ta_nilai($id)
+	{
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_nilai, tugas_akhir WHERE tugas_akhir.id_pengajuan = $id AND tugas_akhir.jenis = 'Tugas Akhir' AND tugas_akhir.id_pengajuan = verifikasi_ta_nilai.id_ta AND tugas_akhir.status = 4 AND verifikasi_ta_nilai.ket = 1");
+		return $query->row();	
+	}
+
+	function get_verifikasi_program_ta_komponen($bidang_id)
+	{
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_komponen WHERE bidang = $bidang_id order by ket desc");
+		return $query->result();	
+	}
+
+	function get_verifikasi_program_ta_pertemuan($id)
+	{
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_pertemuan WHERE id_tugas_akhir = $id");
+		return $query->result();	
+	}
+
+	function get_verifikasi_program_ta_pertemuan_wajib($id)
+	{
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_pertemuan JOIN verifikasi_ta_komponen ON verifikasi_ta_pertemuan.id_komponen = verifikasi_ta_komponen.id WHERE verifikasi_ta_pertemuan.id_tugas_akhir = $id AND verifikasi_ta_komponen.ket = 'Wajib'");
+		return $query->result();
+	}
+
+	function get_verifikasi_program_ta_pertemuan_konten($id)
+	{
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_pertemuan JOIN verifikasi_ta_komponen ON verifikasi_ta_pertemuan.id_komponen = verifikasi_ta_komponen.id WHERE verifikasi_ta_pertemuan.id_tugas_akhir = $id AND verifikasi_ta_komponen.ket = 'Konten Program'");
+		return $query->result();
+	}
+
+	function insert_verifikasi_ta_pertemuan($data)
+	{	
+		$this->db->insert('verifikasi_ta_pertemuan', $data);	
+	}
+
+	function update_verifikasi_ta_ket($id)
+	{
+		$this->db->where('id_ta', $id);
+	    $this->db->update('verifikasi_ta_nilai', array('ket' => '1'));
+	}
+
+	function update_verifikasi_ta_pertemuan($pertemuan, $where)
+	{
+		$this->db->where('id_verif', $where);
+	    $this->db->update('verifikasi_ta_pertemuan', array('pertemuan' => $pertemuan));
+	}
+
+	function get_created_verifikasi_ta($id)
+	{
+		$query = $this->db->query("SELECT created FROM `verifikasi_ta_pertemuan` WHERE id_tugas_akhir = $id LIMIT 1");
+		return $query->row();
+	}
+
+	function get_pertemuan_verifikasi_ta($id_verif,$id_ta)
+	{
+		$query = $this->db->query("SELECT pertemuan FROM `verifikasi_ta_pertemuan` WHERE id_verif = $id_verif AND id_tugas_akhir = $id_ta");
+		return $query->row();
+	}
 
 }

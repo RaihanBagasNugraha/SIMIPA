@@ -813,3 +813,37 @@
 </div>
 
 <?php } ?>
+
+<?php if($this->uri->segment(1) == 'mahasiswa' && $this->uri->segment(2) == 'tugas-akhir' && $this->uri->segment(3) == 'verifikasi-ta') { ?>
+
+<div class="modal fade" id="Ajukan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="ajukan-ver" method="post" action="<?php echo site_url("mahasiswa/tugas-akhir/verifikasi-ta/ajukan") ?>">
+                    <input type="hidden" name="id" id="ID" value="">
+                   
+                </form>
+                Ajukan Verifikasi Program Tugas Akhir ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="ajukan-ver" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>

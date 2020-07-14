@@ -87,6 +87,7 @@ $route['mahasiswa/ajukan-data-seminar'] = 'mahasiswa/ajukan_data_seminar';
 $route['mahasiswa/ajukan-perbaikan-seminar'] = 'mahasiswa/ajukan_perbaikan_seminar';
 
 $route['mahasiswa/tugas-akhir/verifikasi-ta'] = 'mahasiswa/verifikasi_ta';
+$route['mahasiswa/tugas-akhir/verifikasi-ta/ajukan'] = 'mahasiswa/verifikasi_ta_ajukan';
 
 $route['mahasiswa/tugas-akhir/bimbingan'] = 'mahasiswa/bimbingan';
 
@@ -168,6 +169,10 @@ $route['dosen/struktural/nilai-seminar'] = 'dosen/nilai_seminar_kajur';
 $route['dosen/struktural/nilai-seminar/kajur/form'] = 'dosen/nilai_seminar_kajur_approve';
 $route['dosen/struktural/nilai-seminar/kajur/approve'] = 'dosen/nilai_seminar_kajur_approve_add';
 
+    //nilai verifikasi ta
+$route['dosen/tugas-akhir/nilai-verifikasi-ta'] = 'dosen/nilai_verifikasi';
+$route['dosen/tugas-akhir/nilai-verifikasi-ta/form'] = 'dosen/nilai_verifikasi_form';
+$route['dosen/tugas-akhir/nilai-verifikasi-ta/save'] = 'dosen/nilai_verifikasi_save';
 
 
 

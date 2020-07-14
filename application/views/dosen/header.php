@@ -94,6 +94,14 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                                 </i>Nilai Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_nilai > 0 ? $smr_nilai : "" ?></span>
                                             </a>
                                         </li>
+                                        <?php if($biodata->jurusan == "5"){ ?>
+                                            <li>
+                                                <a href="<?php echo site_url("dosen/tugas-akhir/nilai-verifikasi-ta") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "nilai-verifikasi-ta") echo 'class="mm-active"' ?>>
+                                                    <i class="metismenu-icon">
+                                                    </i>Nilai Verifikasi TA
+                                                </a>
+                                            </li>
+                                         <?php } ?>
                                        
                                     </ul>
                                 </li>

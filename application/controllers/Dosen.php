@@ -1880,9 +1880,55 @@ class Dosen extends CI_Controller {
 		);
 		$this->ta_model->insert_approve_ta_kaprodi($data_approval);
 		redirect(site_url("dosen/struktural/kaprodi/tugas-akhir"));
-
 	}
 
+	function nilai_verifikasi()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['ta'] = $this->ta_model->get_verifikasi_program_ta_dosen($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/verifikasi_ta/verifikasi_ta',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function nilai_verifikasi_form()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$data['ta'] = $this->ta_model->get_verifikasi_program_ta_nilai($id);
+		$data['komponen'] = $this->ta_model->get_verifikasi_program_ta_komponen($data['ta']->bidang_ilmu);
+		$data['wajib'] = $this->ta_model->get_verifikasi_program_ta_pertemuan_wajib($data['ta']->id_pengajuan);
+		$data['konten'] = $this->ta_model->get_verifikasi_program_ta_pertemuan_konten($data['ta']->id_pengajuan);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/verifikasi_ta/verifikasi_ta_nilai',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function nilai_verifikasi_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $data['id_pengajuan'];
+		$pertemuan = $this->ta_model->get_verifikasi_program_ta_pertemuan($id);
+		
+		foreach ($pertemuan as $prt){
+			 $day = $data[$prt->id_verif];
+			 $this->ta_model->update_verifikasi_ta_pertemuan($day, $prt->id_verif);
+		}
+		redirect(site_url("dosen/tugas-akhir/nilai-verifikasi-ta"));
+	}
 
 	function encrypt($string)
 	{

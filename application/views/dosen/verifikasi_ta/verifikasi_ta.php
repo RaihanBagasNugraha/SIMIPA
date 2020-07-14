@@ -12,7 +12,7 @@
                                         </div>
                                     </div>
                                 </div>
-                              
+                               
                                 
                             </div>
                         </div> <!-- app-page-title -->
@@ -26,6 +26,15 @@
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
                         ?>
+                        <?php 
+                        if ($akun->ttd == NULL){
+                            echo "<script>
+                            alert('Silahkan Lengkapi Informasi Akun & Biodata Anda Terlebih Dahulu');
+                            window.location.href='biodata';
+                            </script>";
+                        } 
+                        
+                        ?>
                         
                          <div class="main-card mb-3 card">
                                 <div class="card-body">
@@ -33,57 +42,56 @@
                                     <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
-                                            <th style="width: 28%;">JUDUL</th>
-                                            <th style="width: 19%;">VERIFIKATOR</th>
-                                            <th style="width: 13%;">STATUS</th>
-                                            <th style="width: 7%;">AKSI</th>
+                                            <th>Judul</th>
+                                            <th>Nama/Npm</th>
+                                            <th>Tanggal Pengajuan</th>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
                                         </tr>
                                         </thead>
                                         <tbody>
+                                       
                                         <?php
                                         if(empty($ta))
                                         {
                                             echo "<tr><td colspan='6'>Data tidak tersedia</td></tr>";
                                         }
-                                        else {
+                                        else
+                                        {
+                                            foreach($ta as $row) {
+                                               
                                         ?>
-                                        <tr>
-                                            <td class="align-top">
-                                                <?php echo $ta->judul_approve == 1 ? $ta->judul1 : $ta->judul2 ?>
-                                            </td>
-                                            <td class="align-top">
-                                                <?php 
-                                                echo "<b>$ta->nama</b>";
-                                                echo "<br>";
-                                                echo "$ta->nip_nik"; 
+                                            <tr>
+                                                <td class="align-top">
+                                                    <?php echo $row->judul_approve == 1 ? $row->judul1 : $row->judul2 ?>
+                                                </td>
+                                                <td class="align-top">
+                                                    <?php 
+                                                    echo "<b>".$this->user_model->get_mahasiswa_name($row->npm)."</b>";
+                                                    echo "<br>";
+                                                    echo $row->npm;
+                                                    ?>
+                                                </td>
+                                                <td class="align-top">
+                                                    <?php echo $this->ta_model->get_created_verifikasi_ta($row->id_pengajuan)->created ?>
+                                                </td>
+                                                <td class="align-top">
+                                                    <?php echo $row->judul_approve == 1 ? $row->judul1 : $row->judul2 ?>
+                                                </td>
                                                 
-                                                ?>
-                                            </td>
-                                            <td class="align-top">
-                                                <?php
-                                                    if($ta->ket == 0){
-                                                        echo "Menunggu";
-                                                    }
-                                                    elseif($ta->ket == 1){
-                                                        echo "Penilaian";
-                                                    }
-                                                    else{
-                                                        echo "Selesai";
-                                                    }
-                                                ?>
-                                            </td>
-                                            <td class="align-top">
-                                            <?php if($ta->ket == 0 ){?>
-                                                <a data-toggle = "modal" data-id="<?php echo $ta->id_pengajuan ?>" class="passingID" >
-                                                        <button type="button" class="btn-wide mb-1 btn btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#Ajukan">
-                                                            Ajukan
-                                                        </button>
-                                                </a>
-                                            <?php } elseif($ta->ket == 1){ echo "Menunggu"; }?>    
-                                            </td>
-                                            
-                                        </tr>
-                                            <?php } ?>
+                                                <td class="align-top">
+                                                    <?php echo $row->ket == 2 ? "Selesai" : "Penilaian" ?>
+                                                </td>
+                                                <td class="align-top">
+                                                    <a href="<?php echo site_url("dosen/tugas-akhir/nilai-verifikasi-ta/form?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Nilai
+                                                    </a>
+                                                </td>
+                                        
+                                        <?php }
+                                        }
+                                         ?>
+                                    
+                                        
                                         </tbody>
                                     </table>
                                 </div>
@@ -94,6 +102,9 @@
 <script src="<?php echo site_url("assets/scripts/dataTables.bootstrap4.min.js") ?>"></script>
 <script src="<?php echo site_url("assets/scripts/DataTables-1.10.21/jquery.dataTables.min.js") ?>"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
 $(document).ready(function(){
     $("select").select2({
         theme: "bootstrap"
@@ -150,18 +161,24 @@ $(document).ready(function(){
     });
 });
 
-$(document).ready(function() {
-    $('#example').DataTable();
-} );
-
 </script>
 
 <script>
-    $(".passingID").click(function () {
+    $(".passingID3").click(function () {
                 var id = $(this).attr('data-id');
-                $("#ID").val( id );
+                var data = id.split("#$#$");
+                $("#ID3").val( data[0] );
+                $("#status").val( data[1] );
 
-            }); 
-              
-     
+            });
+
+    $(".passingID4").click(function () {
+                var id = $(this).attr('data-id');
+                var data = id.split("#$#$");
+                $("#ID4").val( data[0] );
+                $("#status2").val( data[1] );
+
+    });      
+       
 </script>
+                        

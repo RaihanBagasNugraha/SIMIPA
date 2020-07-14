@@ -758,15 +758,37 @@ class Mahasiswa extends CI_Controller {
 	function verifikasi_ta()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		// $data['lampiran'] = $this->ta_model->select_lampiran_by_seminar($id);
 		
-		// print_r($data);
+		$data['ta'] = $this->ta_model->get_verifikasi_program_ta($this->session->userdata('username'));
+		
 		$this->load->view('header_global', $header);
 		$this->load->view('mahasiswa/header');
 
-		$this->load->view('mahasiswa/verifikasi-ta/verifikasi_ta');
+		$this->load->view('mahasiswa/verifikasi-ta/verifikasi_ta',$data);
 
         $this->load->view('footer_global');
+	}
+
+	function verifikasi_ta_ajukan()
+	{
+		$id = $this->input->post('id');
+
+		$ta = $this->ta_model->get_ta_by_id($id);
+
+		$komponen = $this->ta_model->get_verifikasi_program_ta_komponen($ta->bidang_ilmu);
+
+		foreach ($komponen as $kom){
+			$data = array(
+				'id_komponen' => $kom->id,
+				'id_tugas_akhir' => $id,
+				'pertemuan' => "",	
+			);
+			$this->ta_model->insert_verifikasi_ta_pertemuan($data);
+		}
+
+		$this->ta_model->update_verifikasi_ta_ket($id);
+
+		redirect(site_url("mahasiswa/tugas-akhir/verifikasi-ta"));
 	}
 
 	//bimbingan mahasiswa
