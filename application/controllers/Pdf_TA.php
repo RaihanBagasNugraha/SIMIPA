@@ -219,7 +219,13 @@ class Pdf_TA extends CI_Controller {
                 break;
             case "form_penetapan":
                 $this->form_penetapan($ta,$jurusan);
-                break;       
+                break;  
+            case "verifikasi_ta":
+                $this->verifikasi_ta($ta,$jurusan);
+                break;     
+            case "verifikasi_ta_nilai":
+                $this->verifikasi_ta_nilai($ta,$jurusan);
+                break;           
         }
        
     }
@@ -605,99 +611,99 @@ class Pdf_TA extends CI_Controller {
         $pdf->Cell(30, $spasi,"Bandar Lampung, ".$tgl_acc, 0, 0, 'L');
         $pdf->Ln(7);
 
-    if($ta->jenis != "Tugas Akhir"){
-        if($ta->status < 7 && $ta->status != 4 ){
-            $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
-            $pdf->Ln(5);
+        if($ta->jenis != "Tugas Akhir"){
+            if($ta->status < 7 && $ta->status != 4 ){
+                $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+                $pdf->Ln(5);
 
-            $pdf->Cell(90, $spasi,"Koordinator Seminar,", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
-            $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"Koordinator Seminar,", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
+                $pdf->Ln(5);
 
-            //ttd
-            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+                //ttd
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
 
-            $pdf->Ln(26);
-            $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
-            $pdf->Ln(5);
+                $pdf->Ln(26);
+                $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
+                $pdf->Ln(5);
 
-            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
-            $pdf->Ln(10);
+                $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
+                $pdf->Ln(10);
+            }
+            else{
+                $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+                $pdf->Ln(5);
+
+                $pdf->Cell(90, $spasi,"Koordinator Seminar,", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
+                $pdf->Ln(5);
+
+                //ttd
+                $pdf->Cell(90, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+
+                $pdf->Ln(25);
+                $pdf->Cell(90, $spasi,$koor_data->name, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
+                $pdf->Ln(5);
+
+                $pdf->Cell(90, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
+                $pdf->Ln(10);
+
+            }
         }
         else{
-            $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
-            $pdf->Ln(5);
+            if($ta->status < 7 && $ta->status != 4 ){
+                $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+                $pdf->Ln(5);
 
-            $pdf->Cell(90, $spasi,"Koordinator Seminar,", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
-            $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"Ketua Program Studi,", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
+                $pdf->Ln(5);
 
-            //ttd
-            $pdf->Cell(90, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+                //ttd
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
 
-            $pdf->Ln(25);
-            $pdf->Cell(90, $spasi,$koor_data->name, 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
-            $pdf->Ln(5);
+                $pdf->Ln(26);
+                $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
+                $pdf->Ln(5);
 
-            $pdf->Cell(90, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
-            $pdf->Ln(10);
+                $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
+                $pdf->Ln(10);
+            }
+            else{
+                $kaprodi = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Ketua Program Studi');
+                $kaprodi_data = $this->user_model->get_dosen_data($kaprodi->id_user);
 
+                $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+                $pdf->Ln(5);
+
+                $pdf->Cell(90, $spasi,"Ketua Program Studi,", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
+                $pdf->Ln(5);
+
+                //ttd
+                $pdf->Cell(90, $spasi,$pdf->Image("$kaprodi->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+
+                $pdf->Ln(25);
+                $pdf->Cell(90, $spasi,$kaprodi_data->name, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
+                $pdf->Ln(5);
+
+                $pdf->Cell(90, $spasi,"NIP. ".$kaprodi_data->nip_nik, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
+                $pdf->Ln(10);
+
+            }
         }
-    }
-    else{
-        if($ta->status < 7 && $ta->status != 4 ){
-            $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
-            $pdf->Ln(5);
-
-            $pdf->Cell(90, $spasi,"Ketua Program Studi,", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
-            $pdf->Ln(5);
-
-            //ttd
-            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
-
-            $pdf->Ln(26);
-            $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
-            $pdf->Ln(5);
-
-            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
-            $pdf->Ln(10);
-        }
-        else{
-            $kaprodi = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Ketua Program Studi');
-            $kaprodi_data = $this->user_model->get_dosen_data($kaprodi->id_user);
-
-            $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
-            $pdf->Ln(5);
-
-            $pdf->Cell(90, $spasi,"Ketua Program Studi,", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
-            $pdf->Ln(5);
-
-            //ttd
-            $pdf->Cell(90, $spasi,$pdf->Image("$kaprodi->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
-
-            $pdf->Ln(25);
-            $pdf->Cell(90, $spasi,$kaprodi_data->name, 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
-            $pdf->Ln(5);
-
-            $pdf->Cell(90, $spasi,"NIP. ".$kaprodi_data->nip_nik, 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
-            $pdf->Ln(10);
-
-        }
-    }
 
         $pdf->Output();
     }
@@ -1472,50 +1478,50 @@ class Pdf_TA extends CI_Controller {
         $pdf->Cell(30, $spasi,"Bandar Lampung, ".$tgl_acc, 0, 0, 'L');
         $pdf->Ln(2);
 
-    if($seminar->jenis != "Seminar Usul"){
-        if($seminar->status < 7 && $seminar->status != 4 ){
-            $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
-            $pdf->Ln(5);
+        if($seminar->jenis != "Seminar Usul"){
+            if($seminar->status < 7 && $seminar->status != 4 ){
+                $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+                $pdf->Ln(5);
 
-            $pdf->Cell(90, $spasi,"Koordinator Seminar,", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
-            $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"Koordinator Seminar,", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
+                $pdf->Ln(5);
 
-            //ttd
-            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+                //ttd
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
 
-            $pdf->Ln(25);
-            $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
-            $pdf->Ln(5);
+                $pdf->Ln(25);
+                $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
+                $pdf->Ln(5);
 
-            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
-            $pdf->Ln(10);
+                $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
+                $pdf->Ln(10);
+            }
+            else{
+                $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+                $pdf->Ln(5);
+
+                $pdf->Cell(90, $spasi,"Koordinator Seminar,", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
+                $pdf->Ln(5);
+
+                //ttd
+                $pdf->Cell(90, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+
+                $pdf->Ln(25);
+                $pdf->Cell(90, $spasi,$koor_data->name, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
+                $pdf->Ln(5);
+
+                $pdf->Cell(90, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
+                $pdf->Ln(10);
+            }
         }
-        else{
-            $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
-            $pdf->Ln(5);
-
-            $pdf->Cell(90, $spasi,"Koordinator Seminar,", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
-            $pdf->Ln(5);
-
-            //ttd
-            $pdf->Cell(90, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
-
-            $pdf->Ln(25);
-            $pdf->Cell(90, $spasi,$koor_data->name, 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
-            $pdf->Ln(5);
-
-            $pdf->Cell(90, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
-            $pdf->Ln(10);
-        }
-    }
 
         $pdf->Output();
     }
@@ -2317,7 +2323,6 @@ class Pdf_TA extends CI_Controller {
         
         $nilai_pbb = round($nilai_pbb,2);
         
-
         $pdf = new FPDF('P','mm','A4');
         $spasi = 6;
 
@@ -2503,6 +2508,388 @@ class Pdf_TA extends CI_Controller {
         $pdf->Output();
     }
 
+    function verifikasi_ta($ta,$jurusan)
+    {
+        switch($jurusan)
+        {
+            case "Doktor MIPA":
+            $numPage = '';
+            break;
+            case "Kimia":
+            $numPage = '/SOP/MIPA/7.1/II/12';
+            break;
+            case "Biologi":
+            $numPage = '/SOP/FMIPA/7.2/IV/01';
+            break;
+            case "Matematika":
+            $numPage = '/PM/MIPA/3/08';
+            break;
+            case "Fisika":
+            $numPage = '/SOP/MIPA/17.04/II/12/001';
+            break;
+            case "Ilmu Komputer":
+            $numPage = '/SOP/MIPA/7.5/II/12/004';
+            break;
+        }
+
+        $kode = 1;
+        $type = 'Fixed';
+        $mhs = $this->ta_model->get_mahasiswa_detail($ta->npm);
+
+        $pdf = new FPDF('P','mm','A4');
+        $spasi = 6;
+
+        $jurusan_upper = strtoupper($jurusan);
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode,$type);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+
+        $pdf->AddPage('P');
+        $pdf->SetFont('Times','B',11);
+        $pdf->MultiCell(150, $spasi, "FORMULIR PENGAJUAN VERIFIKASI PROGRAM TUGAS AKHIR\nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",1,'C',false);
+        $pdf->SetFont('Times','',11);
+        $pdf->Ln(5);
+        $pdf->Cell(45, $spasi,"Kepada Yth.", 0,0, 'L');
+        $pdf->Ln(5);
+        $pdf->Cell(45, $spasi,"Ketua Jurusan ".$jurusan, 0,0, 'L');
+        $pdf->Ln(8);
+        $pdf->Cell(45, $spasi,"Mahasiswa berikut telah layak melaksanakan Verifikasi Program Tugas Akhir :", 0,0, 'L');
+        $pdf->Ln(9);
+        $pdf->SetWidths(array(45,5, 100));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('NAMA / NPM',':',"$mhs->name/$mhs->npm"));
+        $pdf->Ln(3);
+        $pdf->SetWidths(array(45,5, 100));
+        $pdf->SetAligns(array('L','C','L'));
+        if($ta->judul_approve == 1){
+            $pdf->RowNoBorder(array('JUDUL',':',$ta->judul1));
+        }
+        else{
+            $pdf->RowNoBorder(array('JUDUL',':',$ta->judul2));
+        }
+        $pdf->Ln(3);
+
+        //bidang
+        $bidang = $this->ta_model->get_bidang_ilmu_id($ta->bidang_ilmu);
+        $pdf->SetWidths(array(45,5, 50,40,50));
+        $pdf->SetAligns(array('L','C','L','L','L'));
+        $pdf->RowNoBorder(array('BIDANG',':', $bidang->nama));
+        $pdf->Ln();
+
+        //komisi
+        $komisi = $this->ta_model->get_komisi($ta->id_pengajuan);
+        foreach($komisi as $kom){
+            $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
+            $pdf->SetAligns(array('L','C','L','L','C','L'));
+            $pdf->RowNoBorder(array($kom->status,':',$kom->nama));
+            $pdf->Ln(4);
+        }
+        //verifikator
+        $verifikator = $this->ta_model->get_dosen_verifikator($ta->id_pengajuan);
+            $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
+            $pdf->SetAligns(array('L','C','L','L','C','L'));
+            $pdf->RowNoBorder(array('Dosen Verifikasi',':',$verifikator->nama));
+            $pdf->Ln(4);
+
+        $created = $this->ta_model->get_created_verifikasi_ta($ta->id_pengajuan);    
+        $date = explode("-",substr($created->created,0,10)); 
+        $bulan = $this->get_month($date[1]);
+        $pdf->Cell(150, $spasi,"Bandar Lampung, ".$date[2]." ".$bulan." ".$date[0]."", 0, 0, 'R');
+        $pdf->Ln(4);
+        if($verifikator->ket == 1){
+            $pdf->Cell(150, $spasi,"Menyetujui", 0, 0, 'C');
+            $pdf->Ln(5);
+            $pdf->Cell(150, $spasi,"Pembimbing I", 0, 0, 'C');
+            $pdf->Ln(25);
+            $pdf->Cell(150, $spasi,"", 0, 0, 'C');
+            $pdf->Ln(5);
+            $pdf->Cell(150, $spasi,"NIP.", 0, 0, 'C');
+
+            $pdf->Ln(7);
+            $pdf->Cell(150, $spasi,"Mengetahui", 0, 0, 'C');
+            $pdf->Ln(7);
+
+            $pdf->Cell(90, $spasi,"Ketua Program Studi", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Pembimbing Akademik", 0, 0, 'L');
+            $pdf->Ln(30);
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ", 0, 0, 'L');
+        }
+        elseif($verifikator->ket == 2){
+            $pb =  $this->ta_model->get_verifikasi_ta_approval_status($ta->id_pengajuan,'Pembimbing Utama');
+            $pb_data = $this->user_model->get_dosen_data($pb->id_user);
+
+            $pdf->Cell(150, $spasi,"Menyetujui,", 0, 0, 'C');
+            $pdf->Ln(5);
+            $pdf->Cell(150, $spasi,"Pembimbing I", 0, 0, 'C');
+            $pdf->Ln(5);
+            $pdf->Cell(90, $spasi,$pdf->Image("$pb->ttd",$pdf->GetX()+60, $pdf->GetY(),33,0,'PNG'), 0, 0, 'C');
+            $pdf->Ln(25);
+            $pdf->Cell(150, $spasi,$pb_data->name, 0, 0, 'C');
+            $pdf->Ln(5);
+            $pdf->Cell(150, $spasi,"NIP.".$pb_data->nip_nik, 0, 0, 'C');
+
+            $pdf->Ln(7);
+            $pdf->Cell(150, $spasi,"Mengetahui,", 0, 0, 'C');
+            $pdf->Ln(7);
+
+            $pdf->Cell(90, $spasi,"Ketua Program Studi", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Pembimbing Akademik", 0, 0, 'L');
+            $pdf->Ln(30);
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ", 0, 0, 'L');
+
+        }
+        elseif($verifikator->ket == 3){
+            $pb =  $this->ta_model->get_verifikasi_ta_approval_status($ta->id_pengajuan,'Pembimbing Utama');
+            $pb_data = $this->user_model->get_dosen_data($pb->id_user);
+            $pa =  $this->ta_model->get_verifikasi_ta_approval_status($ta->id_pengajuan,'Pembimbing Akademik');
+            $pa_data = $this->user_model->get_dosen_data($pa->id_user);
+
+            $pdf->Cell(150, $spasi,"Menyetujui,", 0, 0, 'C');
+            $pdf->Ln(5);
+            $pdf->Cell(150, $spasi,"Pembimbing I", 0, 0, 'C');
+            $pdf->Ln(5);
+            $pdf->Cell(90, $spasi,$pdf->Image("$pb->ttd",$pdf->GetX()+60, $pdf->GetY(),33,0,'PNG'), 0, 0, 'C');
+            $pdf->Ln(25);
+            $pdf->Cell(150, $spasi,$pb_data->name, 0, 0, 'C');
+            $pdf->Ln(5);
+            $pdf->Cell(150, $spasi,"NIP.".$pb_data->nip_nik, 0, 0, 'C');
+
+            $pdf->Ln(7);
+            $pdf->Cell(150, $spasi,"Mengetahui,", 0, 0, 'C');
+            $pdf->Ln(7);
+
+            $pdf->Cell(90, $spasi,"Ketua Program Studi", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Pembimbing Akademik", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            //ttd
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pdf->Image("$pa->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+
+            $pdf->Ln(25);
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pa_data->name, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$pa_data->nip_nik, 0, 0, 'L');
+
+        }
+        elseif($verifikator->ket == 4){
+            $pb =  $this->ta_model->get_verifikasi_ta_approval_status($ta->id_pengajuan,'Pembimbing Utama');
+            $pb_data = $this->user_model->get_dosen_data($pb->id_user);
+            $pa =  $this->ta_model->get_verifikasi_ta_approval_status($ta->id_pengajuan,'Pembimbing Akademik');
+            $pa_data = $this->user_model->get_dosen_data($pa->id_user);
+            $kaprodi =  $this->ta_model->get_verifikasi_ta_approval_status($ta->id_pengajuan,'Ketua Program Studi');
+            $kaprodi_data = $this->user_model->get_dosen_data($kaprodi->id_user);
+
+            $pdf->Cell(150, $spasi,"Menyetujui,", 0, 0, 'C');
+            $pdf->Ln(5);
+            $pdf->Cell(150, $spasi,"Pembimbing I", 0, 0, 'C');
+            $pdf->Ln(5);
+            $pdf->Cell(90, $spasi,$pdf->Image("$pb->ttd",$pdf->GetX()+60, $pdf->GetY(),33,0,'PNG'), 0, 0, 'C');
+            $pdf->Ln(25);
+            $pdf->Cell(150, $spasi,$pb_data->name, 0, 0, 'C');
+            $pdf->Ln(5);
+            $pdf->Cell(150, $spasi,"NIP.".$pb_data->nip_nik, 0, 0, 'C');
+
+            $pdf->Ln(7);
+            $pdf->Cell(150, $spasi,"Mengetahui,", 0, 0, 'C');
+            $pdf->Ln(7);
+
+            $pdf->Cell(90, $spasi,"Ketua Program Studi", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Pembimbing Akademik", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            //ttd
+            $pdf->Cell(90, $spasi,$pdf->Image("$kaprodi->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pdf->Image("$pa->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+
+            $pdf->Ln(25);
+            $pdf->Cell(90, $spasi,$kaprodi_data->name, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pa_data->name, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ".$kaprodi_data->nip_nik, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$pa_data->nip_nik, 0, 0, 'L');
+
+        }
+
+        $pdf->Output();
+
+    }
+
+    function verifikasi_ta_nilai($ta,$jurusan)
+    {
+        switch($jurusan)
+        {
+            case "Doktor MIPA":
+            $numPage = '';
+            break;
+            case "Kimia":
+            $numPage = '/SOP/MIPA/7.1/II/12';
+            break;
+            case "Biologi":
+            $numPage = '/SOP/FMIPA/7.2/IV/01';
+            break;
+            case "Matematika":
+            $numPage = '/PM/MIPA/3/08';
+            break;
+            case "Fisika":
+            $numPage = '/SOP/MIPA/17.04/II/12/001';
+            break;
+            case "Ilmu Komputer":
+            $numPage = '/SOP/MIPA/7.5/II/12/004';
+            break;
+        }
+
+        $kode = 2;
+        $type = 'Fixed';
+        $mhs = $this->ta_model->get_mahasiswa_detail($ta->npm);
+        $bidang = $this->ta_model->get_bidang_ilmu_id($ta->bidang_ilmu);
+
+        $pdf = new FPDF('P','mm','A4');
+        $spasi = 6;
+        
+        $jurusan_upper = strtoupper($jurusan);
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode,$type);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+
+        $pdf->AddPage('P');
+        $pdf->SetFont('Times','B',11);
+        $pdf->MultiCell(150, $spasi, "FORMULIR PENGAJUAN VERIFIKASI PROGRAM TUGAS AKHIR\nBIDANG APLIKASI BERBASIS WEB ".strtoupper($bidang->nama),1,'C',false);
+        $pdf->SetFont('Times','',11);
+        $pdf->Ln(5);
+        $pdf->SetWidths(array(45,5, 100));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Nama / NPM',':',"$mhs->name / $mhs->npm"));
+        $pdf->Ln(3);
+        $pdf->SetWidths(array(45,5, 100));
+        $pdf->SetAligns(array('L','C','L'));
+        if($ta->judul_approve == 1){
+            $pdf->RowNoBorder(array('Judul',':',$ta->judul1));
+        }
+        else{
+            $pdf->RowNoBorder(array('Judul',':',$ta->judul2));
+        }
+        
+        $pdf->Ln(3);
+        $pdf->Cell(90, $spasi,'Kriteria Penilaian Verifikasi Tugas Akhir :', 0, 0, 'L');
+        $pdf->Ln(6);
+
+        //tabel
+        $pdf->SetFont('Times','',10);
+        $pdf->Cell(6,5,' ','LTR',0,'L',0); 
+        $pdf->Cell(84,5,' ','LTR',0,'L',0); 
+        $pdf->Cell(60,5,'Pertemuan Ke-',1,0,'C',0);
+        $pdf->Ln();
+        $pdf->Cell(6,5,'No.','LBR',0,'C',0);
+        $pdf->Cell(84,5,'Pertanyaan Penguasaan','LBR',0,'C',0); 
+        $pdf->Cell(6,5,'1','LBR',0,'C',0);
+        $pdf->Cell(6,5,'2','LBR',0,'C',0);
+        $pdf->Cell(6,5,'3','LBR',0,'C',0);
+        $pdf->Cell(6,5,'4','LBR',0,'C',0);
+        $pdf->Cell(6,5,'5','LBR',0,'C',0);
+        $pdf->Cell(6,5,'6','LBR',0,'C',0);
+        $pdf->Cell(6,5,'7','LBR',0,'C',0);
+        $pdf->Cell(6,5,'8','LBR',0,'C',0);
+        $pdf->Cell(6,5,'9','LBR',0,'C',0);
+        $pdf->Cell(6,5,'10','LBR',0,'C',0);
+        $pdf->Ln();
+
+        $pdf->Cell(6,5,'1.',1,0,'C',0);
+        $pdf->Cell(144,5,'Wajib',1,0,'L',0);
+        $pdf->Ln();
+        
+        $nilai_wajib = $this->ta_model->get_verifikasi_program_ta_pertemuan_wajib($ta->id_pengajuan);
+        $i= 1;
+        $v = "V";
+        foreach($nilai_wajib as $wajib)
+        {
+            $pdf->SetWidths(array(6,84,6,6,6,6,6,6,6,6,6,6));
+            $pdf->SetAligns(array('L'));
+            $pdf->Row(array('',"$i.".$wajib->komponen,$wajib->pertemuan == 1 ? $v : "",$wajib->pertemuan == 2 ? $v : "",$wajib->pertemuan == 3 ? $v : "",$wajib->pertemuan == 4 ? $v : "",$wajib->pertemuan == 5 ? $v : "",$wajib->pertemuan == 6 ? $v : "",$wajib->pertemuan == 7 ? $v : "",$wajib->pertemuan == 8 ? $v : "",$wajib->pertemuan == 9 ? $v : "",$wajib->pertemuan == 10 ? $v : ""));
+            $i++;
+        }
+
+        $pdf->Cell(6,5,'2.',1,0,'C',0);
+        $pdf->Cell(144,5,'Konten Program',1,0,'L',0);
+        $pdf->Ln();
+
+        $nilai_konten = $this->ta_model->get_verifikasi_program_ta_pertemuan_konten($ta->id_pengajuan);
+        $j= 1;
+        foreach($nilai_konten as $konten)
+        {
+            $pdf->SetWidths(array(6,84,6,6,6,6,6,6,6,6,6,6));
+            $pdf->SetAligns(array('L'));
+            $pdf->Row(array('',"$j.".$konten->komponen,$konten->pertemuan == 1 ? $v : "",$konten->pertemuan == 2 ? $v : "",$konten->pertemuan == 3 ? $v : "",$konten->pertemuan == 4 ? $v : "",$konten->pertemuan == 5 ? $v : "",$konten->pertemuan == 6 ? $v : "",$konten->pertemuan == 7 ? $v : "",$konten->pertemuan == 8 ? $v : "",$konten->pertemuan == 9 ? $v : "",$konten->pertemuan == 10 ? $v : ""));
+            $j++;
+        }
+
+        $verifikator = $this->ta_model->get_dosen_verifikator($ta->id_pengajuan);
+
+        $pdf->Ln(7);
+        $pdf->SetWidths(array(45,5, 100));
+        $pdf->SetAligns(array('L','C','L'));
+        if($verifikator->nilai != 0){
+            $pdf->RowNoBorder(array('Nilai Verifikasi Tugas Akhir',':',$verifikator->nilai));
+            $pdf->Ln(3);
+            $pdf->SetWidths(array(45,5, 100));
+            $pdf->SetAligns(array('L','C','L'));
+            $pdf->RowNoBorder(array('Dengan Huruf',':',$this->huruf_mutu($verifikator->nilai)));
+            $pdf->Ln(3);
+        }
+        else{
+            $pdf->RowNoBorder(array('Nilai Verifikasi Tugas Akhir',':','......'));
+            $pdf->Ln(3);
+            $pdf->SetWidths(array(45,5, 100));
+            $pdf->SetAligns(array('L','C','L'));
+            $pdf->RowNoBorder(array('Dengan Huruf',':','......'));
+            $pdf->Ln(3);
+        }
+        
+        $date = explode("-",substr($verifikator->nilai_date,0,10));
+        $bulan = $this->get_month($date[1]);
+        $pdf->SetFont('Times','',11);
+        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+        $pdf->Cell(150, $spasi,'Bandar Lampung, '.$date[2].' '.$bulan.' '.$date[0], 0, 0, 'L');
+        $pdf->Ln(7);
+        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+        $pdf->Cell(150, $spasi,"Dosen Verifikasi", 0, 0, 'L');
+        $pdf->Ln(5);
+
+        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+        $pdf->Cell(30, $spasi,$pdf->Image("$verifikator->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+
+        $pdf->Ln(25);
+        $pdf->Cell(90,$spasi,"", 0, 0, 'L');
+        $pdf->Cell(30, $spasi,$verifikator->nama, 0, 0, 'L');
+        $pdf->Ln(5);
+        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+        $pdf->Cell(30, $spasi,"NIP. ".$verifikator->nip_nik, 0, 0, 'L');
+        
+        
+        $pdf->Output();   
+    }
 
 }
 

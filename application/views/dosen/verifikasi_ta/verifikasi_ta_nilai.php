@@ -135,7 +135,9 @@
                                         </tbody>
                                     </table>
 
-                                    <br><br>
+                                    <br>
+                                    <p style="color: #FF0000">*Penilaian Dibuka Setelah Selesai Mengisi Pertemuan
+                                    <br>
                                     <div class="position-relative row form-group">
                                             <div class="col-sm-9 offset-sm-9">
                                             <button value="<?php if($this->input->get('aksi') == "ubah") echo "ubah"; ?>" type="submit" class="btn-shadow btn btn-info">

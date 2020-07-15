@@ -1462,13 +1462,13 @@ class Ta_model extends CI_Model
 
 	function get_verifikasi_program_ta_dosen($id)
 	{
-		$query = $this->db->query("SELECT * FROM verifikasi_ta_nilai, tugas_akhir WHERE id_dosen = $id AND tugas_akhir.jenis = 'Tugas Akhir' AND tugas_akhir.id_pengajuan = verifikasi_ta_nilai.id_ta AND tugas_akhir.status = 4 AND verifikasi_ta_nilai.ket = 1 ORDER BY verifikasi_ta_nilai.created_at");
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_nilai, tugas_akhir WHERE id_dosen = $id AND tugas_akhir.jenis = 'Tugas Akhir' AND tugas_akhir.id_pengajuan = verifikasi_ta_nilai.id_ta AND tugas_akhir.status = 4 AND verifikasi_ta_nilai.ket = 4 ORDER BY verifikasi_ta_nilai.created_at");
 		return $query->result();	
 	}
 
 	function get_verifikasi_program_ta_nilai($id)
 	{
-		$query = $this->db->query("SELECT * FROM verifikasi_ta_nilai, tugas_akhir WHERE tugas_akhir.id_pengajuan = $id AND tugas_akhir.jenis = 'Tugas Akhir' AND tugas_akhir.id_pengajuan = verifikasi_ta_nilai.id_ta AND tugas_akhir.status = 4 AND verifikasi_ta_nilai.ket = 1");
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_nilai, tugas_akhir WHERE tugas_akhir.id_pengajuan = $id AND tugas_akhir.jenis = 'Tugas Akhir' AND tugas_akhir.id_pengajuan = verifikasi_ta_nilai.id_ta AND tugas_akhir.status = 4 AND verifikasi_ta_nilai.ket = 4");
 		return $query->row();	
 	}
 
@@ -1486,13 +1486,13 @@ class Ta_model extends CI_Model
 
 	function get_verifikasi_program_ta_pertemuan_wajib($id)
 	{
-		$query = $this->db->query("SELECT * FROM verifikasi_ta_pertemuan JOIN verifikasi_ta_komponen ON verifikasi_ta_pertemuan.id_komponen = verifikasi_ta_komponen.id WHERE verifikasi_ta_pertemuan.id_tugas_akhir = $id AND verifikasi_ta_komponen.ket = 'Wajib'");
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_pertemuan JOIN verifikasi_ta_komponen ON verifikasi_ta_pertemuan.id_komponen = verifikasi_ta_komponen.id WHERE verifikasi_ta_pertemuan.id_tugas_akhir = $id AND verifikasi_ta_komponen.ket = 'Wajib' ORDER BY verifikasi_ta_komponen.id");
 		return $query->result();
 	}
 
 	function get_verifikasi_program_ta_pertemuan_konten($id)
 	{
-		$query = $this->db->query("SELECT * FROM verifikasi_ta_pertemuan JOIN verifikasi_ta_komponen ON verifikasi_ta_pertemuan.id_komponen = verifikasi_ta_komponen.id WHERE verifikasi_ta_pertemuan.id_tugas_akhir = $id AND verifikasi_ta_komponen.ket = 'Konten Program'");
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_pertemuan JOIN verifikasi_ta_komponen ON verifikasi_ta_pertemuan.id_komponen = verifikasi_ta_komponen.id WHERE verifikasi_ta_pertemuan.id_tugas_akhir = $id AND verifikasi_ta_komponen.ket = 'Konten Program' ORDER BY verifikasi_ta_komponen.id");
 		return $query->result();
 	}
 
@@ -1534,7 +1534,53 @@ class Ta_model extends CI_Model
 	function update_verifikasi_ta_nilai($id_ta, $nilai, $ttd, $nilai_date)
 	{
 		$this->db->where('id_ta', $id_ta);
-	    $this->db->update('verifikasi_ta_nilai', array('nilai' => $nilai,'ket' => '2','ttd' => $ttd, 'nilai_date' => $nilai_date));
+	    $this->db->update('verifikasi_ta_nilai', array('nilai' => $nilai,'ket' => '5','ttd' => $ttd, 'nilai_date' => $nilai_date));
+	}
+
+	function get_verifikasi_ta_list($userid)
+	{
+		$query = $this->db->query("SELECT tugas_akhir.*, verifikasi_ta_nilai.* FROM tugas_akhir,verifikasi_ta_nilai,tbl_users_dosen WHERE tbl_users_dosen.id_user = $userid AND tugas_akhir.jenis = 'Tugas Akhir' AND tugas_akhir.pembimbing1 = tbl_users_dosen.id_user AND tugas_akhir.status = 4 AND tugas_akhir.id_pengajuan = verifikasi_ta_nilai.id_ta AND verifikasi_ta_nilai.ket = 1");
+		return $query->result();
+	}
+
+	function get_verifikasi_ta_list_pa($userid)
+	{
+		$query = $this->db->query("SELECT tugas_akhir.*, verifikasi_ta_nilai.* FROM tugas_akhir,verifikasi_ta_nilai,tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user = $userid AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_mahasiswa.dosen_pa = tbl_users_dosen.id_user AND tugas_akhir.status = 4 AND tugas_akhir.jenis = 'Tugas Akhir' AND tugas_akhir.id_pengajuan = verifikasi_ta_nilai.id_ta AND verifikasi_ta_nilai.ket = 2");
+		return $query->result();
+	}
+
+	function get_verifikasi_ta_list_kaprodi($userid)
+	{
+		$query = $this->db->query("SELECT tugas_akhir.*, verifikasi_ta_nilai.* FROM tugas_akhir,verifikasi_ta_nilai,tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user = $userid AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tugas_akhir.jenis = 'Tugas Akhir' AND tugas_akhir.status = 4 AND tugas_akhir.id_pengajuan = verifikasi_ta_nilai.id_ta AND verifikasi_ta_nilai.ket = 3");
+		return $query->result();
+	}
+
+	function insert_approve_ta_verifikasi($data)
+	{	
+		$this->db->insert('verifikasi_ta_approval', $data);	
+	}
+
+	function update_nilai_ta_verifikasi($status,$where)
+	{	
+		if($status == "Pembimbing Utama"){
+			$this->db->where('id_ta', $where);
+	    	$this->db->update('verifikasi_ta_nilai', array('ket' => '2'));
+		}
+		elseif($status == "Pembimbing Akademik"){
+			$this->db->where('id_ta', $where);
+	    	$this->db->update('verifikasi_ta_nilai', array('ket' => '3'));
+		}
+		elseif($status == "Ketua Program Studi"){
+			$this->db->where('id_ta', $where);
+	    	$this->db->update('verifikasi_ta_nilai', array('ket' => '4'));
+		}
+		
+	}
+
+	function get_verifikasi_ta_approval_status($id,$status)
+	{
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_approval WHERE id_ta = $id AND verifikasi_ta_approval.status = '$status'");
+		return $query->row();
 	}
 
 }

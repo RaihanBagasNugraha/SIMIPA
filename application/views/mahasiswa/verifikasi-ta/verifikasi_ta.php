@@ -36,6 +36,7 @@
                                             <th style="width: 28%;">JUDUL</th>
                                             <th style="width: 19%;">VERIFIKATOR</th>
                                             <th style="width: 13%;">STATUS</th>
+                                            <th style="width: 13%;">BERKAS</th>
                                             <th style="width: 7%;">AKSI</th>
                                         </tr>
                                         </thead>
@@ -65,10 +66,33 @@
                                                         echo "Menunggu";
                                                     }
                                                     elseif($ta->ket == 1){
-                                                        echo "Penilaian";
+                                                        echo "Menunggu Approval";
                                                     }
-                                                    else{
+                                                    elseif($ta->ket == 2){
+                                                        echo "ACC Pembimbing Utama";
+                                                    }
+                                                    elseif($ta->ket == 3){
+                                                        echo "ACC Pembimbing Utama & Akademik";
+                                                    }
+                                                    elseif($ta->ket == 4){
+                                                        echo "ACC Ketua Program Studi";
+                                                    }
+                                                    elseif($ta->ket == 5){
                                                         echo "Selesai";
+                                                    }
+                                                ?>
+                                            </td>
+                                            <td class="align-top">
+                                                <?php
+                                                    if($ta->ket == 0){
+                                                        echo "-";
+                                                    }
+                                                    if($ta->ket >= 1){
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta&id=$ta->id_pengajuan").">Form Pengajuan Verifikasi Program TA</a></li>";   
+                                                    }
+                                                    if($ta->ket >= 4){
+                                                        echo "<br>";
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta_nilai&id=$ta->id_pengajuan").">Form Verifikasi Program TA</a></li>";   
                                                     }
                                                 ?>
                                             </td>
@@ -79,7 +103,13 @@
                                                             Ajukan
                                                         </button>
                                                 </a>
-                                            <?php } elseif($ta->ket == 1){ echo "Menunggu"; }?>    
+                                            <?php } 
+                                            elseif($ta->ket >= 1 && $ta->ket < 4){ echo "Menunggu"; } 
+                                            elseif($ta->ket == 4) { 
+                                                echo "Menunggu Penilaian Dosen Verifikasi";
+                                            }
+                                            else{echo "-";}
+                                            ?>
                                             </td>
                                             
                                         </tr>

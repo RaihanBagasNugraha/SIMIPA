@@ -119,6 +119,10 @@ $route['dosen/tugas-akhir/seminar/approve'] = 'dosen/seminar_approve';
 $route['dosen/tolak-data-seminar'] = 'dosen/seminar_decline';
 $route['dosen/tugas-akhir/seminar/approve-seminar/form'] = 'dosen/seminar_aksi';
 
+$route['dosen/tugas-akhir/verifikasi-ta'] = 'dosen/verifikasi_ta_dosen';
+$route['dosen/tugas-akhir/verifikasi-ta/form'] = 'dosen/verifikasi_ta_dosen_form';
+$route['dosen/tugas-akhir/verifikasi-ta/form/save'] = 'dosen/verifikasi_ta_dosen_form_save';
+
 $route['dosen/tugas-akhir/seminar/koordinator'] = 'dosen/seminar_koordinator';
 $route['dosen/tugas-akhir/seminar/koordinator/decline'] = 'dosen/seminar_decline';
 $route['dosen/tugas-akhir/seminar/koordinator/form'] = 'dosen/seminar_aksi_koor';
@@ -136,6 +140,9 @@ $route['dosen/struktural/seminar/approve'] = 'dosen/seminar_approve';
 $route['dosen/struktural/kaprodi/tugas-akhir'] = 'dosen/tugas_akhir_kaprodi';
 $route['dosen/struktural/kaprodi/tugas-akhir/form'] = 'dosen/tugas_akhir_kaprodi_form';
 $route['dosen/struktural/kaprodi/tugas-akhir/approve'] = 'dosen/tugas_akhir_kaprodi_approve';
+
+$route['dosen/struktural/kaprodi/verifikasi-tugas-akhir'] = 'dosen/tugas_akhir_kaprodi_verifikasi';
+$route['dosen/struktural/kaprodi/verifikasi-tugas-akhir/form'] = 'dosen/tugas_akhir_kaprodi_verifikasi_form';
 
     //komposisi nilai kajur
 $route['dosen/struktural/bidang-nilai/komposisi-nilai'] = 'dosen/komposisi_nilai';

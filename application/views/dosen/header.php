@@ -62,8 +62,12 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                             $smr = count($this->ta_model->get_approval_seminar_list($this->session->userdata('userId')));
                                             $persetujan_seminar = $smr + $smr_pa;
 
+                                            $ver_pa = count($this->ta_model->get_verifikasi_ta_list_pa($this->session->userdata('userId')));
+                                            $ver = count($this->ta_model->get_verifikasi_ta_list($this->session->userdata('userId')));
+                                            $verifikasi_ta = $ver + $ver_pa;
+
                                             $smr_nilai = count($this->ta_model->get_nilai_seminar($this->session->userdata('userId')));
-                                            $manajemen_ta = $persetujan_seminar + $persetujan_tema + $smr_nilai;
+                                            $manajemen_ta = $persetujan_seminar + $persetujan_tema + $smr_nilai + $verifikasi_ta;
                                         
                                         ?>
                                         Manajemen Tugas Akhir <span class="badge badge-danger"><?php echo $manajemen_ta > 0 ? $manajemen_ta : "" ?></span>
@@ -80,6 +84,12 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                             <a href="<?php echo site_url("dosen/tugas-akhir/seminar") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "seminar") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Persetujuan Seminar <span class="badge badge-danger"><?php echo $persetujan_seminar > 0 ? $persetujan_seminar : "" ?></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/tugas-akhir/verifikasi-ta") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "verifikasi-ta") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Persetujuan Verifikasi TA <span class="badge badge-danger"><?php echo $verifikasi_ta > 0 ? $verifikasi_ta : "" ?></span>
                                             </a>
                                         </li>
                                         <li>
@@ -366,7 +376,13 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/kaprodi/tugas-akhir") ?>" <?php if($this->uri->segment(3) == "kaprodi" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Tugas Akhir
+                                                </i>Tema
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/struktural/kaprodi/verifikasi-tugas-akhir") ?>" <?php if($this->uri->segment(3) == "kaprodi" && $this->uri->segment(4) == "verifikasi-tugas-akhir") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Verifikasi Program TA
                                             </a>
                                         </li>
                                     <?php } ?>

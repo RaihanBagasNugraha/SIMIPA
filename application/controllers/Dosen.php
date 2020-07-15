@@ -1907,12 +1907,17 @@ class Dosen extends CI_Controller {
 		$data['wajib'] = $this->ta_model->get_verifikasi_program_ta_pertemuan_wajib($data['ta']->id_pengajuan);
 		$data['konten'] = $this->ta_model->get_verifikasi_program_ta_pertemuan_konten($data['ta']->id_pengajuan);
 
-		$this->load->view('header_global', $header);
-		$this->load->view('dosen/header');
+		if(!empty($data['komponen'])){
+			$this->load->view('header_global', $header);
+			$this->load->view('dosen/header');
 
-		$this->load->view('dosen/verifikasi_ta/verifikasi_ta_nilai',$data);
-		
-		$this->load->view('footer_global');
+			$this->load->view('dosen/verifikasi_ta/verifikasi_ta_nilai',$data);
+			
+			$this->load->view('footer_global');
+		}
+		else{
+			redirect(site_url("dosen/tugas-akhir/nilai-verifikasi-ta?status=error"));
+		}
 	}
 
 	function nilai_verifikasi_save()
@@ -1974,17 +1979,96 @@ class Dosen extends CI_Controller {
 
 	}
 
+	function tugas_akhir_kaprodi_verifikasi()
+	{
 
-	function encrypt($string)
-	{
-		$result = $this->encrypt->encode($string);
-		return $result;
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['ta'] = $this->ta_model->get_verifikasi_ta_list_kaprodi($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kaprodi/verifikasi_ta/verifikasi_ta',$data);
+		
+		$this->load->view('footer_global');
 	}
-	function decrypt($string)
+
+	function verifikasi_ta_dosen()
 	{
-		$result = $this->encrypt->decode($string);
-		return $result;
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['ta'] = $this->ta_model->get_verifikasi_ta_list($this->session->userdata('userId'));
+		$data['pa'] = $this->ta_model->get_verifikasi_ta_list_pa($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/verifikasi_ta/verifikasi_ta_list',$data);
+		
+		$this->load->view('footer_global');
 	}
+
+	function verifikasi_ta_dosen_form()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		$status = $this->input->get('status');
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['ta'] = $this->ta_model->get_ta_by_id($id);
+		$data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/verifikasi_ta/verifikasi_ta_approve',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function verifikasi_ta_dosen_form_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);	
+
+		$id = $data['id_pengajuan'];
+		$id_user = $data['id_user'];
+		$status = $data['status'];
+		$ttd = $data['ttd'];
+
+		$data_approval = array(
+			'id_ta' => $id,
+			'status' => $status,
+			'id_user' => $id_user,
+			'ttd' => $ttd,
+		);
+
+		$this->ta_model->insert_approve_ta_verifikasi($data_approval);
+		$this->ta_model->update_nilai_ta_verifikasi($status,$id);
+		redirect(site_url("dosen/tugas-akhir/verifikasi-ta"));
+
+	}
+
+	function tugas_akhir_kaprodi_verifikasi_form()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		$status = $this->input->get('status');
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['ta'] = $this->ta_model->get_ta_by_id($id);
+		$data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/verifikasi_ta/verifikasi_ta_approve',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+
+	
 
 	
 	

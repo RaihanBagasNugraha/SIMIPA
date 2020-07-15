@@ -7,12 +7,12 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Verifikasi Program Tugas Akhir
+                                    <div>Approval Verifikasi Program TA
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
                                 </div>
-                               
+                                
                                 
                             </div>
                         </div> <!-- app-page-title -->
@@ -24,10 +24,6 @@
                         if(!empty($_GET['status']) && $_GET['status'] == 'sukses') {
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
-                        }
-                        if(!empty($_GET['status']) && $_GET['status'] == 'error') {
-
-                            echo '<div class="alert alert-danger fade show" role="alert">Kriteria Penilaian Belum Diisi Oleh Ketua Jurusan</div>';
                         }
                         ?>
                         <?php 
@@ -46,16 +42,14 @@
                                     <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
-                                            <th>Judul</th>
-                                            <th>Bidang Ilmu</th>
                                             <th>Nama/Npm</th>
-                                            <th>Tanggal Pengajuan</th>
+                                            <th>Judul</th> 
                                             <th>Status</th>
+                                            <th>Berkas</th>
                                             <th>Aksi</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                       
                                         <?php
                                         if(empty($ta))
                                         {
@@ -64,44 +58,36 @@
                                         else
                                         {
                                             foreach($ta as $row) {
-                                               
-                                        ?>
-                                            <tr>
-                                                <td class="align-top">
-                                                    <?php echo $row->judul_approve == 1 ? $row->judul1 : $row->judul2 ?>
-                                                </td>
-                                                <td class="align-top">
-                                                    <?php echo $this->ta_model->get_bidang_ilmu_id($row->bidang_ilmu)->nama ?>
-                                                </td>
-                                                <td class="align-top">
-                                                    <?php 
-                                                    echo "<b>".$this->user_model->get_mahasiswa_name($row->npm)."</b>";
-                                                    echo "<br>";
-                                                    echo $row->npm;
-                                                    ?>
-                                                </td>
-                                                <td class="align-top">
-                                                    <?php echo substr($this->ta_model->get_created_verifikasi_ta($row->id_pengajuan)->created,0,10) ?>
-                                                </td>
-                                                
-                                                <td class="align-top">
-                                                    <?php echo $row->ket == 2 ? "Selesai" : "Penilaian" ?>
-                                                </td>
-                                                <td class="align-top">
-                                                    <a href="<?php echo site_url("dosen/tugas-akhir/nilai-verifikasi-ta/form?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Isi Pertemuan
-                                                    </a>  
-                                                    <?php $check = $this->ta_model->cek_verfikasi_ta_pertemuan($row->id_pengajuan);
-                                                        if(empty($check)){
-                                                    ?>
-                                                        <a href="<?php echo site_url("dosen/tugas-akhir/nilai-verifikasi-ta/nilai?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-danger btn-sm btn-block">Nilai
-                                                        </a>
-                                                    <?php } ?>
-                                                         
-                                                </td>
-                                        
-                                        <?php }
+                                                ?>
+                                                    <tr>
+                                                        <td class="align-top"> 
+                                                            <?php echo $this->user_model->get_mahasiswa_name($row->npm);
+                                                                    echo "<br>";
+                                                                    echo $row->npm;
+                                                            ?>                                                  
+                                                        </td>
+                                                        <td class="align-top">  
+                                                            <?php echo $row->judul_approve == 1 ? $row->judul1 : $row->judul2  ?>                                                 
+                                                        </td>
+                                                        <td class="align-top">                                               
+                                                            Ketua Program Studi
+                                                        </td>
+                                                        <td class="align-top">  
+                                                            <?php 
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta&id=$row->id_pengajuan").">Form Pengajuan Verifikasi Program TA</a></li>";
+                                                            ?>                            
+                                                        </td>
+                                                        <td class="align-top">         
+                                                            <a href="<?php echo site_url("dosen/struktural/kaprodi/verifikasi-tugas-akhir/form?status=kaprodi&id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                            </a>                                          
+                                                        </td>
+                                                        
+                                                    </tr>
+                                                <?php
+                                                }
+    
                                         }
-                                         ?>
+                                        ?>
                                     
                                         
                                         </tbody>
@@ -117,6 +103,7 @@
 $(document).ready(function() {
     $('#example').DataTable();
 } );
+
 $(document).ready(function(){
     $("select").select2({
         theme: "bootstrap"
@@ -176,21 +163,21 @@ $(document).ready(function(){
 </script>
 
 <script>
-    $(".passingID3").click(function () {
+    $(".passingIDPa").click(function () {
                 var id = $(this).attr('data-id');
                 var data = id.split("#$#$");
-                $("#ID3").val( data[0] );
+                $("#ID").val( data[0] );
                 $("#status").val( data[1] );
 
             });
 
-    $(".passingID4").click(function () {
+    $(".passingIDP").click(function () {
                 var id = $(this).attr('data-id');
                 var data = id.split("#$#$");
-                $("#ID4").val( data[0] );
-                $("#status2").val( data[1] );
+                $("#ID").val( data[0] );
+                $("#status").val( data[1] );
 
-    });      
-       
+            });        
+      
 </script>
                         
