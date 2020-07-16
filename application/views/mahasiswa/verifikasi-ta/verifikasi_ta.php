@@ -88,11 +88,11 @@
                                                         echo "-";
                                                     }
                                                     if($ta->ket >= 1){
-                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta&id=$ta->id_pengajuan").">Form Pengajuan Verifikasi Program TA</a></li>";   
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta&id=$ta->id_pengajuan").">Form Pengajuan Verifikasi TA</a></li>";   
                                                     }
-                                                    if($ta->ket >= 4){
+                                                    if($ta->ket >= 5){
                                                         echo "<br>";
-                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta_nilai&id=$ta->id_pengajuan").">Form Verifikasi Program TA</a></li>";   
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta_nilai&id=$ta->id_pengajuan").">Nilai Verifikasi TA</a></li>";   
                                                     }
                                                 ?>
                                             </td>

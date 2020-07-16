@@ -148,7 +148,7 @@ class Ta_model extends CI_Model
 
 	function get_approval_ta_kaprodi($id)
 	{
-		$query = $this->db->query('SELECT * FROM tugas_akhir JOIN tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user ='.$id.' AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tugas_akhir.status = 9 AND tugas_akhir.npm = tbl_users_mahasiswa.npm');
+		$query = $this->db->query("SELECT * FROM tugas_akhir JOIN tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user =$id AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tugas_akhir.status = 3 AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tugas_akhir.jenis = 'Tugas Akhir' ");
 	
 		return $query->result();
 	}
@@ -174,7 +174,7 @@ class Ta_model extends CI_Model
 
 	function get_approval_ta_koordinator($id)
 	{
-		$query = $this->db->query('SELECT * FROM tugas_akhir JOIN tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user ='.$id.' AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tugas_akhir.status = 3 AND tugas_akhir.npm = tbl_users_mahasiswa.npm');
+		$query = $this->db->query("SELECT * FROM tugas_akhir JOIN tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user =$id AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tugas_akhir.status = 3 AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tugas_akhir.jenis != 'Tugas Akhir' ");
 	
 		return $query->result();
 	}
@@ -453,7 +453,7 @@ class Ta_model extends CI_Model
 	function approval_koordinator_ta($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2)//koor
 	{
 		$this->db->where('id_pengajuan', $id);
-		$this->db->update($this->table, array('judul1' => $judul1,'judul2' => $judul2,'status' => '9','judul_approve' => $judul_approve,'no_penetapan' => $no_penetapan,'keterangan_tolak' => NULL));
+		$this->db->update($this->table, array('judul1' => $judul1,'judul2' => $judul2,'status' => '7','judul_approve' => $judul_approve,'no_penetapan' => $no_penetapan,'keterangan_tolak' => NULL));
 
 		$data_approval = [
 			'id_pengajuan' => $id,
@@ -848,6 +848,9 @@ class Ta_model extends CI_Model
 
 	function approve_seminar($where,$ttd,$status,$dosenid)
 	{
+		$jml = $this->db->query("SELECT  COUNT(*) as jml FROM `seminar_sidang_approval` WHERE id_pengajuan = $where AND (status_slug LIKE 'Pembimbing Utama' OR status_slug LIKE 'Penguji 1') AND ttd LIKE ''")->row()->jml;
+
+		// return $query->row();
 
 		if($status == 'pb1'){
 			$this->db->where('id_pengajuan', $where);
@@ -855,15 +858,39 @@ class Ta_model extends CI_Model
 			$this->db->where('id_user', $dosenid);
 			$this->db->update('seminar_sidang_approval', array('ttd' => $ttd));
 
+			if($jml == 1){
 				$this->db->where('id', $where);
 				$this->db->update('seminar_sidang', array('status' => '2'));
-			
+
 				$data_surat = [
 					'jenis' => '2',
 					'id_jenis'  => $where,
 				];
 	
 				$this->db->insert('staff_surat', $data_surat);
+			}
+				
+
+		}
+
+		if($status == 'ps1'){
+			$this->db->where('id_pengajuan', $where);
+			$this->db->where('status_slug', 'Penguji 1');
+			$this->db->where('id_user', $dosenid);
+			$this->db->update('seminar_sidang_approval', array('ttd' => $ttd));
+
+			if($jml == 1){
+				$this->db->where('id', $where);
+				$this->db->update('seminar_sidang', array('status' => '2'));
+
+				$data_surat = [
+					'jenis' => '2',
+					'id_jenis'  => $where,
+				];
+	
+				$this->db->insert('staff_surat', $data_surat);
+			}
+				
 
 		}
 
@@ -909,17 +936,13 @@ class Ta_model extends CI_Model
 
 				$this->db->where('id', $where);
 				$this->db->update('seminar_sidang', array('status' => '4'));
-			
-				
-
 		}
 		
 	}
 
 	function get_verifikasi_berkas_seminar($id) //tendik
 	{
-		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve, tugas_akhir.no_penetapan, tugas_akhir.npm FROM seminar_sidang, tugas_akhir, tbl_users_mahasiswa, tbl_users_tendik WHERE tbl_users_tendik.id_user ='.$id.' AND tbl_users_tendik.unit_kerja = tbl_users_mahasiswa.jurusan AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tugas_akhir.status = 4 AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.status = 2');
-		
+		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve, tugas_akhir.no_penetapan, tugas_akhir.npm FROM seminar_sidang, tugas_akhir, tbl_users_mahasiswa, tbl_users_tendik WHERE tbl_users_tendik.id_user ='.$id.' AND tbl_users_tendik.unit_kerja = tbl_users_mahasiswa.jurusan AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tugas_akhir.status = 4 AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.status = 2');	
 		return $query->result();
 
 	}
@@ -1439,7 +1462,7 @@ class Ta_model extends CI_Model
 
 	function get_dosen_verifikator($id)
 	{
-		$query = $this->db->query("SELECT * FROM `verifikasi_ta_nilai` WHERE id_ta = $id");
+		$query = $this->db->query("SELECT * FROM verifikasi_ta_nilai WHERE id_ta = $id");
 		return $query->row();	
 	}
 

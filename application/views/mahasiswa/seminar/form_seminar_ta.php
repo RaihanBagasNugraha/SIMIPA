@@ -77,10 +77,13 @@
                                             ?>
                                                 <select required name="jenis" class=" form-control">
                                                 <option value="">[Jenis Seminar]</option>
+                                                <?php if($ta->jenis == "Tugas Akhir") { ?>
                                                     <option value="Seminar Tugas Akhir" <?php if($jenis == 'Seminar Tugas Akhir' && $jenis != NULL){echo $select;} ?>>Seminar Tugas Akhir (D3)</option>
+                                                <?php } else {?>    
                                                     <option value="Seminar Usul" <?php if($jenis == 'Seminar Usul' && $jenis != NULL){echo $select;} ?>>Seminar Usul</option>
                                                     <option value="Seminar Hasil" <?php if($jenis == 'Seminar Hasil' && $jenis != NULL){echo $select;} ?>>Seminar Hasil</option>
                                                     <option value="Sidang Komprehensif" <?php if($jenis == 'Sidang Komprehensif' && $jenis != NULL){echo $select;} ?>>Sidang Komprehensif</option>
+                                                <?php } ?>
                                                 </select>  
                                             </div>
                                         </div>

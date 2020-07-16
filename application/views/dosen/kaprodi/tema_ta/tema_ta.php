@@ -46,7 +46,7 @@
                          <div class="main-card mb-3 card">
                                 <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="mb-0 table table-striped"  id="example">
+                                    <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
                                             <th>Judul</th>
@@ -68,54 +68,27 @@
                                             foreach($ta as $row) {
                                         ?>
                                             <tr>
-                                                <td class="align-top">
-                                                <?php 
-                                                        if($row->judul_approve == 1){
-                                                            echo $row->judul1; 
-                                                        } else {echo $row->judul2;} ?> 
-                
-                                                </td>
-                                                <td class="align-top">
-                                                <?php 
-                                                    $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_pengajuan);
+                                                <td>
+                                                    <?php echo $row->judul1 ?> 
 
-                                                    foreach($komisi_pembimbing as $kom) {
-                                                        echo "<b>$kom->status</b><br>";
-                                                        echo "$kom->nama<br>";
-                                                        echo "$kom->nip_nik<br>";
-                                                    }
-                                                ?>
+                                                    <?php if($row->judul2 != NULL){ echo "<br><br>$row->judul2"; } ?>
                                                 </td>
-                                                <td class="align-top">
-                                                <?php 
-                                                    $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_pengajuan);
-
-                                                    foreach($komisi_penguji as $kom) {
-                                                        echo "<b>$kom->status</b><br>";
-                                                        echo "$kom->nama<br>";
-                                                        echo "$kom->nip_nik<br>";
-                                                    }
-
-                                                    if($row->jenis == "Tugas Akhir"){
-                                                        echo "<br>";
-                                                        $verifikator = $this->ta_model->get_dosen_verifikator($row->id_pengajuan);
-                                                        echo "<b>Dosen Verifikasi TA</b><br>";
-                                                        echo "$verifikator->nama<br>";
-                                                        echo "$verifikator->nip_nik<br>";
-                                                    }
-                                                ?>
+                                                <td>
+                                                    <?php 
+                                                        $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing1);
+                                                        echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
+                                                    ?>
                                                 </td>
-                                                <td class="align-top">
+                                                <td>-</td>
+                                                <td>
                                                     <?php
                                                         $lampiran = $this->ta_model->select_lampiran_by_ta($row->id_pengajuan, $row->npm);
                                                         if(empty($lampiran)) {
                                                             echo "<i>(Tidak Ada Lampiran)</i>";
                                                         } else {
-                                                            $dosenid = $this->session->userdata('userId');
                                                             echo "<ul style='margin-left: -20px;'>";
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>";
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_verifikasi&id=$row->id_pengajuan").">Form Verifikasi</a></li>"; 
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_penetapan&id=$row->id_pengajuan").">Form Penetapan</a></li>";
                                                             foreach($lampiran as $rw) {
                                                                 echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
                                                             }
@@ -124,14 +97,20 @@
                                                         }
                                                     ?>
                                                 </td>
-                                                <td class="align-top">
+                                                <td>
                                                 <?php 
                                                     echo "$row->jenis";
                                                 ?></td>
-                                                <td class="align-top">
+                                                <td>
 
-                                                <a href="<?php echo site_url("dosen/struktural/kaprodi/tugas-akhir/form?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                <a href="<?php echo site_url("dosen/tugas-akhir/tema/koordinator/form?aksi=setuju&id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                 </a>
+
+                                                <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan ?>" class="passingIDKoor" >
+                                                            <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalTolakKoor">
+                                                                Tolak <?php  ?>
+                                                            </button>
+                                                </a> 
                                                 </td>
                                             </tr>
                                         <?php

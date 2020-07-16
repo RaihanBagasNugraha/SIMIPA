@@ -719,6 +719,15 @@ class Dosen extends CI_Controller {
 	
 				$this->ta_model->insert_approval_ta($data_approval);
 			}
+
+			// $this->ta_model->approve_ta_kaprodi($id);
+			$data_approval = array(
+				'id_pengajuan' => $id,
+				'status_slug' => "Ketua Program Studi",
+				'id_user' => $dosenid,
+				'ttd' => $ttd,
+			);
+			$this->ta_model->insert_approve_ta_kaprodi($data_approval);
 		}
 		else{
 			$this->ta_model->approval_koordinator($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2);

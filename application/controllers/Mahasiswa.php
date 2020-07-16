@@ -491,24 +491,53 @@ class Mahasiswa extends CI_Controller {
 		// echo "<pre>";
 		// print_r($data);
 		// echo $data['0']['status'];
-		if(empty($ket)){
-			echo "<script type='text/javascript'>alert('Silahkan Ajukan Tema Terlebih Dahulu');window.location = ('tema') </script>";
-		}
-		else{ 
-			if ($ket[0]->status == 4){
-				$data['seminar'] = $this->ta_model->select_seminar_by_npm($this->session->userdata('username'));
-				$this->load->view('header_global', $header);
-				$this->load->view('mahasiswa/header');
+		if($ket[0]->jenis != "Tugas Akhir"){
+			if(empty($ket)){
+				echo "<script type='text/javascript'>alert('Silahkan Ajukan Tema Terlebih Dahulu');window.location = ('tema') </script>";
+			}
+			else{ 
+				if ($ket[0]->status == 4){
+					$data['seminar'] = $this->ta_model->select_seminar_by_npm($this->session->userdata('username'));
+					$this->load->view('header_global', $header);
+					$this->load->view('mahasiswa/header');
 
-				$this->load->view('mahasiswa/seminar/seminar_ta',$data);
-				$this->load->view('footer_global');
+					$this->load->view('mahasiswa/seminar/seminar_ta',$data);
+					$this->load->view('footer_global');
+					
+				}
+				else{
+					echo "<script type='text/javascript'>alert('Pengajuan Tema Belum Disetujui');window.location = ('tema') </script>";
+				}
 				
+			}		
+		}
+
+		else{
+			$ta = $this->ta_model->get_dosen_verifikator($ket[0]->id_pengajuan);
+
+			if(empty($ket)){
+				echo "<script type='text/javascript'>alert('Silahkan Ajukan Tema Terlebih Dahulu');window.location = ('tema') </script>";
 			}
-			else{
-				echo "<script type='text/javascript'>alert('Pengajuan Tema Belum Disetujui');window.location = ('tema') </script>";
-			}
-			
-		}		
+			else{ 
+				if ($ket[0]->status == 4){
+					if($ta->ket == 5){
+						$data['seminar'] = $this->ta_model->select_seminar_by_npm($this->session->userdata('username'));
+						$this->load->view('header_global', $header);
+						$this->load->view('mahasiswa/header');
+
+						$this->load->view('mahasiswa/seminar/seminar_ta',$data);
+						$this->load->view('footer_global');
+					}
+					else{
+						echo "<script type='text/javascript'>alert('Verifikasi Program TA Belum Selesai');window.location = ('verifikasi-ta') </script>";
+					}
+				}
+				else{
+					echo "<script type='text/javascript'>alert('Pengajuan Tema Belum Disetujui');window.location = ('tema') </script>";
+				}
+				
+			}		
+		}
 		
 	}
 
@@ -643,6 +672,8 @@ class Mahasiswa extends CI_Controller {
 		$ps2 = $data['Penguji_2'];
 		$ps3 = $data['Penguji_3'];
 
+		$jenis = $data['jenis'];
+
 		
 		if($aksi == "ubah") {
 			$data_seminar = array(
@@ -704,6 +735,25 @@ class Mahasiswa extends CI_Controller {
 				);
 
 				$this->ta_model->insert_approval_seminar($data_approval);
+				}
+			}
+			if($jenis == "Seminar Tugas Akhir"){
+				if($ps1 != NULL){
+					$result = $this->db->query('SELECT id_user FROM `tbl_users_dosen` WHERE nip_nik = '.$ps1)->row();
+					if(!empty($result)){
+						$result = $result->id_user;
+					}
+					else{
+						$result = 0;
+					}
+						$data_approval = array(
+							'id_pengajuan' => $insert_id,
+							'status_slug' => 'Penguji 1',
+							'id_user' => $result,
+							'ttd' => '',	
+						);
+
+						$this->ta_model->insert_approval_seminar($data_approval);
 				}
 			}
 

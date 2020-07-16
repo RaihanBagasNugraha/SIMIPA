@@ -190,7 +190,11 @@ class Pdf_TA extends CI_Controller {
                 break;    
             case "berita_acara":
                 $this->berita_acara($seminar,$jurusan,$ta_seminar);
-                break;                     
+                break;   
+            //ta
+            case "pengajuan_seminar_ta":
+                $this->pengajuan_seminar_ta($seminar,$jurusan,$ta_seminar);
+                break;                         
         }
 
     }
@@ -1013,6 +1017,155 @@ class Pdf_TA extends CI_Controller {
 
         $pdf->Output();
 
+    }
+
+    function pengajuan_seminar_ta($seminar,$jurusan,$ta_seminar)
+    {
+        switch($jurusan)
+        {
+            case "Doktor MIPA":
+            $kajur = $this->user_model->get_kajur(0);
+            break;
+            case "Kimia":
+            $kajur = $this->user_model->get_kajur(1);
+            $numPage = '/SOP/MIPA/7.1/II/12';
+            break;
+            case "Biologi":
+            $kajur = $this->user_model->get_kajur(2);
+            $numPage = '/SOP/FMIPA/7.2/IV/01';
+            break;
+            case "Matematika":
+            $kajur = $this->user_model->get_kajur(3);
+            $numPage = '/PM/MIPA/3/08';
+            break;
+            case "Fisika":
+            $kajur = $this->user_model->get_kajur(4);
+            $numPage = '/SOP/MIPA/17.04/II/12/001';
+            break;
+            case "Ilmu Komputer":
+            $kajur = $this->user_model->get_kajur(5);
+            $numPage = '/SOP/MIPA/7.5/II/11/002';
+            break;
+        }
+        $mhs = $this->ta_model->get_mahasiswa_detail($ta_seminar->npm);
+        $komisi = $this->ta_model->get_komisi($ta_seminar->id_pengajuan);
+        $pa = $this->ta_model->get_dosen_pa_detail($ta_seminar->id_pengajuan);
+
+
+        $kode = 3;
+        $type = 'Fixed';
+        $jurusan_upper = strtoupper($jurusan);
+
+        $pdf = new FPDF('P','mm','A4');
+        $spasi = 6;
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode,$type);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+        
+        $pdf->AddPage('P');
+        $pdf->SetFont('Times','B',11);
+        $pdf->MultiCell(150, $spasi, "FORMULIR PENGAJUAN TUGAS AKHIR\nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",1,'C',false);
+        $pdf->SetFont('Times','',11);
+        $pdf->Ln(3);
+
+        $pdf->Cell(150, $spasi,"NO:".$seminar->no_form, 0, 0, 'C');
+        $pdf->Ln(7);
+        $pdf->Cell(45, $spasi,"Kepada Yth.", 0,0, 'L');
+        $pdf->Ln(5);
+        $pdf->Cell(45, $spasi,"Ketua Jurusan ".$jurusan, 0,0, 'L');
+        $pdf->Ln(8);
+        $pdf->Cell(45, $spasi,"Mahasiswa berikut telah layak melaksanakan Seminar Tugas Akhir :", 0,0, 'L');
+        $pdf->Ln(9);
+
+        $pdf->SetWidths(array(45,5, 100));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('NAMA / NPM',':',"$mhs->name / $mhs->npm"));
+        $pdf->Ln(3);
+        $pdf->SetWidths(array(45,5, 100));
+        $pdf->SetAligns(array('L','C','L'));
+        if($ta_seminar->judul_approve == 1){
+            $pdf->RowNoBorder(array('JUDUL',':',$ta_seminar->judul1));
+        }
+        else{
+            $pdf->RowNoBorder(array('JUDUL',':',$ta_seminar->judul2));
+        }
+        $pdf->Ln(6);
+
+        foreach($komisi as $kom){
+            $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
+            $pdf->SetAligns(array('L','C','L','L','C','L'));
+            $pdf->RowNoBorder(array($kom->status_slug,':',$kom->nama));
+            $pdf->Ln(4);
+        }
+        //verifikator
+        $verifikator = $this->ta_model->get_dosen_verifikator($ta_seminar->id_pengajuan);
+          $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
+          $pdf->SetAligns(array('L','C','L','L','C','L'));
+          $pdf->RowNoBorder(array('Dosen Verifikasi',':',$verifikator->nama));
+          $pdf->Ln(4);  
+
+        $pdf->Cell(150, $spasi,"Meyetujui", 0, 0, 'C');
+        $pdf->Ln(7);
+        
+        foreach($komisi as $kom){
+            $pdf->Cell(90, $spasi,"$kom->status_slug", 0, 0, 'L');    
+        }   
+        $pdf->Ln(5);
+
+        foreach($komisi as $kom){
+            $pdf->Cell(90, $spasi,$pdf->Image($kom->ttd,$pdf->GetX(), $pdf->GetY(),40,0,'PNG'), 0, 0, 'L'); 
+        }
+
+        $pdf->Ln(25);
+        foreach($komisi as $kom){
+            $pdf->Cell(90, $spasi,"$kom->nama", 0, 0, 'L');   
+        } 
+        $pdf->Ln(5);
+        foreach($komisi as $kom){
+            $pdf->Cell(90, $spasi,"NIP.".$kom->nip_nik, 0, 0, 'L'); 
+        }
+
+        $pdf->Ln(10);
+  
+        if($ta_seminar->status < 1){
+            $pdf->Cell(150, $spasi,"Mengetahui", 0, 0, 'C');
+            $pdf->Ln(7);
+            $pdf->Cell(90, $spasi,"Ketua Program Studi", 0, 0, 'L');
+            $pdf->Cell(90, $spasi,"Pembimbing Akademik", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Ln(25);
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+        }
+        elseif($ta_seminar->status >= 1){
+            $ttd_pa = $this->ta_model->get_ttd_approval($ta_seminar->id_pengajuan,'Pembimbing Akademik');
+            $pdf->Cell(150, $spasi,"Mengetahui", 0, 0, 'C');
+            $pdf->Ln(7);
+            $pdf->Cell(90, $spasi,"Ketua Program Studi", 0, 0, 'L');
+            $pdf->Cell(90, $spasi,"Pembimbing Akademik", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L'); 
+            $pdf->Cell(90, $spasi,$pdf->Image($ttd_pa->ttd,$pdf->GetX(), $pdf->GetY(),40,0,'PNG'), 0, 0, 'L'); 
+            $pdf->Ln(25);
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$pa->name, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+            $pdf->Cell(90, $spasi,"NIP. ".$pa->nip_nik, 0, 0, 'L');
+        }
+
+
+        $pdf->Output();
     }
 
     function verifikasi_seminar($seminar,$jurusan,$ta_seminar)
@@ -2690,7 +2843,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(30, $spasi,"NIP. ".$pa_data->nip_nik, 0, 0, 'L');
 
         }
-        elseif($verifikator->ket == 4){
+        elseif($verifikator->ket == 4 || $verifikator->ket == 5){
             $pb =  $this->ta_model->get_verifikasi_ta_approval_status($ta->id_pengajuan,'Pembimbing Utama');
             $pb_data = $this->user_model->get_dosen_data($pb->id_user);
             $pa =  $this->ta_model->get_verifikasi_ta_approval_status($ta->id_pengajuan,'Pembimbing Akademik');

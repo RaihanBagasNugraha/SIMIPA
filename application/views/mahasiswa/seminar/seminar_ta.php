@@ -124,7 +124,14 @@
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$row->id").">Berita Acara</a></li>";
 
                                                         }
+                                                        if($row->jenis == 'Seminar Tugas Akhir'){
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta&id=$ta->id_pengajuan").">Form Pengajuan Verifikasi TA</a></li>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta_nilai&id=$ta->id_pengajuan").">Nilai Verifikasi TA</a></li>"; 
 
+                                                            if($row->status >= 0 && $row->status != 5 && $row->status != 6){
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_ta&id=$row->id").">Form Pengajuan</a></li>";
+                                                            }
+                                                        }
 
                                                         if($row->jenis != 'Seminar Tugas Akhir'){
                                                             if($row->status >= 0 && $row->status != 5 && $row->status != 6){
@@ -139,7 +146,7 @@
                                                         }
 
                                                         echo "<br>";
-
+                                                        echo "<b>Berkas Lampiran :</b>";
                                                         foreach($lampiran as $rw) {
                                                             // $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
                                                             echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
