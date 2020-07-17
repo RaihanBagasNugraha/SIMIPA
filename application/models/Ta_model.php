@@ -937,6 +937,29 @@ class Ta_model extends CI_Model
 				$this->db->where('id', $where);
 				$this->db->update('seminar_sidang', array('status' => '4'));
 		}
+
+		elseif($status == 'Kaprodi'){
+			$data = [
+				'id_pengajuan' => $where,
+				'status_slug'  => 'Koordinator',
+				'id_user'  => $dosenid,
+				'ttd'  => $ttd
+			];
+			
+			$this->db->insert('seminar_sidang_approval', $data);
+
+			$data_kaprodi = [
+				'id_pengajuan' => $where,
+				'status_slug'  => 'Ketua Program Studi',
+				'id_user'  => $dosenid,
+				'ttd'  => $ttd
+			];
+			
+			$this->db->insert('seminar_sidang_approval', $data_kaprodi);
+
+				$this->db->where('id', $where);
+				$this->db->update('seminar_sidang', array('status' => '7'));
+		}
 		
 	}
 
@@ -986,7 +1009,13 @@ class Ta_model extends CI_Model
 
 	function get_approval_seminar_koordinator($id)
 	{
-		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve  FROM seminar_sidang, tugas_akhir, tbl_users_mahasiswa, tbl_users_dosen WHERE seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tbl_users_dosen.id_user ='.$id.' AND seminar_sidang.status = 3 ORDER BY seminar_sidang.jenis');
+		$query = $this->db->query("SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve  FROM seminar_sidang, tugas_akhir, tbl_users_mahasiswa, tbl_users_dosen WHERE seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tbl_users_dosen.id_user =$id AND seminar_sidang.status = 3 AND seminar_sidang.jenis NOT LIKE 'Seminar Tugas Akhir' ORDER BY seminar_sidang.jenis");
+		return $query->result();
+	}
+
+	function get_approval_seminar_kaprodi($id)
+	{
+		$query = $this->db->query("SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve  FROM seminar_sidang, tugas_akhir, tbl_users_mahasiswa, tbl_users_dosen WHERE seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tbl_users_dosen.id_user =$id AND seminar_sidang.status = 3 AND seminar_sidang.jenis = 'Seminar Tugas Akhir' ORDER BY seminar_sidang.jenis");
 		return $query->result();
 	}
 
@@ -1050,6 +1079,12 @@ class Ta_model extends CI_Model
 	function get_komisi($id)
 	{
 		$query = $this->db->query('SELECT * FROM tugas_akhir_approval, tugas_akhir_komisi WHERE tugas_akhir_approval.id_pengajuan = tugas_akhir_komisi.id_tugas_akhir AND (tugas_akhir_approval.status_slug LIKE "Pembimbing%" OR tugas_akhir_approval.status_slug LIKE "Penguji%") AND tugas_akhir_approval.status_slug NOT LIKE "Pembimbing Akademik" AND tugas_akhir_approval.id_user = tugas_akhir_komisi.id_user AND tugas_akhir_approval.status_slug = tugas_akhir_komisi.status AND tugas_akhir_approval.id_pengajuan ='.$id);
+		return $query->result();
+	}
+
+	function get_komisi_seminar($id_seminar)
+	{
+		$query = $this->db->query("SELECT seminar_sidang_approval.*,tugas_akhir_komisi.* FROM seminar_sidang_approval, tugas_akhir_komisi, seminar_sidang WHERE seminar_sidang_approval.id_pengajuan = $id_seminar AND (seminar_sidang_approval.status_slug LIKE 'Pembimbing%' OR seminar_sidang_approval.status_slug LIKE 'Penguji%') AND seminar_sidang_approval.id_pengajuan = seminar_sidang.id AND seminar_sidang.id_tugas_akhir = tugas_akhir_komisi.id_tugas_akhir AND seminar_sidang_approval.status_slug = tugas_akhir_komisi.status");
 		return $query->result();
 	}
 

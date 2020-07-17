@@ -7,12 +7,19 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Kelola Seminar
+                                    <div>Kelola Tema Penelitian
                                         <div class="page-title-subheading">Lorem ipsum.
                                         </div>
                                     </div>
                                 </div>
-                                
+                                <div class="page-title-actions">
+                                    <a href="<?php echo site_url("mahasiswa/tugas-akhir/tema/form") ?>" class="btn-shadow btn btn-success">
+                                            <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-file fa-w-20"></i>
+                                            </span>
+                                            Form Pengajuan Tema
+                                    </a>
+                                </div>
                                 
                             </div>
                         </div> <!-- app-page-title -->
@@ -61,37 +68,26 @@
                                             foreach($seminar as $row) {
                                         ?>
                                             <tr>
-                                                <td class="align-top">
-                                                    <?php 
-                                                        echo "<b>$row->jenis</b>";
-                                                    ?>
-                                                </td>
-                                                <td class="align-top">
-                                                    <?php 
-                                                        echo "$row->npm";
-                                                    ?>
-                                                </td>
-                                                <td class="align-top">
-                                                    <?php echo "$row->tempat<br>$row->tgl_pelaksanaan<br>$row->waktu_pelaksanaan<br>";  ?>
-                                                </td>
-                                                <td class="align-top">
-                                                    <?php 
+                                                <td class="align-top"><b><?php echo $row->jenis;?><b></td>
+                                                <td class="align-top"><?php echo $row->npm;?></td>
+                                                <td class="align-top"><?php echo "$row->tempat<br>$row->tgl_pelaksanaan<br>$row->waktu_pelaksanaan<br>";  ?></td>
+                                                <td class="align-top"><?php 
                                                         if($row->judul_approve == 1){echo $row->judul1;}
                                                         else{echo $row->judul2;}
-                                                    ?>             
+                                                        ?>                         
                                                 </td>
                                                 <td class="align-top">
-                                                    <?php 
-                                                    $lampiran = $this->ta_model->select_lampiran_by_seminar($row->id);
+                                                <?php 
+                                                $lampiran = $this->ta_model->select_lampiran_by_seminar($row->id);
                                                     if(empty($lampiran)) {
                                                         echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                     } else {
                                                         echo "<ul style='margin-left: -20px;'>";
                                                         if($row->jenis != 'Seminar Tugas Akhir'){
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
-                                                        
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
+                                                            
                                                         }
                                                         elseif($row->jenis == 'Seminar Tugas Akhir'){
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta&id=$row->id_tugas_akhir").">Form Pengajuan Verifikasi TA</a></li>";
@@ -101,18 +97,26 @@
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
                                                         }
+                                                        echo "<br>";
                                                             foreach($lampiran as $rw) {
                                                                 $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
                                                                     echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
                                                                 }
                                                                     echo "</ul>";
                                                                 }
-                                                    ?>
-                                                </td>
-                                                <td class="align-top">
+                                                ?>
 
-                                                <a href="<?php echo site_url("dosen/struktural/seminar/form?id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                </td>
+                                                <td class="align-top"> 
+
+                                                <a href="<?php echo site_url("dosen/tugas-akhir/seminar/koordinator/form?status=kaprodi&id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                 </a>
+
+                                                <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="passingIDKoor" >
+                                                            <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalTolakKoor">
+                                                                Tolak <?php  ?>
+                                                            </button>
+                                                </a> 
                                                 </td>
                                             </tr>
                                         <?php
@@ -196,7 +200,6 @@ $(document).ready(function(){
     $(".passingIDKoor").click(function () {
                 var id = $(this).attr('data-id');
                 $("#IDKoor").val( id );
-
             });
       
 </script>

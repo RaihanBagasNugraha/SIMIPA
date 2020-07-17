@@ -131,6 +131,12 @@
                                                             if($row->status >= 0 && $row->status != 5 && $row->status != 6){
                                                                 echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_ta&id=$row->id").">Form Pengajuan</a></li>";
                                                             }
+                                                            if($row->status >= 3 && $row->status != 5 && $row->status != 6){
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
+                                                            }
+                                                            if($row->status == 7 || $row->status == 4 && $row->status != 5 && $row->status != 6){
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
+                                                            }
                                                         }
 
                                                         if($row->jenis != 'Seminar Tugas Akhir'){

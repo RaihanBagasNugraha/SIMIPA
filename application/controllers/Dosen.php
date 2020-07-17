@@ -832,25 +832,53 @@ class Dosen extends CI_Controller {
 			$id_ta = $data['id_ta'];
 
 			$komisi = $this->ta_model->get_komisi_alter_seminar_id($id_ta);
+			if(!empty($komisi)){
+				foreach($komisi as $kom)
+				{
+					$keys = "raihanbagasnugraha";
+					$date = date("Y-m-d H:i:s");
+					$token = md5($keys.$kom->nip_nik.$kom->status.$kom->nama.$date);
 
-			foreach($komisi as $kom)
-			{
-				$keys = "raihanbagasnugraha";
-				$date = date("Y-m-d H:i:s");
-				$token = md5($keys.$kom->nip_nik.$kom->status.$kom->nama.$date);
-
-				$data_approval = array(
-					'id_seminar' => $id,
-					'status' => $kom->status,
-					'nip_nik' => $kom->nip_nik,
-					'nama' => $kom->nama,
-					'email' => $kom->email,	
-					'token' => $token	
-				);
-				$this->ta_model->insert_seminar_approval_alter($data_approval);
+					$data_approval = array(
+						'id_seminar' => $id,
+						'status' => $kom->status,
+						'nip_nik' => $kom->nip_nik,
+						'nama' => $kom->nama,
+						'email' => $kom->email,	
+						'token' => $token	
+					);
+					$this->ta_model->insert_seminar_approval_alter($data_approval);
+				}
 			}
 
 			redirect(site_url("dosen/tugas-akhir/seminar/koordinator"));
+		}
+
+		elseif($status == 'Kaprodi'){
+			$id_ta = $data['id_ta'];
+
+			$komisi = $this->ta_model->get_komisi_alter_seminar_id($id_ta);
+
+			if(!empty($komisi)){
+				foreach($komisi as $kom)
+				{
+					$keys = "raihanbagasnugraha";
+					$date = date("Y-m-d H:i:s");
+					$token = md5($keys.$kom->nip_nik.$kom->status.$kom->nama.$date);
+
+					$data_approval = array(
+						'id_seminar' => $id,
+						'status' => $kom->status,
+						'nip_nik' => $kom->nip_nik,
+						'nama' => $kom->nama,
+						'email' => $kom->email,	
+						'token' => $token	
+					);
+					$this->ta_model->insert_seminar_approval_alter($data_approval);
+				}
+			}
+
+			redirect(site_url("dosen/struktural/kaprodi/seminar-sidang"));
 		}
 
 		elseif($status == 'kajur'){
@@ -2076,7 +2104,19 @@ class Dosen extends CI_Controller {
 		$this->load->view('footer_global');
 	}
 
+	function seminar_sidang_kaprodi()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->ta_model->get_approval_seminar_kaprodi($this->session->userdata('userId'));
+		// print_r($data);
 
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kaprodi/seminar/seminar_ta_kaprodi',$data);
+		
+		$this->load->view('footer_global');
+	}
 	
 
 	

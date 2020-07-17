@@ -92,7 +92,11 @@
                                     <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label"><b>Status</b></label>
                                             <div class="col-sm-9">
-                                            <input value="Koordinator" name="status" class="form-control" readonly >
+                                                <?php if($status == "kaprodi"){ ?>
+                                                    <input value="Kaprodi" name="status" class="form-control" readonly >
+                                                <?php } else {?>
+                                                    <input value="Koordinator" name="status" class="form-control" readonly >
+                                                <?php } ?>
                                             </div>
                                     </div>
 

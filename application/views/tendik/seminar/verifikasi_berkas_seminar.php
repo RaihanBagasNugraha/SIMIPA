@@ -82,6 +82,12 @@
                                                         if($row->jenis != "Seminar Tugas Akhir"){
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
                                                         }
+                                                        elseif($row->jenis == "Seminar Tugas Akhir"){
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta&id=$row->id_tugas_akhir").">Form Pengajuan Verifikasi TA</a></li>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta_nilai&id=$row->id_tugas_akhir").">Nilai Verifikasi TA</a></li>"; 
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_ta&id=$row->id").">Form Pengajuan</a></li>";
+
+                                                        }
                                                         foreach($lampiran as $rw) {
                                                         $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
                                                         echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
