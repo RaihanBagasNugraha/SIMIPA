@@ -142,6 +142,8 @@ $route['dosen/struktural/kaprodi/tugas-akhir/form'] = 'dosen/tugas_akhir_kaprodi
 $route['dosen/struktural/kaprodi/tugas-akhir/approve'] = 'dosen/tugas_akhir_kaprodi_approve';
 
 $route['dosen/struktural/kaprodi/seminar-sidang'] = 'dosen/seminar_sidang_kaprodi';
+$route['dosen/struktural/kaprodi/nilai-seminar-sidang'] = 'dosen/nilai_seminar_sidang_kaprodi';
+$route['dosen/struktural/kaprodi/nilai-seminar-sidang/form'] = 'dosen/nilai_seminar_sidang_kaprodi_approve';
 
 $route['dosen/struktural/kaprodi/verifikasi-tugas-akhir'] = 'dosen/tugas_akhir_kaprodi_verifikasi';
 $route['dosen/struktural/kaprodi/verifikasi-tugas-akhir/form'] = 'dosen/tugas_akhir_kaprodi_verifikasi_form';

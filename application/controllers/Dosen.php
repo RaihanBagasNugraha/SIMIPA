@@ -1653,7 +1653,38 @@ class Dosen extends CI_Controller {
 		$this->load->view('footer_global');
 	}
 
+	function nilai_seminar_sidang_kaprodi()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->ta_model->get_approval_nilai_seminar_kaprodi($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/nilai_seminar/nilai_seminar',$data);
+		
+		$this->load->view('footer_global');
+	}
+
 	function nilai_seminar_koor_approve()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->ta_model->get_seminar_id($id);
+		$data['ta'] = $this->ta_model->get_tugas_akhir_seminar_id($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/nilai_seminar/nilai_seminar_approve',$data);
+		
+		$this->load->view('footer_global');
+
+	}
+
+	function nilai_seminar_sidang_kaprodi_approve()
 	{
 		$id = $this->input->get('id');
 		$id = $this->encrypt->decode($id);
@@ -1679,21 +1710,39 @@ class Dosen extends CI_Controller {
 
 		$id = $data['id'];
 		$ttd = $data['ttd'];
+		$jenis = $data['jenis'];
 		$status = "Koordinator";
 		$user_id = $this->session->userdata('userId');
 
-		$data = array(
+		if($jenis == "Seminar Tugas Akhir"){
+			$data_ta = array(
+				'status' => "Ketua Program Studi",
+				'saran' => '',
+				'ket' => $user_id,
+				'id_seminar' => $id,
+				'ttd' => $ttd,
+			);
+			$this->ta_model->insert_nilai_seminar_koor($data_ta);
+		}
+
+		$data_koor = array(
 			'status' => $status,
 			'saran' => '',
 			'ket' => $user_id,
 			'id_seminar' => $id,
 			'ttd' => $ttd,
 		);
-		$this->ta_model->insert_nilai_seminar_koor($data);
+		$this->ta_model->insert_nilai_seminar_koor($data_koor);
 
 		//update seminar
 		$this->ta_model->update_nilai_seminar_koor($id);
-		redirect(site_url("dosen/tugas-akhir/nilai-seminar/koordinator"));
+		if($jenis == "Seminar Tugas Akhir"){
+			redirect(site_url("dosen/struktural/kaprodi/seminar-sidang"));
+		}
+		else{
+			redirect(site_url("dosen/tugas-akhir/nilai-seminar/koordinator"));
+		}
+		
 
 	}
 
@@ -1884,15 +1933,21 @@ class Dosen extends CI_Controller {
 
 	function tugas_akhir_kaprodi_form()
 	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['ta'] = $this->ta_model->get_approval_ta_koordinator($this->session->userdata('userId'));
+
 		$id = $this->input->get('id');
 		$id = $this->encrypt->decode($id);
+		$aksi = $this->input->get('aksi');
 
-		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		$data['ta'] = $this->ta_model->get_ta_by_id($id);
+		$data['aksi'] = $aksi;
+
+		// print_r($data);
 		$this->load->view('header_global', $header);
 		$this->load->view('dosen/header');
 
-		$this->load->view('dosen/kaprodi/tema_ta/tema_ta_approve',$data);
+		$this->load->view('dosen/koordinator/approve_tema_ta',$data);
 		
 		$this->load->view('footer_global');
 	}

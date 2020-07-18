@@ -76,9 +76,9 @@
                                                 // $lampiran = $this->ta_model->select_lampiran_by_seminar($row->id);
                                                    
                                                         echo "<ul style='margin-left: -20px;'>";
-                                                        if($row->jenis != 'Seminar Tugas Akhir'){
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";
-                                                        }
+                                                       
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";
+                                                        
 
                                                         echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$row->id").">Berita Acara</a></li>";
                                                             
@@ -88,9 +88,14 @@
 
                                                 </td>
                                                 <td class="align-top"> 
+                                                <?php if($row->jenis == "Seminar Tugas Akhir"){ ?>
+                                                    <a href="<?php echo base_url("dosen/struktural/kaprodi/nilai-seminar-sidang/form/?id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Approve
+                                                    </a>
 
-                                                <a href="<?php echo base_url("dosen/tugas-akhir/nilai-seminar/koordinator/form/?id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Approve
-                                                </a>
+                                                <?php } else {?>
+                                                    <a href="<?php echo base_url("dosen/tugas-akhir/nilai-seminar/koordinator/form/?id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Approve
+                                                    </a>
+                                                <?php } ?>
                                                 </td>
                                             </tr>
                                         <?php

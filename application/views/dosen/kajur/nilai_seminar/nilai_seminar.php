@@ -76,9 +76,9 @@
                                                 // $lampiran = $this->ta_model->select_lampiran_by_seminar($row->id);
                                                    
                                                         echo "<ul style='margin-left: -20px;'>";
-                                                        if($row->jenis != 'Seminar Tugas Akhir'){
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";
-                                                        }
+                                                        
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";
+                                                        
 
                                                         echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$row->id").">Berita Acara</a></li>";
                                                             

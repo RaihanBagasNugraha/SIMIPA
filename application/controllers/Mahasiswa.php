@@ -808,15 +808,31 @@ class Mahasiswa extends CI_Controller {
 	function verifikasi_ta()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		
-		$data['ta'] = $this->ta_model->get_verifikasi_program_ta($this->session->userdata('username'));
-		
-		$this->load->view('header_global', $header);
-		$this->load->view('mahasiswa/header');
+		$ket = $this->ta_model->selet_ta_by_npm($this->session->userdata('username'));
 
-		$this->load->view('mahasiswa/verifikasi-ta/verifikasi_ta',$data);
+		if(empty($ket)){
+				echo "<script type='text/javascript'>alert('Silahkan Ajukan Tema Terlebih Dahulu');window.location = ('tema') </script>";
+			}
+			else{ 
+				if ($ket[0]->status == 4){
+					$data['ta'] = $this->ta_model->get_verifikasi_program_ta($this->session->userdata('username'));
+		
+					$this->load->view('header_global', $header);
+					$this->load->view('mahasiswa/header');
 
-        $this->load->view('footer_global');
+					$this->load->view('mahasiswa/verifikasi-ta/verifikasi_ta',$data);
+
+					$this->load->view('footer_global');
+					
+				}
+				else{
+					echo "<script type='text/javascript'>alert('Pengajuan Tema Belum Disetujui');window.location = ('tema') </script>";
+				}
+				
+		}		
+		
+
+		
 	}
 
 	function verifikasi_ta_ajukan()

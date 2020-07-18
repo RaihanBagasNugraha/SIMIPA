@@ -253,7 +253,7 @@
 
                                             <?php    
                                             }
-                                                elseif($row->status == 4){echo "Selesai";}                                                
+                                                elseif($row->status == 4){echo "-";}                                                
                                                 else{echo "Menunggu";}  ?>
                                              
                                              

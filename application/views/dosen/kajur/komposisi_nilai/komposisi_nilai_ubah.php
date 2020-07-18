@@ -537,7 +537,7 @@ $(document).ready(function(){
         e.preventDefault();
         if (x < max_fields) {
             x++;
-            $(wrapper_sub).append('<li><input type="text" name="ujian_komponen[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="number" name="ujian_nilai[]" size="10" placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-danger deletes" >-</label></li>'); //add input box
+            $(wrapper_sub).append('<li><input type="text" name="ujian_komponen[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="number" name="ujian_nilai[]" placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-danger deletes" >-</label></li>'); //add input box
         } else {
             alert('You Reached the limits')
         }

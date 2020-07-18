@@ -391,6 +391,12 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                                 </i>Verifikasi Program TA
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/struktural/kaprodi/nilai-seminar-sidang") ?>" <?php if($this->uri->segment(3) == "kaprodi" && $this->uri->segment(4) == "nilai-seminar-sidang") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Nilai Seminar/Sidang
+                                            </a>
+                                        </li>
                                     <?php } ?>
                                         
                                        

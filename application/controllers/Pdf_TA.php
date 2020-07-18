@@ -2465,8 +2465,8 @@ class Pdf_TA extends CI_Controller {
             break;
         }
 
-        $kode = 5;
-        $type = 'Fixed';
+        $kode = 8;
+        $type = '';
         $date = strtotime($seminar->tgl_pelaksanaan);
         $date = date('l', $date);
         $hari = $this->get_day($date);
@@ -2515,6 +2515,23 @@ class Pdf_TA extends CI_Controller {
                 $j++;
             }
         }
+        elseif($ta_seminar->jenis == "Tugas Akhir"){
+            $j = 0;
+            $nilai_pbb = 0;
+            foreach ($komisi_seminar as $kom){
+
+                $nilai_angka = $this->ta_model->get_komponen_nilai_seminar_all($seminar->id,$kom->status);
+                $nilai_angka2 = 0;
+                foreach($nilai_angka as $nil_angka)
+                {
+                    $total_angka = $nil_angka->nilai * ($nil_angka->persentase / 100);
+                    $nilai_angka2 += $total_angka;
+                }
+                $na_angka = $nilai_angka2 * ($bobot[$j] / 100);
+                $nilai_pbb += $na_angka;
+                $j++;
+            }
+        }
         else{
             $nilai_pbb = 0;
             foreach ($komisi_seminar as $kom){
@@ -2546,7 +2563,7 @@ class Pdf_TA extends CI_Controller {
 
         $pdf->AddPage('P');
         $pdf->SetFont('Times','B',11);
-        $pdf->MultiCell(150, $spasi, "FORMULIR BERITA ACARA SEMINAR ".$seminar->jenis." PENELITIAN\nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",1,'C',false); 
+        $pdf->MultiCell(150, $spasi, "FORMULIR BERITA ACARA ".strtoupper($seminar->jenis)."\nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",1,'C',false); 
         $pdf->SetFont('Times','',11);
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi,"NO: ".$seminar->no_form, 0, 0, 'C');
@@ -2571,6 +2588,7 @@ class Pdf_TA extends CI_Controller {
 
         $pdf->Cell(80, $spasi,"Nilai Angka      :  ".$nilai_pbb, 0, 0, 'L');
         $pdf->Cell(80, $spasi,"Huruf Mutu       :  ".$this->huruf_mutu($nilai_pbb), 0, 0, 'L');
+        
         $pdf->Ln(8);  
 
         $pdf->Cell(80, $spasi,"Dengan rekapitulasi sebagai berikut : ", 0, 0, 'L');
@@ -2584,7 +2602,8 @@ class Pdf_TA extends CI_Controller {
         $pdf->Cell(22,5,'Paraf',1,0,'C',0);
         $pdf->Ln();
 
-        if($ta_seminar->jenis == "Skripsi"){
+        if($ta_seminar->jenis == "Skripsi")
+        {
             $i = 0;
             // $nilai_rekap = 0;
             foreach ($komisi_seminar as $kom){
@@ -2601,6 +2620,31 @@ class Pdf_TA extends CI_Controller {
                 $pdf->SetWidths(array(50,40, 15,10,13,22));
                 $pdf->SetAligns(array('C','C','C'));
                 $na = $nilai2 * ($bobot[$i] / 100);
+                $na = round($na,2);
+                $pdf->Row(array(" \n"."$kom->nama"."\n  "," \n$kom->status","\n ".$nilai2,"\n ".$bobot[$i],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
+                // $nilai_rekap += $na;
+                $i++;
+            }
+        }
+        elseif($ta_seminar->jenis == "Tugas Akhir")
+        {
+            $i = 0;
+            // $nilai_rekap = 0;
+            foreach ($komisi_seminar as $kom){
+
+                $nilai = $this->ta_model->get_komponen_nilai_seminar_all($seminar->id,$kom->status);
+                $ttd = $this->ta_model->get_seminar_nilai_check_by_status($seminar->id,$kom->status);
+                $nilai2 = 0;
+                foreach($nilai as $nil)
+                {
+                    $total = $nil->nilai * ($nil->persentase / 100);
+                    $nilai2 += $total;
+                }
+
+                $pdf->SetWidths(array(50,40, 15,10,13,22));
+                $pdf->SetAligns(array('C','C','C','C','C','C'));
+                $na = $nilai2 * ($bobot[$i] / 100);
+                $na = round($na,2);
                 $pdf->Row(array(" \n"."$kom->nama"."\n  "," \n$kom->status","\n ".$nilai2,"\n ".$bobot[$i],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
                 // $nilai_rekap += $na;
                 $i++;
@@ -2611,6 +2655,7 @@ class Pdf_TA extends CI_Controller {
             foreach ($komisi_seminar as $kom){
 
                 $nilai = $this->ta_model->get_komponen_nilai_seminar_all($seminar->id,$kom->status);
+                $ttd = $this->ta_model->get_seminar_nilai_check_by_status($seminar->id,$kom->status);
                 $nilai2 = 0;
                 foreach($nilai as $nil)
                 {
@@ -2621,6 +2666,7 @@ class Pdf_TA extends CI_Controller {
                 $pdf->SetWidths(array(50,40, 15,10,13,22));
                 $pdf->SetAligns(array('C','C','C'));
                 $na = $nilai2 * ($bobot[$this->komisi_number($kom->status)] / 100);
+                $na = round($na,2);
                 $pdf->Row(array(" \n"."$kom->nama"."\n  "," \n$kom->status","\n ".$nilai2,"\n ".$bobot[$this->komisi_number($kom->status)],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
                 // $nilai_rekap += $na;
             }
@@ -2714,6 +2760,156 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
             $pdf->Ln();
         } 
+
+        if($ta_seminar->jenis == "Tugas Akhir"){
+            $pdf->AddPage('P');
+            $pdf->SetFont('Times','B',11);
+            $pdf->MultiCell(150, $spasi, "FORMULIR REKAPITULASI PENILAIAN TUGAS AKHIR\nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",1,'C',false); 
+            $pdf->SetFont('Times','',11);
+            $pdf->Ln(9);
+
+            $pdf->SetWidths(array(30,5, 100));
+            $pdf->SetAligns(array('L','C','J'));
+            $pdf->RowNoBorder(array('Nama / NPM',':',$mhs->name.' / '.$mhs->npm));
+            $pdf->Ln(5);
+            $pdf->SetWidths(array(30,5, 100));
+            $pdf->SetAligns(array('L','C','J'));
+            if($ta_seminar->judul_approve == 1){
+                $pdf->RowNoBorder(array('Judul ',':',$ta_seminar->judul1));
+            }
+            elseif($ta_seminar->judul_approve == 2){
+                $pdf->RowNoBorder(array('Judul ',':',$ta_seminar->judul2));
+            }
+            $pdf->Ln(5);  
+    
+            $pdf->Cell(50,5,'Nama Penguji',1,0,'C',0);
+            $pdf->Cell(40,5,'Status',1,0,'C',0);
+            $pdf->Cell(15,5,'Nilai',1,0,'C',0);
+            $pdf->Cell(10,5,'%',1,0,'C',0);
+            $pdf->Cell(13,5,'NA',1,0,'C',0);
+            $pdf->Cell(22,5,'Paraf',1,0,'C',0);
+            $pdf->Ln();
+           
+            //table nilai
+                //pb 1
+                $nilai = $this->ta_model->get_komponen_nilai_seminar_all($seminar->id,"Pembimbing Utama");
+                $ttd = $this->ta_model->get_seminar_nilai_check_by_status($seminar->id,"Pembimbing Utama");
+                $pb_ta = $this->ta_model->get_komisi_ta_by_status($seminar->id_tugas_akhir,"Pembimbing Utama");
+
+                $pdf->SetWidths(array(50,40, 15,10,13,22));
+                $pdf->SetAligns(array('C','C','C'));
+                $na_pb = $nilai_pbb * (60 / 100); // persentase 60%
+                $na_pb = round($na_pb,2);
+                $pdf->Row(array(" \n"."$pb_ta->nama"."\n  "," \nPembimbing Utama","\n ".$nilai_pbb,"\n 60","\n ".$na_pb,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
+
+                // dosen verifikasi
+                $verifikator = $this->ta_model->get_dosen_verifikator($ta_seminar->id_pengajuan);
+
+                $pdf->SetWidths(array(50,40, 15,10,13,22));
+                $pdf->SetAligns(array('C','C','C'));
+                $na_dv = $verifikator->nilai * (40 / 100); // persentase 40%
+                $na_dv = round($na_dv,2);
+                $pdf->Row(array(" \n"."$verifikator->nama"."\n  "," \n Dosen Verifikasi","\n ".$verifikator->nilai,"\n 40","\n ".$na_dv,$pdf->Image("$verifikator->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
+
+                $nilai_ta_total = $na_pb + $na_dv;
+
+                //nilai
+                $pdf->Ln(5);
+                $pdf->SetWidths(array(45,5,45, 30, 5, 50));
+                $pdf->SetAligns(array('L','C','L','L','C','L'));
+                $pdf->RowNoBorder(array('Total Nilai',':',$nilai_ta_total,'Huruf Mutu',':',$this->huruf_mutu($nilai_ta_total)));
+                $pdf->Ln(5);
+
+                if($seminar->status == 8){
+                    $pdf->Ln(5);
+                    $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                    $pdf->Cell(120, $spasi,'Bandar Lampung, ', 0, 0, 'L');
+                    $pdf->Ln(7);
+        
+                    $pdf->Cell(90, $spasi,"Mengetahui,", 0, 0, 'L');
+                    $pdf->Cell(45, $spasi,"Menyetujui,", 0, 0, 'L');
+                    $pdf->Ln(5);
+                    $pdf->Cell(90, $spasi,"Ketua Jurusan", 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,"Ketua Program Studi", 0, 0, 'L');
+                    $pdf->Ln(30);
+        
+                    $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,'', 0, 0, 'L');
+                    $pdf->Ln(5);
+        
+                    $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,"NIP. ", 0, 0, 'L');
+                    $pdf->Ln();
+                }
+        
+                elseif($seminar->status == 9){
+                    $koor = $this->ta_model->ttd_nilai_seminar_koor($seminar->id);
+                    $koor_data = $this->user_model->get_dosen_data($koor->ket);
+        
+                    $pdf->Ln(5);
+                    $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                    $pdf->Cell(120, $spasi,'Bandar Lampung, ', 0, 0, 'L');
+                    $pdf->Ln(7);
+        
+                    $pdf->Cell(90, $spasi,"Mengetahui,", 0, 0, 'L');
+                    $pdf->Cell(45, $spasi,"Menyetujui,", 0, 0, 'L');
+                    $pdf->Ln(5);
+                    $pdf->Cell(90, $spasi,"Ketua Jurusan", 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,"Ketua Program Studi", 0, 0, 'L');
+                    $pdf->Ln(5);
+        
+                    //ttd
+                    $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,$pdf->Image("$koor->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+        
+                    $pdf->Ln(25);
+                    $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
+                    $pdf->Ln(5);
+        
+                    $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
+                    $pdf->Ln();
+                }
+        
+                elseif($seminar->status == 10){
+                    $koor = $this->ta_model->ttd_nilai_seminar_koor($seminar->id);
+                    $koor_data = $this->user_model->get_dosen_data($koor->ket);
+        
+                    $kajur = $this->ta_model->ttd_nilai_seminar_kajur($seminar->id);
+                    $kajur_data = $this->user_model->get_dosen_data($kajur->ket);
+        
+                    $pdf->Ln(5);
+                    $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                    $pdf->Cell(120, $spasi,'Bandar Lampung, ', 0, 0, 'L');
+                    $pdf->Ln(7);
+        
+                    $pdf->Cell(90, $spasi,"Mengetahui,", 0, 0, 'L');
+                    $pdf->Cell(45, $spasi,"Menyetujui,", 0, 0, 'L');
+                    $pdf->Ln(5);
+                    $pdf->Cell(90, $spasi,"Ketua Jurusan", 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,"Ketua Program Studi", 0, 0, 'L');
+                    $pdf->Ln(5);
+        
+                    //ttd
+                    $pdf->Cell(90, $spasi,$pdf->Image("$kajur->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,$pdf->Image("$koor->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+        
+                    $pdf->Ln(25);
+                    $pdf->Cell(90, $spasi,$kajur_data->name, 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
+                    $pdf->Ln(5);
+        
+                    $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
+                    $pdf->Ln();
+                } 
+
+
+
+            
+
+        }
 
         $pdf->Output();
     }
