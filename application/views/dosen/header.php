@@ -62,12 +62,21 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                             $smr = count($this->ta_model->get_approval_seminar_list($this->session->userdata('userId')));
                                             $persetujan_seminar = $smr + $smr_pa;
 
+
                                             $ver_pa = count($this->ta_model->get_verifikasi_ta_list_pa($this->session->userdata('userId')));
                                             $ver = count($this->ta_model->get_verifikasi_ta_list($this->session->userdata('userId')));
                                             $verifikasi_ta = $ver + $ver_pa;
 
+                                            $ver_ta_nilai = count($this->ta_model->get_verifikasi_program_ta_dosen($this->session->userdata('userId')));
                                             $smr_nilai = count($this->ta_model->get_nilai_seminar($this->session->userdata('userId')));
-                                            $manajemen_ta = $persetujan_seminar + $persetujan_tema + $smr_nilai + $verifikasi_ta;
+
+                                            if($biodata->jurusan == "5"){
+                                                $manajemen_ta = $persetujan_seminar + $persetujan_tema + $smr_nilai + $verifikasi_ta + $ver_ta_nilai;
+                                            }
+                                            else{
+                                                $manajemen_ta = $persetujan_seminar + $persetujan_tema + $smr_nilai;
+                                            }
+                                           
                                         
                                         ?>
                                         Manajemen Tugas Akhir <span class="badge badge-danger"><?php echo $manajemen_ta > 0 ? $manajemen_ta : "" ?></span>
@@ -86,12 +95,14 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                                 </i>Persetujuan Seminar <span class="badge badge-danger"><?php echo $persetujan_seminar > 0 ? $persetujan_seminar : "" ?></span>
                                             </a>
                                         </li>
+                                        <?php if($biodata->jurusan == "5"){ ?>
                                         <li>
                                             <a href="<?php echo site_url("dosen/tugas-akhir/verifikasi-ta") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "verifikasi-ta") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Persetujuan Verifikasi TA <span class="badge badge-danger"><?php echo $verifikasi_ta > 0 ? $verifikasi_ta : "" ?></span>
                                             </a>
                                         </li>
+                                        <?php } ?>
                                         <li>
                                             <a href="#">
                                                 <i class="metismenu-icon">
@@ -108,7 +119,7 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                             <li>
                                                 <a href="<?php echo site_url("dosen/tugas-akhir/nilai-verifikasi-ta") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "nilai-verifikasi-ta") echo 'class="mm-active"' ?>>
                                                     <i class="metismenu-icon">
-                                                    </i>Nilai Verifikasi TA
+                                                    </i>Nilai Verifikasi TA <span class="badge badge-danger"><?php echo $ver_ta_nilai > 0 ? $ver_ta_nilai : "" ?></span>
                                                 </a>
                                             </li>
                                          <?php } ?>
@@ -146,7 +157,12 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                             $smr_koor = count($this->ta_model->get_approval_seminar_koordinator($this->session->userdata('userId')));
                                             $nilai_smr_koor = count($this->ta_model->get_approval_nilai_seminar_koordinator($this->session->userdata('userId')));    
 
-                                            $validasi = $ta_koor + $smr_koor + $nilai_smr_koor;
+                                            if($biodata->jurusan == "5"){
+                                                $validasi = $ta_koor + $smr_koor + $nilai_smr_koor;
+                                            }
+                                            else{
+                                                $validasi = 0;
+                                            }
                                         
                                         ?>
                                         Validasi <span class="badge badge-danger"><?php echo $validasi > 0 ? $validasi : "" ?></span>
@@ -367,8 +383,18 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                 <li class="app-sidebar__heading">Ketua Program Studi</li>
                                 <li <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) == "kaprodi") echo 'class="mm-active"' ?>>
                                     <a href="#">
+                                        <?php 
+                                        if(){}
+                                            $tema_kaprodi =  count($this->ta_model->get_approval_ta_kaprodi($this->session->userdata('userId')));
+                                            $smr_kaprodi = count($this->ta_model->get_approval_nilai_seminar_kaprodi($this->session->userdata('userId')));
+                                            $ver_ta_kaprodi = count($this->ta_model->get_verifikasi_ta_list_kaprodi($this->session->userdata('userId')));
+                                            $nilai_smr_kaprodi = count($this->ta_model->get_approval_nilai_seminar_kaprodi($this->session->userdata('userId')));
+
+                                            $asese_kaprodi = $tema_kaprodi + $smr_kaprodi + $ver_ta_kaprodi + $nilai_smr_kaprodi;
+
+                                        ?>
                                         <i class="metismenu-icon pe-7s-pen"></i>
-                                        Asese
+                                        Asese <span class="badge badge-danger"><?php echo $asese_kaprodi > 0 ? $asese_kaprodi : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
@@ -376,25 +402,25 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/kaprodi/tugas-akhir") ?>" <?php if($this->uri->segment(3) == "kaprodi" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Tema
+                                                </i>Tema <span class="badge badge-danger"><?php echo $tema_kaprodi > 0 ? $tema_kaprodi : "" ?></span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/kaprodi/seminar-sidang") ?>" <?php if($this->uri->segment(3) == "kaprodi" && $this->uri->segment(4) == "seminar-sidang") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Seminar/Sidang
+                                                </i>Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_kaprodi > 0 ? $smr_kaprodi : "" ?></span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/kaprodi/verifikasi-tugas-akhir") ?>" <?php if($this->uri->segment(3) == "kaprodi" && $this->uri->segment(4) == "verifikasi-tugas-akhir") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Verifikasi Program TA
+                                                </i>Verifikasi Program TA <span class="badge badge-danger"><?php echo $ver_ta_kaprodi > 0 ? $ver_ta_kaprodi : "" ?></span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/kaprodi/nilai-seminar-sidang") ?>" <?php if($this->uri->segment(3) == "kaprodi" && $this->uri->segment(4) == "nilai-seminar-sidang") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Nilai Seminar/Sidang
+                                                </i>Nilai Seminar/Sidang <span class="badge badge-danger"><?php echo $nilai_smr_kaprodi > 0 ? $nilai_smr_kaprodi : "" ?></span>
                                             </a>
                                         </li>
                                     <?php } ?>
