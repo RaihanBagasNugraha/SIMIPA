@@ -500,7 +500,7 @@ class Pdf_TA extends CI_Controller {
 
         elseif($ta->jenis == "Tesis"){
             //edit
-            if($jurusan == "Matematika"){
+            // if($jurusan == "Matematika"){
                 $pdf->AddPage('P');
                 $pdf->Ln(5);
                 $pdf->SetFont('Times','B',11);
@@ -520,7 +520,8 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Cell(50, $spasi,"Matematika dan Ilmu Pengetahuan Alam / ".$jurusan, 0, 0, 'L');
                 $pdf->Ln(8);
                 $pdf->Cell(45, $spasi,"Tanggal Masuk Berkas", 0, 0, 'L');
-                $pdf->Cell(5, $spasi,':'.$tgl, 0, 0, 'C');
+                $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+                $pdf->Cell(50, $spasi,"$tgl", 0, 0, 'L');
                 $pdf->Ln(18);
                 
                 $pdf->Cell(45, $spasi,"Kelengkapan Persyaratan", 0, 0, 'L');
@@ -544,7 +545,7 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
                 $pdf->MultiCell(150, $spasi, "Semua berkas dimasukkan kedalam map warna kuning.",0,'J',false);
                 $pdf->Ln(5);
-            }
+            // }
         }
 
         elseif($ta->jenis == "Tugas Akhir"){
@@ -1322,16 +1323,38 @@ class Pdf_TA extends CI_Controller {
             }
     
             $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
-            $pdf->MultiCell(150, $spasi, "Transkrip Akademik (1 lembar) yang telah di tandatangani oleh Wakil Dekan 1 dan telah diberi cap stempel fakultas, dengan ketentuan telah lulus semua mata kuliah wajib dan pilihan yang mendukung topik skripsi.",0,'J',false);
+            $pdf->MultiCell(150, $spasi, "Transkrip Akademik (1 lembar) yang telah di tandatangani oleh Wakil Dekan 1 dan telah diberi cap stempel fakultas, dengan ketentuan telah lulus semua mata kuliah wajib dan pilihan.",0,'J',false);
             $pdf->Ln(1);
 
-            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
-            $pdf->Cell(83, $spasi,"Telah menyelesaikan minimal 110 SKS, dengan IPK ", 0, 0, 'L');
-                $pdf->SetFont("Symbol");
-                $pdf->Cell(5, $spasi,chr(179)." 2,00", 0, 2, 'L');
-                $pdf->SetFont('Times','',11);
+            if($ta_seminar->jenis == "Tesis"){
+                $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                $pdf->Cell(100, $spasi,"Telah lulus semua matakuliah wajib dan pilihan yang mendukung topik tesis, minimal 23 SKS, ", 0,2, 'L');
+                // $pdf->Ln(4);
+                // $pdf->Cell(5, $spasi,"", 0, 0, 'L');
+                    $pdf->Cell(20, $spasi,"dengan IPK ", 0, 0, 'L');
+                    $pdf->SetFont("Symbol");
+                    $pdf->Cell(12, $spasi,chr(179)." 3,00 ", 0, 0, 'L');
+                    $pdf->SetFont('Times','',11);
+                    $pdf->Cell(20, $spasi,"(semester ke-1 dan ke-2) dan atau sedang mengambil seluruh mata kuliah", 0, 2, 'L');
+                    $pdf->Ln(0);
+                    $pdf->Cell(5, $spasi,"", 0, 0, 'L');
+                    $pdf->Cell(20, $spasi,"di semester ke-3 (9-12 SKS).", 0, 2, 'L');
+                    // $pdf->Ln(1);
                 $pdf->Ln(1);
-            $pdf->Ln(1);
+            }
+            elseif($ta_seminar->jenis == "Disertasi"){
+
+            }
+            else{
+                $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                $pdf->Cell(83, $spasi,"Telah menyelesaikan minimal 110 SKS, dengan IPK ", 0, 0, 'L');
+                    $pdf->SetFont("Symbol");
+                    $pdf->Cell(5, $spasi,chr(179)." 2,00", 0, 2, 'L');
+                    $pdf->SetFont('Times','',11);
+                    $pdf->Ln(1);
+                $pdf->Ln(1);
+            }
+           
 
             //bimbingan kimia
             if($jurusan == "Kimia"){
@@ -1463,13 +1486,30 @@ class Pdf_TA extends CI_Controller {
                 $pdf->MultiCell(150, $spasi, "Transkrip Akademik (1 lembar) yang telah di tandatangani oleh Wakil Dekan 1 dan telah diberi cap stempel fakultas, dengan ketentuan telah lulus semua mata kuliah wajib dan pilihan yang mendukung topik skripsi.",0,'J',false);
                 $pdf->Ln(1);
 
-                $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
-                $pdf->Cell(83, $spasi,"Telah menyelesaikan minimal 120 SKS, dengan IPK ", 0, 0, 'L');
-                    $pdf->SetFont("Symbol");
-                    $pdf->Cell(5, $spasi,chr(179)." 2,00", 0, 2, 'L');
-                    $pdf->SetFont('Times','',11);
+                if($ta_seminar->jenis == "Tesis"){
+                    $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                    $pdf->Cell(100, $spasi,"Telah lulus semua matakuliah wajib dan pilihan yang mendukung topik tesis, minimal 30 SKS, ", 0,2, 'L');
+                    // $pdf->Ln(4);
+                    // $pdf->Cell(5, $spasi,"", 0, 0, 'L');
+                        $pdf->Cell(20, $spasi,"dengan IPK ", 0, 0, 'L');
+                        $pdf->SetFont("Symbol");
+                        $pdf->Cell(12, $spasi,chr(179)." 3,00 ", 0, 2, 'L');
+                        $pdf->SetFont('Times','',11);
+                        // $pdf->Ln(1);
                     $pdf->Ln(1);
-                $pdf->Ln(1);
+                }
+                elseif($ta_seminar->jenis == "Disertasi"){
+    
+                }
+                else{
+                    $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                    $pdf->Cell(83, $spasi,"Telah menyelesaikan minimal 110 SKS, dengan IPK ", 0, 0, 'L');
+                        $pdf->SetFont("Symbol");
+                        $pdf->Cell(5, $spasi,chr(179)." 2,00", 0, 2, 'L');
+                        $pdf->SetFont('Times','',11);
+                        $pdf->Ln(1);
+                    $pdf->Ln(1);
+                }
             }
                 
             if($jurusan != "Kimia"){
@@ -1477,13 +1517,30 @@ class Pdf_TA extends CI_Controller {
                 $pdf->MultiCell(150, $spasi, "Transkrip Akademik (1 lembar) yang telah di tandatangani oleh Wakil Dekan 1 dan telah diberi cap stempel fakultas, dengan ketentuan telah lulus semua mata kuliah wajib dan pilihan yang mendukung topik skripsi.",0,'J',false);
                 $pdf->Ln(1);
     
-                $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
-                $pdf->Cell(83, $spasi,"Telah menyelesaikan minimal 110 SKS, dengan IPK ", 0, 0, 'L');
-                    $pdf->SetFont("Symbol");
-                    $pdf->Cell(5, $spasi,chr(179)." 2,00", 0, 2, 'L');
-                    $pdf->SetFont('Times','',11);
+                if($ta_seminar->jenis == "Tesis"){
+                    $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                    $pdf->Cell(100, $spasi,"Telah lulus semua matakuliah wajib dan pilihan yang mendukung topik tesis, minimal 30 SKS, ", 0,2, 'L');
+                    // $pdf->Ln(4);
+                    // $pdf->Cell(5, $spasi,"", 0, 0, 'L');
+                        $pdf->Cell(20, $spasi,"dengan IPK ", 0, 0, 'L');
+                        $pdf->SetFont("Symbol");
+                        $pdf->Cell(12, $spasi,chr(179)." 3,00 ", 0, 2, 'L');
+                        $pdf->SetFont('Times','',11);
+                        // $pdf->Ln(1);
                     $pdf->Ln(1);
-                $pdf->Ln(1);
+                }
+                elseif($ta_seminar->jenis == "Disertasi"){
+    
+                }
+                else{
+                    $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+                    $pdf->Cell(83, $spasi,"Telah menyelesaikan minimal 110 SKS, dengan IPK ", 0, 0, 'L');
+                        $pdf->SetFont("Symbol");
+                        $pdf->Cell(5, $spasi,chr(179)." 2,00", 0, 2, 'L');
+                        $pdf->SetFont('Times','',11);
+                        $pdf->Ln(1);
+                    $pdf->Ln(1);
+                }
             }
                 
                 $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');

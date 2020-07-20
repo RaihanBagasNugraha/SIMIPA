@@ -181,6 +181,12 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
+	function get_mahasiswa_data($id)
+	{
+		$result = $this->db->query("SELECT * FROM tbl_users_mahasiswa, tbl_users WHERE tbl_users_mahasiswa.id_user = $id ANd tbl_users.userId = tbl_users_mahasiswa.id_user");
+		return $result->row();
+	}
+
 	function get_kajur($id)
 	{
 		$result = $this->db->query('SELECT tbl_users_dosen.*, tbl_users.name, jurusan.nama FROM tbl_users_dosen, tbl_users, jurusan, tbl_users_tugas WHERE jurusan.id_jurusan = '.$id.' AND jurusan.id_jurusan = tbl_users_dosen.jurusan AND tbl_users_dosen.id_user = tbl_users.userId AND tbl_users_tugas.id_user = tbl_users_dosen.id_user AND tbl_users_tugas.jurusan_unit = tbl_users_dosen.jurusan AND tbl_users_tugas.tugas = 12');

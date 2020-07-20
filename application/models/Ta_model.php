@@ -805,7 +805,7 @@ class Ta_model extends CI_Model
 
 	function get_approval_seminar_list($id)
 	{
-		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.*, seminar_sidang_approval.status_slug FROM seminar_sidang, tugas_akhir, seminar_sidang_approval WHERE seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.id = seminar_sidang_approval.id_pengajuan AND seminar_sidang_approval.ttd LIKE "" AND seminar_sidang.status = "1" AND seminar_sidang_approval.id_user ='.$id);
+		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.*, seminar_sidang_approval.status_slug, seminar_sidang.jenis as jenis FROM seminar_sidang, tugas_akhir, seminar_sidang_approval WHERE seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.id = seminar_sidang_approval.id_pengajuan AND seminar_sidang_approval.ttd LIKE "" AND seminar_sidang.status = "1" AND seminar_sidang_approval.id_user ='.$id);
 		return $query->result();
 	}
 	

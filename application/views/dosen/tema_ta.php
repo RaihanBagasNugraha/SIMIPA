@@ -49,7 +49,7 @@
                                     <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
-                                            <th>Judul</th>
+                                            <th>Nama/Npm</th>
                                             <th>Komisi Pembimbing</th>
                                             <th>Komisi Pembahas</th>
                                             <th>Berkas Lampiran</th>
@@ -71,9 +71,14 @@
                                         ?>
                                             <tr>
                                                 <td class="align-top">
-                                                    <?php echo $row->judul1 ?> 
+                                                    <?php 
+                                                    echo $this->user_model->get_mahasiswa_name($row->npm);
+                                                    echo "<br>";
+                                                    echo $row->npm; 
+                                                    
+                                                    ?> 
 
-                                                    <?php if($row->judul2 != NULL){ echo "<br><br>$row->judul2"; } ?>
+                                                    
                                                 </td>
                                                 <td class="align-top">
                                                     <?php 
@@ -142,9 +147,11 @@
                                                 
                                                     <tr>
                                                         <td class="align-top">
-                                                            <?php echo $row->judul1 ?> 
-        
-                                                            <?php if($row->judul2 != NULL){ echo "<br><br>$row->judul2"; } ?>
+                                                        <?php 
+                                                            echo $this->user_model->get_mahasiswa_name($row->npm);
+                                                            echo "<br>";
+                                                            echo $row->npm;
+                                                        ?> 
                                                         </td>
                                                         <td class="align-top">
                                                             <?php 
@@ -206,13 +213,11 @@
                                                             <tr>
                                                                 <td class="align-top">
 
-                                                                    <?php 
-                                                                    if($row->judul_approve == 1){
-                                                                        echo $row->judul1; 
-                                                                    } else {echo $row->judul2;} ?> 
-                
-                                                            
-                                                                </td>
+                                                                <?php 
+                                                                    echo $this->user_model->get_mahasiswa_name($row->npm);
+                                                                    echo "<br>";
+                                                                    echo $row->npm;
+                                                                ?> 
                                                                 <td class="align-top">
                                                                 <?php 
                                                                     $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_pengajuan);

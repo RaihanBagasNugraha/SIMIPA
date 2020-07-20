@@ -9,6 +9,8 @@ switch($strata)
     case 2: $strata_ta = "Tesis"; break;
     case 3: $strata_ta = "Disertasi"; break;
 }
+
+$biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userId'));
 ?>
 <ul class="vertical-nav-menu">
                                 <li class="app-sidebar__heading">Profil</li>
@@ -109,12 +111,14 @@ switch($strata)
                                                 </i>Bimbingan
                                             </a>
                                         </li>
+                                        <?php if($biodata->jurusan == "5" && $biodata->prodi == "11" ){ ?>
                                         <li>
                                         <a href="<?php echo site_url("mahasiswa/tugas-akhir/verifikasi-ta") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "verifikasi-ta") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Verifikasi Program TA
                                             </a>
                                         </li>
+                                        <?php } ?>
                                         <li>
                                         <a href="<?php echo site_url("mahasiswa/tugas-akhir/seminar") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "seminar") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">

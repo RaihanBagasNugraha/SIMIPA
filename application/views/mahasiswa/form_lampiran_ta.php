@@ -120,6 +120,8 @@
                                                 </div>
                                                 <br>
                                                 <div class="col-sm-12"><span style="color:red">*File Maksimal 1 MB dan Diunggah Dalam Format PDF</span></div>
+                                                <br>
+                                                <div class="col-sm-12"><span style="color:red">*Sesuaikan Nama Berkas Untuk Memudahkan Verifikasi</span></div>
                                                 </div>
 
                                                                
