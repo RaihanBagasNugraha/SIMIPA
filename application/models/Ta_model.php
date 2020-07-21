@@ -1037,7 +1037,12 @@ class Ta_model extends CI_Model
 	function get_admin_detail($id)
 	{
 		$query = $this->db->query('SELECT tbl_users_tendik.*, tbl_users.name, tugas_akhir_approval.ttd FROM tugas_akhir_approval, tbl_users_tendik, tbl_users WHERE tugas_akhir_approval.id_pengajuan = '.$id.' AND tugas_akhir_approval.status_slug = "Administrasi" AND tbl_users_tendik.id_user = tugas_akhir_approval.id_user AND tugas_akhir_approval.id_user = tbl_users.userId');
+		return $query->row();
+	}
 
+	function get_admin_seminar_detail($id)
+	{
+		$query = $this->db->query("SELECT tbl_users_tendik.*, tbl_users.name, seminar_sidang_approval.ttd FROM seminar_sidang_approval, tbl_users_tendik, tbl_users WHERE seminar_sidang_approval.id_pengajuan = $id AND seminar_sidang_approval.status_slug = 'Administrasi' AND tbl_users_tendik.id_user = seminar_sidang_approval.id_user AND seminar_sidang_approval.id_user = tbl_users.userId");
 		return $query->row();
 	}
 
@@ -1650,6 +1655,18 @@ class Ta_model extends CI_Model
 	function get_verifikasi_ta_approval_status($id,$status)
 	{
 		$query = $this->db->query("SELECT * FROM verifikasi_ta_approval WHERE id_ta = $id AND verifikasi_ta_approval.status = '$status'");
+		return $query->row();
+	}
+
+	function id_seminar_hasil($id)
+	{
+		$query = $this->db->query("SELECT * FROM seminar_sidang WHERE id_tugas_akhir = $id AND jenis = 'Seminar Hasil' AND seminar_sidang.status = 10");
+		return $query->row();
+	}
+
+	function get_draft_seminar($id)
+	{
+		$query = $this->db->query("SELECT * FROM seminar_sidang_berkas WHERE id_seminar = $id AND jenis_berkas = 9");
 		return $query->row();
 	}
 
