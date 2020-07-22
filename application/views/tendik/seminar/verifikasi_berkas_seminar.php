@@ -86,6 +86,8 @@
                                                         echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                     } else {
                                                         echo "<ul style='margin-left: -20px;'>";
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
+
                                                         if($row->jenis != "Seminar Tugas Akhir" && $row->jenis != "Sidang Komprehensif"){
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
                                                         }
@@ -99,16 +101,21 @@
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_kompre&id=$row->id").">Form Pengajuan</a></li>";
                                                             $sa_hasil = $this->ta_model->id_seminar_hasil($row->id);
                                                             if(!empty($sa_hasil)){
-                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$sa_hasil->id").">Berita Acara</a></li>";
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$sa_hasil->id").">Berita Acara Hasil</a></li>";
                                                             }   
+                                                            else{
+                                                                echo "<li>Berita Acara Hasil</li>";
+                                                            }
+                                                            // echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_kompre&id=$row->id").">Form Penilaian</a></li>";
+                                                            // echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara_kompre&id=$row->id").">Berita Acara</a></li>";
                                                         }
 
-                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
+                                                        // echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan</a></li>";
                                                         
                                                         // echo "<br><b>Berkas Lampiran : </b>";
                                                         foreach($lampiran as $rw) {
                                                         $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
-                                                        echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
+                                                        echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
                                                         }
                     
                                                         echo "</ul>";

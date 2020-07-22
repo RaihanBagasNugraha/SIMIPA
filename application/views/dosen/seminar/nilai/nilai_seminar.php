@@ -97,8 +97,11 @@
                                                                 
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar_dosen&id=$row->id&user=$user").">Undangan Seminar</a></li>";
 
-                                                            $draft = $this->ta_model->get_draft_seminar($row->id);    
-                                                            echo "<li><a href='".base_url($draft->file)."' download>"."Draft Laporan"."</a></li>";
+                                                            $draft = $this->ta_model->get_draft_seminar($row->id); 
+                                                            if(!empty($draft)){
+                                                                echo "<li><a href='".base_url($draft->file)."' download>"."Draft Laporan"."</a></li>";
+                                                            }   
+                                                            
 
                                                             // foreach($lampiran as $rw) {
                                                             //     $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);

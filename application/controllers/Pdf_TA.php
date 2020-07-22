@@ -155,6 +155,39 @@ class Pdf_TA extends CI_Controller {
 
         return $hm;
     }
+
+    function komisi_kompre($jml,$pbb)
+    {
+        if($jml == 2)
+        {
+            switch($pbb)
+            {
+                case "Pembimbing Utama":
+                    $status = "Ketua Penguji";
+                    break;
+                case "Pembimbing 2":
+                    $status = "Sekretaris Penguji";
+                    break;
+                case "Penguji 1":
+                    $status = "Penguji Utama";
+                    break;    
+            }
+        }
+        else{
+            switch($pbb)
+            {
+                case "Pembimbing Utama":
+                    $status = "Ketua Penguji";
+                    break;
+                case "Penguji 1":
+                case "Penguji 2":
+                    $status = "Penguji Pembahas";
+                    break;    
+            }
+        }
+
+        return $status;
+    }
     
     function set_pdf_seminar()
     {
@@ -198,7 +231,13 @@ class Pdf_TA extends CI_Controller {
             //kompre
             case "pengajuan_seminar_kompre":
                 $this->pengajuan_seminar_kompre($seminar,$jurusan,$ta_seminar);
-                break;                     
+                break;  
+            case "penilaian_kompre":
+                $this->penilaian_kompre($seminar,$jurusan,$ta_seminar);
+                break;   
+            case "berita_acara_kompre":
+                $this->berita_acara_kompre($seminar,$jurusan,$ta_seminar);
+                break;                              
         }
 
     }
@@ -1343,10 +1382,17 @@ class Pdf_TA extends CI_Controller {
         $b =  substr("$surat->created_at",0,10);
         $a = explode('-',$b);
         $tgl = $a[2].'-'.$a[1].'-'.$a[0];
-        $c = substr("$surat->updated_at",0,10);
-        $d = explode('-',$c);
-        $e =  $this->get_month($d[1]);
-        $tgl_acc = $d[2].' '.$e.' '.$d[0];
+      
+        if($seminar->status < 3){
+            $tgl_acc = "";
+        }
+        else{
+            $c = substr("$surat->updated_at",0,10);
+            $d = explode('-',$c);
+            $e =  $this->get_month($d[1]);
+            $tgl_acc = $d[2].' '.$e.' '.$d[0];
+        }
+        
 
         if($seminar->status == 7 || $seminar->status == 4 || $seminar->status == 10){
             $koor_approve  = $this->ta_model->get_ttd_approval_seminar($seminar->id,'Koordinator');
@@ -1947,8 +1993,34 @@ class Pdf_TA extends CI_Controller {
         $pdf->Cell(30, $spasi,"Bandar Lampung, ".$tgl_acc, 0, 0, 'L');
         $pdf->Ln(2);
 
-        
-            if($seminar->status < 7 && $seminar->status != 4 ){
+            if($seminar->status < 3){
+                $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+                $pdf->Ln(5);
+
+                if($seminar->jenis != "Seminar Tugas Akhir"){
+                    $pdf->Cell(90, $spasi,"Koordinator Seminar,", 0, 0, 'L');
+                }
+                else{
+                    $pdf->Cell(90, $spasi,"Ketua Program Studi,", 0, 0, 'L');
+                }
+                
+                $pdf->Cell(30, $spasi,"Administrasi,", 0, 0, 'L');
+                $pdf->Ln(5);
+
+                //ttd
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"", 0, 0, 'L');
+
+                $pdf->Ln(15);
+                $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+                $pdf->Cell(30, $spasi,'', 0, 0, 'L');
+                $pdf->Ln(5);
+
+                $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ", 0, 0, 'L');
+                $pdf->Ln(10);
+            }
+            elseif($seminar->status < 7 && $seminar->status != 4 ){
                 $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
                 $pdf->Ln(5);
 
@@ -2040,12 +2112,13 @@ class Pdf_TA extends CI_Controller {
         $type = 'Fixed';
         $mhs = $this->ta_model->get_mahasiswa_detail($ta_seminar->npm);
         $komisi = $this->ta_model->get_komisi($ta_seminar->id_pengajuan);
+        $jml_pbb = $this->ta_model->count_pembimbing_seminar($ta_seminar->id_pengajuan)->count;
 
-        if($seminar->status == 7 || $seminar->status == 4){
+        if($seminar->status == 7 || $seminar->status == 4 || $seminar->status == 10){
             $koor_approve  = $this->ta_model->get_ttd_approval_seminar($seminar->id,'Koordinator');
             $koor_data = $this->user_model->get_dosen_data($koor_approve->id_user);
         }
-        if($seminar->status == 4){
+        if($seminar->status == 4 || $seminar->status == 10){
             $kajur_approve  = $this->ta_model->get_ttd_approval_seminar($seminar->id,'Ketua Jurusan');
             $kajur_data = $this->user_model->get_dosen_data($kajur_approve->id_user);
         }
@@ -2087,8 +2160,8 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(150, $spasi,"Dengan Hormat,", 0, 0, 'L');
             $pdf->Ln(8);
             if($seminar->jenis == "Sidang Komprehensif"){
-                $pdf->MultiCell(150, $spasi, "Bersama ini kami mengundang Bapak / Ibu / Sdr / I sebagai $kom->status_slug, untuk menghadiri Ujian $ta_seminar->jenis Komprehensif mahasiswa berikut:",0,'J',false);
-                $pdf->Ln(10);
+                    $pdf->MultiCell(150, $spasi, "Bersama ini kami mengundang Bapak/Ibu/Sdr/I sebagai ".$this->komisi_kompre($jml_pbb,$kom->status_slug).", untuk menghadiri Ujian $ta_seminar->jenis Komprehensif mahasiswa berikut:",0,'J',false);
+                    $pdf->Ln(10);
             }
             else{
                 $pdf->MultiCell(150, $spasi, 'Bersama ini kami mengundang Bapak/Ibu/Sdr/i, untuk menghadiri '.$seminar->jenis.' penelitian oleh mahasiswa berikut sebagai',0,'J',false);
@@ -2113,7 +2186,13 @@ class Pdf_TA extends CI_Controller {
                 $pdf->RowNoBorder(array('Judul ',':',$ta_seminar->judul2));
             }
             $pdf->Ln(4);
-            $pdf->Cell(150, $spasi,'Pelaksanaan '.$seminar->jenis.' :', 0, 0, 'L');
+            if($seminar->jenis == "Sidang Komprehensif"){
+                $pdf->Cell(150, $spasi,"Pelaksanaan Ujian $ta_seminar->jenis", 0, 0, 'L');
+            }
+            else{
+                $pdf->Cell(150, $spasi,'Pelaksanaan '.$seminar->jenis.' :', 0, 0, 'L');
+            }
+            
             $pdf->Ln(8);
 
             $pdf->SetWidths(array(30,5, 100));
@@ -2145,6 +2224,9 @@ class Pdf_TA extends CI_Controller {
                 if($seminar->jenis == "Seminar Tugas Akhir"){
                     $pdf->Cell(30, $spasi,"Ketua Program Studi", 0, 0, 'L');
                 }
+                elseif($seminar->jenis == "Sidang Komprehensif"){
+                    $pdf->Cell(30, $spasi,"Koordinator Ujian ".$ta_seminar->jenis, 0, 0, 'L');
+                }
                 else{
                     $pdf->Cell(30, $spasi,"Koordinator ".$seminar->jenis, 0, 0, 'L');
                 }
@@ -2162,6 +2244,9 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Cell(90, $spasi,"Ketua Jurusan ".$jurusan, 0, 0, 'L');
                 if($seminar->jenis == "Seminar Tugas Akhir"){
                     $pdf->Cell(30, $spasi,"Ketua Program Studi", 0, 0, 'L');
+                }
+                elseif($seminar->jenis == "Sidang Komprehensif"){
+                    $pdf->Cell(30, $spasi,"Koordinator Ujian ".$ta_seminar->jenis, 0, 0, 'L');
                 }
                 else{
                     $pdf->Cell(30, $spasi,"Koordinator ".$seminar->jenis, 0, 0, 'L');
@@ -2181,6 +2266,9 @@ class Pdf_TA extends CI_Controller {
                 if($seminar->jenis == "Seminar Tugas Akhir"){
                     $pdf->Cell(30, $spasi,"Ketua Program Studi", 0, 0, 'L');
                 }
+                elseif($seminar->jenis == "Sidang Komprehensif"){
+                    $pdf->Cell(30, $spasi,"Koordinator Ujian ".$ta_seminar->jenis, 0, 0, 'L');
+                }
                 else{
                     $pdf->Cell(30, $spasi,"Koordinator ".$seminar->jenis, 0, 0, 'L');
                 }
@@ -2199,10 +2287,13 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Ln(5);
             }
 
-            elseif($seminar->status == 4){
+            elseif($seminar->status == 4 || $seminar->status == 10){
                 $pdf->Cell(90, $spasi,"Ketua Jurusan ".$jurusan, 0, 0, 'L');
                 if($seminar->jenis == "Seminar Tugas Akhir"){
                     $pdf->Cell(30, $spasi,"Ketua Program Studi", 0, 0, 'L');
+                }
+                elseif($seminar->jenis == "Sidang Komprehensif"){
+                    $pdf->Cell(30, $spasi,"Koordinator Ujian ".$ta_seminar->jenis, 0, 0, 'L');
                 }
                 else{
                     $pdf->Cell(30, $spasi,"Koordinator ".$seminar->jenis, 0, 0, 'L');
@@ -2261,7 +2352,7 @@ class Pdf_TA extends CI_Controller {
         $type = 'Fixed';
         $mhs = $this->ta_model->get_mahasiswa_detail($ta_seminar->npm);
         $kom = $this->ta_model->get_komisi_by_id($ta_seminar->id_pengajuan,$user);
-
+        $jml_pbb = $this->ta_model->count_pembimbing_seminar($ta_seminar->id_pengajuan)->count;
         if($seminar->status == 7 || $seminar->status == 4){
             $koor_approve  = $this->ta_model->get_ttd_approval_seminar($seminar->id,'Koordinator');
             $koor_data = $this->user_model->get_dosen_data($koor_approve->id_user);
@@ -2306,13 +2397,19 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(150, $spasi,"Di Tempat", 0, 0, 'L');
             $pdf->Ln(15);
             $pdf->Cell(150, $spasi,"Dengan Hormat,", 0, 0, 'L');
-            $pdf->Ln(8);
-            $pdf->MultiCell(150, $spasi, 'Bersama ini kami mengundang Bapak/Ibu/Sdr/i, untuk menghadiri '.$seminar->jenis.' penelitian oleh mahasiswa berikut sebagai',0,'J',false);
+            if($seminar->jenis == "Sidang Komprehensif"){
+                $pdf->MultiCell(150, $spasi, "Bersama ini kami mengundang Bapak/Ibu/Sdr/I sebagai ".$this->komisi_kompre($jml_pbb,$kom->status_slug).", untuk menghadiri Ujian $ta_seminar->jenis Komprehensif mahasiswa berikut:",0,'J',false);
+                $pdf->Ln(10);
+            }
+            else{
+                $pdf->MultiCell(150, $spasi, 'Bersama ini kami mengundang Bapak/Ibu/Sdr/i, untuk menghadiri '.$seminar->jenis.' penelitian oleh mahasiswa berikut sebagai',0,'J',false);
+            
             $pdf->Ln(4);
             
             $pdf->SetFont('Times','B',11);
-            $pdf->Cell(150, $spasi,"$kom->status_slug", 0, 0, 'L');
+            $pdf->Cell(150, $spasi,"", 0, 0, 'L');
             $pdf->Ln(10);
+            }
             $pdf->SetFont('Times','',11);
             $pdf->SetWidths(array(30,5, 100));
             $pdf->SetAligns(array('L','C','J'));
@@ -2457,7 +2554,7 @@ class Pdf_TA extends CI_Controller {
         $type = 'Fixed';
         $mhs = $this->ta_model->get_mahasiswa_detail($ta_seminar->npm);
         $kom = $this->ta_model->get_komisi_by_status_slug($ta_seminar->id_pengajuan,$status);
-
+        $jml_pbb = $this->ta_model->count_pembimbing_seminar($ta_seminar->id_pengajuan)->count;
         if($seminar->status == 7 || $seminar->status == 4){
             $koor_approve  = $this->ta_model->get_ttd_approval_seminar($seminar->id,'Koordinator');
             $koor_data = $this->user_model->get_dosen_data($koor_approve->id_user);
@@ -2503,12 +2600,19 @@ class Pdf_TA extends CI_Controller {
             $pdf->Ln(15);
             $pdf->Cell(150, $spasi,"Dengan Hormat,", 0, 0, 'L');
             $pdf->Ln(8);
-            $pdf->MultiCell(150, $spasi, 'Bersama ini kami mengundang Bapak/Ibu/Sdr/i, untuk menghadiri '.$seminar->jenis.' penelitian oleh mahasiswa berikut sebagai',0,'J',false);
+            if($seminar->jenis == "Sidang Komprehensif"){
+                $pdf->MultiCell(150, $spasi, "Bersama ini kami mengundang Bapak/Ibu/Sdr/I sebagai ".$this->komisi_kompre($jml_pbb,$kom->status_slug).", untuk menghadiri Ujian $ta_seminar->jenis Komprehensif mahasiswa berikut:",0,'J',false);
+                $pdf->Ln(10);
+            }
+            else{
+                $pdf->MultiCell(150, $spasi, 'Bersama ini kami mengundang Bapak/Ibu/Sdr/i, untuk menghadiri '.$seminar->jenis.' penelitian oleh mahasiswa berikut sebagai',0,'J',false);
+            
             $pdf->Ln(4);
             
             $pdf->SetFont('Times','B',11);
-            $pdf->Cell(150, $spasi,"$kom->status_slug", 0, 0, 'L');
+            $pdf->Cell(150, $spasi,"", 0, 0, 'L');
             $pdf->Ln(10);
+            }
             $pdf->SetFont('Times','',11);
             $pdf->SetWidths(array(30,5, 100));
             $pdf->SetAligns(array('L','C','J'));
@@ -2673,7 +2777,7 @@ class Pdf_TA extends CI_Controller {
 
             //tables
             $pdf->Cell(80,10,'Aspek yang dinilai',1,0,'C',0);
-            $pdf->Cell(20,10,'Nlai',1,0,'C',0);
+            $pdf->Cell(20,10,'Nilai',1,0,'C',0);
             $pdf->Cell(30,10,'Persentase',1,0,'C',0);
             $pdf->Cell(20,10,'NA',1,0,'C',0);
 
@@ -2749,6 +2853,248 @@ class Pdf_TA extends CI_Controller {
             $pdf->Ln(5);
 
         }
+
+            $pdf->Output();
+    }
+
+    function penilaian_kompre($seminar,$jurusan,$ta_seminar)
+    {
+        switch($jurusan)
+        {
+            case "Doktor MIPA":
+            $numPage = '';
+            break;
+            case "Kimia":
+            $numPage = '/SOP/MIPA/7.1/II/12';
+            break;
+            case "Biologi":
+            $numPage = '/SOP/FMIPA/7.2/IV/01';
+            break;
+            case "Matematika":
+            $numPage = '/PM/MIPA/3/08';
+            break;
+            case "Fisika":
+            $numPage = '/SOP/MIPA/17.04/II/12/001';
+            break;
+            case "Ilmu Komputer":
+            $numPage = '/SOP/MIPA/7.5/II/11/002';
+            break;
+        }
+
+        $kode = 4;
+        $type = 'Fixed';
+        $mhs = $this->ta_model->get_mahasiswa_detail($ta_seminar->npm);
+        $jml_pbb = $this->ta_model->count_pembimbing_seminar($ta_seminar->id_pengajuan)->count;
+
+        $pdf = new FPDF('P','mm','A4');
+        $spasi = 6;
+        $bullet = chr(149);
+
+        $jurusan_upper = strtoupper($jurusan);
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode,$type);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+
+        if($seminar->status < 3 ){
+            $komisi = $this->ta_model->get_komisi($ta_seminar->id_pengajuan);
+            $komponen_ujian = $this->ta_model->get_komponen_meta_attribut_ujian($mhs->jurusan,$seminar->jenis);
+            $komponen_skripsi = $this->ta_model->get_komponen_meta_attribut_skripsi($mhs->jurusan,$seminar->jenis);
+            $unsur = $this->ta_model->get_unsur_distinct($komponen_ujian[0]->id_komponen);
+
+            foreach($komisi as $kom){
+                    $pdf->AddPage('P');
+                    $pdf->SetFont('Times','B',11);
+                    $pdf->MultiCell(150, $spasi, "FORMULIR PENILAIAN SEMINAR ".strtoupper($seminar->jenis)." PENELITIAN\nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",1,'C',false); 
+                    $pdf->SetFont('Times','',11);
+                    $pdf->Ln(5);
+    
+                    //nama judul
+                    $pdf->SetWidths(array(30,5, 100));
+                    $pdf->SetAligns(array('L','C','J'));
+                    $pdf->RowNoBorder(array('Nama / NPM',':',$mhs->name.' / '.$mhs->npm));
+                    $pdf->Ln(5);
+                    $pdf->SetWidths(array(30,5, 100));
+                    $pdf->SetAligns(array('L','C','J'));
+                    if($ta_seminar->judul_approve == 1){
+                        $pdf->RowNoBorder(array('Judul ',':',$ta_seminar->judul1));
+                    }
+                    elseif($ta_seminar->judul_approve == 2){
+                        $pdf->RowNoBorder(array('Judul ',':',$ta_seminar->judul2));
+                    }
+                    $pdf->Ln(5);  
+        
+                    //tables
+                    $pdf->Cell(130,10,'Aspek yang dinilai',1,0,'C',0);
+                    $pdf->Cell(20,10,'Nilai',1,0,'C',0);
+                   
+    
+                    //komponen ujian
+                    $pdf->Ln();
+                    $pdf->Cell(130,7,"1. ".strtoupper($unsur[0]->unsur),1,0,'L',0);
+                    $pdf->Cell(20,7,'',1,0,'C',0);
+
+                    $n = 1;
+                    foreach($komponen_ujian as $kom_ujian){
+                        $pdf->Ln();
+                        $pdf->Cell(130,7,"       $n. ".$kom_ujian->attribut,1,0,'L',0);
+                        $pdf->Cell(20,7,"",1,0,'C',0);
+                        $n++;
+                    }
+
+                    //komponen skripsi
+                    $pdf->Ln();
+                    $pdf->Cell(130,7,"2. ".strtoupper($unsur[1]->unsur),1,0,'L',0);
+                    $pdf->Cell(20,7,'',1,0,'C',0);
+                    $n = 1;
+                    foreach($komponen_skripsi as $kom_skripsi){
+                      $pdf->Ln();
+                      $pdf->Cell(130,7,"       $n. ".$kom_skripsi->attribut,1,0,'L',0);
+                      $pdf->Cell(20,7,"",1,0,'C',0);
+                      $n++;
+                    }    
+
+                //total
+                $pdf->Ln();
+                $pdf->Cell(130,10,'NILAI TOTAL',1,0,'C',0);
+                $pdf->Cell(20,10,"",1,0,'C',0);
+                $pdf->Ln();
+    
+                $pdf->Ln(5);
+                $pdf->SetWidths(array(30,5,100));
+                $pdf->SetAligns(array('L','C','J'));
+                $pdf->RowNoBorder(array('Saran',':'));
+                $pdf->Ln(20);
+    
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(120, $spasi,'Bandar Lampung, ', 0, 0, 'L');
+                $pdf->Ln(7);
+    
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(120, $spasi,$this->komisi_kompre($jml_pbb,$kom->status), 0, 0, 'L');
+                $pdf->Ln(5);
+    
+                 //ttd
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"", 0, 0, 'L');
+    
+                $pdf->Ln(25);
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"$kom->nama", 0, 0, 'L');
+                $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$kom->nip_nik, 0, 0, 'L');
+                $pdf->Ln(5);
+            }
+           
+        }
+        else{
+            $komisi = $this->ta_model->get_komisi_seminar_check($seminar->id);
+
+            foreach($komisi as $kom){
+                $nilai1 = $this->ta_model->get_komponen_nilai_seminar_ujian($seminar->id,$kom->status);
+                $nilai2 = $this->ta_model->get_komponen_nilai_seminar_ta($seminar->id,$kom->status);
+                $unsur = $this->ta_model->get_unsur_distinct($nilai1[0]->id_komponen);
+    
+                $kom_data = $this->ta_model->get_komisi_seminar_data($seminar->id,$kom->status);
+    
+                $pdf->AddPage('P');
+                $pdf->SetFont('Times','B',11);
+                $pdf->MultiCell(150, $spasi, "FORMULIR PENILAIAN SEMINAR ".strtoupper($seminar->jenis)." PENELITIAN\nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",1,'C',false); 
+                $pdf->SetFont('Times','',11);
+                $pdf->Ln(5);
+    
+                //nama judul
+                $pdf->SetWidths(array(30,5, 100));
+                $pdf->SetAligns(array('L','C','J'));
+                $pdf->RowNoBorder(array('Nama / NPM',':',$mhs->name.' / '.$mhs->npm));
+                $pdf->Ln(5);
+                $pdf->SetWidths(array(30,5, 100));
+                $pdf->SetAligns(array('L','C','J'));
+                if($ta_seminar->judul_approve == 1){
+                    $pdf->RowNoBorder(array('Judul ',':',$ta_seminar->judul1));
+                }
+                elseif($ta_seminar->judul_approve == 2){
+                    $pdf->RowNoBorder(array('Judul ',':',$ta_seminar->judul2));
+                }
+                $pdf->Ln(5);  
+    
+                //tables
+                $pdf->Cell(130,10,'Aspek yang dinilai',1,0,'C',0);
+                $pdf->Cell(20,10,'Nilai',1,0,'C',0);
+               
+    
+                //nilai 1
+                $pdf->Ln();
+                $pdf->Cell(130,7,"1. ".strtoupper($unsur[0]->unsur),1,0,'L',0);
+                $pdf->Cell(20,7,'',1,0,'C',0);
+                
+                $n1 = 1;
+                $nilai1_total = 0;
+                foreach($nilai1 as $nilai_ujian){
+                    $pdf->Ln();
+                    $pdf->Cell(130,7,"       $n1. ".$nilai_ujian->attribut,1,0,'L',0);
+                    $pdf->Cell(20,7,$nilai_ujian->nilai,1,0,'C',0);
+                    $nilai1_total += $nilai_ujian->nilai;
+                    $n1++;
+                }
+    
+                //nilai 2
+                $pdf->Ln();
+                $pdf->Cell(130,7,"2. ".strtoupper($unsur[1]->unsur),1,0,'L',0);
+                $pdf->Cell(20,7,'',1,0,'C',0);
+                $n2 = 1;
+                $nilai2_total = 0;
+                foreach($nilai2 as $nilai_ta){
+                    $pdf->Ln();
+                    $pdf->Cell(130,7,"       $n2. ".$nilai_ta->attribut,1,0,'L',0);
+                    $pdf->Cell(20,7,$nilai_ta->nilai,1,0,'C',0);
+                    $nilai2_total += $nilai_ta->nilai;
+                    $n2++;
+                }
+                $n_total = ($n1-1)+($n2-1);
+                $nilai_total = ($nilai1_total + $nilai2_total);
+                $nilai_total = $nilai_total / $n_total;
+
+    
+                //total
+                $pdf->Ln();
+                $pdf->Cell(130,10,'Rata - rata',1,0,'C',0);
+                $pdf->Cell(20,10,round($nilai_total,2),1,0,'C',0);
+                $pdf->Ln();
+    
+                $pdf->Ln(5);
+                $pdf->SetWidths(array(30,5,100));
+                $pdf->SetAligns(array('L','C','J'));
+                $pdf->RowNoBorder(array('Saran',':',$kom->saran));
+                $pdf->Ln(20);
+    
+                $tgl = explode("-",substr("$kom->updated_at",0,10));
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(120, $spasi,'Bandar Lampung, '.$tgl[2].' '.$this->get_month($tgl[1]).' '.$tgl[0], 0, 0, 'L');
+                $pdf->Ln(7);
+    
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(120, $spasi,$this->komisi_kompre($jml_pbb,$kom->status), 0, 0, 'L');
+                $pdf->Ln(5);
+    
+                 //ttd
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$pdf->Image("$kom->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
+    
+                $pdf->Ln(25);
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"$kom_data->nama", 0, 0, 'L');
+                $pdf->Ln(5);
+                $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+                $pdf->Cell(30, $spasi,"NIP. ".$kom_data->nip_nik, 0, 0, 'L');
+                $pdf->Ln(5);
+    
+            }
+        }
+      
 
             $pdf->Output();
     }
@@ -3227,6 +3573,12 @@ class Pdf_TA extends CI_Controller {
         }
 
         $pdf->Output();
+    }
+
+    function berita_acara_kompre($seminar,$jurusan,$ta_seminar)
+    {
+        
+
     }
 
     function verifikasi_ta($ta,$jurusan)

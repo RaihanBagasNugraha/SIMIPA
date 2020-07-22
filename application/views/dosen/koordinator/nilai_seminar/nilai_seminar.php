@@ -76,11 +76,16 @@
                                                 // $lampiran = $this->ta_model->select_lampiran_by_seminar($row->id);
                                                    
                                                         echo "<ul style='margin-left: -20px;'>";
-                                                       
-                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";
-                                                        
+                                                    
 
-                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$row->id").">Berita Acara</a></li>";
+                                                        if($row->jenis == "Sidang Komprehensif"){
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_kompre&id=$row->id").">Form Penilaian</a></li>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$row->id").">Berita Acara</a></li>";
+                                                        }
+                                                        else{
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$row->id").">Berita Acara</a></li>";
+                                                        }
                                                             
                                                         echo "</ul>";
                                                                

@@ -1670,4 +1670,16 @@ class Ta_model extends CI_Model
 		return $query->row();
 	}
 
+	function get_komponen_meta_attribut_ujian($prodi,$jenis)
+	{
+		$query = $this->db->query("SELECT seminar_sidang_komponen_meta.* FROM seminar_sidang_komponen, seminar_sidang_komponen_meta WHERE seminar_sidang_komponen.id_prodi = $prodi AND seminar_sidang_komponen.tipe = '$jenis' AND seminar_sidang_komponen.id = seminar_sidang_komponen_meta.id_komponen  AND unsur = 'Ujian'");
+		return $query->result();
+	}
+
+	function get_komponen_meta_attribut_skripsi($prodi,$jenis)
+	{
+		$query = $this->db->query("SELECT seminar_sidang_komponen_meta.* FROM seminar_sidang_komponen, seminar_sidang_komponen_meta WHERE seminar_sidang_komponen.id_prodi = $prodi AND seminar_sidang_komponen.tipe = '$jenis' AND seminar_sidang_komponen.id = seminar_sidang_komponen_meta.id_komponen  AND unsur = 'Skripsi'");
+		return $query->result();
+	}
+
 }
