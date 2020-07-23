@@ -33,7 +33,8 @@
                                 <div class="card-body">
                                 <form method="post" action="<?php echo site_url('dosen/struktural/nilai-seminar/kajur/approve') ?>" >
                                     <input value="<?php echo $seminar->id ?>" type = "hidden" required name="id" id="id">
-                                    <input value="<?php echo $seminar->id_tugas_akhir ?>" type = "hidden" required name="id_ta" id="id">
+                                    <input value="<?php echo $seminar->id_tugas_akhir ?>" type = "hidden" required name="id_ta">
+                                    <input value="<?php echo $seminar->jenis ?>" type = "hidden" required name="jenis" >
                                    
                                     <!-- NPM -->
                                     <div class="position-relative row form-group">

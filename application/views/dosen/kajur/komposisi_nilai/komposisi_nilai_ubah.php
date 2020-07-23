@@ -125,7 +125,7 @@
                                             </div>
                                     </div>
                                     
-                                    <?php if($komponen->tipe != "Sidang Komprehensif") {  ?>
+                                    
                                      <!-- komponen nilai -->
                                      <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label"><b>Komponen Nilai</b></label>
@@ -143,9 +143,9 @@
                                             </div>                                                     
                                     </div>
 
-                                    <?php } else { ?>
+                                    
 
-                                        <div class="position-relative row form-group">
+                                        <!-- <div class="position-relative row form-group">
                                                 <label class="col-sm-3 col-form-label"><b>Komponen Nilai</b></label>
                                                 <div class="col-sm-8">
                                                 <h5><b>Ujian/Presentasi</h5>                                     
@@ -159,9 +159,9 @@
                                                 </ul>
 
                                                 </div>                                                  
-                                        </div>
+                                        </div> -->
 
-                                    <?php } ?>
+                                   
 
 
                                     <h6><b>Bobot Penilaian Pembimbing / Penguji </h6>

@@ -1445,6 +1445,11 @@ class Ta_model extends CI_Model
 		$this->db->insert('seminar_sidang_nilai_check', $data);
 	}
 
+	function insert_nilai_seminar_koor_kompre($data)
+	{
+		$this->db->insert('seminar_sidang_kompre', $data);
+	}
+
 	function insert_nilai_seminar_kajur($data)
 	{
 		$this->db->insert('seminar_sidang_nilai_check', $data);
@@ -1681,5 +1686,18 @@ class Ta_model extends CI_Model
 		$query = $this->db->query("SELECT seminar_sidang_komponen_meta.* FROM seminar_sidang_komponen, seminar_sidang_komponen_meta WHERE seminar_sidang_komponen.id_prodi = $prodi AND seminar_sidang_komponen.tipe = '$jenis' AND seminar_sidang_komponen.id = seminar_sidang_komponen_meta.id_komponen  AND unsur = 'Skripsi'");
 		return $query->result();
 	}
+
+	function get_seminar_sidang_kompre_id_seminar($id)
+	{
+		$query = $this->db->query("SELECT * FROM `seminar_sidang_kompre` WHERE id_seminar = $id");
+		return $query->row();
+	}
+
+	function update_seminar_sidang_kompre_id_seminar($id)
+	{
+		$this->db->where('id_seminar', $id);
+		$this->db->update('seminar_sidang_kompre', array('status' => '1'));
+	}
+	
 
 }

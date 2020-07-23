@@ -134,7 +134,20 @@
 
                                     <?php } ?>
 
-
+                                    <?php if($seminar->jenis == "Sidang Komprehensif") { ?>
+                                        <!-- Keterangan -->
+                                        <div class="position-relative row form-group">
+                                                <label class="col-sm-3 col-form-label"><b>Keterangan</b></label>
+                                                <div class="col-sm-3">
+                                                    <select required name="keterangan" class=" form-control">
+                                                        <option value="">[Keterangan]</option>
+                                                        <option value="1">Lulus</option>
+                                                        <option value="2">Lulus Bersyarat</option>
+                                                        <option value="0">Tidak Lulus</option>
+                                                    </select>  
+                                                </div>
+                                        </div>
+                                    <?php } ?>
 
                                     <!-- TTD -->
                                     <div class="position-relative row form-group"><label for="ttd" class="col-sm-3 col-form-label"><b>Tanda Tangan Digital</b></label>

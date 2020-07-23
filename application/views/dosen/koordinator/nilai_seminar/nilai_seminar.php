@@ -80,7 +80,7 @@
 
                                                         if($row->jenis == "Sidang Komprehensif"){
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_kompre&id=$row->id").">Form Penilaian</a></li>";
-                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$row->id").">Berita Acara</a></li>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara_kompre&id=$row->id").">Berita Acara</a></li>";
                                                         }
                                                         else{
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";

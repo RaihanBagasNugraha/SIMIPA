@@ -1161,36 +1161,36 @@ class Dosen extends CI_Controller {
 		// print_r($data);
 		$tipe = $data['tipe'];
 
-		if($tipe != "Sidang Komprehensif"){
+		// if($tipe != "Sidang Komprehensif"){
 			$jml = count($data['ujian_komponen']);
 			$jml2 = count($data['skripsi_komponen']);
-		}
-		else{
-			$jml = count($data['ujian_komponen_kompre']);
-			$jml2 = count($data['skripsi_komponen_kompre']);
-		}
+		// }
+		// else{
+		// 	$jml = count($data['ujian_komponen_kompre']);
+		// 	$jml2 = count($data['skripsi_komponen_kompre']);
+		// }
 		
 		
 		$ujian = 0;
 		$skripsi = 0;
 
 		//check
-		if($tipe != "Sidang Komprehensif"){
+		// if($tipe != "Sidang Komprehensif"){
 			for($i=0; $i<$jml; $i++){
 				$ujian += $data['ujian_nilai'][$i];
 			}
 			for($i=0; $i<$jml2; $i++){
 				$skripsi += $data['skripsi_nilai'][$i];
 			}
-		}
-		else{
-			for($i=0; $i<$jml; $i++){
-				$ujian += $data['ujian_nilai_kompre'][$i];
-			}
-			for($i=0; $i<$jml2; $i++){
-				$skripsi += $data['skripsi_nilai_kompre'][$i];
-			}
-		}
+		// }
+		// else{
+		// 	for($i=0; $i<$jml; $i++){
+		// 		$ujian += $data['ujian_nilai_kompre'][$i];
+		// 	}
+		// 	for($i=0; $i<$jml2; $i++){
+		// 		$skripsi += $data['skripsi_nilai_kompre'][$i];
+		// 	}
+		// }
 
 		if($tipe != "Sidang Komprehensif"){
 			$persentase =  $ujian + $skripsi;
@@ -1308,7 +1308,7 @@ class Dosen extends CI_Controller {
 	
 		$lastid = $this->ta_model->komposisi_nilai_save($komponen_nilai);
 	
-		if($data['tipe'] != "Sidang Komprehensif"){
+		// if($data['tipe'] != "Sidang Komprehensif"){
 			for($i=0; $i<$jml; $i++){
 	
 				$data_ujian = array(
@@ -1330,29 +1330,29 @@ class Dosen extends CI_Controller {
 				);
 				$this->ta_model->komposisi_nilai_meta_save($data_ujian);
 			}
-		}
-		else{
-			for($i=0; $i<$jml; $i++){
-				$data_ujian = array(
-					'id_komponen' => $lastid,
-					'unsur' => 'Ujian',
-					'attribut' => $data['ujian_komponen_kompre'][$i],
-					'persentase' => "100",
-				);
-				$this->ta_model->komposisi_nilai_meta_save($data_ujian);
+		// }
+		// else{
+		// 	for($i=0; $i<$jml; $i++){
+		// 		$data_ujian = array(
+		// 			'id_komponen' => $lastid,
+		// 			'unsur' => 'Ujian',
+		// 			'attribut' => $data['ujian_komponen_kompre'][$i],
+		// 			'persentase' => "100",
+		// 		);
+		// 		$this->ta_model->komposisi_nilai_meta_save($data_ujian);
 	
-			}
+		// 	}
 	
-			for($i=0; $i<$jml2; $i++){
-				$data_ujian = array(
-					'id_komponen' => $lastid,
-					'unsur' => $data['jenis'],
-					'attribut' => $data['skripsi_komponen_kompre'][$i],
-					'persentase' => "100",
-				);
-				$this->ta_model->komposisi_nilai_meta_save($data_ujian);
-			}
-		}
+		// 	for($i=0; $i<$jml2; $i++){
+		// 		$data_ujian = array(
+		// 			'id_komponen' => $lastid,
+		// 			'unsur' => $data['jenis'],
+		// 			'attribut' => $data['skripsi_komponen_kompre'][$i],
+		// 			'persentase' => "100",
+		// 		);
+		// 		$this->ta_model->komposisi_nilai_meta_save($data_ujian);
+		// 	}
+		// }
 
 			redirect(site_url("dosen/struktural/bidang-nilai/komposisi-nilai"));
 		}
@@ -1412,34 +1412,34 @@ class Dosen extends CI_Controller {
 		$id = $data['id'];
 		$tipe = $data['tipe'];
 
-		if($tipe != "Sidang Komprehensif"){
+		// if($tipe != "Sidang Komprehensif"){
 			$jml = count($data['ujian_komponen']);
 			$jml2 = count($data['skripsi_komponen']);
-		}
-		else{
-			$jml = count($data['ujian_komponen_kompre']);
-			$jml2 = count($data['skripsi_komponen_kompre']);
-		}
+		// }
+		// else{
+		// 	$jml = count($data['ujian_komponen_kompre']);
+		// 	$jml2 = count($data['skripsi_komponen_kompre']);
+		// }
 
 		$ujian = 0;
 		$skripsi = 0;
 		//check
-		if($tipe != "Sidang Komprehensif"){
+		// if($tipe != "Sidang Komprehensif"){
 			for($i=0; $i<$jml; $i++){
 				$ujian += $data['ujian_nilai'][$i];
 			}
 			for($i=0; $i<$jml2; $i++){
 				$skripsi += $data['skripsi_nilai'][$i];
 			}
-		}
-		else{
-			for($i=0; $i<$jml; $i++){
-				$ujian += $data['ujian_nilai_kompre'][$i];
-			}
-			for($i=0; $i<$jml2; $i++){
-				$skripsi += $data['skripsi_nilai_kompre'][$i];
-			}
-		}
+		// }
+		// else{
+		// 	for($i=0; $i<$jml; $i++){
+		// 		$ujian += $data['ujian_nilai_kompre'][$i];
+		// 	}
+		// 	for($i=0; $i<$jml2; $i++){
+		// 		$skripsi += $data['skripsi_nilai_kompre'][$i];
+		// 	}
+		// }
 
 
 		if($tipe != "Sidang Komprehensif"){
@@ -1548,7 +1548,7 @@ class Dosen extends CI_Controller {
 			$this->ta_model->update_komposisi($id,$komponen_nilai);
 			$this->ta_model->delete_komposisi_meta($id);
 			
-			if($data['tipe'] != "Sidang Komprehensif"){
+			// if($data['tipe'] != "Sidang Komprehensif"){
 			for($i=0; $i<$jml; $i++){
 	
 				$data_ujian = array(
@@ -1570,29 +1570,29 @@ class Dosen extends CI_Controller {
 				);
 				$this->ta_model->komposisi_nilai_meta_save($data_ujian);
 			}
-		}
-		else{
-			for($i=0; $i<$jml; $i++){
-				$data_ujian = array(
-					'id_komponen' => $id,
-					'unsur' => 'Ujian',
-					'attribut' => $data['ujian_komponen_kompre'][$i],
-					'persentase' => "100",
-				);
-				$this->ta_model->komposisi_nilai_meta_save($data_ujian);
+		// }
+		// else{
+		// 	for($i=0; $i<$jml; $i++){
+		// 		$data_ujian = array(
+		// 			'id_komponen' => $id,
+		// 			'unsur' => 'Ujian',
+		// 			'attribut' => $data['ujian_komponen_kompre'][$i],
+		// 			'persentase' => "100",
+		// 		);
+		// 		$this->ta_model->komposisi_nilai_meta_save($data_ujian);
 	
-			}
+		// 	}
 	
-			for($i=0; $i<$jml2; $i++){
-				$data_ujian = array(
-					'id_komponen' => $id,
-					'unsur' => $data['jenis'],
-					'attribut' => $data['skripsi_komponen_kompre'][$i],
-					'persentase' => "100",
-				);
-				$this->ta_model->komposisi_nilai_meta_save($data_ujian);
-			}
-		}
+		// 	for($i=0; $i<$jml2; $i++){
+		// 		$data_ujian = array(
+		// 			'id_komponen' => $id,
+		// 			'unsur' => $data['jenis'],
+		// 			'attribut' => $data['skripsi_komponen_kompre'][$i],
+		// 			'persentase' => "100",
+		// 		);
+		// 		$this->ta_model->komposisi_nilai_meta_save($data_ujian);
+		// 	}
+		// }
 
 
 			redirect(site_url("dosen/struktural/bidang-nilai/komposisi-nilai"));
@@ -1725,6 +1725,15 @@ class Dosen extends CI_Controller {
 			$this->ta_model->insert_nilai_seminar_koor($data_ta);
 		}
 
+		if($jenis == "Sidang Komprehensif"){
+			$data_kompre = array(
+				'npm' => $data['npm'],
+				'id_seminar' => $id,
+				'ket' => $data['keterangan'],
+			);
+			$this->ta_model->insert_nilai_seminar_koor_kompre($data_kompre);
+		}
+
 		$data_koor = array(
 			'status' => $status,
 			'saran' => '',
@@ -1784,6 +1793,7 @@ class Dosen extends CI_Controller {
 
 		$id = $data['id'];
 		$ttd = $data['ttd'];
+		$jenis = $data['jenis'];
 		$status = "Ketua Jurusan";
 		$user_id = $this->session->userdata('userId');
 
@@ -1795,6 +1805,10 @@ class Dosen extends CI_Controller {
 			'ttd' => $ttd,
 		);
 		$this->ta_model->insert_nilai_seminar_kajur($data);
+
+		if($jenis == "Sidang Komprehensif"){
+			$this->ta_model->update_seminar_sidang_kompre_id_seminar($id);
+		}
 
 		//update seminar
 		$this->ta_model->update_nilai_seminar_kajur($id);

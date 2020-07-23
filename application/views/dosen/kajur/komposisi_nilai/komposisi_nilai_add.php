@@ -134,7 +134,7 @@
                                     </div>
 
                                     <!-- komponen nilai kompre -->
-                                    <div style="display: none;" id="nilai_kompre">
+                                    <div style="display: none;" >
                                         <div class="position-relative row form-group">
                                                 <label class="col-sm-3 col-form-label"><b>Komponen Nilai</b></label>
                                                 <div class="col-sm-8">
@@ -695,13 +695,13 @@ document.getElementById('undo').addEventListener('click', function () {
 <script>
 $(document).ready(function(){
     $('#tipe').on('change', function() {
-          if (this.value == 'Seminar Usul' || this.value == 'Seminar Hasil' || this.value == 'Seminar Tugas Akhir')
+          if (this.value == 'Seminar Usul' || this.value == 'Seminar Hasil' || this.value == 'Seminar Tugas Akhir' || this.value == 'Sidang Komprehensif')
           {
             jQuery("#nilai").show();
             jQuery("#nilai_kompre").hide();
           }
           else if(this.value == 'Sidang Komprehensif'){
-            jQuery("#nilai").hide();
+            // jQuery("#nilai").hide();
             jQuery("#nilai_kompre").show();
           }
           else{
