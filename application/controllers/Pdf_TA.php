@@ -3836,7 +3836,7 @@ class Pdf_TA extends CI_Controller {
         $pbb_utama = $this->ta_model->get_komisi_by_status_slug($ta_seminar->id_pengajuan,"Pembimbing Utama");
         $pbb_utama_ttd = $this->ta_model->get_seminar_nilai_check_by_status($seminar->id,"Pembimbing Utama");
 
-        if($seminar->status == 8){
+        if($seminar->status == 8 || $seminar->status == 9){
             $pdf->Ln(5);
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
             $pdf->Cell(120, $spasi,'Bandar Lampung, ', 0, 0, 'L');
@@ -3862,7 +3862,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(30, $spasi,"NIP. ".$pbb_utama->nip_nik, 0, 0, 'L');
             $pdf->Ln();
         }
-        if($seminar->status == 9 || $seminar->status == 10){
+        if($seminar->status == 10){
             $kajur = $this->ta_model->ttd_nilai_seminar_kajur($seminar->id);
             $kajur_data = $this->user_model->get_dosen_data($kajur->ket);
 

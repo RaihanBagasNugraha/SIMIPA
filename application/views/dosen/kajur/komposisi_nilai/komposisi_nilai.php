@@ -49,7 +49,7 @@
                                     <table class="mb-0 table table-striped"  id="example">
                                         <thead>
                                         <tr>
-                                            <th>Nomor</th>
+                                            <!-- <th>Nomor</th> -->
                                             <th>Jenis</th>
                                             <th>Keterangan</th>
                                             <th>Tahun Akademik</th>
@@ -71,9 +71,9 @@
                                                 
                                         ?>
                                             <tr>
-                                                <td class="align-top">
+                                                <!-- <td class="align-top">
                                                     <?php echo $no++;?>
-                                                </td>
+                                                </td> -->
                                                 <td class="align-top">
                                                     <?php echo $row->jenis;?>
                                                 </td>

@@ -1305,7 +1305,7 @@ class Ta_model extends CI_Model
 
 	function get_komponen_nilai_meta($npm,$jenis,$tipe)
 	{
-		$query = $this->db->query("SELECT seminar_sidang_komponen_meta.* FROM seminar_sidang_komponen, seminar_sidang_komponen_meta, tbl_users_mahasiswa, tugas_akhir WHERE tbl_users_mahasiswa.npm = $npm AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.jenis = '$jenis' AND tbl_users_mahasiswa.jurusan = seminar_sidang_komponen.id_prodi AND seminar_sidang_komponen.id = seminar_sidang_komponen_meta.id_komponen AND tugas_akhir.jenis = seminar_sidang_komponen.jenis AND seminar_sidang_komponen.tipe = '$tipe' ORDER BY seminar_sidang_komponen_meta.id");
+		$query = $this->db->query("SELECT seminar_sidang_komponen_meta.* FROM seminar_sidang_komponen, seminar_sidang_komponen_meta, tbl_users_mahasiswa, tugas_akhir WHERE tbl_users_mahasiswa.npm = $npm AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.jenis = '$jenis' AND tbl_users_mahasiswa.jurusan = seminar_sidang_komponen.id_prodi AND seminar_sidang_komponen.id = seminar_sidang_komponen_meta.id_komponen AND tugas_akhir.jenis = seminar_sidang_komponen.jenis AND seminar_sidang_komponen.tipe = '$tipe' AND seminar_sidang_komponen.status = 0 ORDER BY seminar_sidang_komponen_meta.id");
 		return $query->result();
 	}
 

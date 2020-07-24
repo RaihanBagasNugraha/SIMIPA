@@ -490,36 +490,26 @@ class Mahasiswa extends CI_Controller {
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		// echo "<pre>";
 		// print_r($data);
-		// echo $data['0']['status'];
-		if($ket[0]->jenis != "Tugas Akhir"){
-			if(empty($ket)){
-				echo "<script type='text/javascript'>alert('Silahkan Ajukan Tema Terlebih Dahulu');window.location = ('tema') </script>";
-			}
-			else{ 
+		if(empty($ket)){
+			echo "<script type='text/javascript'>alert('Silahkan Ajukan Tema Terlebih Dahulu');window.location = ('tema') </script>";
+		}
+		else{
+			if($ket[0]->jenis != "Tugas Akhir"){
 				if ($ket[0]->status == 4){
 					$data['seminar'] = $this->ta_model->select_seminar_by_npm($this->session->userdata('username'));
 					$this->load->view('header_global', $header);
 					$this->load->view('mahasiswa/header');
 
 					$this->load->view('mahasiswa/seminar/seminar_ta',$data);
-					$this->load->view('footer_global');
-					
+					$this->load->view('footer_global');			
 				}
 				else{
 					echo "<script type='text/javascript'>alert('Pengajuan Tema Belum Disetujui');window.location = ('tema') </script>";
 				}
-				
-			}		
-		}
-
-		else{
-			$ta = $this->ta_model->get_dosen_verifikator($ket[0]->id_pengajuan);
-
-			if(empty($ket)){
-				echo "<script type='text/javascript'>alert('Silahkan Ajukan Tema Terlebih Dahulu');window.location = ('tema') </script>";
 			}
-			else{ 
-				if ($ket[0]->status == 4){
+			else{
+				$ta = $this->ta_model->get_dosen_verifikator($ket[0]->id_pengajuan);
+				if($ket[0]->status == 4){
 					if($ta->ket == 5){
 						$data['seminar'] = $this->ta_model->select_seminar_by_npm($this->session->userdata('username'));
 						$this->load->view('header_global', $header);
@@ -535,8 +525,7 @@ class Mahasiswa extends CI_Controller {
 				else{
 					echo "<script type='text/javascript'>alert('Pengajuan Tema Belum Disetujui');window.location = ('tema') </script>";
 				}
-				
-			}		
+			}
 		}
 		
 	}
