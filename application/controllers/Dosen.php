@@ -1722,10 +1722,11 @@ class Dosen extends CI_Controller {
 		$id = $data['id'];
 		$ttd = $data['ttd'];
 		$jenis = $data['jenis'];
+		$jenis_ta = $data['jenis_ta'];
 		$status = "Koordinator";
 		$user_id = $this->session->userdata('userId');
 
-		if($jenis == "Seminar Tugas Akhir"){
+		if($jenis_ta != "Skripsi"){
 			$data_ta = array(
 				'status' => "Ketua Program Studi",
 				'saran' => '',

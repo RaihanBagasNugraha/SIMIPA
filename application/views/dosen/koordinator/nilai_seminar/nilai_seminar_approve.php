@@ -35,7 +35,7 @@
                                     <input value="<?php echo $seminar->id ?>" type = "hidden" required name="id" id="id">
                                     <input value="<?php echo $seminar->id_tugas_akhir ?>" type = "hidden" required name="id_ta" id="id">
                                     <input value="<?php echo $seminar->jenis ?>" type = "hidden" required name="jenis" id="id">
-                                   
+                                    <input value="<?php echo $ta->jenis ?>" type = "hidden" required name="jenis_ta" id="id">
 
 
                                     <!-- NPM -->

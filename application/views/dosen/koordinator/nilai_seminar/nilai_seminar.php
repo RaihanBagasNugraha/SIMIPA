@@ -93,7 +93,7 @@
 
                                                 </td>
                                                 <td class="align-top"> 
-                                                <?php if($row->jenis == "Seminar Tugas Akhir"){ ?>
+                                                <?php if($row->jenis_ta != "Skripsi"){ ?>
                                                     <a href="<?php echo base_url("dosen/struktural/kaprodi/nilai-seminar-sidang/form/?id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Approve
                                                     </a>
 
