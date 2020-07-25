@@ -101,6 +101,9 @@
                                                             if(!empty($draft)){
                                                                 echo "<li><a href='".base_url($draft->file)."' download>"."Draft Laporan"."</a></li>";
                                                             }   
+                                                            else{
+                                                                echo "<li>Draft Laporan</li>";
+                                                            }
                                                             
 
                                                             // foreach($lampiran as $rw) {

@@ -729,9 +729,20 @@ class Dosen extends CI_Controller {
 			);
 			$this->ta_model->insert_approve_ta_kaprodi($data_approval);
 		}
+
 		else{
 			$this->ta_model->approval_koordinator($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2);
 			$this->ta_model->set_komisi($id,$pb1,$pb2,$pb3,$ps1,$ps2,$ps3);
+
+			if($jenis != 'Skripsi'){
+				$data_approval = array(
+					'id_pengajuan' => $id,
+					'status_slug' => "Ketua Program Studi",
+					'id_user' => $dosenid,
+					'ttd' => $ttd,
+				);
+				$this->ta_model->insert_approve_ta_kaprodi($data_approval);
+			}
 
 			if($pb2 != NULL && $pb2 != '0'){
 

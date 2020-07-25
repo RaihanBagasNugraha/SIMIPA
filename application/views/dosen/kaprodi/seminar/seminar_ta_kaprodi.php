@@ -109,7 +109,7 @@
                                                 </td>
                                                 <td class="align-top"> 
 
-                                                <a href="<?php echo site_url("dosen/tugas-akhir/seminar/koordinator/form?status=kaprodi&id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                <a href="<?php echo site_url("dosen/struktural/kaprodi/seminar-sidang/form?status=kaprodi&id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
                                                 </a>
 
                                                 <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="passingIDKoor" >

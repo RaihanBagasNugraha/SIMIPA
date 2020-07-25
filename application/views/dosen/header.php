@@ -386,7 +386,7 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                         <?php 
                                         
                                             $tema_kaprodi =  count($this->ta_model->get_approval_ta_kaprodi($this->session->userdata('userId')));
-                                            $smr_kaprodi = count($this->ta_model->get_approval_nilai_seminar_kaprodi($this->session->userdata('userId')));
+                                            $smr_kaprodi = count($this->ta_model->get_approval_seminar_kaprodi($this->session->userdata('userId')));
                                             $ver_ta_kaprodi = count($this->ta_model->get_verifikasi_ta_list_kaprodi($this->session->userdata('userId')));
                                             $nilai_smr_kaprodi = count($this->ta_model->get_approval_nilai_seminar_kaprodi($this->session->userdata('userId')));
 
@@ -398,7 +398,7 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
-                                    <?php if($biodata->jurusan == "5"){ ?>
+                                    
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/kaprodi/tugas-akhir") ?>" <?php if($this->uri->segment(3) == "kaprodi" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
@@ -411,19 +411,21 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                                 </i>Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_kaprodi > 0 ? $smr_kaprodi : "" ?></span>
                                             </a>
                                         </li>
+                                    <?php if($biodata->jurusan == "5"){ ?>    
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/kaprodi/verifikasi-tugas-akhir") ?>" <?php if($this->uri->segment(3) == "kaprodi" && $this->uri->segment(4) == "verifikasi-tugas-akhir") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Verifikasi Program TA <span class="badge badge-danger"><?php echo $ver_ta_kaprodi > 0 ? $ver_ta_kaprodi : "" ?></span>
                                             </a>
                                         </li>
+                                    <?php } ?>
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/kaprodi/nilai-seminar-sidang") ?>" <?php if($this->uri->segment(3) == "kaprodi" && $this->uri->segment(4) == "nilai-seminar-sidang") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Nilai Seminar/Sidang <span class="badge badge-danger"><?php echo $nilai_smr_kaprodi > 0 ? $nilai_smr_kaprodi : "" ?></span>
                                             </a>
                                         </li>
-                                    <?php } ?>
+                                    
                                         
                                        
                                     </ul>
