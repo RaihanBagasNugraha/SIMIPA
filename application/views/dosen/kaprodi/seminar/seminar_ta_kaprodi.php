@@ -83,7 +83,7 @@
                                                         echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                     } else {
                                                         echo "<ul style='margin-left: -20px;'>";
-                                                        if($row->jenis != 'Seminar Tugas Akhir'){
+                                                        if($row->jenis != 'Seminar Tugas Akhir'  && $row->jenis != 'Sidang Komprehensif'){
                                                                 echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
                                                                 echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
                                                                 echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
@@ -94,6 +94,19 @@
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta_nilai&id=$row->id_tugas_akhir").">Nilai Verifikasi TA</a></li>"; 
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_ta&id=$row->id").">Form Pengajuan</a></li>";
 
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
+                                                        }
+                                                        elseif($row->jenis == "Sidang Komprehensif")
+                                                        {
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_kompre&id=$row->id").">Form Pengajuan</a></li>";
+                                                            $sa_hasil = $this->ta_model->id_seminar_hasil($row->id_tugas_akhir);
+                                                            if(!empty($sa_hasil)){
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$sa_hasil->id").">Berita Acara Hasil</a></li>";
+                                                            }   
+                                                            else{
+                                                                echo "<li>Berita Acara Hasil</li>";
+                                                            }
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
                                                         }

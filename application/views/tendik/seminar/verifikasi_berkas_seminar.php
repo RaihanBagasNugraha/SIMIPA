@@ -99,7 +99,7 @@
                                                         }
                                                         elseif($row->jenis == "Sidang Komprehensif"){
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_kompre&id=$row->id").">Form Pengajuan</a></li>";
-                                                            $sa_hasil = $this->ta_model->id_seminar_hasil($row->id);
+                                                            $sa_hasil = $this->ta_model->id_seminar_hasil($row->id_tugas_akhir);
                                                             if(!empty($sa_hasil)){
                                                                 echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$sa_hasil->id").">Berita Acara Hasil</a></li>";
                                                             }   

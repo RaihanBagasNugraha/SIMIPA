@@ -158,6 +158,7 @@ class Pdf_TA extends CI_Controller {
 
     function komisi_kompre($jml,$pbb)
     {
+        $status = "";
         if($jml == 2)
         {
             switch($pbb)
@@ -170,7 +171,10 @@ class Pdf_TA extends CI_Controller {
                     break;
                 case "Penguji 1":
                     $status = "Penguji Utama";
-                    break;    
+                    break;  
+                case "Penguji 2":
+                    $status = "Penguji Pembahas"; // ganti
+                    break;        
             }
         }
         else{
@@ -181,6 +185,7 @@ class Pdf_TA extends CI_Controller {
                     break;
                 case "Penguji 1":
                 case "Penguji 2":
+                case "Penguji 3":
                     $status = "Penguji Pembahas";
                     break;    
             }
@@ -383,7 +388,8 @@ class Pdf_TA extends CI_Controller {
             $pdf->Ln(30);
         }
 
-        $pdf->Cell(150, $spasi,"Bandar Lampung, ".$tanggal." ".$bulan." ".$tahun."", 0, 0, 'R');
+        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+        $pdf->Cell(150, $spasi,"Bandar Lampung, ".$tanggal." ".$bulan." ".$tahun."", 0, 0, 'L');
         $pdf->Ln(8);       
         
         $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
@@ -498,7 +504,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(45, $spasi,"Tanggal Masuk Berkas", 0, 0, 'L');
             $pdf->Cell(5, $spasi,':', 0, 0, 'C');
             $pdf->Cell(50, $spasi, $tgl, 0, 0, 'L');
-            $pdf->Ln(18);
+            $pdf->Ln(8);
 
             $pdf->Cell(45, $spasi,"Kelengkapan Persyaratan", 0, 0, 'L');
             $pdf->Cell(5, $spasi,':', 0, 0, 'C');
@@ -571,7 +577,7 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Cell(45, $spasi,"Tanggal Masuk Berkas", 0, 0, 'L');
                 $pdf->Cell(5, $spasi,':', 0, 0, 'C');
                 $pdf->Cell(50, $spasi,"$tgl", 0, 0, 'L');
-                $pdf->Ln(18);
+                $pdf->Ln(8);
                 
                 $pdf->Cell(45, $spasi,"Kelengkapan Persyaratan", 0, 0, 'L');
                 $pdf->Cell(5, $spasi,':', 0, 0, 'C');
@@ -627,7 +633,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(45, $spasi,"Tanggal Masuk Berkas", 0, 0, 'L');
             $pdf->Cell(5, $spasi,':', 0, 0, 'C');
             $pdf->Cell(50, $spasi, $tgl, 0, 0, 'L');
-            $pdf->Ln(18);
+            $pdf->Ln(8);
 
             $pdf->Cell(45, $spasi,"Kelengkapan Persyaratan", 0, 0, 'L');
             $pdf->Cell(5, $spasi,':', 0, 0, 'C');
@@ -866,7 +872,7 @@ class Pdf_TA extends CI_Controller {
 
         if($ta->jenis != ""){
             $pdf->AddPage();
-            $pdf->page_type('undangan');
+            $pdf->page_type('');
             $pdf->SetFont('Times','B',11);
             $pdf->MultiCell(150, $spasi, "FORMULIR PENETAPAN\nTEMA PENELITIAN DAN PEMBIMBING/PEMBAHAS ".strtoupper($ta->jenis)."\nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",1,'C',false); 
             $pdf->SetFont('Times','',11);
@@ -893,7 +899,7 @@ class Pdf_TA extends CI_Controller {
                 else{
                     $pdf->RowNoBorder(array('JUDUL',':',$ta->judul2));
                 }
-            $pdf->Ln(8);
+            $pdf->Ln();
 
             $pdf->Cell(45, $spasi,"Dan Menetapkan", 0,0, 'L');
             $pdf->Ln(8);
@@ -929,7 +935,12 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(45, $spasi,"Menyetujui", 0, 0, 'L');
             $pdf->Ln(5);
             $pdf->Cell(90, $spasi,"Ketua Jurusan,", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,"Koordinator ", 0, 0, 'L');
+            if($ta->jenis != "Skripsi"){
+                $pdf->Cell(30, $spasi,"Ketua Program Studi", 0, 0, 'L');
+            }
+            else{
+                $pdf->Cell(30, $spasi,"Koordinator ".$ta->jenis, 0, 0, 'L');
+            }
             $pdf->Ln(5);
 
             if($ta->status != 7 && $ta->status != 9){
@@ -1057,7 +1068,7 @@ class Pdf_TA extends CI_Controller {
         else{
             $pdf->RowNoBorder(array('JUDUL',':',$ta_seminar->judul2));
         }
-        $pdf->Ln(8);
+        $pdf->Ln(4);
 
         //komisi
         foreach($komisi as $kom){
@@ -1067,7 +1078,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Ln(4);
         }
 
-        $pdf->Ln(7);
+        $pdf->Ln(1);
         $pdf->Cell(90, $spasi,"", 0, 0, 'L');
         $pdf->Cell(150, $spasi,"Bandar Lampung, ".$date[2]." ".$bulan." ".$date[0]."", 0, 0, 'L');
         $pdf->Ln(7);
@@ -1095,7 +1106,7 @@ class Pdf_TA extends CI_Controller {
 
         $pdf->Cell(90, $spasi,"NIP. ".$pa->nip_nik, 0, 0, 'L');
         $pdf->Cell(30, $spasi,"NIP. ".$pb->nip_nik, 0, 0, 'L');
-        $pdf->Ln(20);
+        $pdf->Ln(10);
 
         if($seminar->status != 4 && $seminar->status <= 7){
             $pdf->Cell(150, $spasi,"Menyetujui", 0, 0, 'C');
@@ -1199,7 +1210,7 @@ class Pdf_TA extends CI_Controller {
         else{
             $pdf->RowNoBorder(array('JUDUL',':',$ta_seminar->judul2));
         }
-        $pdf->Ln(6);
+        $pdf->Ln(4);
 
         foreach($komisi as $kom){
             $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
@@ -1212,7 +1223,7 @@ class Pdf_TA extends CI_Controller {
           $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
           $pdf->SetAligns(array('L','C','L','L','C','L'));
           $pdf->RowNoBorder(array('Dosen Verifikasi',':',$verifikator->nama));
-          $pdf->Ln(4);  
+          $pdf->Ln(2);  
 
         $pdf->Cell(90, $spasi,"", 0, 0, 'L');
         $pdf->Cell(150, $spasi,"Bandar Lampung, ".$date[2]." ".$bulan." ".$date[0]."", 0, 0, 'L');
@@ -1389,7 +1400,7 @@ class Pdf_TA extends CI_Controller {
          else{
              $pdf->RowNoBorder(array('JUDUL',':',$ta_seminar->judul2));
          }
-         $pdf->Ln(8);
+         $pdf->Ln(4);
 
         //komisi
         foreach($komisi as $kom){
@@ -1399,7 +1410,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Ln(4);
         }
 
-        $pdf->Ln(7);
+        $pdf->Ln(1);
         $pdf->Cell(90, $spasi,"", 0, 0, 'L');
         $pdf->Cell(150, $spasi,"Bandar Lampung, ".$date[2]." ".$bulan." ".$date[0]."", 0, 0, 'L');
         $pdf->Ln(7);
@@ -1506,7 +1517,12 @@ class Pdf_TA extends CI_Controller {
 
         $pdf->AddPage('P');
         $pdf->SetFont('Times','B',11);
-        $pdf->MultiCell(150, $spasi, "FORM VERIFIKASI BERKAS PERSYARATAN\nPENGAJUAN ".strtoupper($seminar->jenis)."",1,'C',false); 
+        if($seminar->jenis != "Sidang Komprehensif"){
+            $pdf->MultiCell(150, $spasi, "FORM VERIFIKASI BERKAS PERSYARATAN\nPENGAJUAN ".strtoupper($seminar->jenis)."",1,'C',false); 
+        }
+        else{
+            $pdf->MultiCell(150, $spasi, "FORM VERIFIKASI BERKAS PERSYARATAN\nPENGAJUAN UJIAN ".strtoupper($ta_seminar->jenis)."",1,'C',false); 
+        }
         $pdf->SetFont('Times','',11);
         $pdf->Ln(3);
         $pdf->Cell(150, $spasi,"NO:".$seminar->no_form, 0, 0, 'C');
@@ -1525,10 +1541,20 @@ class Pdf_TA extends CI_Controller {
         $pdf->SetWidths(array(40,5, 100));
         $pdf->SetAligns(array('L','C','L'));
         if($ta_seminar->judul_approve == 1){
+            $pjg_judul = strlen($ta_seminar->judul1);
+            if($pjg_judul > 100){
+                $pdf->SetFont('Times','',10);
+            }
             $pdf->RowNoBorder(array('Judul',':',$ta_seminar->judul1));
+            $pdf->SetFont('Times','',11);
         }
         elseif($ta_seminar->judul_approve == 2){
+            $pjg_judul = strlen($ta_seminar->judul1);
+            if($pjg_judul > 100){
+                $pdf->SetFont('Times','',10);
+            }
             $pdf->RowNoBorder(array('Judul',':',$ta_seminar->judul2));
+            $pdf->SetFont('Times','',11);
         }
         $pdf->Ln(1);
 
@@ -2098,7 +2124,7 @@ class Pdf_TA extends CI_Controller {
 
                 //ttd
                 $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY()-5,30,0,'PNG'), 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX(), $pdf->GetY()-5,30,0,'PNG'), 0, 0, 'L');
 
                 $pdf->Ln(15);
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
@@ -2124,10 +2150,10 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Ln(5);
 
                 //ttd
-                $pdf->Cell(90, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+                $pdf->Cell(90, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY()-5,30,0,'PNG'), 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX(), $pdf->GetY()-5,30,0,'PNG'), 0, 0, 'L');
 
-                $pdf->Ln(25);
+                $pdf->Ln(15);
                 $pdf->Cell(90, $spasi,$koor_data->name, 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$admin->name, 0, 0, 'L');
                 $pdf->Ln(5);
@@ -2292,7 +2318,7 @@ class Pdf_TA extends CI_Controller {
                 else{
                     $pdf->Cell(30, $spasi,"Koordinator ".$seminar->jenis, 0, 0, 'L');
                 }
-                $pdf->Ln(30);
+                $pdf->Ln(20);
 
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
                 $pdf->Cell(30, $spasi,'', 0, 0, 'L');
@@ -2313,7 +2339,7 @@ class Pdf_TA extends CI_Controller {
                 else{
                     $pdf->Cell(30, $spasi,"Koordinator ".$seminar->jenis, 0, 0, 'L');
                 }
-                $pdf->Ln(30);
+                $pdf->Ln(20);
 
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
                 $pdf->Cell(30, $spasi,'', 0, 0, 'L');
@@ -2340,7 +2366,7 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Cell(90, $spasi,"", 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
-                $pdf->Ln(25);
+                $pdf->Ln(20);
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
                 $pdf->Ln(5);
@@ -2366,7 +2392,7 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Cell(90, $spasi,$pdf->Image("$kajur_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
-                $pdf->Ln(25);
+                $pdf->Ln(20);
                 $pdf->Cell(90, $spasi,$kajur_data->name, 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
                 $pdf->Ln(5);
@@ -2524,7 +2550,7 @@ class Pdf_TA extends CI_Controller {
                 else{
                     $pdf->Cell(30, $spasi,"Koordinator ".$seminar->jenis, 0, 0, 'L');
                 }
-                $pdf->Ln(30);
+                $pdf->Ln(20);
 
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
                 $pdf->Cell(30, $spasi,'', 0, 0, 'L');
@@ -2551,7 +2577,7 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Cell(90, $spasi,"", 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
-                $pdf->Ln(25);
+                $pdf->Ln(20);
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
                 $pdf->Ln(5);
@@ -2577,7 +2603,7 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Cell(90, $spasi,$pdf->Image("$kajur_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
-                $pdf->Ln(25);
+                $pdf->Ln(20);
                 $pdf->Cell(90, $spasi,$kajur_data->name, 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
                 $pdf->Ln(5);
@@ -2751,7 +2777,7 @@ class Pdf_TA extends CI_Controller {
                 else{
                     $pdf->Cell(30, $spasi,"Koordinator ".$seminar->jenis, 0, 0, 'L');
                 }
-                $pdf->Ln(30);
+                $pdf->Ln(20);
 
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
                 $pdf->Cell(30, $spasi,'', 0, 0, 'L');
@@ -2778,7 +2804,7 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Cell(90, $spasi,"", 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
-                $pdf->Ln(25);
+                $pdf->Ln(20);
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
                 $pdf->Ln(5);
@@ -2804,7 +2830,7 @@ class Pdf_TA extends CI_Controller {
                 $pdf->Cell(90, $spasi,$pdf->Image("$kajur_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
-                $pdf->Ln(25);
+                $pdf->Ln(20);
                 $pdf->Cell(90, $spasi,$kajur_data->name, 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
                 $pdf->Ln(5);
@@ -3491,7 +3517,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Ln(5);
             $pdf->Cell(90, $spasi,"Ketua Jurusan", 0, 0, 'L');
             $pdf->Cell(30, $spasi,"Koordinator Seminar", 0, 0, 'L');
-            $pdf->Ln(30);
+            $pdf->Ln(20);
 
             $pdf->Cell(90, $spasi,'', 0, 0, 'L');
             $pdf->Cell(30, $spasi,'', 0, 0, 'L');
@@ -3522,7 +3548,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
             $pdf->Cell(30, $spasi,$pdf->Image("$koor->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
-            $pdf->Ln(25);
+            $pdf->Ln(20);
             $pdf->Cell(90, $spasi,'', 0, 0, 'L');
             $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
             $pdf->Ln(5);
@@ -3558,7 +3584,7 @@ class Pdf_TA extends CI_Controller {
             $pdf->Cell(90, $spasi,$pdf->Image("$kajur->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
             $pdf->Cell(30, $spasi,$pdf->Image("$koor->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
-            $pdf->Ln(25);
+            $pdf->Ln(20);
             $pdf->Cell(90, $spasi,$kajur_data->name, 0, 0, 'L');
             $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
             $pdf->Ln(5);
@@ -3638,7 +3664,7 @@ class Pdf_TA extends CI_Controller {
                     $pdf->Ln(5);
                     $pdf->Cell(90, $spasi,"Ketua Jurusan", 0, 0, 'L');
                     $pdf->Cell(30, $spasi,"Ketua Program Studi", 0, 0, 'L');
-                    $pdf->Ln(30);
+                    $pdf->Ln(20);
         
                     $pdf->Cell(90, $spasi,'', 0, 0, 'L');
                     $pdf->Cell(30, $spasi,'', 0, 0, 'L');
@@ -3669,7 +3695,7 @@ class Pdf_TA extends CI_Controller {
                     $pdf->Cell(90, $spasi,"", 0, 0, 'L');
                     $pdf->Cell(30, $spasi,$pdf->Image("$koor->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
         
-                    $pdf->Ln(25);
+                    $pdf->Ln(20);
                     $pdf->Cell(90, $spasi,'', 0, 0, 'L');
                     $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
                     $pdf->Ln(5);
@@ -3702,7 +3728,7 @@ class Pdf_TA extends CI_Controller {
                     $pdf->Cell(90, $spasi,$pdf->Image("$kajur->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
                     $pdf->Cell(30, $spasi,$pdf->Image("$koor->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
         
-                    $pdf->Ln(25);
+                    $pdf->Ln(20);
                     $pdf->Cell(90, $spasi,$kajur_data->name, 0, 0, 'L');
                     $pdf->Cell(30, $spasi,$koor_data->name, 0, 0, 'L');
                     $pdf->Ln(5);
