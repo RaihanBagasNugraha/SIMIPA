@@ -194,17 +194,24 @@ class Mahasiswa extends CI_Controller {
 	// Manajemen Tugas Akhir
 	function tugas_akhir()
 	{
+		$biodata = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 3)->row();
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		$data['ta'] = $this->ta_model->selet_ta_by_npm($this->session->userdata('username'));
 		$data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
-		$this->load->view('header_global', $header);
-		$this->load->view('mahasiswa/header');
 
-		$this->load->view('mahasiswa/tema_ta', $data);
+		if($biodata->prodi == NULL || $biodata->dosen_pa == NULL){
+			echo "<script type='text/javascript'>alert('Silahkan Isi Biodata Terlebih Dahulu');window.location = ('biodata') </script>";
+		}
+		else{
+			$this->load->view('header_global', $header);
+			$this->load->view('mahasiswa/header');
+
+			$this->load->view('mahasiswa/tema_ta', $data);
+
+			$this->load->view('footer_global');
+		}
+	
 		
-		//$this->load->view('mahasiswa/tugas_akhir', $data);
-
-        $this->load->view('footer_global');
 	}
 
 	function form_tugas_akhir()

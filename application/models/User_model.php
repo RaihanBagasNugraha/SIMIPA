@@ -205,8 +205,81 @@ class User_model extends CI_Model
 		return $result->result();
 	}
 
+	function get_jabfung_all()
+	{
+	    $this->db->select('*');
+		$query = $this->db->get('fungsional')->result();
+		return $query;
+	}
 	
+	function get_pangkat_all()
+	{
+	    $this->db->select('*');
+		$query = $this->db->get('pangkat_gol')->result();
+		return $query;
+	}
 
+	function get_tugas_tambahan_all()
+	{
+	    $this->db->select('*');
+		$query = $this->db->get('tugas_tambahan')->result();
+		return $query;
+	}
+
+	function get_prodi_all()
+	{
+	    $this->db->select('*');
+		$query = $this->db->get('prodi')->result();
+		return $query;
+	}
+
+	function get_jurusan_all()
+	{
+	    $this->db->select('*');
+		$query = $this->db->get('jurusan')->result();
+		return $query;
+	}
+
+	function insert_tugas_tambah($data)
+	{
+		$this->db->insert('tbl_users_tugas', $data);
+	}
+
+	function get_tugas_tambahan_id($id)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE id_user = $id ORDER BY aktif DESC");
+		return $result->result();
+	}
+
+	function get_tugas_tambahan_detail($id)
+	{
+		$result = $this->db->query("SELECT * FROM `tugas_tambahan` WHERE id_tugas_tambahan = $id");
+		return $result->row();
+	}
+
+	function get_jurusan_id($id)
+	{
+		$result = $this->db->query("SELECT * FROM `jurusan` WHERE id_jurusan = $id");
+		return $result->row();
+	}
+
+	function get_prodi_id($id)
+	{
+		$result = $this->db->query("SELECT * FROM `prodi` WHERE id_prodi = $id");
+		return $result->row();
+	}
+
+	function update_tugas_tambahan($id,$ket)
+	{
+		if($ket == 0){
+			$this->db->where('id', $id);
+			$this->db->update('tbl_users_tugas', array('aktif' => '0'));
+		}
+		else{
+			$this->db->delete('tbl_users_tugas', array('id' => $id));
+		}
+	
+	}
 
 	
 	/* ------------------------------------

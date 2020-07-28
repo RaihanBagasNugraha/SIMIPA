@@ -68,6 +68,7 @@ $route['mahasiswa/ubah-data-biodata'] = 'mahasiswa/ubah_biodata';
 $route['mahasiswa/tugas-akhir/tema'] = 'mahasiswa/tugas_akhir';
 $route['mahasiswa/tugas-akhir/tema/form'] = 'mahasiswa/form_tugas_akhir';
 $route['mahasiswa/tugas-akhir/tema/lampiran'] = 'mahasiswa/form_tugas_akhir_lampiran';
+$route['mahasiswa/tugas-akhir/biodata'] = 'mahasiswa/biodata';
 $route['mahasiswa/simpan-pengajuan-ta'] = 'mahasiswa/add_tugas_akhir';
 $route['mahasiswa/tambah_berkas_ta'] = 'mahasiswa/tambah_berkas_ta';
 $route['mahasiswa/hapus-berkas-ta'] = 'mahasiswa/hapus_berkas_ta';
@@ -101,6 +102,8 @@ $route['dosen/kelola-akun'] = 'dosen/akun';
 $route['dosen/ubah-data-akun'] = 'dosen/ubah_akun';
 $route['dosen/kelola-biodata'] = 'dosen/biodata';
 $route['dosen/ubah-data-biodata'] = 'dosen/ubah_biodata';
+$route['dosen/biodata-tugas-tambahan'] = 'dosen/tugas_tambahan';
+$route['dosen/biodata-tugas-tambahan-hapus'] = 'dosen/tugas_tambahan_nonaktif';
 $route['dosen/tugas-akhir/tema'] = 'dosen/tugas_akhir';
 $route['dosen/tugas-akhir/tema/form'] = 'dosen/form_tugas_akhir';
 

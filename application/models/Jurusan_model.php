@@ -16,6 +16,15 @@ class Jurusan_model extends CI_Model
 		$query = $this->db->get('prodi')->result();
 		return $query;
 	}
+
+	//edit raihan
+	function get_jurusan_all()
+	{
+		$this->db->where('fakultas', '1');
+		$this->db->order_by('id_jurusan', 'ASC');
+		$query = $this->db->get('jurusan')->result();
+		return $query;
+	}
 	
 	
 }

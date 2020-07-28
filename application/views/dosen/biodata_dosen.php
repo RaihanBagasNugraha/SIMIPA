@@ -24,105 +24,86 @@
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
+                        $id_user = $this->session->userdata('userId');
                         ?>
                         
                          <div class="main-card mb-3 card">
                                 <div class="card-header">Form Kelola Biodata</div>
                                 <div class="card-body">
-                                    <form method="post" action="<?php echo site_url('mahasiswa/ubah-data-biodata') ?>" >
+                                    <form method="post" action="<?php echo site_url('dosen/ubah-data-biodata') ?>" >
                                 
                                         <div class="position-relative row form-group">
-                                            <label for="prodi" class="col-sm-2 col-form-label">Program Studi</label>
+                                            <label for="jurusan" class="col-sm-2 col-form-label">Jurusan</label>
                                             <div class="col-sm-10">
-                                            <select name="prodi" class="input-lg form-control">
-                                            <option>-- Pilih Program Studi --</option>
+                                            <select name="jurusan" class="input-lg form-control" required>
+                                            <option value = "">-- Pilih Jurusan --</option>
                                             <?php
-                                            $list_prodi = $this->jurusan_model->select_prodi_by_jur($biodata->jurusan);
-                                            foreach ($list_prodi as $row) {
-                                                if($biodata->prodi == $row->id_prodi) $select = "selected";
+                                            $list_jurusan = $this->jurusan_model->get_jurusan_all();
+                                            // print_r($biodata);
+                                            foreach ($list_jurusan as $row) {
+                                                if($biodata->jurusan == $row->id_jurusan) $select = "selected";
                                                 else $select = "";
-                                                echo "<option ".$select." value='".$row->id_prodi."'>".$row->nama."</option>";
+                                                echo "<option ".$select." value='".$row->id_jurusan."'>".$row->nama."</option>";
                                             }
                                             ?>
-                                            
-                                        
                                             </select>
                                             
+                                            </div>    
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="jurusan" class="col-sm-2 col-form-label">NIDN</label>
+                                            <div class="col-sm-10">
+                                                <input name="nidn" id="nidn" value="" type="text" placeholder="NIDN" class="form-control">                                    
+                                            </div>    
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="jurusan" class="col-sm-2 col-form-label">Jabatan Fungsional</label>
+                                            <div class="col-sm-10">
+                                            <select name="jabfung" class="input-lg form-control">
+                                            <option value = "">-- Pilih Jabatan Fungsional --</option>
+                                            <?php
+                                            $list_jabfung = $this->user_model->get_jabfung_all();
+                                            // print_r($biodata);
+                                            foreach ($list_jabfung as $row) {
+                                                if($biodata->fungsional == $row->id_fungsional) $select = "selected";
+                                                else $select = "";
+                                                echo "<option ".$select." value='".$row->id_fungsional."'>".$row->nama."</option>";
+                                            }
+                                            ?>
+                                            </select>
                                             
+                                            </div>    
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="jurusan" class="col-sm-2 col-form-label">Pangkat</label>
+                                            <div class="col-sm-10">
+                                            <select name="jabfung" class="input-lg form-control">
+                                            <option value = "">-- Pilih Pangkat --</option>
+                                            <?php
+                                            $list_pangkat = $this->user_model->get_pangkat_all();
+                                            // print_r($biodata);
+                                            foreach ($list_pangkat as $row) {
+                                                if($biodata->pangkat_gol == $row->id_pangkat_gol) $select = "selected";
+                                                else $select = "";
+                                                echo "<option ".$select." value='".$row->id_pangkat_gol."'>".$row->pangkat." (".$row->golongan."".$row->ruang.")</option>";
+                                            }
+                                            ?>
+                                            </select>
+                                            
+                                            </div>    
                                         </div>
                                         
-                                        <div class="position-relative row form-group">
-                                            <label for="dosen_pa" class="col-sm-2 col-form-label">Dosen PA</label>
-                                            <div class="col-sm-10">
-                                                <select name="dosen_pa" class=" form-control">
-                                                <option>-- Pilih Dosen Pembimbing Akademik --</option>
-                                                <?php
-                                                $list = $this->user_model->select_list_dosen();
-                                                foreach ($list as $row) {
-                                                    $nama_dosen = "";
-                                                    if($row->gelar_depan != "") $nama_dosen .= $row->gelar_depan." ";
-                                                    $nama_dosen .= $row->name;
-                                                    if($row->gelar_belakang != "") $nama_dosen .= " ".$row->gelar_belakang;
-                                                    if($biodata->dosen_pa == $row->id_user) $select = "selected";
-                                                    else $select = "";
-                                                    echo "<option ".$select." value='".$row->id_user."'>".$nama_dosen."</option>";
-                                                    }
-                                                ?>
-
-                                                </select>
-                                                
-                                            
-                                            </div>
-                                        </div>
-                                        <div class="position-relative row form-group">
-                                            <label for="jalur_masuk" class="col-sm-2 col-form-label">Jalur Masuk</label>
-                                            <div class="col-sm-10">
-                                                <select name="jalur_masuk" class=" form-control">
-                                                <option>-- Pilih Jalur Masuk --</option>
-                                                <?php
-                                                $list = $this->parameter_model->select_jalur_masuk();
-                                                foreach ($list as $row) {
-                                                    if($biodata->jalur_masuk == $row->id_jalur_masuk) $select = "selected";
-                                                    else $select = "";
-                                                    echo "<option ".$select." value='".$row->id_jalur_masuk."'>".$row->nama."</option>";
-                                                    }
-                                                ?>
-
-                                                </select>
-                                                
-                                            
-                                            </div>
-                                        </div>
-                                        <div class="position-relative row form-group">
-                                            <label for="asal_sekolah" class="col-sm-2 col-form-label">Asal Sekolah</label>
-                                            <div class="col-sm-10">
-                                                <select name="asal_sekolah" class=" form-control">
-                                                <option>-- Pilih Asal Sekolah --</option>
-                                                <?php
-                                                $list = $this->parameter_model->select_asal_sekolah();
-                                                foreach ($list as $row) {
-                                                    if($biodata->asal_sekolah == $row->id_asal_sekolah) $select = "selected";
-                                                    else $select = "";
-                                                    echo "<option ".$select." value='".$row->id_asal_sekolah."'>".$row->nama."</option>";
-                                                    }
-                                                ?>
-
-                                                </select>
-                                                
-                                            
-                                            </div>
-                                        </div>
-                                        <div class="position-relative row form-group"><label for="nama_sekolah" class="col-sm-2 col-form-label">Nama Sekolah</label>
-                                            <div class="col-sm-10"><input name="nama_sekolah" id="nama_sekolah" value="<?php echo $biodata->nama_sekolah ?>" type="text" placeholder="Contoh: SMAN 1 Metro" class="form-control"></div>
-                                        </div>
                                         <div class="divider"></div>
                                         <div class="position-relative row form-group">
                                             
 
-                                            <label for="jenkel" class="col-sm-2 col-form-label">Jenis Kelamin</label>
+                                        <label for="jenkel" class="col-sm-2 col-form-label">Jenis Kelamin</label>
                                             <div class="col-sm-10">
                                             <select name="jenkel" class=" form-control">
-                                            <option>-- Pilih Jenis Kelamin --</option>
+                                            <option value = "">-- Pilih Jenis Kelamin --</option>
                                             <option value="Laki-laki" <?php if($biodata->jenis_kelamin == "Laki-laki") echo "selected" ?>>Laki-laki</option>
                                             <option value="Perempuan" <?php if($biodata->jenis_kelamin == "Perempuan") echo "selected" ?>>Perempuan</option>
                                             </select>
@@ -132,7 +113,7 @@
                                             <label for="agama" class="col-sm-2 col-form-label">Agama</label>
                                             <div class="col-sm-10">
                                                 <select name="agama" class=" form-control">
-                                                <option>-- Pilih Agama --</option>
+                                                <option value = "">-- Pilih Agama --</option>
                                                 <?php
                                                 $list = $this->parameter_model->select_agama();
                                                 foreach ($list as $row) {
@@ -158,13 +139,13 @@
                                         <div class="position-relative row form-group"><label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
                                             <div class="col-sm-10">
                                             <textarea name="jalan" id="jalan" class="form-control" placeholder="Contoh: Jl. Soekarno Hatta Gg. Bypass Raya No. 103 RT 01 RW 04"><?php echo $biodata->jalan ?></textarea>
-                                            </div>
+                                        </div>
                                             
                                         </div>
                                         <div class="position-relative row form-group"><label for="alamat" class="col-sm-2 col-form-label"></label>
                                             <div class="col-sm-10">
                                                 <select name="provinsi" id="provinsi" class="form-control">
-                                                <option>-- Pilih Provinsi --</option>
+                                                <option value = "">-- Pilih Provinsi --</option>
                                                 <?php
                                                 $list = $this->wilayah_model->provinsi();
                                                 foreach ($list as $row) {
@@ -181,7 +162,7 @@
                                             
                                             <div class="col-sm-10">
                                                 <select name="kota_kabupaten" id="kota-kabupaten" class=" form-control">
-                                                <option>-- Pilih Kota/Kabupaten --</option>
+                                                <option value = "" >-- Pilih Kota/Kabupaten --</option>
                                                 <?php
                                                 if(!empty($biodata->kota_kabupaten)) {
                                                     echo $this->wilayah_model->kabupaten_cek($biodata->provinsi, $biodata->kota_kabupaten);
@@ -197,7 +178,7 @@
                                             
                                             <div class="col-sm-10">
                                                 <select name="kecamatan" id="kecamatan" class=" form-control">
-                                                <option>-- Pilih Kecamatan --</option>
+                                                <option value = "">-- Pilih Kecamatan --</option>
                                                 <?php
                                                 if(!empty($biodata->kecamatan)) {
                                                     echo $this->wilayah_model->kecamatan_cek($biodata->kota_kabupaten, $biodata->kecamatan);
@@ -211,7 +192,7 @@
                                             
                                             <div class="col-sm-10">
                                                 <select name="kelurahan_desa" id="kelurahan-desa" class=" form-control">
-                                                <option>-- Pilih Kelurahan/Desa --</option>
+                                                <option value = "">-- Pilih Kelurahan/Desa --</option>
                                                 <?php
                                                 if(!empty($biodata->kelurahan_desa)) {
                                                     echo $this->wilayah_model->desa_cek($biodata->kecamatan, $biodata->kelurahan_desa);
@@ -229,6 +210,92 @@
                                             
                                             
                                         </div>
+
+                                        <div class="divider"></div>
+                                        
+                                        <div class="position-relative row form-group">
+                                        <label for="tgs_tmbh" class="col-sm-3 col-form-label"><b>Tugas Tambahan Aktif</b></label>
+                                        <!-- &emsp;&emsp;&emsp; -->
+                                        
+                                        <a data-toggle = "modal" id="<?php echo $id_user; ?>"  class="passingIDtgs" >
+                                                <button type="button" class="btn-wide mb-1 btn btn-success btn-sm btn-block"  data-toggle="modal" data-target="#tambahtugas">
+                                                    Tambah
+                                                </button>
+                                        </a>
+                                        </div>
+                                        <?php $tugas_tambah = $this->user_model->get_tugas_tambahan_id($id_user); ?>
+                                       
+                                        <table class="mb-0 table table-striped">
+                                        <?php  foreach($tugas_tambah as $tgs){ ?>
+                                                <tr>
+                                                    <td>Tugas Tambahan</td>
+                                                    <td>:</td>
+                                                    <td><?php echo $this->user_model->get_tugas_tambahan_detail($tgs->tugas)->nama ?></td>
+                                                </tr>   
+                                                <?php if($tgs->tugas == '14') {?>
+                                                    <tr>
+                                                        <td>Prodi</td>
+                                                        <td>:</td>
+                                                        <td><?php echo $this->user_model->get_prodi_id($tgs->prodi)->nama ?></td>
+                                                    </tr>   
+                                                <?php } ?>
+                                                <?php if($tgs->tugas == '12' || $tgs->tugas == '13' || $tgs->tugas == '17' || $tgs->tugas == '18' || $tgs->tugas == '15' || $tgs->tugas == '16') {?>
+                                                    <tr>
+                                                        <td>Jurusan</td>
+                                                        <td>:</td>
+                                                        <td><?php echo $this->user_model->get_jurusan_id($tgs->jurusan_unit)->nama ?></td>
+                                                    </tr>   
+                                                <?php } ?>
+                                                <tr>
+                                                    <td>Periode</td>
+                                                    <td>:</td>
+                                                    <td><?php echo $tgs->periode ?></td>
+                                                </tr>  
+                                                <tr >
+                                                    <td>Status</td>
+                                                    <td>:</td>
+                                                    <td><b><?php echo $tgs->aktif == 1 ? "Aktif" : "Nonaktif" ?></b></td>
+                                                </tr>  
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    
+                                                    <td align = "right">
+                                                        <?php if($tgs->aktif != 0) { ?>
+                                                            <a data-toggle = "modal" data-id="<?php echo $tgs->id ?>" ket="0" class="passingIDhapus" >
+                                                                    <button type="button" class="btn-small mb-1 btn btn-warning btn-lg"  data-toggle="modal" data-target="#nonaktiftugas">
+                                                                        Nonaktif
+                                                                    </button>
+                                                            </a>
+                                                        <?php } ?>
+                                                        <a data-toggle = "modal" data-id="<?php echo $tgs->id ?>" ket="1" class="passingIDhapus" >
+                                                                <button type="button" class="btn-small mb-1 btn btn-danger btn-lg"  data-toggle="modal" data-target="#nonaktiftugas">
+                                                                    Hapus
+                                                                </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>   
+                                                <?php } ?>
+                                        </table>
+                                        
+                                        
+                                        <!-- <div class="position-relative row form-group">
+                                        <label for="tgs_tambahan" class="col-sm-2 col-form-label">Tugas Tambahan</label>
+                                            <div class="col-sm-10">
+                                            <select name="tugas_tambahan" class="input-lg form-control">
+                                            <option>-- Pilih Pangkat --</option>
+                                            <?php
+                                            $list_tugas = $this->user_model->get_tugas_tambahan_all();
+                                            // print_r($biodata);
+                                            foreach ($list_tugas as $row) {
+                                                if($biodata->pangkat_gol == $row->id_pangkat_gol) $select = "selected";
+                                                else $select = "";
+                                                echo "<option ".$select." value='".$row->id_tugas_tambahan."'>".$row->nama."</option>";
+                                            }
+                                            ?>
+                                            </select>
+                                            </div>
+                                        </div> -->
                                   
                                         
                                         <div class="position-relative row form-group">
@@ -253,7 +320,7 @@ $(document).ready(function(){
     });
     $.ajaxSetup({
         type:"POST",
-        url: "<?php echo site_url('mahasiswa/ambil_data') ?>",
+        url: "<?php echo site_url('dosen/ambil_data') ?>",
         cache: false,
     });
 
@@ -304,4 +371,16 @@ $(document).ready(function(){
 });
 
 </script>
-                        
+<script>
+        $(".passingIDtgs").click(function () {
+                var ids = $(this).attr('id');
+                $("#IDUser").val( ids );
+        });
+
+        $(".passingIDhapus").click(function () {
+                var idh = $(this).attr('data-id');
+                var kets = $(this).attr('ket');
+                $("#IDTugas").val( idh );
+                $("#Keterangan").val( kets );
+        });
+</script>

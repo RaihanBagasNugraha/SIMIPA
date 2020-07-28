@@ -79,12 +79,12 @@ class Dosen extends CI_Controller {
 	public function biodata()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['biodata'] = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 3)->row();
+		$data['biodata'] = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 2)->row();
 
 		$this->load->view('header_global', $header);
 		$this->load->view('dosen/header');
 		
-		$this->load->view('dosen/biodata', $data);
+		$this->load->view('dosen/biodata_dosen', $data);
 
         $this->load->view('footer_global');
 	}
@@ -120,6 +120,47 @@ class Dosen extends CI_Controller {
 		);
 		$this->user_model->update($data_akun, $this->session->userdata('userId'));
 		redirect(site_url("dosen/kelola-biodata?status=sukses"));
+	}
+
+	function tugas_tambahan()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$iduser = $data['iduser'];
+		$tugas = $data['tugas_tambahan'];
+		$prodi = $data['prodi'];
+		$jurusan = $data['jurusan'];
+		$periode = $data['periode'];
+		$status = $data['status_tgs'];
+
+		$data_tugas = array(
+			'id_user' => $iduser,
+			'tugas' => $tugas,
+			'jurusan_unit' => $jurusan,
+			'prodi' => $prodi,
+			'periode' => $periode,
+			'aktif' => $status,
+		);
+
+		$this->user_model->insert_tugas_tambah($data_tugas);		
+		redirect(site_url("dosen/kelola-biodata?status=sukses"));
+
+	}
+
+	function tugas_tambahan_nonaktif()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $data['id_tugas'];
+		$ket = $data['ket'];
+
+		$this->user_model->update_tugas_tambahan($id,$ket);	
+		redirect(site_url("dosen/kelola-biodata?status=sukses"));
+
 	}
 
 	function ambil_data(){
