@@ -88,21 +88,23 @@ class Dosen extends CI_Controller {
 
         $this->load->view('footer_global');
 	}
-
+	//edit raihan
 	public function ubah_biodata()
 	{
 		//echo "<pre>";
 		//print_r($_POST);
 		//echo $this->session->userdata('userId');
-		$data_akademik = array(
-			'prodi' => $this->input->post('prodi'),
-			'dosen_pa' => $this->input->post('dosen_pa'),
-			'jalur_masuk' => $this->input->post('jalur_masuk'),
-			'asal_sekolah' => $this->input->post('asal_sekolah'),
-			'nama_sekolah' => $this->input->post('nama_sekolah')
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$data_dosen = array(
+			'nidn' => $this->input->post('nidn'),
+			'jurusan' => $this->input->post('jurusan'),
+			'pangkat_gol' => $this->input->post('pangkat'),
+			'fungsional' => $this->input->post('jabfung')
 		);
 
-		$this->user_model->update_dosen($data_akademik, $this->session->userdata('userId'));
+		$this->user_model->update_dosen($data_dosen, $this->session->userdata('userId'));
 
 		$tgl_lahir = new DateTime($this->input->post('tanggal_lahir'));
 
@@ -135,17 +137,33 @@ class Dosen extends CI_Controller {
 		$periode = $data['periode'];
 		$status = $data['status_tgs'];
 
-		$data_tugas = array(
-			'id_user' => $iduser,
-			'tugas' => $tugas,
-			'jurusan_unit' => $jurusan,
-			'prodi' => $prodi,
-			'periode' => $periode,
-			'aktif' => $status,
-		);
+		if($jurusan == ""){
+			$jurusan = 0;
+		}
+		if($prodi == ""){
+			$prodi = 0;
+		}
 
-		$this->user_model->insert_tugas_tambah($data_tugas);		
-		redirect(site_url("dosen/kelola-biodata?status=sukses"));
+		$check = $this->user_model->check_tugas_tambahan($iduser,$tugas,$jurusan,$prodi,$status);
+
+		if(!empty($check)){
+			redirect(site_url("dosen/kelola-biodata?status=duplikat"));
+		}
+		else{
+			$data_tugas = array(
+				'id_user' => $iduser,
+				'tugas' => $tugas,
+				'jurusan_unit' => $jurusan,
+				'prodi' => $prodi,
+				'periode' => $periode,
+				'aktif' => $status,
+			);
+	
+			$this->user_model->insert_tugas_tambah($data_tugas);		
+			redirect(site_url("dosen/kelola-biodata?status=sukses"));
+		}
+
+		
 
 	}
 

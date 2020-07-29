@@ -281,7 +281,49 @@ class User_model extends CI_Model
 	
 	}
 
+	function update_dosen($data, $userId)
+	{
+	    $this->db->where('id_user', $userId);
+	    $this->db->update($this->tbl_dosen, $data);
+	}
+
+	function check_tugas_tambahan($userId,$idtugas,$jurusan,$prodi,$status)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE id_user = $userId AND tugas = $idtugas AND (jurusan_unit = $jurusan AND prodi = $prodi) AND aktif = $status");
+		return $result->row();
+	}
+
+	//tugas tambahan dosen
+	function tugas_dosen_kajur_sekjur($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE (tugas = 12 OR tugas =13) AND aktif = 1 AND id_user = $userId");
+		return $result->row();
+	}
 	
+	function tugas_dosen_kaprodi($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = 14 AND aktif = 1 AND id_user = $userId");
+		return $result->row();
+	}
+
+	function tugas_dosen_dekan($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = 1 AND aktif = 1 AND id_user = $userId");
+		return $result->row();
+	}
+
+	function tugas_dosen_wakil_dekan($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE (tugas = 2 OR tugas = 3 OR tugas = 4) AND aktif = 1 AND id_user = $userId");
+		return $result->row();
+	}
+
+	function tugas_dosen_koor($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = 17  AND aktif = 1 AND id_user = $userId");
+		return $result->row();
+	}
+
 	/* ------------------------------------
 	function select_all()
 	{

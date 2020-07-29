@@ -951,7 +951,7 @@
                     <input type="hidden" name="id_tugas" id="IDTugas" value="">
                     <input type="hidden" name="ket" id="Keterangan" value="">
                 </form>
-                Ubah Data ?
+                Simpan Perubahan ?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">

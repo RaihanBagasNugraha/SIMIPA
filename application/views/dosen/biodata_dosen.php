@@ -24,6 +24,10 @@
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
+                        if(!empty($_GET['status']) && $_GET['status'] == 'duplikat') {
+
+                            echo '<div class="alert alert-danger fade show" role="alert">Terdapat Tugas Tambahan Yang Sama Dengan Status Yang Aktif</div>';
+                        }
                         $id_user = $this->session->userdata('userId');
                         ?>
                         
@@ -80,7 +84,7 @@
                                         <div class="position-relative row form-group">
                                             <label for="jurusan" class="col-sm-2 col-form-label">Pangkat</label>
                                             <div class="col-sm-10">
-                                            <select name="jabfung" class="input-lg form-control">
+                                            <select name="pangkat" class="input-lg form-control">
                                             <option value = "">-- Pilih Pangkat --</option>
                                             <?php
                                             $list_pangkat = $this->user_model->get_pangkat_all();
@@ -260,7 +264,7 @@
                                                     <td></td>
                                                     <td></td>
                                                     
-                                                    <td align = "right">
+                                                    <td style="align:left;">
                                                         <?php if($tgs->aktif != 0) { ?>
                                                             <a data-toggle = "modal" data-id="<?php echo $tgs->id ?>" ket="0" class="passingIDhapus" >
                                                                     <button type="button" class="btn-small mb-1 btn btn-warning btn-lg"  data-toggle="modal" data-target="#nonaktiftugas">

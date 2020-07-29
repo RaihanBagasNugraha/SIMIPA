@@ -1,6 +1,12 @@
 <?php 
 
 $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'));
+// check role
+$tb_kajur = $this->user_model->tugas_dosen_kajur_sekjur($this->session->userdata('userId'));
+$tb_kaprodi = $this->user_model->tugas_dosen_kaprodi($this->session->userdata('userId'));
+$tb_dekan = $this->user_model->tugas_dosen_dekan($this->session->userdata('userId'));
+$tb_wd = $this->user_model->tugas_dosen_wakil_dekan($this->session->userdata('userId'));
+$tb_koor = $this->user_model->tugas_dosen_koor($this->session->userdata('userId'));
 
 ?>
 <ul class="vertical-nav-menu">
@@ -146,6 +152,7 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                     </a>
                                 </li>
 
+                                <?php if(!empty($tb_koor)) { ?>
                                 <!-- Menu Koordinator -->
 
                                 <li class="app-sidebar__heading">Koordinator Tugas Akhir</li>
@@ -238,7 +245,8 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                        
                                     </ul>
                                 </li>
-
+                                <?php } ?>
+                                <?php if(!empty($tb_kajur)) { ?>
                                 <!-- Menu Kajur/Sekjur -->
 
                                 <li class="app-sidebar__heading">Ketua/Sekretaris Jurusan</li>
@@ -377,7 +385,8 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                         Pengaturan
                                     </a>
                                 </li>
-
+                                <?php } ?>
+                                <?php if(!empty($tb_kaprodi)) { ?>
                                 <!-- Menu Kaprodi -->
 
                                 <li class="app-sidebar__heading">Ketua Program Studi</li>
@@ -430,8 +439,8 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                        
                                     </ul>
                                 </li>
-
-
+                                <?php } ?>
+                                <?php if(!empty($tb_dekan)) { ?>
                                 <!-- Menu Dekan -->
 
                                 <li class="app-sidebar__heading">Dekan</li>
@@ -488,7 +497,8 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                        
                                     </ul>
                                 </li>
-
+                                <?php } ?>
+                                <?php if(!empty($tb_wd)) { ?>
                                 <!-- WD 3 -->
 
 
@@ -522,7 +532,7 @@ $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'))
                                        
                                     </ul>
                                 </li>
-
+                                <?php } ?>
 
                                 <div class="divider"></div>
                                 <li>
