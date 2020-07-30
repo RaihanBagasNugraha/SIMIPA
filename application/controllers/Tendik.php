@@ -78,7 +78,7 @@ class Tendik extends CI_Controller {
 	public function biodata()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['biodata'] = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 3)->row();
+		$data['biodata'] = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 4)->row();
 
 		$this->load->view('header_global', $header);
 		$this->load->view('tendik/header');
@@ -90,18 +90,18 @@ class Tendik extends CI_Controller {
 
 	public function ubah_biodata()
 	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
 		//echo "<pre>";
 		//print_r($_POST);
 		//echo $this->session->userdata('userId');
-		$data_akademik = array(
-			'prodi' => $this->input->post('prodi'),
-			'tendik_pa' => $this->input->post('tendik_pa'),
-			'jalur_masuk' => $this->input->post('jalur_masuk'),
-			'asal_sekolah' => $this->input->post('asal_sekolah'),
-			'nama_sekolah' => $this->input->post('nama_sekolah')
+		$data_tendik= array(
+			'unit_kerja' => $this->input->post('unit'),
+			'pangkat_gol' => $this->input->post('pangkat')
 		);
 
-		$this->user_model->update_tendik($data_akademik, $this->session->userdata('userId'));
+		$this->user_model->update_tendik($data_tendik, $this->session->userdata('userId'));
 
 		$tgl_lahir = new DateTime($this->input->post('tanggal_lahir'));
 
@@ -119,6 +119,61 @@ class Tendik extends CI_Controller {
 		);
 		$this->user_model->update($data_akun, $this->session->userdata('userId'));
 		redirect(site_url("tendik/kelola-biodata?status=sukses"));
+	}
+
+	//add raihan
+	function tugas_tambahan()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$iduser = $data['iduser'];
+		$tugas = $data['tugas_tambahan'];
+		$prodi = $data['prodi'];
+		$jurusan = $data['jurusan'];
+		$periode = $data['periode'];
+		$status = $data['status_tgs'];
+
+		if($jurusan == ""){
+			$jurusan = 0;
+		}
+		if($prodi == ""){
+			$prodi = 0;
+		}
+
+		$check = $this->user_model->check_tugas_tambahan($iduser,$tugas,$jurusan,$prodi,$status);
+
+		if(!empty($check)){
+			redirect(site_url("tendik/kelola-biodata?status=duplikat"));
+		}
+		else{
+			$data_tugas = array(
+				'id_user' => $iduser,
+				'tugas' => $tugas,
+				'jurusan_unit' => $jurusan,
+				'prodi' => $prodi,
+				'periode' => $periode,
+				'aktif' => $status,
+			);
+	
+			$this->user_model->insert_tugas_tambah($data_tugas);		
+			redirect(site_url("tendik/kelola-biodata?status=sukses"));
+		}
+	}
+
+	function tugas_tambahan_nonaktif()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $data['id_tugas'];
+		$ket = $data['ket'];
+
+		$this->user_model->update_tugas_tambahan($id,$ket);	
+		redirect(site_url("tendik/kelola-biodata?status=sukses"));
+
 	}
 
 	function ambil_data(){

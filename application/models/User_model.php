@@ -324,6 +324,46 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
+	function tugas_tendik_admin_jurusan($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = 18  AND aktif = 1 AND id_user = $userId");
+		return $result->row();
+	}
+
+	function tugas_tendik_admin_fakultas($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = 11  AND aktif = 1 AND id_user = $userId");
+		return $result->row();
+	}
+
+	function tugas_tendik_laboratorium($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE (tugas = 15 OR tugas = 16) AND aktif = 1 AND id_user = $userId");
+		return $result->row();
+	}
+
+	function tugas_tendik_kabag_tu($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = 5 AND aktif = 1 AND id_user = $userId");
+		return $result->row();
+	}
+
+	//tendik
+	function get_unit_kerja_tendik()
+	{
+		$this->db->select('*');
+		$query = $this->db->get('unit_kerja')->result();
+		return $query;
+	}
+
+	function update_tendik($data, $userId)
+	{
+	    $this->db->where('id_user', $userId);
+	    $this->db->update($this->tbl_tendik, $data);
+	}
+
+
+
 	/* ------------------------------------
 	function select_all()
 	{

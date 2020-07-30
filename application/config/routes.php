@@ -204,6 +204,8 @@ $route['dosen/koordinator/rekap/seminar'] = 'dosen/rekap_seminar_koor';
 $route['tendik/kelola-akun'] = 'tendik/akun';
 $route['tendik/ubah-data-akun'] = 'tendik/ubah_akun';
 $route['tendik/kelola-biodata'] = 'tendik/biodata';
+$route['tendik/biodata-tugas-tambahan'] = 'tendik/tugas_tambahan';
+$route['tendik/biodata-tugas-tambahan-hapus'] = 'tendik/tugas_tambahan_nonaktif';
 $route['tendik/ubah-data-biodata'] = 'tendik/ubah_biodata';
 $route['tendik/verifikasi-berkas'] = 'tendik/verifikasi_berkas';
 

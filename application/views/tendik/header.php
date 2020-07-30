@@ -1,3 +1,10 @@
+<?php 
+$tb_admin_jur = $this->user_model->tugas_tendik_admin_jurusan($this->session->userdata('userId'));
+$tb_admin_fak = $this->user_model->tugas_tendik_admin_fakultas($this->session->userdata('userId'));
+$tb_admin_labor = $this->user_model->tugas_tendik_laboratorium($this->session->userdata('userId'));
+$tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->userdata('userId'));
+
+?>
 
 <ul class="vertical-nav-menu">
                                 <li class="app-sidebar__heading">Profil</li>
@@ -13,7 +20,7 @@
                                         Biodata
                                     </a>
                                 </li>
-
+                                <?php if(!empty($tb_admin_fak)) { ?>
                                 <!-- Menu Kabag TU Fakultas -->
                                 <li class="app-sidebar__heading">Kabag Tata Usaha</li>
                                 
@@ -47,7 +54,8 @@
                                         </li>
                                     </ul>
                                 </li>
-                                
+                                <?php } ?>
+                                <?php if(!empty($tb_admin_fak)) { ?>
                                 <!-- Menu Admin Fakultas -->
                                 
                                 <li class="app-sidebar__heading">Admin Fakultas</li>
@@ -59,7 +67,8 @@
                                     </a>
                                     
                                 </li>
-                                
+                                <?php } ?>
+                                <?php if(!empty($tb_admin_jur)) { ?>
                                 <!-- Menu Admin Jurusan -->
                                 
                                 <li class="app-sidebar__heading">Admin Jurusan</li>
@@ -94,8 +103,8 @@
                                     </ul>
                                     
                                 </li>
-                                
-
+                                <?php } ?>
+                                <?php if(!empty($tb_admin_labor)) { ?>
                                 <!-- Menu Staf Laboran -->
                                 
                                 <li class="app-sidebar__heading">Staf Laboran</li>
@@ -107,7 +116,7 @@
                                     </a>
                                     
                                 </li>
-
+                                <?php } ?>
                                 <!-- Menu Staf Ruang Baca -->
                                 
                                 <li class="app-sidebar__heading">Staf Ruang Baca</li>

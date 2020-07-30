@@ -162,9 +162,6 @@ class Dosen extends CI_Controller {
 			$this->user_model->insert_tugas_tambah($data_tugas);		
 			redirect(site_url("dosen/kelola-biodata?status=sukses"));
 		}
-
-		
-
 	}
 
 	function tugas_tambahan_nonaktif()

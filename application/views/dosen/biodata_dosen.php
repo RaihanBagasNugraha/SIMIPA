@@ -82,10 +82,10 @@
                                         </div>
 
                                         <div class="position-relative row form-group">
-                                            <label for="jurusan" class="col-sm-2 col-form-label">Pangkat</label>
+                                            <label for="jurusan" class="col-sm-2 col-form-label">Pangkat Golongan</label>
                                             <div class="col-sm-10">
                                             <select name="pangkat" class="input-lg form-control">
-                                            <option value = "">-- Pilih Pangkat --</option>
+                                            <option value = "">-- Pilih Pangkat Golongan--</option>
                                             <?php
                                             $list_pangkat = $this->user_model->get_pangkat_all();
                                             // print_r($biodata);
@@ -218,14 +218,13 @@
                                         <div class="divider"></div>
                                         
                                         <div class="position-relative row form-group">
-                                        <label for="tgs_tmbh" class="col-sm-3 col-form-label"><b>Tugas Tambahan Aktif</b></label>
-                                        <!-- &emsp;&emsp;&emsp; -->
-                                        
-                                        <a data-toggle = "modal" id="<?php echo $id_user; ?>"  class="passingIDtgs" >
-                                                <button type="button" class="btn-wide mb-1 btn btn-success btn-sm btn-block"  data-toggle="modal" data-target="#tambahtugas">
+                                        <label for="tgs_tmbh" class="col-sm-6 col-form-label"><b>Tugas Tambahan Aktif</b> &emsp;
+                                            <a data-toggle = "modal" id="<?php echo $id_user; ?>"  class="passingIDtgs" >
+                                                <button type="button" class="btn-wide mb-1 btn btn-success btn-sm "  data-toggle="modal" data-target="#tambahtugas">
                                                     Tambah
                                                 </button>
-                                        </a>
+                                            </a>
+                                        </label>
                                         </div>
                                         <?php $tugas_tambah = $this->user_model->get_tugas_tambahan_id($id_user); ?>
                                        
