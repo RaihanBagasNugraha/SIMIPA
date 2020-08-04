@@ -99,6 +99,9 @@ class Dosen extends CI_Controller {
 		// print_r($data);
 		$data_dosen = array(
 			'nidn' => $this->input->post('nidn'),
+			'gelar_depan' => $this->input->post('gelar_depan'),
+			'gelar_belakang' => $this->input->post('gelar_belakang'),
+			'id_sinta' => $this->input->post('id_sinta'),
 			'jurusan' => $this->input->post('jurusan'),
 			'pangkat_gol' => $this->input->post('pangkat'),
 			'fungsional' => $this->input->post('jabfung')

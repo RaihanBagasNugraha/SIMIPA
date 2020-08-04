@@ -110,12 +110,21 @@
                                         $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($ta->id_pengajuan); 
                                             
                                             foreach($komisi_pembimbing as $kom) {
+                                                $gelar = $this->user_model->get_gelar_dosen_nip($kom->nip_nik);
+                                                if(empty($gelar)){
+                                                    $g_depan = "";
+                                                    $g_belakang = "";
+                                                }
+                                                else{
+                                                    $g_depan = $gelar->gelar_depan;
+                                                    $g_belakang = $gelar->gelar_belakang;
+                                                }
                                         ?>
 
                                         <div class="position-relative row form-group">
                                             <label for="nama" class="col-sm-3 col-form-label"><b><?php echo $kom->status; ?></b></label>
                                             <div class="col-sm-9">
-                                                <input value="<?php echo $kom->nama; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
+                                                <input value="<?php echo $g_depan.$kom->nama.$g_belakang; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
                                                 <input value="<?php echo $kom->id_user; ?>" readonly required name="<?php echo $kom->status; ?>" type="hidden" class="form-control input-mask-trigger" >
                                             </div>
                                         </div>
@@ -127,12 +136,21 @@
 
                                         <?php $komisi_penguji = $this->ta_model->get_penguji_ta($ta->id_pengajuan); 
                                                 foreach($komisi_penguji as $kom) {
+                                                    $gelar = $this->user_model->get_gelar_dosen_nip($kom->nip_nik);
+                                                    if(empty($gelar)){
+                                                        $g_depan = "";
+                                                        $g_belakang = "";
+                                                    }
+                                                    else{
+                                                        $g_depan = $gelar->gelar_depan;
+                                                        $g_belakang = $gelar->gelar_belakang;
+                                                    }
                                         ?>
 
                                         <div class="position-relative row form-group">
                                             <label for="nama" class="col-sm-3 col-form-label"><b><?php echo $kom->status; ?></b></label>
                                             <div class="col-sm-9">
-                                                <input value="<?php echo $kom->nama; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
+                                                <input value="<?php echo $g_depan.$kom->nama.$g_belakang; ?>" readonly required name="<?php echo "nama ".$kom->status; ?>" class="form-control input-mask-trigger" >
                                                 <input value="<?php echo $kom->id_user; ?>" readonly required name="<?php echo $kom->status; ?>" type="hidden" class="form-control input-mask-trigger" >
                                             </div>
                                         </div>

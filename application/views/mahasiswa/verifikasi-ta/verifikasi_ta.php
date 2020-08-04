@@ -54,7 +54,18 @@
                                             </td>
                                             <td class="align-top">
                                                 <?php 
-                                                echo "<b>$ta->nama</b>";
+                                                $gelarv = $this->user_model->get_gelar_dosen_nip($ta->nip_nik);
+
+                                                if(empty($gelarv)){
+                                                    $g_depanv = "";
+                                                    $g_belakangv = "";
+                                                }
+                                                else{
+                                                    $g_depanv = $gelarv->gelar_depan;
+                                                    $g_belakangv = $gelarv->gelar_belakang;
+                                                }
+
+                                                echo "<b>".$g_depanv.$ta->nama.$g_depanv."</b>";
                                                 echo "<br>";
                                                 echo "$ta->nip_nik"; 
                                                 

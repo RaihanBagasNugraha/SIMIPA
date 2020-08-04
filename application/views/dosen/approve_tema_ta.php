@@ -122,7 +122,7 @@
                                             <div class="col-sm-9">
                                             <?php $dosen = $this->user_model->get_dosen_name($ta->pembimbing1);?>
                                                 <input value="<?php echo $ta->pembimbing1; ?>" type ="hidden" name="pembimbing1" class="form-control" readonly>
-                                                <input value="<?php echo $dosen->name; ?>" name="pembimbing_name" class="form-control" readonly>
+                                                <input value="<?php echo $dosen->gelar_depan.$dosen->name.$dosen->gelar_belakang; ?>" name="pembimbing_name" class="form-control" readonly>
                                             </div>
                                     </div>
 

@@ -58,7 +58,14 @@
                                         <div class="position-relative row form-group">
                                             <label for="jurusan" class="col-sm-2 col-form-label">NIDN</label>
                                             <div class="col-sm-10">
-                                                <input name="nidn" id="nidn" value="" type="text" placeholder="NIDN" class="form-control">                                    
+                                                <input name="nidn" id="nidn" value="<?php echo $biodata->nidn ?>" type="text" placeholder="NIDN" class="form-control">                                    
+                                            </div>    
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="jurusan" class="col-sm-2 col-form-label">ID SINTA</label>
+                                            <div class="col-sm-10">
+                                                <input name="id_sinta" id="sinta" value="<?php echo $biodata->id_sinta ?>" type="text" placeholder="ID SINTA" class="form-control">                                    
                                             </div>    
                                         </div>
 
@@ -97,6 +104,21 @@
                                             ?>
                                             </select>
                                             
+                                            </div>    
+                                        </div>
+
+                                        <div class="divider"></div>
+                                        <div class="position-relative row form-group">
+                                            <label for="jurusan" class="col-sm-2 col-form-label">Gelar Depan</label>
+                                            <div class="col-sm-10">
+                                                <input name="gelar_depan" id="gelar" value="<?php echo $biodata->gelar_depan ?>" type="text" placeholder="Gelar Depan" class="form-control">                                    
+                                            </div>    
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="jurusan" class="col-sm-2 col-form-label">Gelar Belakang</label>
+                                            <div class="col-sm-10">
+                                                <input name="gelar_belakang" id="gelar" value="<?php echo $biodata->gelar_belakang ?>" type="text" placeholder="Gelar Belakang" class="form-control">                                    
                                             </div>    
                                         </div>
                                         

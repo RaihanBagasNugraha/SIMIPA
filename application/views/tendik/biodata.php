@@ -75,6 +75,22 @@
                                         </div>
 
                                         <div class="divider"></div>
+                                        
+                                        <div class="position-relative row form-group">
+                                            <label for="jurusan" class="col-sm-2 col-form-label">Gelar Depan</label>
+                                            <div class="col-sm-10">
+                                                <input name="gelar_depan" id="gelar" value="<?php echo $biodata->gelar_depan ?>" type="text" placeholder="Gelar Depan" class="form-control">                                    
+                                            </div>    
+                                        </div>
+
+                                        <div class="position-relative row form-group">
+                                            <label for="jurusan" class="col-sm-2 col-form-label">Gelar Belakang</label>
+                                            <div class="col-sm-10">
+                                                <input name="gelar_belakang" id="gelar" value="<?php echo $biodata->gelar_belakang ?>" type="text" placeholder="Gelar Belakang" class="form-control">                                    
+                                            </div>    
+                                        </div>
+
+                                        <div class="divider"></div>
                                         <div class="position-relative row form-group">
                                             
                                             <label for="jenkel" class="col-sm-2 col-form-label">Jenis Kelamin</label>

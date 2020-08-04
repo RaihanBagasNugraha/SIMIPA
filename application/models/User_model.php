@@ -363,6 +363,31 @@ class User_model extends CI_Model
 	}
 
 
+	//gelar
+	function get_gelar_dosen_id($id)
+	{	
+		$result = $this->db->query("SELECT gelar_depan, gelar_belakang FROM `tbl_users_dosen` WHERE id_user = $id");
+		return $result->row();
+	}
+
+	function get_gelar_tendik_id($id)
+	{	
+		$result = $this->db->query("SELECT gelar_depan, gelar_belakang FROM `tbl_users_tendik` WHERE id_user = $id");
+		return $result->row();
+	}
+
+	function get_gelar_dosen_nip($nip)
+	{	
+		$result = $this->db->query("SELECT gelar_depan, gelar_belakang FROM `tbl_users_dosen` WHERE nip_nik = $nip");
+		return $result->row();
+	}
+
+	function get_gelar_tendik_nip($nip)
+	{	
+		$result = $this->db->query("SELECT gelar_depan, gelar_belakang FROM `tbl_users_tendik` WHERE nip_nik = $nip");
+		return $result->row();
+	}
+
 
 	/* ------------------------------------
 	function select_all()

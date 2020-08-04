@@ -98,8 +98,18 @@
                                                 // echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
                                                 
                                                 foreach($komisi_pembimbing as $kom) {
+                                                    $gelar = $this->user_model->get_gelar_dosen_nip($kom->nip_nik);
+                                                    if(empty($gelar)){
+                                                        $g_depan = "";
+                                                        $g_belakang = "";
+                                                    }
+                                                    else{
+                                                        $g_depan = $gelar->gelar_depan;
+                                                        $g_belakang = $gelar->gelar_belakang;
+                                                    }
+
                                                     echo "<b>$kom->status</b><br>";
-                                                    echo "$kom->nama<br>";
+                                                    echo $g_depan.$kom->nama.$g_belakang."<br>";
                                                     echo "$kom->nip_nik<br>";
                                                 }
 
@@ -120,16 +130,37 @@
                                                 // echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
                                                 
                                                 foreach($komisi_penguji as $kom) {
+                                                    $gelar = $this->user_model->get_gelar_dosen_nip($kom->nip_nik);
+                                                    if(empty($gelar)){
+                                                        $g_depan = "";
+                                                        $g_belakang = "";
+                                                    }
+                                                    else{
+                                                        $g_depan = $gelar->gelar_depan;
+                                                        $g_belakang = $gelar->gelar_belakang;
+                                                    }
+
                                                     echo "<b>$kom->status</b><br>";
-                                                    echo "$kom->nama<br>";
+                                                    echo $g_depan.$kom->nama.$g_belakang."<br>";
                                                     echo "$kom->nip_nik<br>";
                                                 }
 
                                                 if($row->jenis == "Tugas Akhir"){
                                                     echo "<br>";
                                                     $verifikator = $this->ta_model->get_dosen_verifikator($row->id_pengajuan);
+
+                                                    $gelarv = $this->user_model->get_gelar_dosen_nip($verifikator->nip_nik);
+                                                    if(empty($gelarv)){
+                                                        $g_depanv = "";
+                                                        $g_belakangv = "";
+                                                    }
+                                                    else{
+                                                        $g_depanv = $gelarv->gelar_depan;
+                                                        $g_belakangv = $gelarv->gelar_belakang;
+                                                    }
+
                                                     echo "<b>Dosen Verifikasi TA</b><br>";
-                                                    echo "$verifikator->nama<br>";
+                                                    echo "$g_depanv.$verifikator->nama.$g_belakangv<br>";
                                                     echo "$verifikator->nip_nik<br>";
                                                 }
                                             }

@@ -223,8 +223,18 @@
                                                                     $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_pengajuan);
 
                                                                      foreach($komisi_pembimbing as $kom) {
+                                                                        $gelar = $this->user_model->get_gelar_dosen_nip($kom->nip_nik);
+                                                                        if(empty($gelar)){
+                                                                            $g_depan = "";
+                                                                            $g_belakang = "";
+                                                                        }
+                                                                        else{
+                                                                            $g_depan = $gelar->gelar_depan;
+                                                                            $g_belakang = $gelar->gelar_belakang;
+                                                                        }
+                    
                                                                         echo "<b>$kom->status</b><br>";
-                                                                        echo "$kom->nama<br>";
+                                                                        echo $g_depan.$kom->nama.$g_belakang."<br>";
                                                                         echo "$kom->nip_nik<br>";
                                                                         }
                                                                 ?>
@@ -234,8 +244,18 @@
                                                                      $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_pengajuan);
 
                                                                     foreach($komisi_penguji as $kom) {
+                                                                        $gelar = $this->user_model->get_gelar_dosen_nip($kom->nip_nik);
+                                                                        if(empty($gelar)){
+                                                                            $g_depan = "";
+                                                                            $g_belakang = "";
+                                                                        }
+                                                                        else{
+                                                                            $g_depan = $gelar->gelar_depan;
+                                                                            $g_belakang = $gelar->gelar_belakang;
+                                                                        }
+                    
                                                                         echo "<b>$kom->status</b><br>";
-                                                                        echo "$kom->nama<br>";
+                                                                        echo $g_depan.$kom->nama.$g_belakang."<br>";
                                                                         echo "$kom->nip_nik<br>";
                                                                         }
                                                                 ?>        
