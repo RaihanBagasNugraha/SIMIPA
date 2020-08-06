@@ -7,7 +7,34 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Rekap Tema Penelitian
+                                    <?php
+                                    $data_dosen = $this->user_model->get_dosen_data($this->session->userdata('userId'));
+
+                                    switch($data_dosen->jurusan)
+                                    {
+                                        case "0":
+                                        $jur_dosen = "Dokter MIPA";
+                                        break;
+                                        case "1":
+                                        $jur_dosen = "Kimia";
+                                        break;
+                                        case "2":
+                                        $jur_dosen = "Biologi";
+                                        break;
+                                        case "3":
+                                        $jur_dosen = "Matematika";
+                                        break;
+                                        case "4":
+                                        $jur_dosen = "Fisika";
+                                        break;
+                                        case "5":
+                                        $jur_dosen = "Ilmu Komputer";
+                                        break;
+                                    }
+                                    
+                                    ?>
+
+                                    <div>Rekap Tema Penelitian Jurusan <?php echo $jur_dosen; ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
@@ -41,6 +68,7 @@
                                     <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
+                                            <!-- <th>No</th> -->
                                             <th>Npm<br>Nama</th>
                                             <th>Judul</th>
                                             <th>Komisi<br>Pembimbing</th>
@@ -59,9 +87,13 @@
                                         }
                                         else
                                         {
+                                            $n = 1;
                                             foreach($ta as $row) {
                                         ?>
                                             <tr>
+                                                <!-- <td class="align-top">
+                                                   <?php echo $n++; ?>
+                                                </td> -->
                                                 <td class="align-top">
                                                     <?php 
                                                         $name = $this->user_model->get_mahasiswa_name($row->npm);
@@ -84,8 +116,18 @@
                                                         $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_pengajuan);
 
                                                         foreach($komisi_pembimbing as $kom) {
+                                                            $gelar = $this->user_model->get_gelar_dosen_nip($kom->nip_nik);
+                                                            if(empty($gelar)){
+                                                                $g_depan = "";
+                                                                $g_belakang = "";
+                                                            }
+                                                            else{
+                                                                $g_depan = $gelar->gelar_depan;
+                                                                $g_belakang = $gelar->gelar_belakang;
+                                                            }
+
                                                             echo "<b>$kom->status</b><br>";
-                                                            echo "$kom->nama<br>";
+                                                            echo $g_depan.$kom->nama.$g_belakang."<br>";
                                                             echo "$kom->nip_nik<br>";
                                                         }
                                                     ?>    
@@ -95,8 +137,18 @@
                                                         $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_pengajuan);
 
                                                         foreach($komisi_penguji as $kom) {
+                                                            $gelar = $this->user_model->get_gelar_dosen_nip($kom->nip_nik);
+                                                            if(empty($gelar)){
+                                                                $g_depan = "";
+                                                                $g_belakang = "";
+                                                            }
+                                                            else{
+                                                                $g_depan = $gelar->gelar_depan;
+                                                                $g_belakang = $gelar->gelar_belakang;
+                                                            }
+
                                                             echo "<b>$kom->status</b><br>";
-                                                            echo "$kom->nama<br>";
+                                                            echo $g_depan.$kom->nama.$g_belakang."<br>";
                                                             echo "$kom->nip_nik<br>";
                                                         }
                                                     ?>
@@ -112,9 +164,9 @@
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_verifikasi&id=$row->id_pengajuan").">Form Verifikasi</a></li>";
                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_penetapan&id=$row->id_pengajuan").">Form Penetapan</a></li>"; 
                                                             echo "<br>";
-                                                            foreach($lampiran as $rw) {
-                                                                echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
-                                                            }
+                                                            // foreach($lampiran as $rw) {
+                                                            //     echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
+                                                            // }
 
                                                             echo "</ul>";
                                                         }
@@ -145,14 +197,12 @@
 <script src="<?php echo site_url("assets/scripts/DataTables-1.10.21/jquery.dataTables.min.js") ?>"></script>
 
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#example').DataTable(
-        {
-       
-        } 
-    );
-} );
+
 $(document).ready(function(){
+    $('#example').DataTable( {
+        "order": [[ 3, "desc" ]]
+    } );
+    
     $("select").select2({
         theme: "bootstrap"
     });

@@ -7,7 +7,33 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Rekap Seminar
+                                    <?php
+                                    $data_dosen = $this->user_model->get_dosen_data($this->session->userdata('userId'));
+
+                                    switch($data_dosen->jurusan)
+                                    {
+                                        case "0":
+                                        $jur_dosen = "Dokter MIPA";
+                                        break;
+                                        case "1":
+                                        $jur_dosen = "Kimia";
+                                        break;
+                                        case "2":
+                                        $jur_dosen = "Biologi";
+                                        break;
+                                        case "3":
+                                        $jur_dosen = "Matematika";
+                                        break;
+                                        case "4":
+                                        $jur_dosen = "Fisika";
+                                        break;
+                                        case "5":
+                                        $jur_dosen = "Ilmu Komputer";
+                                        break;
+                                    }
+                                    
+                                    ?>
+                                    <div>Rekap Seminar Jurusan <?php echo $jur_dosen; ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
@@ -64,7 +90,7 @@
                                         ?>
                                             <tr>
                                                 <td class="align-top">
-                                                    <?php echo $row->jenis; ?>
+                                                    <b><?php echo $row->jenis; ?></b>
                                                    
                                                 </td>
                                                 <td class="align-top">
@@ -81,8 +107,18 @@
                                                         $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_tugas_akhir);
 
                                                         foreach($komisi_pembimbing as $kom) {
+                                                            $gelar = $this->user_model->get_gelar_dosen_nip($kom->nip_nik);
+                                                            if(empty($gelar)){
+                                                                $g_depan = "";
+                                                                $g_belakang = "";
+                                                            }
+                                                            else{
+                                                                $g_depan = $gelar->gelar_depan;
+                                                                $g_belakang = $gelar->gelar_belakang;
+                                                            }
+
                                                             echo "<b>$kom->status</b><br>";
-                                                            echo "$kom->nama<br>";
+                                                            echo $g_depan.$kom->nama.$g_belakang."<br>";
                                                             echo "$kom->nip_nik<br>";
                                                         }
                                                     ?>    
@@ -92,8 +128,18 @@
                                                         $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_tugas_akhir);
 
                                                         foreach($komisi_penguji as $kom) {
+                                                            $gelar = $this->user_model->get_gelar_dosen_nip($kom->nip_nik);
+                                                            if(empty($gelar)){
+                                                                $g_depan = "";
+                                                                $g_belakang = "";
+                                                            }
+                                                            else{
+                                                                $g_depan = $gelar->gelar_depan;
+                                                                $g_belakang = $gelar->gelar_belakang;
+                                                            }
+
                                                             echo "<b>$kom->status</b><br>";
-                                                            echo "$kom->nama<br>";
+                                                            echo $g_depan.$kom->nama.$g_belakang."<br>";
                                                             echo "$kom->nip_nik<br>";
                                                         }
                                                     ?>    
@@ -105,16 +151,45 @@
                                                             echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                         } else {
                                                             echo "<ul style='margin-left: -20px;'>";
-                                                            if($row->jenis != 'Seminar Tugas Akhir'){
-                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
-                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
-                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
+                                                           
+                                                            if($row->jenis != 'Seminar Tugas Akhir' && $row->jenis != 'Sidang Komprehensif'){
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
+                                                            
                                                             }
+                                                            elseif($row->jenis == 'Seminar Tugas Akhir'){
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta&id=$row->id_tugas_akhir").">Form Pengajuan Verifikasi TA</a></li>";
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=verifikasi_ta_nilai&id=$row->id_tugas_akhir").">Nilai Verifikasi TA</a></li>"; 
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_ta&id=$row->id").">Form Pengajuan</a></li>";
+    
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
+                                                            }
+                                                            elseif($row->jenis == "Sidang Komprehensif")
+                                                            {
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_kompre&id=$row->id").">Form Pengajuan</a></li>";
+                                                               
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=verifikasi_seminar&id=$row->id").">Form Verifikasi</a></li>";
+                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
+                                                            }
+
+                                                            if($row->status == 10){
+                                                                if($row->jenis != 'Sidang Komprehensif'){
+                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";
+                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$row->id").">Berita Acara</a></li>";
+                                                                }
+                                                                else{
+                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_kompre&id=$row->id").">Form Penilaian</a></li>";
+                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara_kompre&id=$row->id").">Berita Acara</a></li>";
+                                                                }
+                                                            }
+
                                                             echo "<br>";
-                                                            foreach($lampiran as $rw) {
-                                                                $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
-                                                                echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
-                                                            }
+                                                            // foreach($lampiran as $rw) {
+                                                            //     $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
+                                                            //     echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
+                                                            // }
             
                                                             echo "</ul>";
                                                         }
