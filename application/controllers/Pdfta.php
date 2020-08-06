@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Pdf_TA extends CI_Controller {
+class Pdfta extends CI_Controller {
 
     function __construct() {
         parent::__construct();

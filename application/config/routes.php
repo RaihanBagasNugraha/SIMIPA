@@ -93,8 +93,8 @@ $route['mahasiswa/tugas-akhir/verifikasi-ta/ajukan'] = 'mahasiswa/verifikasi_ta_
 $route['mahasiswa/tugas-akhir/bimbingan'] = 'mahasiswa/bimbingan';
 
 //PDF TA
-$route['mahasiswa/tugas-akhir/tema/form_pdf'] = 'pdf_ta/set_pdf';
-$route['mahasiswa/tugas-akhir/seminar/form_pdf'] = 'pdf_ta/set_pdf_seminar';
+$route['mahasiswa/tugas-akhir/tema/form_pdf'] = 'pdfta/set_pdf';
+$route['mahasiswa/tugas-akhir/seminar/form_pdf'] = 'pdfta/set_pdf_seminar';
 
 
 // Dosen
