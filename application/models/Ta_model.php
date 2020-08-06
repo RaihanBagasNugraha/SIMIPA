@@ -1172,13 +1172,13 @@ class Ta_model extends CI_Model
 	//rekap koor
 	function get_ta_rekap($id)
 	{
-		$query = $this->db->query('SELECT tugas_akhir.* FROM tugas_akhir, tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user ='.$id.' AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND (tugas_akhir.status = 4)');
+		$query = $this->db->query('SELECT tugas_akhir.* FROM tugas_akhir, tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user ='.$id.' AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND (tugas_akhir.status = 4) ORDER BY tugas_akhir.created_at');
 		return $query->result();
 	}
 
 	function get_seminar_rekap_koor($id)
 	{
-		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve FROM seminar_sidang, tugas_akhir, tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user ='.$id.' AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.status >= 4');
+		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve FROM seminar_sidang, tugas_akhir, tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user ='.$id.' AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.status >= 4 ORDER BY seminar_sidang.created_at');
 		return $query->result();
 	}
 
