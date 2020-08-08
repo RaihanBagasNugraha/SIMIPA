@@ -84,7 +84,7 @@
 
                                             <td class="align-top">
                                             <?php
-                                            if($row->status == -1 || $row->status == 0 || $row->status == 1 || $row->status == 2 || $row->status == 3 || $row->status == 5)
+                                            if($row->status == -1 || $row->status == 0 || $row->status == 1 || $row->status == 2 || $row->status == 3 || $row->status == 5 || $row->status == 6)
                                             {
                                                 $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing1);
                                                 echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
@@ -228,14 +228,14 @@
                                             if($row->status == '5') {
                                                 echo '<i>Perbaiki</i>';
                                                 $ket = explode("###",$row->keterangan_tolak);
-                                                echo "<br><br>".$ket[1];
+                                                echo "<br><br><span  style='color:red'>".$ket[1]."</span>";
                                                 $ket_status = $ket[0];
                                             }
 
                                             if($row->status == '6') {
-                                                echo '<i>Ditolak</i>';
+                                                echo '<i>Pengajuan Ditolak, Silahkan lakukan pengajuan ulang</i>';
                                                 $ket = explode("###",$row->keterangan_tolak);
-                                                echo "<br><br>".$row->keterangan_tolak;
+                                                echo "<br><br><span  style='color:red'>".$row->keterangan_tolak."</span>";
                                             }
 
                                             if($row->status == '9') {
@@ -281,7 +281,7 @@
 
                                         <?php    
                                         }
-                                        elseif($row->status == 4){echo"Selesai";}
+                                        elseif($row->status == 4 || $row->status == 6){echo"Selesai";}
                                         elseif($row->status == 0){echo "Diajukan";}
 
                                         else{echo "Menunggu";} ?>

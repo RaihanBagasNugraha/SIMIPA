@@ -1170,6 +1170,18 @@ class Ta_model extends CI_Model
 	}
 
 	//rekap koor
+	function get_ta_rekap_detail_terima($id_user,$angkatan,$jenis,$npm1,$npm2)
+	{
+		$query = $this->db->query("SELECT tugas_akhir.* FROM tugas_akhir, tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user = $id_user AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND (tugas_akhir.status = 4) AND tugas_akhir.jenis = '$jenis' AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') ORDER BY tugas_akhir.created_at");
+		return $query->result();
+	}
+
+	function get_ta_rekap_detail_tolak($id_user,$angkatan,$jenis,$npm1,$npm2)
+	{
+		$query = $this->db->query("SELECT tugas_akhir.* FROM tugas_akhir, tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user = $id_user AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND (tugas_akhir.status = 6) AND tugas_akhir.jenis = '$jenis' AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') ORDER BY tugas_akhir.created_at");
+		return $query->result();
+	}
+
 	function get_ta_rekap($id)
 	{
 		$query = $this->db->query('SELECT tugas_akhir.* FROM tugas_akhir, tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user ='.$id.' AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND (tugas_akhir.status = 4) ORDER BY tugas_akhir.created_at');
@@ -1179,6 +1191,30 @@ class Ta_model extends CI_Model
 	function get_seminar_rekap_koor($id)
 	{
 		$query = $this->db->query('SELECT seminar_sidang.*, tugas_akhir.npm, tugas_akhir.judul1, tugas_akhir.judul2, tugas_akhir.judul_approve FROM seminar_sidang, tugas_akhir, tbl_users_dosen, tbl_users_mahasiswa WHERE tbl_users_dosen.id_user ='.$id.' AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.status >= 4 ORDER BY seminar_sidang.created_at');
+		return $query->result();
+	}
+
+	function get_rekap_ta_jml($id_user,$angkatan,$strata1,$strata2)
+	{
+		$query = $this->db->query("SELECT COUNT(*) AS 'jml' FROM tugas_akhir, tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND (tugas_akhir.status = 4) AND (tugas_akhir.npm LIKE '__$strata1%' OR tugas_akhir.npm LIKE '__$strata2%') AND tugas_akhir.npm LIKE '$angkatan%'");
+		return $query->row();
+	}
+
+	function get_rekap_ta_jml_tolak($id_user,$angkatan,$strata1,$strata2)
+	{
+		$query = $this->db->query("SELECT COUNT(*) AS 'jml' FROM tugas_akhir, tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND (tugas_akhir.status = 6) AND (tugas_akhir.npm LIKE '__$strata1%' OR tugas_akhir.npm LIKE '__$strata2%') AND tugas_akhir.npm LIKE '$angkatan%'");
+		return $query->row();
+	}
+
+	function get_seminar_rekap_koor_jml($id_user,$angkatan,$npm1,$npm2,$seminar)
+	{
+		$query = $this->db->query("SELECT COUNT(*) AS 'jml' FROM seminar_sidang,tbl_users_mahasiswa,tbl_users_dosen,tugas_akhir WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.status = 4 AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir AND seminar_sidang.jenis = '$seminar' AND (seminar_sidang.status != 6 AND seminar_sidang.status != 5)");
+		return $query->row();
+	}
+
+	function get_seminar_rekap_koor_detail($id_user,$angkatan,$npm1,$npm2,$seminar,$jenis)
+	{
+		$query = $this->db->query("SELECT * FROM seminar_sidang,tbl_users_mahasiswa,tbl_users_dosen,tugas_akhir WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.status = 4 AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.jenis = '$jenis' AND tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir AND seminar_sidang.jenis = '$seminar'");
 		return $query->result();
 	}
 

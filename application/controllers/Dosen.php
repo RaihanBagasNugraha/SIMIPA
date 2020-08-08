@@ -1168,14 +1168,58 @@ class Dosen extends CI_Controller {
 	function rekap_ta()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['ta'] = $this->ta_model->get_ta_rekap($this->session->userdata('userId'));
+		// $data['ta'] = $this->ta_model->get_ta_rekap($this->session->userdata('userId'));
 		// print_r($data);
 		// $jml = count($data);
 
 		$this->load->view('header_global', $header);
 		$this->load->view('dosen/header');
 
-		$this->load->view('dosen/koordinator/rekap/rekap_ta',$data);
+		$this->load->view('dosen/koordinator/rekap/rekap_ta_koor');
+		
+		$this->load->view('footer_global');
+	}
+
+	function rekap_ta_detail()
+	{
+		$detail = $this->input->get('detail');
+		$jenis = $this->input->get('jenis');
+		$angkatan = $this->input->get('angkatan');
+
+		switch($jenis)
+		{
+			case "ta":
+			$jenis = 'Tugas Akhir';
+			$npm1 = $npm2 = "0";
+			break;
+			case "skripsi":
+			$jenis = 'Skripsi';
+			$npm1 = "1";
+			$npm2 = "5";
+			break;
+			case "tesis":
+			$jenis = 'Tesis';
+			$npm1 = $npm2 = "2";
+			break;
+			case "disertasi":
+			$jenis = 'Disertasi';
+			$npm1 = $npm2 = "3";
+			break;
+		}
+
+		if($detail == "diterima"){
+			$data['ta'] = $this->ta_model->get_ta_rekap_detail_terima($this->session->userdata('userId'),$angkatan,$jenis,$npm1,$npm2);
+		}
+		else{
+			$data['ta'] = $this->ta_model->get_ta_rekap_detail_tolak($this->session->userdata('userId'),$angkatan,$jenis,$npm1,$npm2);
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/rekap/rekap_ta_koor_detail',$data);
 		
 		$this->load->view('footer_global');
 	}
@@ -1183,14 +1227,68 @@ class Dosen extends CI_Controller {
 	function rekap_seminar_koor()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['seminar'] = $this->ta_model->get_seminar_rekap_koor($this->session->userdata('userId'));
+		// $data['seminar'] = $this->ta_model->get_seminar_rekap_koor($this->session->userdata('userId'));
 		// print_r($data);
 		// $jml = count($data);
 
 		$this->load->view('header_global', $header);
 		$this->load->view('dosen/header');
 
-		$this->load->view('dosen/koordinator/rekap/rekap_seminar',$data);
+		$this->load->view('dosen/koordinator/rekap/rekap_seminar_koor');
+		
+		$this->load->view('footer_global');
+	}
+
+	function rekap_seminar_koor_detail()
+	{
+		$seminar = $this->input->get('seminar');
+		$jenis = $this->input->get('jenis');
+		$angkatan = $this->input->get('angkatan');
+
+		switch($jenis)
+		{
+			case "ta":
+			$jenis = 'Tugas Akhir';
+			$npm1 = $npm2 = "0";
+			break;
+			case "skripsi":
+			$jenis = 'Skripsi';
+			$npm1 = "1";
+			$npm2 = "5";
+			break;
+			case "tesis":
+			$jenis = 'Tesis';
+			$npm1 = $npm2 = "2";
+			break;
+			case "disertasi":
+			$jenis = 'Disertasi';
+			$npm1 = $npm2 = "3";
+			break;
+		}
+
+		switch($seminar)
+		{
+			case "ta":
+			$seminar = 'Seminar Tugas Akhir';
+			break;
+			case "usul":
+			$seminar = 'Seminar Usul';
+			break;
+			case "hasil":
+			$seminar = 'Seminar Hasil';
+			break;
+			case "kompre":
+			$seminar = 'Sidang Komprehensif';
+			break;
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$data['seminar'] = $this->ta_model->get_seminar_rekap_koor_detail($this->session->userdata('userId'),$angkatan,$npm1,$npm2,$seminar,$jenis);
+
+		$this->load->view('dosen/koordinator/rekap/rekap_seminar_koor_detail',$data);
 		
 		$this->load->view('footer_global');
 	}

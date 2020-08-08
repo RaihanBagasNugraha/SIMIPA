@@ -196,7 +196,9 @@ $route['dosen/tugas-akhir/nilai-verifikasi-ta/verifikasi'] = 'dosen/nilai_verifi
 
     //rekap koor
 $route['dosen/koordinator/rekap/tugas-akhir'] = 'dosen/rekap_ta';
+$route['dosen/koordinator/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
 $route['dosen/koordinator/rekap/seminar'] = 'dosen/rekap_seminar_koor';
+$route['dosen/koordinator/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
 
 
 
