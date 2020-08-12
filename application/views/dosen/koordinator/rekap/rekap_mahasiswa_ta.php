@@ -9,7 +9,7 @@
                                     </div>
                                     <?php
                                     $data_dosen = $this->user_model->get_dosen_data($this->session->userdata('userId'));
-
+                                    
                                     if($data_dosen->jurusan != NULL){
                                     switch($data_dosen->jurusan)
                                         {
@@ -36,10 +36,11 @@
                                     else{
                                         $jur_dosen = "";
                                     }
+
                                     $id_user = $this->session->userdata('userId');
                                     ?>
 
-                                    <div>Rekap Tema Penelitian Jurusan <?php echo $jur_dosen; ?>
+                                    <div>Rekap Tugas Akhir Mahasiswa Jurusan <?php echo $jur_dosen; ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
@@ -75,26 +76,29 @@
                                         <tr>
                                             <!-- <th>No</th> -->
                                             <th>Angkatan</th>
-                                            <th>Jenis</th>
-                                            <th>Disetujui</th>
-                                            <th>Ditolak</th>
-                                            <th>Total</th>
+                                            <th>Strata</th>
+                                            <th>Jumlah<br>Mahasiswa</th>
+                                            <th>Tugas Akhir</th>
+                                            <th>Lulus</th>
+                                            <th>Persentase</th>
+                                            
                                            
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
-                                       
+                                      
                                             $n = 1;
                                             $tahun = date("y");
                                             for($i=$tahun; $i>=14; $i--) {
                                         ?>
                                             <tr>
                                                 <td style="border-bottom:1pt solid black;"><b style="font-size: 20px;"><br><br>20<?php echo $i;?></b></td>
-                                                <td style="border-bottom:1pt solid black;"><b>TA</b><br><br><b>Skripsi</b><br><br><b>Tesis</b><br><br><b>Disertasi</b></td>
-                                                <td style="border-bottom:1pt solid black;"><a style="color: green;" href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir/detail?detail=diterima&jenis=ta&angkatan=$i")  ?>" ><b><?php echo $this->ta_model->get_rekap_ta_jml($id_user,$i,'0','0')->jml ?></b></a><br><br><a style="color: green;" href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir/detail?detail=diterima&jenis=skripsi&angkatan=$i")?>"><b><?php echo $this->ta_model->get_rekap_ta_jml($id_user,$i,'1','5')->jml ?></b></a><br><br><a style="color: green;" href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir/detail?detail=diterima&jenis=tesis&angkatan=$i")?>"><b><?php echo $this->ta_model->get_rekap_ta_jml($id_user,$i,'2','2')->jml ?></b></a><br><br><a style="color: green;" href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir/detail?detail=diterima&jenis=disertasi&angkatan=$i")?>"><b><?php echo $this->ta_model->get_rekap_ta_jml($id_user,$i,'3','3')->jml ?></b></a></td>
-                                                <td style="border-bottom:1pt solid black;"><a style="color: red;" href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir/detail?detail=ditolak&jenis=ta&angkatan=$i")  ?>" ><b><?php echo $this->ta_model->get_rekap_ta_jml_tolak($id_user,$i,'0','0')->jml ?></a></b><br><br><a style="color: red;" href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir/detail?detail=ditolak&jenis=skripsi&angkatan=$i")  ?>" ><b><?php echo $this->ta_model->get_rekap_ta_jml_tolak($id_user,$i,'1','5')->jml ?></b></a><br><br><a style="color: red;" href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir/detail?detail=ditolak&jenis=tesis&angkatan=$i")  ?>" ><b><?php echo $this->ta_model->get_rekap_ta_jml_tolak($id_user,$i,'2','2')->jml ?></b></a><br><br><a style="color: red;" href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir/detail?detail=ditolak&jenis=disertasi&angkatan=$i")  ?>" ><b><?php echo $this->ta_model->get_rekap_ta_jml_tolak($id_user,$i,'3','3')->jml ?></b></a></td> 
-                                                <td style="border-bottom:1pt solid black;"><b><?php echo $this->ta_model->get_rekap_ta_jml($id_user,$i,'0','0')->jml + $this->ta_model->get_rekap_ta_jml_tolak($id_user,$i,'0','0')->jml ?></b><br><br><b><?php echo $this->ta_model->get_rekap_ta_jml($id_user,$i,'1','5')->jml + $this->ta_model->get_rekap_ta_jml_tolak($id_user,$i,'1','5')->jml ?></b><br><br><b><?php echo $this->ta_model->get_rekap_ta_jml($id_user,$i,'2','2')->jml + $this->ta_model->get_rekap_ta_jml_tolak($id_user,$i,'2','2')->jml ?></b><br><br><b><?php echo $this->ta_model->get_rekap_ta_jml($id_user,$i,'3','3')->jml + $this->ta_model->get_rekap_ta_jml_tolak($id_user,$i,'3','3')->jml ?></b>  </td>
+                                                <td style="border-bottom:1pt solid black;"><b>D3</b><br><br><b>S1</b><br><br><b>S2</b><br><br><b>S3</b></td>
+                                                <td style="border-bottom:1pt solid black;"><a style="color: blue;" href="<?php echo site_url("dosen/koordinator/rekap/mahasiswa-ta/detail?detail=mahasiswa&strata=d3&angkatan=$i")?>"><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_mahasiswa($id_user,$i,'0','0')->jml?></b></a><br><br><a style="color: blue;" href="<?php echo site_url("dosen/koordinator/rekap/mahasiswa-ta/detail?detail=mahasiswa&strata=s1&angkatan=$i")?>"><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_mahasiswa($id_user,$i,'1','5')->jml?></b></a><br><br><a style="color: blue;" href="<?php echo site_url("dosen/koordinator/rekap/mahasiswa-ta/detail?detail=mahasiswa&strata=s2&angkatan=$i")?>"><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_mahasiswa($id_user,$i,'2','2')->jml?></b></a><br><br><a style="color: blue;" href="<?php echo site_url("dosen/koordinator/rekap/mahasiswa-ta/detail?detail=mahasiswa&strata=s3&angkatan=$i")?>"><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_mahasiswa($id_user,$i,'3','3')->jml?></b></a></td>
+                                                <td style="border-bottom:1pt solid black;"><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_jml($id_user,$i,'0','0')->jml?></b><br><br><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_jml($id_user,$i,'1','5')->jml?></b><br><br><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_jml($id_user,$i,'2','2')->jml?></b><br><br><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_jml($id_user,$i,'3','3')->jml?></b></td>
+                                                <td style="border-bottom:1pt solid black;"><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_lulus($id_user,$i,'0','0')->jml?></b><br><br><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_lulus($id_user,$i,'1','5')->jml?></b><br><br><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_lulus($id_user,$i,'2','2')->jml?></b><br><br><b><?php echo $this->ta_model->get_mahasiswa_ta_rekap_lulus($id_user,$i,'3','3')->jml?></b></td>
+                                                <td style="border-bottom:1pt solid black;"></td>
                                             </tr>
                                         <?php
                                             }

@@ -1292,6 +1292,58 @@ class Dosen extends CI_Controller {
 		
 		$this->load->view('footer_global');
 	}
+
+	function rekap_mahasiswa_ta()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		// $data['seminar'] = $this->ta_model->get_seminar_rekap_koor($this->session->userdata('userId'));
+		// print_r($data);
+		// $jml = count($data);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/rekap/rekap_mahasiswa_ta');
+		
+		$this->load->view('footer_global');
+	}
+
+	function rekap_mahasiswa_ta_detail()
+	{
+		$detail = $this->input->get('detail');
+		$strata = $this->input->get('strata');
+		$angkatan = $this->input->get('angkatan');
+
+		switch($strata)
+		{
+			case "d3":
+			$npm1 = $npm2 = "0";
+			break;
+			case "s1":
+			$npm1 = "1";
+			$npm2 = "5";
+			break;
+			case "s2":
+			$npm1 = $npm2 = "2";
+			break;
+			case "s3":
+			$npm1 = $npm2 = "3";
+			break;
+		}
+
+		if($detail == 'mahasiswa'){
+			$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+			$data['mhs'] = $this->ta_model->get_mahasiswa_ta_rekap_mahasiswa_detail($this->session->userdata('userId'),$angkatan,$npm1,$npm2);
+			$this->load->view('header_global', $header);
+			$this->load->view('dosen/header');
+
+			$this->load->view('dosen/koordinator/rekap/rekap_mahasiswa_ta_mahasiswa',$data);
+			
+			$this->load->view('footer_global');
+
+		}
+
+	}
 	
 	function komposisi_nilai()
 	{
@@ -1877,6 +1929,7 @@ class Dosen extends CI_Controller {
 		// print_r($data);
 
 		$id = $data['id'];
+		$id_ta = $data['id_ta'];
 		$ttd = $data['ttd'];
 		$jenis = $data['jenis'];
 		$jenis_ta = $data['jenis_ta'];
@@ -1897,6 +1950,7 @@ class Dosen extends CI_Controller {
 		if($jenis == "Sidang Komprehensif"){
 			$data_kompre = array(
 				'npm' => $data['npm'],
+				'id_ta' => $id_ta,
 				'id_seminar' => $id,
 				'ket' => $data['keterangan'],
 			);

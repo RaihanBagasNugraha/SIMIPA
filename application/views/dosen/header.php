@@ -237,9 +237,9 @@ $tb_koor = $this->user_model->tugas_dosen_koor($this->session->userdata('userId'
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="<?php echo site_url("dosen/koordinator/rekap/mahasiswa-ta") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "mahasiswa-ta") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Mahasiswa
+                                                </i>Mahasiswa Tugas Akhir
                                             </a>
                                         </li>
                                        
@@ -311,7 +311,7 @@ $tb_koor = $this->user_model->tugas_dosen_koor($this->session->userdata('userId'
                                         </li>
 
                                         <li>
-                                            <a href="<?php echo site_url("dosen/struktural/bidang-nilai/komposisi-nilai") ?>" <?php if( $this->uri->segment(2) == "struktural" && ($this->uri->segment(3) == "bidang-nilai" || $this->uri->segment(3) == "komposisi-nilai") || $this->uri->segment(4) == "komposisi-nilai") echo 'class="mm-active"' ?>>
+                                            <a href="<?php echo site_url("dosen/struktural/bidang-nilai/komposisi-nilai") ?>" <?php if( $this->uri->segment(2) == "struktural" && ($this->uri->segment(3) == "bidang-nilai" && $this->uri->segment(3) == "komposisi-nilai") || $this->uri->segment(4) == "komposisi-nilai") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Komposisi Nilai
                                             </a>
