@@ -1330,19 +1330,22 @@ class Dosen extends CI_Controller {
 			$npm1 = $npm2 = "3";
 			break;
 		}
-
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
 		if($detail == 'mahasiswa'){
-			$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 			$data['mhs'] = $this->ta_model->get_mahasiswa_ta_rekap_mahasiswa_detail($this->session->userdata('userId'),$angkatan,$npm1,$npm2);
-			$this->load->view('header_global', $header);
-			$this->load->view('dosen/header');
-
 			$this->load->view('dosen/koordinator/rekap/rekap_mahasiswa_ta_mahasiswa',$data);
-			
-			$this->load->view('footer_global');
-
 		}
-
+		elseif($detail == 'ta'){
+			$data['ta'] = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail($this->session->userdata('userId'),$angkatan,$npm1,$npm2);
+			$this->load->view('dosen/koordinator/rekap/rekap_mahasiswa_ta_ta',$data);
+		}
+		elseif($detail == 'lulus'){
+			$data['lulus'] = $this->ta_model->get_mahasiswa_ta_rekap_lulus_detail($this->session->userdata('userId'),$angkatan,$npm1,$npm2);
+			$this->load->view('dosen/koordinator/rekap/rekap_mahasiswa_ta_lulus',$data);
+		}
+		$this->load->view('footer_global');
 	}
 	
 	function komposisi_nilai()
