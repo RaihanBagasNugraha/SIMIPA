@@ -1266,6 +1266,18 @@ class Ta_model extends CI_Model
 		return $query->row();
 	}
 
+	function get_bimbingan_dosen($id_user)
+	{
+		$query = $this->db->query("SELECT b.*, c.name FROM tbl_users_dosen a, tbl_users_dosen b, tbl_users c WHERE a.id_user = $id_user AND a.jurusan = b.jurusan AND b.id_user = c.userId ORDER by c.name");
+		return $query->result();
+	}
+
+	function get_jml_bimbingan($id_user,$status,$npm1,$npm2)
+	{
+		$query = $this->db->query("SELECT COUNT(*) as jml FROM tugas_akhir_komisi,tugas_akhir WHERE tugas_akhir_komisi.id_user = $id_user AND tugas_akhir_komisi.status = '$status' AND tugas_akhir_komisi.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.status = 4 AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%' )");
+		return $query->row();
+	}
+
 	function get_ta_acc_date($id)
 	{
 		$query = $this->db->query('SELECT tugas_akhir_approval.created_at FROM tugas_akhir_approval, tugas_akhir WHERE tugas_akhir.id_pengajuan = tugas_akhir_approval.id_pengajuan AND tugas_akhir_approval.status_slug LIKE "%Koordinator%" AND tugas_akhir.id_pengajuan ='. $id);

@@ -1347,6 +1347,19 @@ class Dosen extends CI_Controller {
 		}
 		$this->load->view('footer_global');
 	}
+
+	function rekap_bimbingan_dosen()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['dosen'] = $this->ta_model->get_bimbingan_dosen($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/rekap/rekap_bimbingan_dosen',$data);
+		
+		$this->load->view('footer_global');
+	}
 	
 	function komposisi_nilai()
 	{

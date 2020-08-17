@@ -201,6 +201,7 @@ $route['dosen/koordinator/rekap/seminar'] = 'dosen/rekap_seminar_koor';
 $route['dosen/koordinator/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
 $route['dosen/koordinator/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
 $route['dosen/koordinator/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
+$route['dosen/koordinator/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
 
 
 
