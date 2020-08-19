@@ -1360,6 +1360,63 @@ class Dosen extends CI_Controller {
 		
 		$this->load->view('footer_global');
 	}
+
+	function rekap_bimbingan_dosen_detail()
+	{
+		$id_user = $this->input->get('dosen');
+		$id_user = $this->encrypt->decode($id_user);
+		$jenis = $this->input->get('jenis');
+		$strata = $this->input->get('strata');
+
+		switch($strata)
+		{
+			case "d3":
+			$npm1 = $npm2 = "0";
+			break;
+			case "s1":
+			$npm1 = "1";
+			$npm2 = "5";
+			break;
+			case "s2":
+			$npm1 = $npm2 = "2";
+			break;
+			case "s3":
+			$npm1 = $npm2 = "3";
+			break;
+		}
+		switch($jenis)
+		{
+			case "pb1":
+			$status = 'Pembimbing Utama';
+			break;
+			case "pb2":
+			$status = 'Pembimbing 2';
+			break;
+			case "pb3":
+			$status = 'Pembimbing 3';
+			break;
+			case "ps1":
+			$status = 'Penguji 1';
+			break;
+			case "ps2":
+			$status = 'Penguji 2';
+			break;
+			case "ps3":
+			$status = 'Penguji 3';
+			break;
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['bimbingan'] = $this->ta_model->get_bimbingan_dosen_detail($id_user,$status,$npm1,$npm2);
+		$data['id_dosen'] = $id_user;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/rekap/rekap_bimbingan_dosen_detail',$data);
+		
+		$this->load->view('footer_global');
+	}
 	
 	function komposisi_nilai()
 	{

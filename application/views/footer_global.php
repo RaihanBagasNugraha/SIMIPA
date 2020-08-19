@@ -1133,3 +1133,101 @@
 </script>
 
 <?php } ?>
+
+<?php if($this->uri->segment(1) == 'mahasiswa' && $this->uri->segment(2) == 'kelola-biodata') { ?>
+
+    <div class="modal fade" id="tambahlk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Pengisian</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="lk-tmbh" method="post" action="<?php echo site_url("mahasiswa/mahasiswa-add-lk") ?>">
+                    <input type="hidden" name="iduser" id="IDUser" value="">
+                    <label><b>Lembaga Kemahasiswaan</b></label>
+                        <select name="id_lk" id="tugas"  class="input-lg form-control">
+                            <option value = "">-- Pilih Lembaga Kemahasiswaan --</option>
+                                <?php
+                                $list_lk = $this->user_model->get_lk_all();
+                                            
+                                foreach ($list_lk as $row) {
+                                    // if($biodata->pangkat_gol == $row->id_pangkat_gol) $select = "selected";
+                                    // else $select = "";
+                                    echo "<option ".$select." value='".$row->id_lk."'>".$row->nama_lk."</option>";
+                                }
+                                ?>
+                        </select>
+                    <br>    
+                    <label><b>Jabatan</b></label>    
+                        <select name="jabatan_lk" class="input-lg form-control">
+                            <option>-- Jabatan --</option>
+                            <option value ="1">Ketua Umum</option>
+                            <option value ="2">Wakil Ketua Umum</option>
+                            <option value ="3">Sekretaris Umum</option>
+                            <option value ="4">Bendahara Umum</option>
+                            <option value ="5">Anggota</option>
+                        </select>  
+                    <br>    
+
+                    <label><b>Periode</b></label>    
+                        <input name="periode_lk" id="periode" value="" type="text" placeholder="2020/2021" class="form-control"> 
+                    <br> 
+
+                    <label><b>Status</b></label>    
+                        <select name="status_lk" class="input-lg form-control">
+                            <option>-- Status --</option>
+                            <option value ="1">Aktif</option>
+                            <option value ="0">Nonaktif</option>
+                        </select>  
+                </form>
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="lk-tmbh" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="nonaktiflk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="nonaktif-lk" method="post" action="<?php echo site_url("mahasiswa/mahasiswa-update-lk") ?>">
+                    <input type="hidden" name="id_tugas" id="IDTugas" value="">
+                    <input type="hidden" name="ket" id="Keterangan" value="">
+                </form>
+                Simpan Perubahan ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="nonaktif-lk" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>

@@ -1274,7 +1274,19 @@ class Ta_model extends CI_Model
 
 	function get_jml_bimbingan($id_user,$status,$npm1,$npm2)
 	{
-		$query = $this->db->query("SELECT COUNT(*) as jml FROM tugas_akhir_komisi,tugas_akhir WHERE tugas_akhir_komisi.id_user = $id_user AND tugas_akhir_komisi.status = '$status' AND tugas_akhir_komisi.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.status = 4 AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%' )");
+		$query = $this->db->query("SELECT COUNT(*) as jml FROM tugas_akhir_komisi,tugas_akhir WHERE tugas_akhir_komisi.id_user = $id_user AND tugas_akhir_komisi.status = '$status' AND tugas_akhir_komisi.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.status = 4 AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%' ) AND tugas_akhir.id_pengajuan not IN (SELECT id_ta FROM seminar_sidang_kompre WHERE seminar_sidang_kompre.ket = 1 AND seminar_sidang_kompre.status = 1)");
+		return $query->row();
+	}
+
+	function get_bimbingan_dosen_detail($id_user,$status,$npm1,$npm2)
+	{
+		$query = $this->db->query("SELECT * FROM tugas_akhir_komisi,tugas_akhir WHERE tugas_akhir_komisi.id_user = $id_user AND tugas_akhir_komisi.status = '$status' AND tugas_akhir_komisi.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir.status = 4 AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%' )  AND tugas_akhir.id_pengajuan not IN (SELECT id_ta FROM seminar_sidang_kompre WHERE seminar_sidang_kompre.ket = 1 AND seminar_sidang_kompre.status = 1)");
+		return $query->result();
+	}
+
+	function get_bimbingan_dosen_detail_status($id_pengajuan)
+	{
+		$query = $this->db->query("SELECT * FROM tugas_akhir WHERE tugas_akhir.id_pengajuan = $id_pengajuan AND tugas_akhir.status = 4 AND tugas_akhir.id_pengajuan IN (SELECT id_ta FROM seminar_sidang_kompre WHERE ket = 1 AND status = 1) AND tugas_akhir.npm IN (SELECT npm FROM seminar_sidang_kompre WHERE ket = 1 AND status = 1)");
 		return $query->row();
 	}
 

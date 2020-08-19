@@ -92,6 +92,9 @@ $route['mahasiswa/tugas-akhir/verifikasi-ta/ajukan'] = 'mahasiswa/verifikasi_ta_
 
 $route['mahasiswa/tugas-akhir/bimbingan'] = 'mahasiswa/bimbingan';
 
+$route['mahasiswa/mahasiswa-add-lk'] = 'mahasiswa/add_lk';
+$route['mahasiswa/mahasiswa-update-lk'] = 'mahasiswa/update_lk';
+
 //PDF TA
 $route['mahasiswa/tugas-akhir/tema/form_pdf'] = 'pdfta/set_pdf';
 $route['mahasiswa/tugas-akhir/seminar/form_pdf'] = 'pdfta/set_pdf_seminar';
@@ -202,6 +205,7 @@ $route['dosen/koordinator/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_det
 $route['dosen/koordinator/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
 $route['dosen/koordinator/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
 $route['dosen/koordinator/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
+$route['dosen/koordinator/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
 
 
 

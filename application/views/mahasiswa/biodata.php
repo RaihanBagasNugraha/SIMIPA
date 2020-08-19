@@ -24,6 +24,11 @@
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
+                        if(!empty($_GET['status']) && $_GET['status'] == 'duplikat') {
+
+                            echo '<div class="alert alert-danger fade show" role="alert">Terdapat Tugas Tambahan Yang Sama Dengan Status Yang Aktif</div>';
+                        }
+                        $id_user = $this->session->userdata('userId');
                         ?>
                         
                          <div class="main-card mb-3 card">
@@ -229,6 +234,87 @@
                                             
                                             
                                         </div>
+
+                                        <div class="divider"></div>
+                                        
+                                        <div class="position-relative row form-group">
+                                        <label for="tgs_tmbh" class="col-sm-6 col-form-label"><b>Lembaga Kemahasiswaaan Aktif</b> &emsp;
+                                            <a data-toggle = "modal" id="<?php echo $id_user; ?>"  class="passingIDlk" >
+                                                <button type="button" class="btn-wide mb-1 btn btn-success btn-sm "  data-toggle="modal" data-target="#tambahlk">
+                                                    Tambah
+                                                </button>
+                                            </a>
+                                        </label>
+                                        </div>
+
+                                        <?php $lembaga_mhs = $this->user_model->get_lk_id($id_user); ?>
+                                       
+                                       <table class="mb-0 table table-striped">
+                                       <?php  foreach($lembaga_mhs as $lk){ ?>
+                                               <tr>
+                                                   <td>Lembaga Kemahasiswaan</td>
+                                                   <td>:</td>
+                                                   <td><?php echo $this->user_model->get_lk_detail($lk->id_lk)->nama_lk ?></td>
+                                               </tr>   
+
+                                               <tr>
+                                                   <td>Jabatan</td>
+                                                   <td>:</td>
+                                                   <?php 
+                                                        $jab = $lk->jabatan;
+                                                        switch($jab)
+                                                        {
+                                                            case "1":
+                                                            $jabatan = "Ketua Umum";
+                                                            break;
+                                                            case "2":
+                                                            $jabatan = "Wakil Ketua Umum";
+                                                            break;
+                                                            case "3":
+                                                            $jabatan = "Sekretaris Umum";
+                                                            break;
+                                                            case "4":
+                                                            $jabatan = "Bendahara Umum";
+                                                            break;
+                                                            case "5":
+                                                            $jabatan = "Anggota";
+                                                            break;
+                                                        }
+                                                   ?>
+                                                   <td><?php echo $jabatan; ?></td>
+                                               </tr>
+                                             
+                                               <tr>
+                                                   <td>Periode</td>
+                                                   <td>:</td>
+                                                   <td><?php echo $lk->periode ?></td>
+                                               </tr>  
+                                               <tr >
+                                                   <td>Status</td>
+                                                   <td>:</td>
+                                                   <td><b><?php echo $lk->aktif == 1 ? "Aktif" : "Nonaktif" ?></b></td>
+                                               </tr>  
+                                               <tr>
+                                                   <td></td>
+                                                   <td></td>
+                                                   
+                                                   <td style="align:left;">
+                                                       <?php if($lk->aktif != 0) { ?>
+                                                           <a data-toggle = "modal" data-id="<?php echo $lk->id ?>" ket="nonaktif" class="passingIDhapus" >
+                                                                   <button type="button" class="btn-small mb-1 btn btn-warning btn-lg"  data-toggle="modal" data-target="#nonaktiflk">
+                                                                       Nonaktif
+                                                                   </button>
+                                                           </a>
+                                                       <?php } ?>
+                                                       <a data-toggle = "modal" data-id="<?php echo $lk->id ?>" ket="hapus" class="passingIDhapus" >
+                                                               <button type="button" class="btn-small mb-1 btn btn-danger btn-lg"  data-toggle="modal" data-target="#nonaktiflk">
+                                                                   Hapus
+                                                               </button>
+                                                       </a>
+                                                   </td>
+                                               </tr>   
+                                               <?php } ?>
+                                       </table>
                                   
                                         
                                         <div class="position-relative row form-group">
@@ -303,5 +389,19 @@ $(document).ready(function(){
     });
 });
 
+</script>
+
+<script>
+        $(".passingIDlk").click(function () {
+                var ids = $(this).attr('id');
+                $("#IDUser").val( ids );
+        });
+
+        $(".passingIDhapus").click(function () {
+                var idh = $(this).attr('data-id');
+                var kets = $(this).attr('ket');
+                $("#IDTugas").val( idh );
+                $("#Keterangan").val( kets );
+        });
 </script>
                         

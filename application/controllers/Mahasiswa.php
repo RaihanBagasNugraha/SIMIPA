@@ -873,4 +873,49 @@ class Mahasiswa extends CI_Controller {
         $this->load->view('footer_global');
 	}
 
+	//lembaga kemahasiswaan
+	function add_lk()
+	{
+		$data = $this->input->post();
+		echo "<pre>";
+		print_r($data);
+
+		$iduser = $data['iduser'];
+		$id_lk = $data['id_lk'];
+		$jabatan = $data['jabatan_lk'];
+		$aktif = $data['status_lk'];
+		$periode = $data['periode_lk'];
+
+		$check = $this->user_model->check_lk($iduser,$id_lk,$jabatan,$aktif);
+		if(!empty($check)){
+			redirect(site_url("mahasiswa/kelola-biodata?status=duplikat"));
+		}
+		else{
+		$data_lk = array(
+			'id_user' => $iduser,
+			'id_lk' => $id_lk,
+			'periode' => $periode,
+			'jabatan' => $jabatan,
+			'aktif' => $aktif
+		);
+
+		$this->user_model->insert_lk_mhs($data_lk);		
+		redirect(site_url("mahasiswa/kelola-biodata?status=sukses"));
+		}
+	}
+
+	function update_lk()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $data['id_tugas'];
+		$ket = $data['ket'];
+
+		$this->user_model->update_tugas_lk($id,$ket);	
+		redirect(site_url("mahasiswa/kelola-biodata?status=sukses"));
+
+	}
+
 }

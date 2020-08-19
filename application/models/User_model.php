@@ -388,6 +388,49 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
+	//lembaga kemahasiswaaan
+	function get_lk_all()
+	{
+	    $this->db->select('*');
+		$query = $this->db->get('lembaga_kemahasiswaan')->result();
+		return $query;
+	}
+
+	function insert_lk_mhs($data)
+	{
+		$this->db->insert('tbl_users_tugas_mahasiswa', $data);
+	}
+
+	function get_lk_id($id_user)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas_mahasiswa` WHERE id_user = $id_user ORDER BY aktif DESC");
+		return $result->result();
+	}
+
+	function get_lk_detail($id)
+	{
+		$result = $this->db->query("SELECT * FROM `lembaga_kemahasiswaan` WHERE id_lk = $id");
+		return $result->row();
+	}
+
+	function update_tugas_lk($id,$ket)
+	{
+		if($ket == nonaktif){
+			$this->db->where('id', $id);
+			$this->db->update('tbl_users_tugas_mahasiswa', array('aktif' => '0'));
+		}
+		else{
+			$this->db->delete('tbl_users_tugas_mahasiswa', array('id' => $id));
+		}
+	}
+
+	function check_lk($id_user,$id_lk,$jabatan,$aktif)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas_mahasiswa` WHERE id_user = $id_user AND id_lk = $id_lk AND jabatan = $jabatan AND aktif = $aktif");
+		return $result->row();
+	}
+
+
 
 	/* ------------------------------------
 	function select_all()
