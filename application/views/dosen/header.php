@@ -248,6 +248,12 @@ $tb_koor = $this->user_model->tugas_dosen_koor($this->session->userdata('userId'
                                                 </i>Bimbingan Dosen
                                             </a>
                                         </li>
+                                        <!-- <li>
+                                            <a href="<?php echo site_url("dosen/koordinator/rekap/ganti-ta-pbb") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "ganti-ta-pbb") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Ganti Tema/Pembimbing
+                                            </a>
+                                        </li> -->
                                        
                                     </ul>
                                 </li>

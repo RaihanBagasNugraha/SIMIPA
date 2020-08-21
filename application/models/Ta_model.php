@@ -1208,13 +1208,13 @@ class Ta_model extends CI_Model
 
 	function get_seminar_rekap_koor_jml($id_user,$angkatan,$npm1,$npm2,$seminar)
 	{
-		$query = $this->db->query("SELECT COUNT(*) AS 'jml' FROM seminar_sidang,tbl_users_mahasiswa,tbl_users_dosen,tugas_akhir WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.status = 4 AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir AND seminar_sidang.jenis = '$seminar' AND (seminar_sidang.status != 6 AND seminar_sidang.status != 5 and seminar_sidang.status >= 7)");
+		$query = $this->db->query("SELECT COUNT(*) AS 'jml' FROM seminar_sidang,tbl_users_mahasiswa,tbl_users_dosen,tugas_akhir WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.status = 4 AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir AND seminar_sidang.jenis = '$seminar' AND (seminar_sidang.status != 6 AND seminar_sidang.status != 5 and seminar_sidang.status >= 8)");
 		return $query->row();
 	}
 
 	function get_seminar_rekap_koor_detail($id_user,$angkatan,$npm1,$npm2,$seminar,$jenis)
 	{
-		$query = $this->db->query("SELECT * FROM seminar_sidang,tbl_users_mahasiswa,tbl_users_dosen,tugas_akhir WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.status = 4 AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.jenis = '$jenis' AND tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir AND seminar_sidang.jenis = '$seminar' AND (seminar_sidang.status != 6 AND seminar_sidang.status != 5 and seminar_sidang.status >= 7) ");
+		$query = $this->db->query("SELECT *, seminar_sidang.status as status_smr FROM seminar_sidang,tbl_users_mahasiswa,tbl_users_dosen,tugas_akhir WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.status = 4 AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.jenis = '$jenis' AND tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir AND seminar_sidang.jenis = '$seminar' AND (seminar_sidang.status != 6 AND seminar_sidang.status != 5 and seminar_sidang.status >= 8) ");
 		return $query->result();
 	}
 
@@ -1263,6 +1263,12 @@ class Ta_model extends CI_Model
 	function get_mahasiswa_ta_rekap_lulus_detail_data($id_seminar)
 	{
 		$query = $this->db->query("SELECT * FROM seminar_sidang, seminar_sidang_kompre WHERE seminar_sidang.id_tugas_akhir = $id_seminar AND seminar_sidang.jenis = 'Sidang Komprehensif' AND seminar_sidang.status = 10 AND seminar_sidang.id = seminar_sidang_kompre.id_seminar AND seminar_sidang_kompre.ket = 1 AND seminar_sidang_kompre.status = 1");
+		return $query->row();
+	}
+
+	function check_lulus_id_ta($id_ta)
+	{
+		$query = $this->db->query("SELECT * FROM tugas_akhir WHERE tugas_akhir.id_pengajuan = $id_ta AND tugas_akhir.id_pengajuan IN (SELECT id_ta FROM seminar_sidang_kompre WHERE seminar_sidang_kompre.ket = 1 AND seminar_sidang_kompre.status = 1 )");
 		return $query->row();
 	}
 
@@ -1807,5 +1813,10 @@ class Ta_model extends CI_Model
 		$this->db->update('seminar_sidang_kompre', array('status' => '1'));
 	}
 	
-
+	//ganti ta
+	function rekap_ganti_ta($id_ta,$ket)
+	{
+		$this->db->where('id_pengajuan', $id_ta);
+		$this->db->update('tugas_akhir', array('status' => '6', 'keterangan_tolak' => $ket));
+	}
 }

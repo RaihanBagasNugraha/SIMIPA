@@ -1417,6 +1417,35 @@ class Dosen extends CI_Controller {
 		
 		$this->load->view('footer_global');
 	}
+
+	function rekap_ganti_ta_pbb()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		$aksi = $this->input->get('aksi');
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		if($aksi == "pembimbing"){
+			$this->load->view('dosen/koordinator/rekap/rekap_ta_koor_detail_ganti_tema');
+		}
+
+		$this->load->view('footer_global');
+	}
+
+	function rekap_ganti_ta()
+	{
+		$data = $this->input->post();
+		echo "<pre>";
+		print_r($data);
+		$id = $data['id_ta'];
+		$ket = $data['keterangan'];
+
+		$this->ta_model->rekap_ganti_ta($id,$ket);
+		redirect(site_url("/dosen/koordinator/rekap/tugas-akhir"));
+	}
 	
 	function komposisi_nilai()
 	{

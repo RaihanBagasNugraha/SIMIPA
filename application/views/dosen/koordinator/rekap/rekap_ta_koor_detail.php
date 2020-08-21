@@ -71,13 +71,14 @@
                                         <thead>
                                         <?php if($detail == "diterima"){ ?>
                                             <tr>
-                                                <th>Tgl<br>Pengajuan</th>
-                                                <th>Tgl<br>Acc</th>
-                                                <th>Npm<br>Nama</th>
-                                                <th>Judul</th>
-                                                <th>Komisi<br>Pembimbing</th>
-                                                <th>Komisi<br>Pembahas</th>
-                                                <th>Berkas<br>Lampiran</th>
+                                                <th style="width:10%">Tgl<br>Pengajuan</th>
+                                                <th style="width:10%">Tgl<br>Acc</th>
+                                                <th style="width:20%">Npm<br>Nama</th>
+                                                <th style="width:30%">Judul</th>
+                                                <th style="width:20%">Komisi<br>Pembimbing</th>
+                                                <th style="width:20%">Komisi<br>Pembahas</th>
+                                                <th style="width:20%">Berkas<br>Lampiran</th>
+                                                <th style="width:10%">Aksi</th>
                                             
                                             </tr>
                                         <?php } else { ?>
@@ -192,6 +193,24 @@
                                                         }
                                                     ?>   
                                                 </td> 
+                                                <td class="align-top">
+                                                        <?php  
+                                                        $cek_lulus = $this->ta_model->check_lulus_id_ta($row->id_pengajuan);  
+                                                        if(!empty($cek_lulus)){
+                                                            echo "-";
+                                                        }
+                                                        else{
+                                                        
+                                                        ?>
+                                                            <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan ?>" class="passingIDrekap" >
+                                                                <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#gantitema">
+                                                                    Ganti Tema
+                                                                </button>
+                                                            </a>
+                                                            
+                                                            <a href="<?php echo site_url("") ?>" class="btn-wide mb-2 btn btn-warning btn-sm btn-block">Ganti Pembimbing
+                                                        <?php } ?>
+                                                </td>
                                             </tr>
                                             <?php } else { ?>
                                                 <tr>
@@ -335,6 +354,10 @@ $(document).ready(function(){
                 $("#IDKoor").val( id );
 
             });
+    $(".passingIDrekap").click(function () {
+            var id = $(this).attr('data-id');
+            $("#IDta").val( id );
+    });   
       
 </script>
                         

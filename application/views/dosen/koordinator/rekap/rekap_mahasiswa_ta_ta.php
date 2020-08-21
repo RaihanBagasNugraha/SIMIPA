@@ -124,7 +124,7 @@
                                                         if($smr_ta->status == 10){
                                                             echo "<br><br>";
                                                             // echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$smr_hp->id").">Form Penilaian</a></li>";
-                                                            echo "<a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$smr_hp->id").">Berita Acara</a>";
+                                                            echo "<a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$smr_ta->id").">Berita Acara</a>";
                                                         }
                                                         else{
                                                             echo "<br><br>";
@@ -166,7 +166,7 @@
                                                         if($smr_up->status == 10){
                                                             echo "<br><br>";
                                                             // echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$smr_hp->id").">Form Penilaian</a></li>";
-                                                            echo "<a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$smr_hp->id").">Berita Acara</a>";
+                                                            echo "<a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$smr_up->id").">Berita Acara</a>";
                                                         }
                                                         else{
                                                             echo "<br><br>";

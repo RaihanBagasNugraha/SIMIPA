@@ -200,12 +200,15 @@ $route['dosen/tugas-akhir/nilai-verifikasi-ta/verifikasi'] = 'dosen/nilai_verifi
     //rekap koor
 $route['dosen/koordinator/rekap/tugas-akhir'] = 'dosen/rekap_ta';
 $route['dosen/koordinator/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
+$route['dosen/koordinator/rekap/tugas-akhir/detail/edit'] = 'dosen/rekap_ganti_ta_pbb';
+$route['dosen/koordinator/rekap/tugas-akhir/detail/ganti-ta'] = 'dosen/rekap_ganti_ta';
 $route['dosen/koordinator/rekap/seminar'] = 'dosen/rekap_seminar_koor';
 $route['dosen/koordinator/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
 $route['dosen/koordinator/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
 $route['dosen/koordinator/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
 $route['dosen/koordinator/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
 $route['dosen/koordinator/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
+
 
 
 

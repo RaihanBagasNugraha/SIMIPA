@@ -174,7 +174,7 @@
                                                                 echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=undangan_seminar&id=$row->id").">Undangan Seminar</a></li>";
                                                             }
 
-                                                            if($row->status == 10){
+                                                            if($row->status_smr == 10){
                                                                 if($row->jenis != 'Sidang Komprehensif'){
                                                                     echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=penilaian_seminar&id=$row->id").">Form Penilaian</a></li>";
                                                                     echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$row->id").">Berita Acara</a></li>";
@@ -184,7 +184,7 @@
                                                                     echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara_kompre&id=$row->id").">Berita Acara</a></li>";
                                                                 }
                                                             }
-                                                            elseif($row->status <= 10)
+                                                            elseif($row->status_smr < 10)
                                                             {
                                                                 echo "<br>";
                                                                 echo "Belum Selesai";
