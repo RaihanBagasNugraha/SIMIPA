@@ -973,7 +973,7 @@ class Pdfta extends CI_Controller {
             }
             else{
                 $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gekar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
                 $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
                 $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');

@@ -430,6 +430,12 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
+	function check_lk_mahasiswa($id_user)
+	{
+		$result = $this->db->query("SELECT * FROM tbl_users_tugas_mahasiswa WHERE id_user = $id_user and aktif = 1");
+		return $result->row();
+	}
+
 
 
 	/* ------------------------------------

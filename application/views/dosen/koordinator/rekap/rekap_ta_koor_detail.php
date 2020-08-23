@@ -207,8 +207,14 @@
                                                                     Ganti Tema
                                                                 </button>
                                                             </a>
+
+                                                            <a data-toggle = "modal" data-id="<?php echo $row->id_pengajuan ?>" class="passingIDpbb" >
+                                                                <button type="button" class="btn mb-2 btn-wide btn-warning btn-sm btn-block"  data-toggle="modal" data-target="#gantipbb">
+                                                                    Ganti Pembimbing/<br>Penguji
+                                                                </button>
+                                                            </a>
                                                             
-                                                            <a href="<?php echo site_url("") ?>" class="btn-wide mb-2 btn btn-warning btn-sm btn-block">Ganti Pembimbing
+                                                            <!-- <a href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir/detail/ganti-pbb?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-2 btn btn-warning btn-sm btn-block">Ganti Pembimbing/<br>Pembahas -->
                                                         <?php } ?>
                                                 </td>
                                             </tr>
@@ -350,14 +356,17 @@ $(document).ready(function(){
 
 <script>
     $(".passingIDKoor").click(function () {
-                var id = $(this).attr('data-id');
-                $("#IDKoor").val( id );
-
-            });
+        var id = $(this).attr('data-id');
+        $("#IDKoor").val( id );
+    });
     $(".passingIDrekap").click(function () {
             var id = $(this).attr('data-id');
             $("#IDta").val( id );
     });   
+    $(".passingIDpbb").click(function () {
+            var id = $(this).attr('data-id');
+            $("#IDpbb").val( id );
+    });
       
 </script>
                         

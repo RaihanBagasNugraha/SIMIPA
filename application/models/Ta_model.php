@@ -262,6 +262,19 @@ class Ta_model extends CI_Model
 			$this->db->insert('tugas_akhir_approval', $data_approval);
 		}
 
+		elseif($status == 'pb1n'){
+
+			$this->db->where('id_pengajuan', $where);
+			$this->db->where('status_slug', 'Pembimbing Utama');
+			$this->db->where('id_user', $dosenid);
+			$this->db->update('tugas_akhir_approval', array('ttd' => $ttd));
+
+			if($check == 1){
+				$this->db->where('id_pengajuan', $where);
+				$this->db->update('tugas_akhir', array('status' => '4'));
+			}
+		}
+
 		elseif($status == 'pb2'){
 
 			$this->db->where('id_pengajuan', $where);
@@ -1818,5 +1831,71 @@ class Ta_model extends CI_Model
 	{
 		$this->db->where('id_pengajuan', $id_ta);
 		$this->db->update('tugas_akhir', array('status' => '6', 'keterangan_tolak' => $ket));
+	}
+
+	//ganti pbb
+	function get_ta_id_ganti_pbb($id_ta)
+	{
+		$query = $this->db->query("SELECT * FROM `tugas_akhir` WHERE id_pengajuan = $id_ta");
+		return $query->row();	
+	}
+
+	function copy_row_ta($id_ta,$pb1)
+	{
+		$this->db->query("INSERT INTO tugas_akhir(npm,jenis,judul1,judul2,ipk,sks,toefl,pembimbing1,bidang_ilmu,ttd,status,judul_approve,no_penetapan,keterangan_tolak) SELECT npm,jenis,judul1,judul2,ipk,sks,toefl,$pb1,bidang_ilmu,ttd,7,judul_approve,no_penetapan,keterangan_tolak FROM tugas_akhir WHERE id_pengajuan = $id_ta");
+		$insert_id = $this->db->insert_id();
+		return $insert_id;
+	}
+
+	function copy_row_ta_approval($id_ta_old,$id_ta_new)
+	{
+		$this->db->query("INSERT INTO tugas_akhir_approval (id_pengajuan, status_slug,id_user,ttd)
+		SELECT $id_ta_new,status_slug,id_user,ttd
+		FROM tugas_akhir_approval 
+		WHERE tugas_akhir_approval.id_pengajuan = $id_ta_old AND (tugas_akhir_approval.status_slug = 'Mahasiswa' OR tugas_akhir_approval.status_slug = 'Pembimbing Akademik' OR tugas_akhir_approval.status_slug = 'Pembimbing Utama' OR tugas_akhir_approval.status_slug = 'Administrasi')
+		");
+	}
+
+	function copy_row_ta_approval_non_pb1($id_ta_old,$id_ta_new)
+	{
+		$this->db->query("INSERT INTO tugas_akhir_approval (id_pengajuan, status_slug,id_user,ttd)
+		SELECT $id_ta_new,status_slug,id_user,ttd
+		FROM tugas_akhir_approval 
+		WHERE tugas_akhir_approval.id_pengajuan = $id_ta_old AND (tugas_akhir_approval.status_slug = 'Mahasiswa' OR tugas_akhir_approval.status_slug = 'Pembimbing Akademik' OR tugas_akhir_approval.status_slug = 'Administrasi')
+		");
+	}
+
+	function copy_row_ta_approval_pb1($id_ta_old,$id_ta_new,$id_user)
+	{
+		$this->db->query("INSERT INTO tugas_akhir_approval(id_pengajuan,status_slug,id_user,ttd)
+		SELECT $id_ta_new,status_slug,$id_user,''
+		FROM tugas_akhir_approval
+		WHERE id_pengajuan = $id_ta_old AND status_slug = 'Pembimbing Utama'");
+	}
+
+	function tugas_akhir_ganti_pbb($data)
+	{	
+		$this->db->insert('tugas_akhir_ganti_pbb', $data);	
+	}
+
+	function update_ganti_pbb_ta_old($id_ta_old)
+	{
+		$this->db->where('id_pengajuan', $id_ta_old);
+	    $this->db->update('tugas_akhir', array('status' => '-2'));
+	}
+
+	function copy_ta_komisi_pb1($id_ta_old,$id_ta_new)
+	{
+		$this->db->query("INSERT INTO tugas_akhir_komisi(id_tugas_akhir,status,nip_nik,id_user,nama) SELECT $id_ta_new,status,nip_nik,id_user,nama FROM tugas_akhir_komisi WHERE id_tugas_akhir = $id_ta_old AND status = 'Pembimbing Utama'");
+	}
+
+	function copy_berkas_ganti_pbb($id_ta_old,$id_ta_new)
+	{
+		$this->db->query("INSERT INTO tugas_akhir_berkas(id_pengajuan,nama_berkas,jenis_berkas,file) SELECT $id_ta_new,nama_berkas,jenis_berkas,file FROM tugas_akhir_berkas WHERE tugas_akhir_berkas.id_pengajuan = $id_ta_old");
+	}
+
+	function insert_ta_komisi_pb1($data)
+	{	
+		$this->db->insert('tugas_akhir_komisi', $data);	
 	}
 }

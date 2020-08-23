@@ -90,7 +90,7 @@
                                                 echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
                                                 echo "<br><i>(Calon pembimbing utama)</i>";
                                             }
-                                            elseif($row->status == 4 || $row->status == 8 || $row->status == 7 || $row->status == 9)
+                                            elseif($row->status == 4 || $row->status == 8 || $row->status == 7 || $row->status == 9 || $row->status == -2)
                                             {
                                                 $komisi_pembimbing = $this->ta_model->get_pembimbing_ta($row->id_pengajuan);
                                                 
@@ -122,7 +122,7 @@
                                             if($row->status == -1 || $row->status == 0 || $row->status == 1 || $row->status == 2 || $row->status == 3 || $row->status == 5) {
                                                 echo "<i>(Belum disetujui)</i>";
                                             }
-                                            elseif($row->status == 4 || $row->status == 8 || $row->status == 7 || $row->status == 9)
+                                            elseif($row->status == 4 || $row->status == 8 || $row->status == 7 || $row->status == 9 || $row->status == -2)
                                             {
                                                 $komisi_penguji = $this->ta_model->get_penguji_ta($row->id_pengajuan);
                                                 
@@ -173,13 +173,13 @@
                                                 echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                             } else {
                                                 echo "<ul style='margin-left: -20px;'>";
-                                                if($row->status >= 0 && $row->status != 6 && $row->status != 5 ){
+                                                if($row->status >= 0 && $row->status != 6 && $row->status != 5 || $row->status == -2){
                                                     echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=pengajuan_bimbingan&id=$row->id_pengajuan").">Form Pengajuan</a></li>";   
                                                 }
-                                                if($row->status >= 3 && $row->status != 6 && $row->status != 5){
+                                                if($row->status >= 3 && $row->status != 6 && $row->status != 5 || $row->status == -2){
                                                     echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_verifikasi&id=$row->id_pengajuan").">Form Verifikasi</a></li>";   
                                                 }
-                                                if($row->status == 4 ){
+                                                if($row->status == 4 || $row->status == -2 ){
                                                     echo "<li><a href=".site_url("mahasiswa/tugas-akhir/tema/form_pdf?jenis=form_penetapan&id=$row->id_pengajuan").">Form Penetapan</a></li>";   
                                                 }
                                                 foreach($lampiran as $rw) {
@@ -194,6 +194,10 @@
                                             <?php
                                             if($row->status == 0) {
                                                 echo '<i>Menunggu Approval</i>';
+                                            }
+
+                                            if($row->status == '-2') {
+                                                echo '<i>Ganti Komisi Pembimbing/Penguji</i>';
                                             }
 
                                             if($row->status == '-1') {

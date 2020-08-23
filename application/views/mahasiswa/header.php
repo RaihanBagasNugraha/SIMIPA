@@ -10,6 +10,9 @@ switch($strata)
     case 3: $strata_ta = "Disertasi"; break;
 }
 
+//cek lk
+$lk = $this->user_model->check_lk_mahasiswa($this->session->userdata('userId'));
+
 $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userId'));
 ?>
 <ul class="vertical-nav-menu">
@@ -143,7 +146,7 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                 </li>
 
                                 <!-- Menu Lembaga Kemahasiswaan -->
-
+                                <?php if(!empty($lk)) {  ?>
                                 <li class="app-sidebar__heading">Lembaga Kemahasiswaan</li>
                                 <li>
                                     <a href="#" <?php if($this->uri->segment(1) == "unggah-nilai") echo 'class="mm-active"' ?> >
@@ -175,7 +178,7 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                        
                                     </ul>
                                 </li>
-
+                                <?php  } ?>
                                 <!-- Lembaga Kemahasiswaan -->
                                 <div class="divider"></div>
                                 

@@ -280,7 +280,7 @@
                                                                 <?php 
                                                                     echo "$row->status_slug";
                                                                     if($row->status_slug == 'Pembimbing Utama'){
-                                                                        $ket = "pb1";
+                                                                        $ket = "pb1n";
                                                                     }
                                                                     elseif($row->status_slug == 'Pembimbing 2'){
                                                                         $ket = "pb2";
