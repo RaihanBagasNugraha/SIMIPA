@@ -1131,12 +1131,12 @@ class Pdfta extends CI_Controller {
         if($seminar->status != 4 && $seminar->status <= 7){
             $pdf->Cell(150, $spasi,"Menyetujui", 0, 0, 'C');
             $pdf->Ln(5);
-            $pdf->Cell(150, $spasi,"Ketua Jurusan ".$kajur->nama, 0, 0, 'C');
+            $pdf->Cell(150, $spasi,"Ketua Jurusan ".$jurusan, 0, 0, 'C');
             $pdf->Ln(30);
 
-            $pdf->Cell(150, $spasi,$kajur_data->gelar_depan.$kajur->name.$kajur_data->gelar_belakang, 0, 0, 'C');
+            $pdf->Cell(150, $spasi,'', 0, 0, 'C');
             $pdf->Ln(5);
-            $pdf->Cell(150, $spasi,"NIP. ".$kajur->nip_nik, 0, 0, 'C');
+            $pdf->Cell(150, $spasi,"NIP. ", 0, 0, 'C');
         }
         else{
             $pdf->Cell(150, $spasi,"Menyetujui", 0, 0, 'C');

@@ -94,8 +94,8 @@
                                                 <td class="align-top" style="text-align:center">
                                                     <?php $tgl_acc = substr($this->ta_model->get_ta_acc_date($row->id_pengajuan)->created_at,0,10); echo "$tgl_acc"; ?>
                                                 </td>
-                                                <td class="align-top">
-                                                <?php $smr_ta = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail_seminar($row->id_pengajuan,'Seminar Tugas Akhir'); ?>
+                                                <td class="align-top" style="text-align:center">
+                                                <?php $smr_ta = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail_seminar($row->npm,'Seminar Tugas Akhir'); ?>
                                                 <?php 
                                                     if(!empty($smr_ta)){
                                                         $tgl_ta = $smr_ta->tgl_pelaksanaan;
@@ -137,7 +137,7 @@
                                                 ?>
                                                 </td>
                                                 <td class="align-top" style="text-align:center">
-                                                <?php $smr_up = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail_seminar($row->id_pengajuan,'Seminar Usul'); ?>
+                                                <?php $smr_up = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail_seminar($row->npm,'Seminar Usul'); ?>
                                                 <?php 
                                                     if(!empty($smr_up)){
                                                         $tgl_up = $smr_up->tgl_pelaksanaan;
@@ -179,7 +179,7 @@
                                                 ?>
                                                 </td>
                                                 <td class="align-top" style="text-align:center">
-                                                <?php $smr_hp = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail_seminar($row->id_pengajuan,'Seminar Hasil'); ?>
+                                                <?php $smr_hp = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail_seminar($row->npm,'Seminar Hasil'); ?>
                                                 <?php 
                                                     if(!empty($smr_hp)){
                                                         $tgl_hp = $smr_hp->tgl_pelaksanaan;
@@ -222,7 +222,7 @@
                                                 ?>
                                                 </td>
                                                 <td class="align-top" style="text-align:center">
-                                                <?php $smr_kompre = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail_seminar($row->id_pengajuan,'Sidang Komprehensif'); ?>
+                                                <?php $smr_kompre = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail_seminar($row->npm,'Sidang Komprehensif'); ?>
                                                 <?php 
                                                     if(!empty($smr_kompre)){
                                                         $tgl_kompre = $smr_kompre->tgl_pelaksanaan;
@@ -267,67 +267,67 @@
                                                 </td>
                                                 <!-- <td class="align-top style="text-align:center"">
                                                     <?php 
-                                                        if($row->jenis != 'Tugas Akhir'){
-                                                            $date_now = date("Y-m-d");
-                                                            $date_acc = date_create("$tgl_acc");
-                                                            $date_today=date_create($date_now);
-                                                                if(!empty($smr_up)){
-                                                                    $date_up = date_create("$tgl_up");
-                                                                }
-                                                                if(!empty($smr_hp)){
-                                                                    $date_hp = date_create("$tgl_hp");
-                                                                }
-                                                                if(!empty($smr_kompre)){
-                                                                    $date_kompre = date_create("$tgl_kompre");
-                                                                }
-                                                            if(empty($smr_up) && empty($smr_hp) && empty($smr_kompre))
-                                                            {
-                                                                $diff=date_diff($date_acc,$date_today);
-                                                                $total = $diff->format("%a");
-                                                            }    
-                                                            elseif(!empty($smr_up) && empty($smr_hp) && empty($smr_kompre))
-                                                            {
-                                                                $diff=date_diff($date_up,$date_today);
-                                                                $total = $diff->format("%a");
-                                                            }
-                                                            elseif(!empty($smr_up) && !empty($smr_hp) && empty($smr_kompre))
-                                                            {
-                                                                $diff=date_diff($date_hp,$date_today);
-                                                                $total = $diff->format("%a");
-                                                            }
-                                                            elseif(!empty($smr_up) && !empty($smr_hp) && !empty($smr_kompre))
-                                                            {
-                                                                $diff=date_diff($date_kompre,$date_today);
-                                                                $total = $diff->format("%a");
-                                                            }                                                                
-                                                        }
-                                                        else{
-                                                            $date_now = date("Y-m-d");
-                                                            $date_acc = date_create("$tgl_acc");
-                                                            $date_today=date_create($date_now);
-                                                                if(!empty($smr_ta)){
-                                                                    $date_ta = date_create("$tgl_ta");
-                                                                }
-                                                                if(empty($smr_ta))
-                                                                {
-                                                                    $diff=date_diff($date_acc,$date_today);
-                                                                    $total = $diff->format("%a");
-                                                                }        
-                                                                elseif(!empty($smr_ta)){
-                                                                    $diff=date_diff($date_ta,$date_today);
-                                                                    $total = $diff->format("%a");
-                                                                }
-                                                        }
+                                                        // if($row->jenis != 'Tugas Akhir'){
+                                                        //     $date_now = date("Y-m-d");
+                                                        //     $date_acc = date_create("$tgl_acc");
+                                                        //     $date_today=date_create($date_now);
+                                                        //         if(!empty($smr_up)){
+                                                        //             $date_up = date_create("$tgl_up");
+                                                        //         }
+                                                        //         if(!empty($smr_hp)){
+                                                        //             $date_hp = date_create("$tgl_hp");
+                                                        //         }
+                                                        //         if(!empty($smr_kompre)){
+                                                        //             $date_kompre = date_create("$tgl_kompre");
+                                                        //         }
+                                                        //     if(empty($smr_up) && empty($smr_hp) && empty($smr_kompre))
+                                                        //     {
+                                                        //         $diff=date_diff($date_acc,$date_today);
+                                                        //         $total = $diff->format("%a");
+                                                        //     }    
+                                                        //     elseif(!empty($smr_up) && empty($smr_hp) && empty($smr_kompre))
+                                                        //     {
+                                                        //         $diff=date_diff($date_up,$date_today);
+                                                        //         $total = $diff->format("%a");
+                                                        //     }
+                                                        //     elseif(!empty($smr_up) && !empty($smr_hp) && empty($smr_kompre))
+                                                        //     {
+                                                        //         $diff=date_diff($date_hp,$date_today);
+                                                        //         $total = $diff->format("%a");
+                                                        //     }
+                                                        //     elseif(!empty($smr_up) && !empty($smr_hp) && !empty($smr_kompre))
+                                                        //     {
+                                                        //         $diff=date_diff($date_kompre,$date_today);
+                                                        //         $total = $diff->format("%a");
+                                                        //     }                                                                
+                                                        // }
+                                                        // else{
+                                                        //     $date_now = date("Y-m-d");
+                                                        //     $date_acc = date_create("$tgl_acc");
+                                                        //     $date_today=date_create($date_now);
+                                                        //         if(!empty($smr_ta)){
+                                                        //             $date_ta = date_create("$tgl_ta");
+                                                        //         }
+                                                        //         if(empty($smr_ta))
+                                                        //         {
+                                                        //             $diff=date_diff($date_acc,$date_today);
+                                                        //             $total = $diff->format("%a");
+                                                        //         }        
+                                                        //         elseif(!empty($smr_ta)){
+                                                        //             $diff=date_diff($date_ta,$date_today);
+                                                        //             $total = $diff->format("%a");
+                                                        //         }
+                                                        // }
                                                     
-                                                        if($diff->format("%R%a days") >= 90 && $diff->format("%R%a days") <= 180){
-                                                            echo "<font style=\"padding: 2px 10px 5px 10px; color: #ffffff; background-color: #ff9800\">Sedang</font>";
-                                                        }
-                                                        elseif($diff->format("%R%a days") > 180){
-                                                            echo "<font style=\"padding: 2px 10px 5px 10px; color: #ffffff; background-color: #f44336\">Lambat</font>";
-                                                        }
-                                                        else{
-                                                            echo "<font style=\"padding: 2px 10px 5px 10px; color: #ffffff; background-color: #009432\">Cepat</font>";
-                                                        }
+                                                        // if($diff->format("%R%a days") >= 90 && $diff->format("%R%a days") <= 180){
+                                                        //     echo "<font style=\"padding: 2px 10px 5px 10px; color: #ffffff; background-color: #ff9800\">Sedang</font>";
+                                                        // }
+                                                        // elseif($diff->format("%R%a days") > 180){
+                                                        //     echo "<font style=\"padding: 2px 10px 5px 10px; color: #ffffff; background-color: #f44336\">Lambat</font>";
+                                                        // }
+                                                        // else{
+                                                        //     echo "<font style=\"padding: 2px 10px 5px 10px; color: #ffffff; background-color: #009432\">Cepat</font>";
+                                                        // }
                                                         // echo $total;
                                                     
                                                     ?>
@@ -365,18 +365,18 @@
                                                             // Echo all information set
                                                             if($years == 0 && $month != 0)
                                                             {
-                                                                echo "<span style=\"display:block;background-color:$color2;color:white;\">".$month.' bulan - '.$days.' hari'."</span>"; 
+                                                                echo "<span style=\"display:block;background-color:$color2;color:white;\">".$month.' bulan, '.$days.' hari'."</span>"; 
                                                             }
                                                             elseif($years != 0 && $month == 0 )
                                                             {
-                                                                echo "<span style=\"display:block;background-color:$color2;color:white;\">".$years.' tahun - '.$days.' hari'."</span>";
+                                                                echo "<span style=\"display:block;background-color:$color2;color:white;\">".$years.' tahun, '.$days.' hari'."</span>";
                                                             }
                                                             elseif($years == 0 && $month == 0)
                                                             {
                                                                 echo "<span style=\"display:block;background-color:$color2;color:white;\">".$days.' hari'."</span>";
                                                             }
                                                             else{
-                                                                echo "<span style=\"display:block;background-color:$color2;color:white;\">".$years.' tahun - '.$month.' bulan - '.$days.' hari'."</span>";
+                                                                echo "<span style=\"display:block;background-color:$color2;color:white;\">".$years.' tahun, '.$month.' bulan, '.$days.' hari'."</span>";
                                                             }
                                                             
                                                         

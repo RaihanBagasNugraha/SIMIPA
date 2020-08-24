@@ -493,7 +493,7 @@ class Mahasiswa extends CI_Controller {
 
 	function seminar()
 	{
-		$ket = $this->ta_model->selet_ta_by_npm($this->session->userdata('username'));
+		$ket = $this->ta_model->select_ta_by_npm_akses($this->session->userdata('username'));
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		// echo "<pre>";
 		// print_r($data);
@@ -501,8 +501,8 @@ class Mahasiswa extends CI_Controller {
 			echo "<script type='text/javascript'>alert('Silahkan Ajukan Tema Terlebih Dahulu');window.location = ('tema') </script>";
 		}
 		else{
-			if($ket[0]->jenis != "Tugas Akhir"){
-				if ($ket[0]->status == 4){
+			if($ket->jenis != "Tugas Akhir"){
+				if ($ket->status == 4){
 					$data['seminar'] = $this->ta_model->select_seminar_by_npm($this->session->userdata('username'));
 					$this->load->view('header_global', $header);
 					$this->load->view('mahasiswa/header');
@@ -515,8 +515,8 @@ class Mahasiswa extends CI_Controller {
 				}
 			}
 			else{
-				$ta = $this->ta_model->get_dosen_verifikator($ket[0]->id_pengajuan);
-				if($ket[0]->status == 4){
+				$ta = $this->ta_model->get_dosen_verifikator($ket->id_pengajuan);
+				if($ket->status == 4){
 					if($ta->ket == 5){
 						$data['seminar'] = $this->ta_model->select_seminar_by_npm($this->session->userdata('username'));
 						$this->load->view('header_global', $header);
@@ -656,8 +656,7 @@ class Mahasiswa extends CI_Controller {
 		// print_r($data);
 
 		//check
-		
-
+		$npm = $data['npm'];
 		$ttd = $data['ttd'];
 		$aksi = $data['aksi'];
 
@@ -691,7 +690,7 @@ class Mahasiswa extends CI_Controller {
 			$where = $data['id_seminar'];
 			$this->ta_model->update_seminar($data_seminar,$data_approval, $where);
 		} else {
-			$cek = $this->ta_model->cek_seminar($data['id_tugas_akhir'],$data['jenis']);
+			$cek = $this->ta_model->cek_seminar($data['npm'],$data['jenis']);
 			// print_r($cek);
 			// echo "aaa"
 			if(!empty($cek)){

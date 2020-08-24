@@ -701,9 +701,9 @@ class Ta_model extends CI_Model
 		return $query->result();
 	}
 
-	function cek_seminar($id,$jenis)
+	function cek_seminar($npm,$jenis)
 	{
-		$result = $this->db->query("SELECT * FROM seminar_sidang WHERE id_tugas_akhir = $id AND jenis = '$jenis' AND (status = 4 OR status != 6 )");
+		$result = $this->db->query("SELECT * FROM seminar_sidang,tugas_akhir WHERE tugas_akhir.npm = $npm AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.jenis = 'Seminar Hasil' AND (seminar_sidang.status = 4 OR seminar_sidang.status != 6 )");
 		return $result->result();
 	}
 
@@ -1261,9 +1261,9 @@ class Ta_model extends CI_Model
 		return $query->result();
 	}
 
-	function get_mahasiswa_ta_rekap_ta_detail_seminar($id,$seminar)
+	function get_mahasiswa_ta_rekap_ta_detail_seminar($npm,$seminar)
 	{
-		$query = $this->db->query("SELECT * FROM seminar_sidang WHERE id_tugas_akhir = $id AND jenis = '$seminar' AND seminar_sidang.status != 6 AND seminar_sidang.status > 6");
+		$query = $this->db->query("SELECT * FROM seminar_sidang,tugas_akhir WHERE tugas_akhir.npm = $npm AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.jenis = '$seminar' AND seminar_sidang.status != 6 AND seminar_sidang.status > 6");
 		return $query->row();
 	}
 
@@ -1432,7 +1432,7 @@ class Ta_model extends CI_Model
 
 	function get_komponen_nilai_meta($npm,$jenis,$tipe)
 	{
-		$query = $this->db->query("SELECT seminar_sidang_komponen_meta.* FROM seminar_sidang_komponen, seminar_sidang_komponen_meta, tbl_users_mahasiswa, tugas_akhir WHERE tbl_users_mahasiswa.npm = $npm AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.jenis = '$jenis' AND tbl_users_mahasiswa.jurusan = seminar_sidang_komponen.id_prodi AND seminar_sidang_komponen.id = seminar_sidang_komponen_meta.id_komponen AND tugas_akhir.jenis = seminar_sidang_komponen.jenis AND seminar_sidang_komponen.tipe = '$tipe' AND seminar_sidang_komponen.status = 0 ORDER BY seminar_sidang_komponen_meta.id");
+		$query = $this->db->query("SELECT seminar_sidang_komponen_meta.* FROM seminar_sidang_komponen, seminar_sidang_komponen_meta, tbl_users_mahasiswa, tugas_akhir WHERE tbl_users_mahasiswa.npm = $npm AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.jenis = '$jenis' AND tbl_users_mahasiswa.jurusan = seminar_sidang_komponen.id_prodi AND seminar_sidang_komponen.id = seminar_sidang_komponen_meta.id_komponen AND tugas_akhir.jenis = seminar_sidang_komponen.jenis AND seminar_sidang_komponen.tipe = '$tipe' AND seminar_sidang_komponen.status = 0 AND tugas_akhir.status = 4 ORDER BY seminar_sidang_komponen_meta.id");
 		return $query->result();
 	}
 
@@ -1897,5 +1897,11 @@ class Ta_model extends CI_Model
 	function insert_ta_komisi_pb1($data)
 	{	
 		$this->db->insert('tugas_akhir_komisi', $data);	
+	}
+
+	function select_ta_by_npm_akses($npm)
+	{
+		$query = $this->db->query("SELECT * FROM `tugas_akhir` WHERE npm = $npm ORDER BY id_pengajuan DESC LIMIT 1");
+		return $query->row();	
 	}
 }
