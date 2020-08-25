@@ -291,11 +291,11 @@ class Pdfta extends CI_Controller {
         $mhs = $this->ta_model->get_mahasiswa_detail($ta->npm);
 
         //ttd
-        if($ta->status >= 1){
+        if($ta->status >= 1  && $ta->status != -2 ){
             $ttd_pa = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Pembimbing Akademik');
             // $ttd_pa = $ttd_pa[0];
         }
-        if($ta->status >= 2){
+        if($ta->status >= 2 || $ta->status == -2 ){
             $ttd_pb1 = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Pembimbing Utama');
             // $ttd_pb1 = $ttd_pb1[0];
         }
@@ -367,7 +367,7 @@ class Pdfta extends CI_Controller {
         $pdf->Ln(8);
 
         //ttd
-        if($ta->status <= 1 ){
+        if($ta->status <= 1 && $ta->status != -2 ){
             $pdf->SetWidths(array(45,5, 50, 12, 5, 50));
             $pdf->SetAligns(array('L','C','L','L','C','L'));
             $pdf->RowNoBorder(array('PEMBIMBING UTAMA',':',$pb->name,'NIP',':',$pb->nip_nik));
@@ -377,7 +377,7 @@ class Pdfta extends CI_Controller {
             $pdf->Cell(50, $spasi,"", 0, 0, 'L');
             $pdf->Ln(30);
         }
-        elseif($ta->status == 2){
+        elseif($ta->status >= 2 || $ta->status == -2){
             $pdf->SetWidths(array(45,5, 50, 12, 5, 50));
             $pdf->SetAligns(array('L','C','L','L','C','L'));
             $pdf->RowNoBorder(array('PEMBIMBING UTAMA',':',$pb->name,'NIP',':',$pb->nip_nik));
