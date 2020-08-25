@@ -20,6 +20,7 @@
                         //echo "<pre>";
                         //print_r($biodata);
                         //echo "</pre>";
+                        
                         if(!empty($_GET['status']) && $_GET['status'] == 'sukses') {
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
@@ -27,6 +28,13 @@
                         if(!empty($_GET['status']) && $_GET['status'] == 'duplikat') {
 
                             echo '<div class="alert alert-danger fade show" role="alert">Terdapat Tugas Tambahan Yang Sama Dengan Status Yang Aktif</div>';
+                        }
+                        
+                        if(!empty($_GET['status']) && $_GET['status'] == 'duplikat_user') {
+                            $id_duplikat = $_GET['id'];
+                            $id_duplikat = $this->encrypt->decode($id_duplikat);
+                            $data_duplikat = $this->user_model->get_dosen_data($id_duplikat);
+                            echo '<div class="alert alert-danger fade show" role="alert">Terdapat User Dengan Tugas Yang Sama dan Status Yang Masih Aktif : <a href="javascript:void(0);" class="alert-link">'.$data_duplikat->name.'</a></div>';
                         }
                         $id_user = $this->session->userdata('userId');
                         ?>

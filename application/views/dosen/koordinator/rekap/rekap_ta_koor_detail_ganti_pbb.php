@@ -30,7 +30,7 @@
                          <div class="main-card mb-3 card">
                                 <div class="card-header">Ganti Komisi</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('dosen/koordinator/rekap/tugas-akhir/detail/ganti-ta/save') ?>" >
+                                <form method="post" action="<?php echo site_url('dosen/koordinator/rekap/tugas-akhir/detail/ganti-pbb/save') ?>" >
                                     <input value="<?php echo $ta->id_pengajuan ?>" type = "hidden" required name="id_pengajuan" id="id_pengajuan">
                                     <input value="<?php echo $ta->jenis ?>" type = "hidden" required name="jenis" id="jenis">
                                     <input value="<?php echo $ta->pembimbing1 ?>" type = "hidden" required name="pb1_old" id="jenis">

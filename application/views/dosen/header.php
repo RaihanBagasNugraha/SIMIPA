@@ -2,7 +2,7 @@
 
 $biodata = $this->user_model->get_dosen_data($this->session->userdata('userId'));
 // check role
-$tb_kajur = $this->user_model->tugas_dosen_kajur_sekjur($this->session->userdata('userId'));
+$tb_kajur = $this->user_model->tugas_dosen_kajur($this->session->userdata('userId'));
 $tb_kaprodi = $this->user_model->tugas_dosen_kaprodi($this->session->userdata('userId'));
 $tb_dekan = $this->user_model->tugas_dosen_dekan($this->session->userdata('userId'));
 $tb_wd = $this->user_model->tugas_dosen_wakil_dekan($this->session->userdata('userId'));

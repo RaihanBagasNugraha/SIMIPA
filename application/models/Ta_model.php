@@ -1894,6 +1894,11 @@ class Ta_model extends CI_Model
 		$this->db->query("INSERT INTO tugas_akhir_berkas(id_pengajuan,nama_berkas,jenis_berkas,file) SELECT $id_ta_new,nama_berkas,jenis_berkas,file FROM tugas_akhir_berkas WHERE tugas_akhir_berkas.id_pengajuan = $id_ta_old");
 	}
 
+	function copy_staff_surat_ta($id_ta_old,$id_ta_new)
+	{
+		$this->db->query("INSERT INTO staff_surat(jenis,id_jenis,nomor,created_at,updated_at) SELECT jenis,$id_ta_new,nomor,created_at,updated_at FROM staff_surat WHERE jenis = 1 AND id_jenis = $id_ta_old");
+	}
+
 	function insert_ta_komisi_pb1($data)
 	{	
 		$this->db->insert('tugas_akhir_komisi', $data);	

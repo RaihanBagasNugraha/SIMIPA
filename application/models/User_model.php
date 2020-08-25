@@ -293,10 +293,16 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
-	//tugas tambahan dosen
-	function tugas_dosen_kajur_sekjur($userId)
+	function check_tugas_tambahan_duplikat($id_tugas,$jurusan,$prodi,$aktif)
 	{
-		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE (tugas = 12 OR tugas =13) AND aktif = 1 AND id_user = $userId");
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = $id_tugas AND (jurusan_unit = $jurusan AND prodi = $prodi) AND aktif = $aktif");
+		return $result->row();
+	}
+
+	//tugas tambahan dosen
+	function tugas_dosen_kajur($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE (tugas = 12) AND aktif = 1 AND id_user = $userId");
 		return $result->row();
 	}
 	

@@ -968,7 +968,7 @@
 </div>
 
 <script>
- $(document).ready(function(){
+ $(document).ready(function(){   
     $('#tugas').on('change', function() {
           if (this.value == '14')
           {

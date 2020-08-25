@@ -148,11 +148,31 @@ class Dosen extends CI_Controller {
 		}
 
 		$check = $this->user_model->check_tugas_tambahan($iduser,$tugas,$jurusan,$prodi,$status);
-
+		
 		if(!empty($check)){
 			redirect(site_url("dosen/kelola-biodata?status=duplikat"));
 		}
 		else{
+			if($tugas != 16 || $tugas != 18){
+				$check_double =  $this->user_model->check_tugas_tambahan_duplikat($tugas,$jurusan,$prodi,$status);
+				if(!empty($check_double)){
+					$id_user_double = $check_double->id_user;
+					redirect(site_url("dosen/kelola-biodata?status=duplikat_user&id=".$this->encrypt->encode($id_user_double)));
+				}
+				else{
+					$data_tugas = array(
+						'id_user' => $iduser,
+						'tugas' => $tugas,
+						'jurusan_unit' => $jurusan,
+						'prodi' => $prodi,
+						'periode' => $periode,
+						'aktif' => $status,
+					);
+			
+					$this->user_model->insert_tugas_tambah($data_tugas);
+				}
+			}
+			else{
 			$data_tugas = array(
 				'id_user' => $iduser,
 				'tugas' => $tugas,
@@ -163,6 +183,7 @@ class Dosen extends CI_Controller {
 			);
 	
 			$this->user_model->insert_tugas_tambah($data_tugas);		
+			}
 			redirect(site_url("dosen/kelola-biodata?status=sukses"));
 		}
 	}
@@ -1448,7 +1469,7 @@ class Dosen extends CI_Controller {
 		redirect(site_url("/dosen/koordinator/rekap/tugas-akhir"));
 	}
 
-	function rekap_ganti_ta_save()
+	function rekap_ganti_pbb_save()
 	{
 		$data = $this->input->post();
 		// echo "<pre>";
@@ -1515,7 +1536,9 @@ class Dosen extends CI_Controller {
 			$this->ta_model->copy_row_ta_approval_non_pb1($id_old,$id_new);
 			$this->ta_model->copy_row_ta_approval_pb1($id_old,$id_new,$pb1);
 		}
-		
+
+		//copy surat
+		$this->ta_model->copy_staff_surat_ta($id_old,$id_new);
 		
 		//update status ta old > -2
 		$this->ta_model->update_ganti_pbb_ta_old($id_old);
@@ -1705,7 +1728,7 @@ class Dosen extends CI_Controller {
 				$this->ta_model->insert_approval_ta($data_approval);
 			}
 		}
-		// redirect(site_url("dosen/tugas-akhir/tema/koordinator"));
+		redirect(site_url("dosen/koordinator/rekap/tugas-akhir"));
 	}
 	
 	function komposisi_nilai()
