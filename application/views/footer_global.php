@@ -201,7 +201,7 @@
 
 <?php } ?>
 
-<?php if($this->uri->segment(1) == 'dosen' && $this->uri->segment(3) == 'tema') { ?>
+<?php if($this->uri->segment(1) == 'dosen' && ($this->uri->segment(3) == 'tema' || $this->uri->segment(3) == 'kaprodi')) { ?>
 
 <!-- approval tema -->
 <div class="modal fade" id="Approval" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -569,7 +569,7 @@
 
 <?php } ?>
 
-<?php if($this->uri->segment(1) == 'dosen' && $this->uri->segment(3) == 'seminar') { ?>
+<?php if($this->uri->segment(1) == 'dosen' && ($this->uri->segment(3) == 'seminar' || $this->uri->segment(3) == 'kaprodi')) { ?>
 
 <!-- tolak seminar -->
 <div class="modal fade" id="seminarTolak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

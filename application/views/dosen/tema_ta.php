@@ -8,17 +8,17 @@
                                         </i>
                                     </div>
                                     <div>Kelola Tema Penelitian
-                                        <div class="page-title-subheading">Lorem ipsum.
+                                        <div class="page-title-subheading">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="page-title-actions">
-                                    <a href="<?php echo site_url("mahasiswa/tugas-akhir/tema/form") ?>" class="btn-shadow btn btn-success">
-                                            <span class="btn-icon-wrapper pr-2 opacity-7">
-                                                <i class="fas fa-file fa-w-20"></i>
-                                            </span>
-                                            Form Pengajuan Tema
-                                    </a>
+                                    <!--<a href="<?php echo site_url("mahasiswa/tugas-akhir/tema/form") ?>" class="btn-shadow btn btn-success">-->
+                                    <!--        <span class="btn-icon-wrapper pr-2 opacity-7">-->
+                                    <!--            <i class="fas fa-file fa-w-20"></i>-->
+                                    <!--        </span>-->
+                                    <!--        Form Pengajuan Tema-->
+                                    <!--</a>-->
                                 </div>
                                 
                             </div>

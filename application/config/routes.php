@@ -197,7 +197,8 @@ $route['dosen/tugas-akhir/nilai-verifikasi-ta/verifikasi'] = 'dosen/nilai_verifi
 
 
 
-    //rekap koor
+    //rekap ta
+    //koor
 $route['dosen/koordinator/rekap/tugas-akhir'] = 'dosen/rekap_ta';
 $route['dosen/koordinator/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
 $route['dosen/koordinator/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
@@ -210,6 +211,34 @@ $route['dosen/koordinator/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
 $route['dosen/koordinator/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
 $route['dosen/koordinator/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
 $route['dosen/koordinator/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
+
+    //kaprodi
+$route['dosen/kaprodi/rekap/tugas-akhir'] = 'dosen/rekap_ta';
+$route['dosen/kaprodi/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
+$route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
+$route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-ta'] = 'dosen/rekap_ganti_ta';
+$route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-pbb/save'] = 'dosen/rekap_ganti_pbb_save';
+
+$route['dosen/kaprodi/rekap/seminar'] = 'dosen/rekap_seminar_koor';
+$route['dosen/kaprodi/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
+$route['dosen/kaprodi/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
+$route['dosen/kaprodi/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
+$route['dosen/kaprodi/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
+$route['dosen/kaprodi/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
+
+    //kajur
+$route['dosen/struktural/rekap/tugas-akhir'] = 'dosen/rekap_ta';
+$route['dosen/struktural/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
+$route['dosen/struktural/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
+$route['dosen/struktural/rekap/tugas-akhir/detail/ganti-ta'] = 'dosen/rekap_ganti_ta';
+$route['dosen/struktural/rekap/tugas-akhir/detail/ganti-pbb/save'] = 'dosen/rekap_ganti_pbb_save';
+
+$route['dosen/struktural/rekap/seminar'] = 'dosen/rekap_seminar_koor';
+$route['dosen/struktural/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
+$route['dosen/struktural/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
+$route['dosen/struktural/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
+$route['dosen/struktural/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
+$route['dosen/struktural/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
 
 
 

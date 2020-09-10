@@ -421,7 +421,7 @@ class User_model extends CI_Model
 
 	function update_tugas_lk($id,$ket)
 	{
-		if($ket == nonaktif){
+		if($ket == 'nonaktif'){
 			$this->db->where('id', $id);
 			$this->db->update('tbl_users_tugas_mahasiswa', array('aktif' => '0'));
 		}

@@ -23,7 +23,15 @@
                         //echo "</pre>";
                         if(!empty($_GET['status']) && $_GET['status'] == 'sukses') {
 
-                            echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
+                            echo '<div class="alert alert-success fade show" role="alert">Verifikasi-TA Diajukan</div>';
+                        }
+                        if(!empty($_GET['status']) && $_GET['status'] == 'error') {
+
+                            echo '<div class="alert alert-danger fade show" role="alert">Komponen Penilaian Bidang Belum Diisi Ketua Jurusan</div>';
+                        }
+                        if(!empty($_GET['status']) && $_GET['status'] == 'berhasil') {
+
+                            echo '<div class="alert alert-success fade show" role="alert">Verifikasi-TA Diajukan</div>';
                         }
                         ?>
                         

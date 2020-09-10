@@ -42,7 +42,7 @@ class Mahasiswa extends CI_Controller {
 	
 	public function ubah_akun()
 	{
-		echo "<pre>";
+// 		echo "<pre>";
 		//print_r($_POST);
 		//print_r($_FILES);
 
@@ -199,7 +199,7 @@ class Mahasiswa extends CI_Controller {
 		$data['ta'] = $this->ta_model->selet_ta_by_npm($this->session->userdata('username'));
 		$data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
 
-		if($biodata->prodi == NULL || $biodata->dosen_pa == NULL){
+		if($biodata->prodi == NULL || $biodata->dosen_pa == NULL || $biodata->dosen_pa == "0"){
 			echo "<script type='text/javascript'>alert('Silahkan Isi Biodata Terlebih Dahulu');window.location = ('biodata') </script>";
 		}
 		else{
@@ -275,9 +275,9 @@ class Mahasiswa extends CI_Controller {
 
 	public function tambah_berkas_ta()
 	{
-		echo "<pre>";
-		print_r($_POST);
-		print_r($_FILES);
+// 		echo "<pre>";
+// 		print_r($_POST);
+// 		print_r($_FILES);
 
 		$file1 = file_get_contents($_FILES['file']['tmp_name']);
 		$file1 = substr($file1,0,4);
@@ -290,7 +290,7 @@ class Mahasiswa extends CI_Controller {
 		);
 
 		if(!empty($_FILES)) {
-			if($file1 == '%PDF' && $size <= 105000){
+			if($file1 == '%PDF' && $size <= 1200000){
 				$file = $_FILES['file']['tmp_name']; 
 				$sourceProperties = getimagesize($file);
 				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
@@ -803,13 +803,13 @@ class Mahasiswa extends CI_Controller {
 	function verifikasi_ta()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$ket = $this->ta_model->selet_ta_by_npm($this->session->userdata('username'));
+		$ket = $this->ta_model->get_latest_ta_npm($this->session->userdata('username'));
 
 		if(empty($ket)){
 				echo "<script type='text/javascript'>alert('Silahkan Ajukan Tema Terlebih Dahulu');window.location = ('tema') </script>";
 			}
 			else{ 
-				if ($ket[0]->status == 4){
+				if ($ket->status == 4){
 					$data['ta'] = $this->ta_model->get_verifikasi_program_ta($this->session->userdata('username'));
 		
 					$this->load->view('header_global', $header);
@@ -833,23 +833,28 @@ class Mahasiswa extends CI_Controller {
 	function verifikasi_ta_ajukan()
 	{
 		$id = $this->input->post('id');
-
 		$ta = $this->ta_model->get_ta_by_id($id);
 
 		$komponen = $this->ta_model->get_verifikasi_program_ta_komponen($ta->bidang_ilmu);
 
-		foreach ($komponen as $kom){
+        if(!empty($komponen)){
+            foreach ($komponen as $kom){
 			$data = array(
 				'id_komponen' => $kom->id,
 				'id_tugas_akhir' => $id,
 				'pertemuan' => "",	
 			);
 			$this->ta_model->insert_verifikasi_ta_pertemuan($data);
-		}
+		    }
 
-		$this->ta_model->update_verifikasi_ta_ket($id);
+	    	$this->ta_model->update_verifikasi_ta_ket($id);
 
-		redirect(site_url("mahasiswa/tugas-akhir/verifikasi-ta"));
+		    redirect(site_url("mahasiswa/tugas-akhir/verifikasi-ta?status=sukses"));
+        }
+        else{
+         redirect(site_url("mahasiswa/tugas-akhir/verifikasi-ta?status=error"));   
+        }
+	
 	}
 
 	//bimbingan mahasiswa
@@ -876,8 +881,8 @@ class Mahasiswa extends CI_Controller {
 	function add_lk()
 	{
 		$data = $this->input->post();
-		echo "<pre>";
-		print_r($data);
+// 		echo "<pre>";
+// 		print_r($data);
 
 		$iduser = $data['iduser'];
 		$id_lk = $data['id_lk'];
@@ -906,8 +911,8 @@ class Mahasiswa extends CI_Controller {
 	function update_lk()
 	{
 		$data = $this->input->post();
-		// echo "<pre>";
-		// print_r($data);
+// 		echo "<pre>";
+// 		print_r($data);
 
 		$id = $data['id_tugas'];
 		$ket = $data['ket'];

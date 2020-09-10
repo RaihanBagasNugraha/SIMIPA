@@ -23,6 +23,10 @@
 
                                 echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                             }
+                            if(!empty($_GET['status']) && $_GET['status'] == 'error') {
+
+                                echo '<div class="alert alert-danger fade show" role="alert">Terjadi Kesalahan saat mengirim email undangan</div>';
+                            }
                         ?>
 
                         <div class="row">

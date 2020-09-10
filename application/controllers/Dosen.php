@@ -13,6 +13,8 @@ class Dosen extends CI_Controller {
 		$this->load->model('ta_model');
 		$this->load->library('pdf');
 		$this->load->library('encrypt');
+		 // Load PHPMailer library
+        // $this->load->library('phpmailer_lib');
 
 		
 		if($this->session->has_userdata('username')) {
@@ -42,7 +44,7 @@ class Dosen extends CI_Controller {
 	
 	public function ubah_akun()
 	{
-		echo "<pre>";
+// 		echo "<pre>";
 		//print_r($_POST);
 		//print_r($_FILES);
 
@@ -465,35 +467,11 @@ class Dosen extends CI_Controller {
 		$ps1 = $data['Penguji_1'];
 		$ps2 = $data['Penguji_2'];
 		$ps3 = $data['Penguji_3'];
-		// $fill = 0;
-		// $null = 0;
-
-		// if($pb1 != NULL){$fill++;}
-		// if($pb2 != NULL){$fill++;}
-		// if($pb3 != NULL){$fill++;}
-		// if($ps1 != NULL){$fill++;}
-		// if($ps2 != NULL){$fill++;}
-		// if($ps3 != NULL){$fill++;}
-
-		// if($pb1 == '0'){$null++;}
-		// if($pb2 == '0'){$null++;}
-		// if($pb3 == '0'){$null++;}
-		// if($ps1 == '0'){$null++;}
-		// if($ps2 == '0'){$null++;}
-		// if($ps3 == '0'){$null++;}
-
-		// $check = $fill - $null;
+	
 
 		$dosenid = $this->session->userdata('userId');
 
-		// if($check == '1'){
-		// 	$status = "kajur_acc";
-		// 	$this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
-		// }
-		// else{
-			$status = "kajur";
-			$this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
-		// }	
+		$status = "kajur";
 		
 		//send email
 		if(!empty($alter)){
@@ -501,38 +479,49 @@ class Dosen extends CI_Controller {
 				'protocol' => 'smtp',  
 				'smtp_host' => 'ssl://smtp.googlemail.com',  
 				'smtp_port' => 465,  
-				'smtp_user' => 'irishia02@gmail.com',   
-				'smtp_pass' => 'bagas123',   
+				'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+				'smtp_pass' => 'apps_fmipa 2020',   
 				'mailtype' => 'html',   
 				'charset' => 'iso-8859-1'  
 			);  
-			
+			$jml_email = count($alter);
+			$n = 0;
 			foreach($alter as $row){
 				$this->load->library('email', $config);
 				$this->email->set_newline("\r\n");  
-				$this->email->from('simipa@gmail.com', 'SIMIPA');   
-				$this->email->to($row->email);   
+				$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
+				$this->email->to($row->email);//$row->email   
 				$this->email->subject('Approve Tema Penelitian Fakultas Matematika dan Ilmu Pengetahuan Alam');   
 				$this->email->message("
 				Kepada Yth. $row->nama
 				<br>
 				Untuk Melakukan Approval Tema Penelitian Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai $row->status Silahkan Klik Link Berikut :<br>
-				http://localhost/simipa/approval/ta?token=$row->token
+				http://apps.fmipa.unila.ac.id/simipa/approval/ta?token=$row->token
 				<br><br>
 				Terimakasih.
 				
 				");
 				if (!$this->email->send()) {  
-					echo "error";   
+					    $n = 0;
 				   }else{  
-					  
+					  $n++;
 				}   
 			}
+            
 		}
-		
-			redirect(site_url("dosen/struktural/tema"));
-		
-
+		else{
+		    $jml_email = 0;
+			$n = 0;
+		}
+		// check apakah email terkirim semua
+		if($jml_email == $n)
+		{
+		    $this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
+		    redirect(site_url("dosen/struktural/tema"));
+		}
+		else{
+		    redirect(site_url("dosen/struktural/tema?status=error"));
+		}
 		
 	}
 
@@ -560,6 +549,7 @@ class Dosen extends CI_Controller {
 		$dosenid = $this->session->userdata('userId');
 		$status = "koor";
 
+        $jenis = $this->ta_model->get_ta_by_id($id)->jenis;
 		// echo "<pre>";
 		// print_r($id);
 		
@@ -567,7 +557,13 @@ class Dosen extends CI_Controller {
 		// $where = $data['id_pengajuan'];
 
 		$this->ta_model->decline_ta($id,$dosenid,$status,$keterangan);
-		redirect(site_url("dosen/tugas-akhir/tema/koordinator"));
+		if($jenis != 'Skripsi'){
+		    redirect(site_url("dosen/struktural/kaprodi/tugas-akhir"));
+		}
+		else{
+		    redirect(site_url("dosen/tugas-akhir/tema/koordinator"));    
+		}
+		
 	}
 
 	function tugas_akhir_aksi()
@@ -885,7 +881,13 @@ class Dosen extends CI_Controller {
 			}
 	
 		}
-		redirect(site_url("dosen/tugas-akhir/tema/koordinator"));
+		if($jenis != 'Skripsi'){
+		     redirect(site_url("dosen/struktural/kaprodi/tugas-akhir"));
+		}
+		else{
+		    redirect(site_url("dosen/tugas-akhir/tema/koordinator"));
+		}
+		
 		
 	}
 
@@ -973,17 +975,6 @@ class Dosen extends CI_Controller {
 		}
 
 		elseif($status == 'kajur'){
-			$data = $this->ta_model->get_komisi_seminar_id($id);
-
-			foreach($data as $row){
-				$data_cek = array(
-					'status' => $row->status,
-					'saran' => '',
-					'ket' => '0',
-					'id_seminar' => $id,	
-				);
-				$this->ta_model->insert_seminar_nilai_check($data_cek);
-			}
 
 		$alter = $this->ta_model->get_komisi_seminar_alter_id($id);
 
@@ -993,39 +984,66 @@ class Dosen extends CI_Controller {
 				'protocol' => 'smtp',  
 				'smtp_host' => 'ssl://smtp.googlemail.com',  
 				'smtp_port' => 465,  
-				'smtp_user' => 'irishia02@gmail.com',   
-				'smtp_pass' => 'bagas123',   
+				'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+				'smtp_pass' => 'apps_fmipa 2020',   
 				'mailtype' => 'html',   
 				'charset' => 'iso-8859-1'  
 			);  
-			
+			$jml_email = count($alter);
+			$n = 0;
 			foreach($alter as $row){
 					$this->load->library('email', $config);
 					$this->email->set_newline("\r\n");  
-					$this->email->from('simipa@gmail.com', 'SIMIPA');   
+					$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
 					$this->email->to($row->email);   
 					$this->email->subject('Penilaian Seminar/Sidang Fakultas Matematika dan Ilmu Pengetahuan Alam');   
 					$this->email->message("
 					Kepada Yth. $row->nama
 					<br>
 					Untuk Melakukan Penilaian Seminar/Sidang Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai $row->status Silahkan Klik Link Berikut :<br>
-					http://localhost/simipa/approval/seminar?token=$row->token
+					http://apps.fmipa.unila.ac.id/simipa/approval/seminar?token=$row->token
 					<br><br>
 					Terimakasih.
 					
 					");
 					if (!$this->email->send()) {  
-						echo "error";   
+						$n = 0;   
 					}else{  
-						
+						$n++;
 					}   
 				}
 			}
+			else{
+    		    $jml_email = 0;
+    			$n = 0;
+		    }
+		    // check apakah email terkirim semua
+    		if($jml_email == $n)
+    		{
+    		    $data = $this->ta_model->get_komisi_seminar_id($id);
 
-			redirect(site_url("dosen/struktural/seminar"));
+    			foreach($data as $row){
+    				$data_cek = array(
+    					'status' => $row->status,
+    					'saran' => '',
+    					'ket' => '0',
+    					'id_seminar' => $id,	
+    				);
+    				$this->ta_model->insert_seminar_nilai_check($data_cek);
+    			}
+    		    redirect(site_url("dosen/struktural/seminar"));
+    		}
+    		else{
+    		    redirect(site_url("dosen/struktural/seminar?status=gagal"));
+    		}
+		
+
+			
 		}
-		else{
-		redirect(site_url("dosen/tugas-akhir/seminar"));}
+	
+	    else{
+	        redirect(site_url("dosen/tugas-akhir/seminar"));
+	    }
 	}
 
 	function seminar_decline()
@@ -1042,9 +1060,17 @@ class Dosen extends CI_Controller {
 		// $where = $data['id'];
 
 		$this->ta_model->decline_seminar($id,$dosenid,$status,$keterangan);
-
+		$id_ta = $this->ta_model->get_seminar_id($id)->id_tugas_akhir; 
+        $jenis = $this->ta_model->get_ta_by_id($id_ta)->jenis; 
 		if($status == 'koor'){
-			redirect(site_url("dosen/tugas-akhir/seminar/koordinator"));
+		    if($jenis != 'Skripsi'){
+		        redirect(site_url("dosen/struktural/kaprodi/seminar-sidang"));
+		    }
+		    else{
+		        redirect(site_url("dosen/tugas-akhir/seminar/koordinator"));
+		    }
+		    
+		
 		}
 		elseif($status == 'admin'){
 			redirect(site_url("tendik/verifikasi-berkas/seminar"));
@@ -1359,11 +1385,23 @@ class Dosen extends CI_Controller {
 			$this->load->view('dosen/koordinator/rekap/rekap_mahasiswa_ta_mahasiswa',$data);
 		}
 		elseif($detail == 'ta'){
-			$data['ta'] = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail($this->session->userdata('userId'),$angkatan,$npm1,$npm2);
-			$this->load->view('dosen/koordinator/rekap/rekap_mahasiswa_ta_ta',$data);
+		    if($strata == 'd3'){
+		        $data['ta'] = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail_d3($this->session->userdata('userId'),$angkatan,$npm1,$npm2);
+		    }
+		    else{
+		        $data['ta'] = $this->ta_model->get_mahasiswa_ta_rekap_ta_detail($this->session->userdata('userId'),$angkatan,$npm1,$npm2);
+		    }
+		    $this->load->view('dosen/koordinator/rekap/rekap_mahasiswa_ta_ta',$data);
+		
 		}
 		elseif($detail == 'lulus'){
-			$data['lulus'] = $this->ta_model->get_mahasiswa_ta_rekap_lulus_detail($this->session->userdata('userId'),$angkatan,$npm1,$npm2);
+		    if($strata == 'd3'){
+		        $data['lulus'] = $this->ta_model->get_mahasiswa_ta_rekap_lulus_detail_d3($this->session->userdata('userId'),$angkatan,$npm1,$npm2);
+		    }
+		    else{
+		        $data['lulus'] = $this->ta_model->get_mahasiswa_ta_rekap_lulus_detail($this->session->userdata('userId'),$angkatan,$npm1,$npm2);
+		    }
+			
 			$this->load->view('dosen/koordinator/rekap/rekap_mahasiswa_ta_lulus',$data);
 		}
 		$this->load->view('footer_global');
@@ -1792,7 +1830,7 @@ class Dosen extends CI_Controller {
 		// else{
 		// 	for($i=0; $i<$jml; $i++){
 		// 		$ujian += $data['ujian_nilai_kompre'][$i];
-		// 	}
+		// 	}i
 		// 	for($i=0; $i<$jml2; $i++){
 		// 		$skripsi += $data['skripsi_nilai_kompre'][$i];
 		// 	}
@@ -2354,8 +2392,8 @@ class Dosen extends CI_Controller {
 
 		//update seminar
 		$this->ta_model->update_nilai_seminar_koor($id);
-		if($jenis == "Seminar Tugas Akhir"){
-			redirect(site_url("dosen/struktural/kaprodi/seminar-sidang"));
+		if($jenis_ta != "Skripsi"){
+			redirect(site_url("dosen/struktural/kaprodi/nilai-seminar-sidang"));
 		}
 		else{
 			redirect(site_url("dosen/tugas-akhir/nilai-seminar/koordinator"));
@@ -2760,7 +2798,15 @@ class Dosen extends CI_Controller {
 
 		$this->ta_model->insert_approve_ta_verifikasi($data_approval);
 		$this->ta_model->update_nilai_ta_verifikasi($status,$id);
-		redirect(site_url("dosen/tugas-akhir/verifikasi-ta"));
+		
+		if($status == 'Ketua Program Studi'){
+		    redirect(site_url("dosen/struktural/kaprodi/verifikasi-tugas-akhir"));
+		}
+		else
+		{
+		    redirect(site_url("dosen/tugas-akhir/verifikasi-ta"));    
+		}
+		
 
 	}
 

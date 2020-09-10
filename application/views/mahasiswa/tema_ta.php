@@ -230,7 +230,7 @@
                                             }
 
                                             if($row->status == '5') {
-                                                echo '<i>Perbaiki</i>';
+                                                echo '<i>Perbaikan</i>';
                                                 $ket = explode("###",$row->keterangan_tolak);
                                                 echo "<br><br><span  style='color:red'>".$ket[1]."</span>";
                                                 $ket_status = $ket[0];
@@ -244,7 +244,6 @@
 
                                             if($row->status == '9') {
                                                 echo '<i>Menunggu Acc Kaprodi</i>';
-                                                
                                             }
                                             ?>
                                             </td>

@@ -8,7 +8,7 @@
                                         </i>
                                     </div>
                                     <div>Kelola Seminar
-                                        <div class="page-title-subheading">Lorem ipsum.
+                                        <div class="page-title-subheading">
                                         </div>
                                     </div>
                                 </div>
@@ -83,6 +83,16 @@
                                                                 } else {
                                                                     echo "<ul style='margin-left: -20px;'>";
                                                                     foreach($lampiran as $rw) {
+                                                                        if($row->jenis != 'Seminar Tugas Akhir'&& $row->jenis != 'Sidang Komprehensif'){
+                                                                             echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
+                                                                        }
+                                                                        elseif($row->jenis == 'Sidang Komprehensif'){
+                                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_kompre&id=$row->id").">Form Pengajuan</a></li>";
+                                                                        }
+                                                                        elseif($row->jenis == 'Seminar Tugas Akhir'){
+                                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_ta&id=$row->id").">Form Pengajuan</a></li>";
+                                                                        }
+                                                                        
                                                                         $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
                                                                         echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
                                                                     }
@@ -133,6 +143,16 @@
                                                                         } else {
                                                                             echo "<ul style='margin-left: -20px;'>";
                                                                             foreach($lampiran as $rw) {
+                                                                                if($row->jenis != 'Seminar Tugas Akhir'&& $row->jenis != 'Sidang Komprehensif'){
+                                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar&id=$row->id").">Form Pengajuan</a></li>";
+                                                                                }
+                                                                                elseif($row->jenis == 'Sidang Komprehensif'){
+                                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_kompre&id=$row->id").">Form Pengajuan</a></li>";
+                                                                                }
+                                                                                elseif($row->jenis == 'Seminar Tugas Akhir'){
+                                                                                    echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=pengajuan_seminar_ta&id=$row->id").">Form Pengajuan</a></li>";
+                                                                                }
+                                                                        
                                                                                 $nama_berkas = $this->ta_model->get_berkas_name($rw->jenis_berkas);
                                                                                 echo "<li><a href='".base_url($rw->file)."' download>".$nama_berkas."</a></li>";
                                                                             }

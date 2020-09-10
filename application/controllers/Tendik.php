@@ -41,7 +41,7 @@ class Tendik extends CI_Controller {
 	
 	public function ubah_akun()
 	{
-		echo "<pre>";
+// 		echo "<pre>";
 		//print_r($_POST);
 		//print_r($_FILES);
 

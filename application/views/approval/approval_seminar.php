@@ -5,8 +5,8 @@
                                         <i class="pe-7s-file icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Approval Tema Penelitian
-                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan Tema Penelitian
+                                    <div>Approval Seminar
+                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan Seminar
                                         </div>
                                     </div>
                                 </div>

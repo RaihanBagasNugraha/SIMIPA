@@ -128,7 +128,7 @@
                                                         }
                                                         else{
                                                             echo "<br><br>";
-                                                            echo "Penilaian Seminar";
+                                                            echo "<i>Penilaian Seminar</i>";
                                                         }
                                                     }
                                                     else{
@@ -170,7 +170,7 @@
                                                         }
                                                         else{
                                                             echo "<br><br>";
-                                                            echo "Penilaian Seminar";
+                                                            echo "<i>Penilaian Seminar</i>";
                                                         }
                                                     }
                                                     else{
@@ -213,7 +213,7 @@
                                                         }
                                                         else{
                                                             echo "<br><br>";
-                                                            echo "Penilaian Seminar";
+                                                            echo "<i>Penilaian Seminar</i>";
                                                         }
                                                     }
                                                     else{
@@ -234,7 +234,6 @@
                                                             if($diff->format("%a")>=90 && $diff->format("%a")<=180)
                                                             {
                                                                 $color = "yellow";
-                                                                
                                                             }
                                                             elseif($diff->format("%a")>=180)
                                                             {
@@ -257,7 +256,7 @@
                                                         }
                                                         else{
                                                             echo "<br><br>";
-                                                            echo "Penilaian Seminar";
+                                                            echo "<i>Penilaian Seminar</i>";
                                                         }
                                                     }
                                                     else{

@@ -7,7 +7,7 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Bidang Ilmu Jurusan
+                                    <div>Isi Bidang Ilmu Jurusan
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>

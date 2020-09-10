@@ -42,23 +42,24 @@
                                                 <?php 
                                                     $year = date("Y");
                                                     $jurusanid = $this->user_model->get_jurusan($ta->npm);
+                                                    $ta_jenis = $ta->jenis;
                                                     if($jurusanid == '0'){
-                                                        $no = "/UN26.17.07/";
+                                                        $no = "/UN26.17.07/$ta_jenis/";
                                                     }
                                                     elseif($jurusanid == '1'){
-                                                        $no = "/UN26.17.03/";
+                                                        $no = "/UN26.17.03/$ta_jenis/";
                                                     }
                                                     elseif($jurusanid == '2'){
-                                                        $no = "/UN26.17.02/";
+                                                        $no = "/UN26.17.02/$ta_jenis/";
                                                     }
                                                     elseif($jurusanid == '3'){
-                                                        $no = "/UN26.17.05/";
+                                                        $no = "/UN26.17.05/$ta_jenis/";
                                                     }
                                                     elseif($jurusanid == '4'){
-                                                        $no = "/UN26.17.04/";
+                                                        $no = "/UN26.17.04/$ta_jenis/";
                                                     }
                                                     elseif($jurusanid == '5'){
-                                                        $no = "/UN26.17.06/";
+                                                        $no = "/UN26.17.06/$ta_jenis/";
                                                     }
                                                     $nomor = $no.$year;
                                                     

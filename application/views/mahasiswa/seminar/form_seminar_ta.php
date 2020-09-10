@@ -7,7 +7,7 @@
                                         <i class="pe-7s-file icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Pengajuan Tema Penelitian
+                                    <div>Pengajuan Seminar/Sidang
                                         <div class="page-title-subheading">Jangan lupa untuk mengunggah berkas pendukung.
                                         </div>
                                     </div>
@@ -29,7 +29,7 @@
                         <div class="row">
                         <div class="col-md-12">
                          <div class="main-card mb-3 card">
-                                <div class="card-header">Form Pengajuan Tema Penelitian</div>
+                                <div class="card-header">Form Pengajuan Seminar/Sidang</div>
                                 <div class="card-body">
                                 <?php if(empty($status_ta) || ($this->input->get('aksi') == 'ubah' && !empty($this->input->get('id')))) { ?>  
                                     <form method="post" action="<?php echo site_url('mahasiswa/simpan-pengajuan-seminar') ?>" >
