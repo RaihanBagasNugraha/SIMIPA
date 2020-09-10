@@ -28,7 +28,7 @@ class Mahasiswa extends CI_Controller {
 	{
 		redirect(site_url("mahasiswa/kelola-akun"));
 	}
-
+	//akun
 	public function akun()
 	{
 		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
