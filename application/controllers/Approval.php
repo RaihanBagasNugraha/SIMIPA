@@ -16,14 +16,22 @@ class Approval extends CI_Controller {
     function approval_alter()
 	{
         $token = $this->input->get('token');
-
+        // echo $token;
         $check = $this->ta_model->cek_token($token);
         if(!empty($check)){
-            $data['ta'] = $this->ta_model->get_komisi_alter($token);
-            $this->load->view('approval/header_global');
-            $this->load->view('approval/header');
-            $this->load->view('approval/approval',$data);
-            $this->load->view('footer_global');
+            $data_ta = $this->ta_model->get_komisi_alter($token);
+            if(!empty($data_ta)){
+                $data['ta'] = $this->ta_model->get_komisi_alter($token);
+            
+                $this->load->view('approval/header_global');
+                $this->load->view('approval/header');
+                $this->load->view('approval/approval',$data);
+                $this->load->view('footer_global');
+            }
+            else{
+                echo "<script>alert('Token Salah Atau Sudah Tidak Berlaku');javascript:history.back();</script>";
+            }
+           
         }
         else{
             echo "<script>alert('Token Salah Atau Sudah Tidak Berlaku');javascript:history.back();</script>";
@@ -47,7 +55,7 @@ class Approval extends CI_Controller {
         $this->ta_model->approve_ta_alter($id,$ttd,$status,$token);
         
         echo "<script>window.alert('Approval Berhasil');
-        window.location='/simipa';</script>"; //ganti url
+        window.location='apps.fmipa.unila.ac.id/simipa';</script>"; //ganti url
     }
 
     function send()  
@@ -84,12 +92,16 @@ class Approval extends CI_Controller {
         $check = $this->ta_model->cek_token_seminar($token);
         if(!empty($check)){
             $data['smr'] = $this->ta_model->get_komisi_seminar_alter($token);
-            // echo "<pre>";
-            // print_r($data);
-            $this->load->view('approval/header_global');
-            $this->load->view('approval/header');
-            $this->load->view('approval/approval_seminar',$data);
-            $this->load->view('footer_global');
+            if(!empty($data['smr'])){
+                $this->load->view('approval/header_global');
+                $this->load->view('approval/header');
+                $this->load->view('approval/approval_seminar',$data);
+                $this->load->view('footer_global');
+            }
+            else{
+                echo "<script>alert('Token Salah Atau Sudah Tidak Berlaku');javascript:history.back();</script>";
+            }
+            
         }
         else{
             echo "<script>alert('Token Salah Atau Sudah Tidak Berlaku');javascript:history.back();</script>";
@@ -136,7 +148,7 @@ class Approval extends CI_Controller {
         $this->ta_model->seminar_sidang_komisi_alter_update($id,$token);
         
         echo "<script>window.alert('Approval Berhasil');
-        window.location='/simipa';</script>"; //ganti url
+        window.location='apps.fmipa.unila.ac.id/simipa';</script>"; //ganti url
     }
 
 

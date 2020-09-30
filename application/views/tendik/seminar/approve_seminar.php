@@ -33,6 +33,29 @@
                                 <form method="post" action="<?php echo site_url('tendik/verifikasi-berkas/seminar/approve') ?>" >
                                     <input value="<?php echo $seminar->id ?>" type = "hidden" required name="id" id="id">
                                     
+                                    
+                                    <?php 
+                                        // jenis seminar
+                                        $jenis_smr = $seminar->jenis;
+                                        $data_ta = $this->ta_model->get_ta_by_id($seminar->id_tugas_akhir);
+                                        $jenis_ta = $data_ta->jenis;
+                                        switch($jenis_smr){
+                                            case "Seminar Tugas Akhir":
+                                                $jenis_seminar = "Tugas Akhir";
+                                                break;
+                                            case "Seminar Usul":
+                                                $jenis_seminar = "Usul";
+                                                break;
+                                            case "Seminar Hasil":
+                                                $jenis_seminar = "Hasil";
+                                                break;
+                                            case "Sidang Komprehensif":
+                                                $jenis_seminar = "Ujian $jenis_ta";
+                                                break;
+                                        }
+                                    
+                                    
+                                    ?>
                                      <!-- No Form -->
                                      <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label"><b>No Form</b></label>
@@ -41,22 +64,22 @@
                                                     $year = date("Y");
                                                     $jurusanid = $this->user_model->get_jurusan($seminar->npm);
                                                     if($jurusanid == '0'){
-                                                        $no = "/UN26.17.07/";
+                                                        $no = "/UN26.17.07/$jenis_seminar/";
                                                     }
                                                     elseif($jurusanid == '1'){
-                                                        $no = "/UN26.17.03/";
+                                                        $no = "/UN26.17.03/$jenis_seminar/";
                                                     }
                                                     elseif($jurusanid == '2'){
-                                                        $no = "/UN26.17.02/";
+                                                        $no = "/UN26.17.02/$jenis_seminar/";
                                                     }
                                                     elseif($jurusanid == '3'){
-                                                        $no = "/UN26.17.05/";
+                                                        $no = "/UN26.17.05/$jenis_seminar/";
                                                     }
                                                     elseif($jurusanid == '4'){
-                                                        $no = "/UN26.17.04/";
+                                                        $no = "/UN26.17.04/$jenis_seminar/";
                                                     }
                                                     elseif($jurusanid == '5'){
-                                                        $no = "/UN26.17.06/";
+                                                        $no = "/UN26.17.06/$jenis_seminar/";
                                                     }
                                                     $nomor = $no.$year;
                                                     
@@ -75,22 +98,22 @@
                                                     $year = date("Y");
                                                     $jurusanid = $this->user_model->get_jurusan($seminar->npm);
                                                     if($jurusanid == '0'){
-                                                        $no2 = "/UN26.17.07/";
+                                                        $no2 = "/UN26.17.07/$jenis_seminar/";
                                                     }
                                                     elseif($jurusanid == '1'){
-                                                        $no2 = "/UN26.17.03/";
+                                                        $no2 = "/UN26.17.03/$jenis_seminar/";
                                                     }
                                                     elseif($jurusanid == '2'){
-                                                        $no2 = "/UN26.17.02/";
+                                                        $no2 = "/UN26.17.02/$jenis_seminar/";
                                                     }
                                                     elseif($jurusanid == '3'){
-                                                        $no2 = "/UN26.17.05/";
+                                                        $no2 = "/UN26.17.05/$jenis_seminar/";
                                                     }
                                                     elseif($jurusanid == '4'){
-                                                        $no2 = "/UN26.17.04/";
+                                                        $no2 = "/UN26.17.04/$jenis_seminar/";
                                                     }
                                                     elseif($jurusanid == '5'){
-                                                        $no2 = "/UN26.17.06/";
+                                                        $no2 = "/UN26.17.06/$jenis_seminar/";
                                                     }
                                                     $nomor2 = $no2.$year;
                                                     
@@ -246,9 +269,9 @@
                                             </a>
                                             <a id="clear" class="mb-2 btn btn-light" onclick="document.getElementById('output').value = ''">Hapus
                                             </a>
-                                            <a id="preview" class="mb-2 btn btn-light">Oke
-                                            </a>
-                                            <input style="background-color: #efefef;" type="text" class="form-control readonly" required placeholder="Klik Oke setelah tanda tangan di canvas." name="ttd" id="output" value="">
+                                            <!--<a id="preview" class="mb-2 btn btn-light">Oke-->
+                                            <!--</a>-->
+                                            <input type="hidden" style="background-color: #efefef;" type="text" class="form-control readonly" required placeholder="Klik Oke setelah tanda tangan di canvas." name="ttd" id="output" value="">
                                             <input type="hidden" name="aksi" value="<?php if(!empty($this->input->get("aksi"))) echo $this->input->get("aksi") ?>">
                                             </div>
                                     
@@ -256,7 +279,7 @@
 
                                     <div class="position-relative row form-group">
                                             <div class="col-sm-9 offset-sm-3">
-                                            <button value="<?php if($this->input->get('aksi') == "ubah") echo "ubah"; ?>" type="submit" class="btn-shadow btn btn-info">
+                                            <button id="preview" value="<?php if($this->input->get('aksi') == "ubah") echo "ubah"; ?>" type="submit" class="btn-shadow btn btn-info">
                                             <span class="btn-icon-wrapper pr-2 opacity-7">
                                                 <i class="fa fa-save fa-w-20"></i>
                                             </span>

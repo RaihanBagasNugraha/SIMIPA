@@ -104,7 +104,7 @@
                                     <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label">Jumlah SKS</label>
                                             <div class="col-sm-3">
-                                                <input value="<?php echo $ta->ipk ?>" required name="sks" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
+                                                <input value="<?php echo $ta->sks ?>" required name="sks" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
                                             </div>
                                     </div>
 
@@ -166,9 +166,9 @@
                                             </a>
                                             <a id="clear" class="mb-2 btn btn-light" onclick="document.getElementById('output').value = ''">Hapus
                                             </a>
-                                            <a id="preview" class="mb-2 btn btn-light">Oke
-                                            </a>
-                                            <input style="background-color: #efefef;" type="text" class="form-control readonly" required placeholder="Klik Oke setelah tanda tangan di canvas." name="ttd" id="output" value="">
+                                            <!--<a id="preview" class="mb-2 btn btn-light">Oke-->
+                                            <!--</a>-->
+                                            <input type="hidden" style="background-color: #efefef;" type="text" class="form-control readonly" required placeholder="Klik Oke setelah tanda tangan di canvas." name="ttd" id="output" value="">
                                             <input type="hidden" name="aksi" value="<?php if(!empty($this->input->get("aksi"))) echo $this->input->get("aksi") ?>">
                                             </div>
                                     
@@ -176,7 +176,7 @@
 
                                     <div class="position-relative row form-group">
                                             <div class="col-sm-9 offset-sm-3">
-                                            <button value="<?php if($this->input->get('aksi') == "ubah") echo "ubah"; ?>" type="submit" class="btn-shadow btn btn-info">
+                                            <button id="preview" value="<?php if($this->input->get('aksi') == "ubah") echo "ubah"; ?>" type="submit" class="btn-shadow btn btn-info">
                                             <span class="btn-icon-wrapper pr-2 opacity-7">
                                                 <i class="fa fa-save fa-w-20"></i>
                                             </span>

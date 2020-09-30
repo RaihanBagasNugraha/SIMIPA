@@ -66,7 +66,7 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
 
 
                                 <?php if($strata < 2) { ?>
-                                    <li <?php if($this->uri->segment(2) == "layanan-fakultas") echo 'class="mm-active"' ?>>
+                                    <li <?php if($this->uri->segment(2) == "pkl") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note2"></i>
                                         Manajemen KP/PKL
@@ -74,9 +74,9 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="#" class="mm-active">
+                                            <a href="<?php echo site_url('mahasiswa/pkl/pkl-home') ?>" <?php if($this->uri->segment(1) == "mahasiswa" && $this->uri->segment(2) == "pkl" && $this->uri->segment(3) == "pkl-home") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Tema
+                                                </i>KP/PKL
                                             </a>
                                         </li>
                                         <li>

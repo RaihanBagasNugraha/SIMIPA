@@ -39,7 +39,7 @@
                                         <div class="position-relative row form-group">
                                             <label for="prodi" class="col-sm-2 col-form-label">Program Studi</label>
                                             <div class="col-sm-10">
-                                            <select name="prodi" class="input-lg form-control">
+                                            <select required name="prodi" class="input-lg form-control">
                                             <option>-- Pilih Program Studi --</option>
                                             <?php
                                             $list_prodi = $this->jurusan_model->select_prodi_by_jur($biodata->jurusan);
@@ -59,7 +59,7 @@
                                         <div class="position-relative row form-group">
                                             <label for="dosen_pa" class="col-sm-2 col-form-label">Dosen PA</label>
                                             <div class="col-sm-10">
-                                                <select name="dosen_pa" class=" form-control">
+                                                <select name="dosen_pa" class=" form-control" required>
                                                 <option>-- Pilih Dosen Pembimbing Akademik --</option>
                                                 <?php
                                                 $list = $this->user_model->select_list_dosen();

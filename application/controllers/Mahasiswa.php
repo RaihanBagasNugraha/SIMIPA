@@ -11,6 +11,7 @@ class Mahasiswa extends CI_Controller {
 		$this->load->model('jurusan_model');
 		$this->load->model('user_model');
 		$this->load->model('ta_model');
+		$this->load->model('pkl_model');
 		$this->load->library('pdf');
 		$this->load->library('encrypt');
 		// $this->load->library('encryption');
@@ -42,7 +43,7 @@ class Mahasiswa extends CI_Controller {
 	
 	public function ubah_akun()
 	{
-		echo "<pre>";
+// 		echo "<pre>";
 		//print_r($_POST);
 		//print_r($_FILES);
 
@@ -199,7 +200,7 @@ class Mahasiswa extends CI_Controller {
 		$data['ta'] = $this->ta_model->selet_ta_by_npm($this->session->userdata('username'));
 		$data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
 
-		if($biodata->prodi == NULL || $biodata->dosen_pa == NULL){
+		if($biodata->prodi == NULL || $biodata->dosen_pa == NULL || $biodata->dosen_pa == "0"){
 			echo "<script type='text/javascript'>alert('Silahkan Isi Biodata Terlebih Dahulu');window.location = ('biodata') </script>";
 		}
 		else{
@@ -275,9 +276,9 @@ class Mahasiswa extends CI_Controller {
 
 	public function tambah_berkas_ta()
 	{
-		echo "<pre>";
-		print_r($_POST);
-		print_r($_FILES);
+// 		echo "<pre>";
+// 		print_r($_POST);
+// 		print_r($_FILES);
 
 		$file1 = file_get_contents($_FILES['file']['tmp_name']);
 		$file1 = substr($file1,0,4);
@@ -290,7 +291,7 @@ class Mahasiswa extends CI_Controller {
 		);
 
 		if(!empty($_FILES)) {
-			if($file1 == '%PDF' && $size <= 105000){
+			if($file1 == '%PDF' && $size <= 1200000){
 				$file = $_FILES['file']['tmp_name']; 
 				$sourceProperties = getimagesize($file);
 				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
@@ -352,6 +353,9 @@ class Mahasiswa extends CI_Controller {
 			$where = $data['id_pengajuan'];
 			unset($data['id_pengajuan']);
 			$this->ta_model->update($data, $where);
+			
+			$id_user = $this->session->userdata('userId');
+			$this->ta_model->update_ta_approve($ttd, $id_user, $where);
 		} else {
 			$data2 = array(
 				'status_slug' => 'Mahasiswa',
@@ -803,13 +807,13 @@ class Mahasiswa extends CI_Controller {
 	function verifikasi_ta()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$ket = $this->ta_model->selet_ta_by_npm($this->session->userdata('username'));
+		$ket = $this->ta_model->get_latest_ta_npm($this->session->userdata('username'));
 
 		if(empty($ket)){
 				echo "<script type='text/javascript'>alert('Silahkan Ajukan Tema Terlebih Dahulu');window.location = ('tema') </script>";
 			}
 			else{ 
-				if ($ket[0]->status == 4){
+				if ($ket->status == 4){
 					$data['ta'] = $this->ta_model->get_verifikasi_program_ta($this->session->userdata('username'));
 		
 					$this->load->view('header_global', $header);
@@ -833,23 +837,28 @@ class Mahasiswa extends CI_Controller {
 	function verifikasi_ta_ajukan()
 	{
 		$id = $this->input->post('id');
-
 		$ta = $this->ta_model->get_ta_by_id($id);
 
 		$komponen = $this->ta_model->get_verifikasi_program_ta_komponen($ta->bidang_ilmu);
 
-		foreach ($komponen as $kom){
+        if(!empty($komponen)){
+            foreach ($komponen as $kom){
 			$data = array(
 				'id_komponen' => $kom->id,
 				'id_tugas_akhir' => $id,
 				'pertemuan' => "",	
 			);
 			$this->ta_model->insert_verifikasi_ta_pertemuan($data);
-		}
+		    }
 
-		$this->ta_model->update_verifikasi_ta_ket($id);
+	    	$this->ta_model->update_verifikasi_ta_ket($id);
 
-		redirect(site_url("mahasiswa/tugas-akhir/verifikasi-ta"));
+		    redirect(site_url("mahasiswa/tugas-akhir/verifikasi-ta?status=sukses"));
+        }
+        else{
+         redirect(site_url("mahasiswa/tugas-akhir/verifikasi-ta?status=error"));   
+        }
+	
 	}
 
 	//bimbingan mahasiswa
@@ -876,8 +885,8 @@ class Mahasiswa extends CI_Controller {
 	function add_lk()
 	{
 		$data = $this->input->post();
-		echo "<pre>";
-		print_r($data);
+// 		echo "<pre>";
+// 		print_r($data);
 
 		$iduser = $data['iduser'];
 		$id_lk = $data['id_lk'];
@@ -906,8 +915,8 @@ class Mahasiswa extends CI_Controller {
 	function update_lk()
 	{
 		$data = $this->input->post();
-		// echo "<pre>";
-		// print_r($data);
+// 		echo "<pre>";
+// 		print_r($data);
 
 		$id = $data['id_tugas'];
 		$ket = $data['ket'];
@@ -915,6 +924,208 @@ class Mahasiswa extends CI_Controller {
 		$this->user_model->update_tugas_lk($id,$ket);	
 		redirect(site_url("mahasiswa/kelola-biodata?status=sukses"));
 
+	}
+
+
+	//pkl mahasiswa
+	function pkl_home()
+	{	
+		$biodata = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 3)->row();
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['kp'] = $this->pkl_model->selet_kp_by_npm($this->session->userdata('username'));
+		$data['status_kp'] = $this->pkl_model->select_active_kp($this->session->userdata('username'));
+
+		if($biodata->prodi == NULL || $biodata->dosen_pa == NULL || $biodata->dosen_pa == "0"){
+			echo "<script type='text/javascript'>alert('Silahkan Isi Biodata Terlebih Dahulu');window.location = ('biodata') </script>";
+		}
+		else{
+			$this->load->view('header_global', $header);
+			$this->load->view('mahasiswa/header');
+
+			$this->load->view('mahasiswa/pkl/pkl_home',$data);
+
+			$this->load->view('footer_global');
+		}
+	}
+
+	function pkl_home_form()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['biodata'] = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 3)->row();
+		$data['status_pkl'] = $this->pkl_model->select_active_kp($this->session->userdata('username'));
+		$data['jurusan'] = $this->user_model->get_jurusan($this->session->userdata('username'));
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		if($this->input->get('aksi') == "ubah")
+		{
+			$pkl = $this->pkl_model->select_pkl_by_id($id, $this->session->userdata('username'));
+			$data_pkl = $pkl[0];
+		}
+		else
+		{
+			$data_pkl = array(
+				'pkl_id' => null,
+				'id_periode' => null,
+				'id_lokasi' => null,
+				'ipk' => null,
+				'sks' => null,
+				'keterangan_tolak' => null,
+				'ttd' => null
+			);
+		}
+
+		$data['data_pkl'] = $data_pkl;
+		
+			$this->load->view('header_global', $header);
+			$this->load->view('mahasiswa/header');
+			$this->load->view('mahasiswa/pkl/pkl_home_form',$data);
+			$this->load->view('footer_global');
+	}
+
+	function pkl_home_form_add()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$aksi = $data['aksi'];
+		$id_pkl = $data['pkl_id'];
+
+		if($aksi != "ubah"){
+			$pkl_mhs = array(
+				"npm" => $data['npm'],
+				"id_periode" => $data['id_pkl'],
+				"id_lokasi" => $data['lokasi'],
+				"ipk" => $data['ipk'],
+				"sks" => $data['sks'],
+				"ttd" => $data['ttd']
+			);
+	
+			//insert pkl_mahasiswa
+			$insert_id = $this->pkl_model->insert_pkl_mahasiswa($pkl_mhs);
+			//insert approval
+			$pkl_approve = array(
+				"pkl_id" => $insert_id,
+				"status_slug" =>"Mahasiswa",
+				"id_user" =>$this->session->userdata('userId'),
+				"ttd" => $data['ttd']
+			);
+			$this->pkl_model->insert_approval_pkl($pkl_approve);
+		}
+		else{
+			$pkl_mhs = array(
+				"npm" => $data['npm'],
+				"id_periode" => $data['id_pkl'],
+				"id_lokasi" => $data['lokasi'],
+				"ipk" => $data['ipk'],
+				"sks" => $data['sks'],
+				"ttd" => $data['ttd']
+			);
+			
+			$pkl_approve = array(
+				"ttd" => $data['ttd']
+			);
+
+			$this->pkl_model->update_pengajuan_pkl($pkl_mhs, $id_pkl, $pkl_approve);
+		}
+		redirect(site_url("mahasiswa/pkl/pkl-home"));
+	}
+
+	function pkl_home_delete()
+	{
+		$id = $this->input->post('id_pkl');
+		// echo "<pre>";
+		// print_r($data);
+
+		$del = array("pkl_id"=>$id);
+
+		$this->pkl_model->delete_pengajuan_pkl($del);
+		redirect(site_url("mahasiswa/pkl/pkl-home"));
+	}
+
+	function pkl_home_lampiran()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['lampiran'] = $this->pkl_model->select_lampiran_by_kp($id, $this->session->userdata('username'));
+		$data['status_pkl'] = $this->pkl_model->select_active_kp($this->session->userdata('username'));
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/pkl/pkl_home_lampiran', $data);
+
+        $this->load->view('footer_global');
+	}
+
+	function pkl_home_lampiran_upload()
+	{
+		$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+		$id = $this->encrypt->decode($this->input->post('pkl_id'));
+		$data = array(
+			'id_pkl' => $id,
+			'nama_berkas' => $this->input->post('nama_berkas'),
+			'jenis_berkas' => $this->input->post('jenis_berkas')
+		);
+
+		if(!empty($_FILES)) {
+			if($file1 == '%PDF' && $size <= 1200000){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
+				$folderPath = "assets/uploads/berkas-kp/";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+				$data['file'] = $folderPath. $fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				$this->pkl_model->insert_lampiran_kp($data);
+				redirect(site_url("mahasiswa/pkl/pkl-home/lampiran?id=".$this->input->post('pkl_id')."&status=sukses"));
+			}
+			else{
+				redirect(site_url("mahasiswa/pkl/pkl-home/lampiran?id=".$this->input->post('pkl_id')."&status=gagal"));
+			}
+
+		}
+	}
+
+	function pkl_home_lampiran_delete()
+	{
+		$id = $this->input->post('id_berkas');
+		$id_pkl = $this->input->post('id_pkl');
+		$id_pkl= $this->encrypt->decode($id_pkl);
+		$file = $this->input->post('file_berkas');
+		
+		$data = array("id" => $id);
+		$this->pkl_model->delete_lampiran_kp($data);
+		unlink($file);
+	    
+	    redirect(site_url("mahasiswa/pkl/pkl-home"));
+	}
+
+	function pkl_home_ajukan()
+	{
+		$id = $this->input->post('id_pkl');
+		$data = array("pkl_id" => $id);
+		$where = $id;
+
+		$this->pkl_model->ajukan_pkl($id);
+		redirect(site_url("mahasiswa/pkl/pkl-home"));
+	}
+
+	function pkl_home_ajukan_perbaikan()
+	{
+		$id = $this->input->post('id_pkl');
+		$status = $this->input->post('status');
+		// echo "<pre>";
+		// print_r($id);
+		// print_r($status);
+
+		$this->pkl_model->ajukan_perbaikan_pkl($id,$status);
+		redirect(site_url("mahasiswa/pkl/pkl-home"));
 	}
 
 }

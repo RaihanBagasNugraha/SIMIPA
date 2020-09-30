@@ -237,13 +237,11 @@
                                                 </td>
                                                 <td class="align-top">
                                                     <?php 
-                                                        if($row->judul_approve == 1){
+                                                            echo "Judul 1 :<br>";
                                                             echo $row->judul1;
-                                                        }
-                                                        elseif($row->judul_approve == 2){
+                                                            echo "<br>";
+                                                            echo "Judul 2 :<br>";
                                                             echo $row->judul2;
-                                                        }
-                                                    
                                                     ?>
                                                 </td>
                                                 <td class="align-top">

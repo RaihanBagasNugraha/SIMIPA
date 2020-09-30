@@ -272,7 +272,7 @@
                                                         <td><?php echo $this->user_model->get_prodi_id($tgs->prodi)->nama ?></td>
                                                     </tr>   
                                                 <?php } ?>
-                                                <?php if($tgs->tugas == '12' || $tgs->tugas == '13' || $tgs->tugas == '17' || $tgs->tugas == '18' || $tgs->tugas == '15' || $tgs->tugas == '16') {?>
+                                                <?php if($tgs->tugas == '12' || $tgs->tugas == '13' || $tgs->tugas == '17' || $tgs->tugas == '18' || $tgs->tugas == '15' || $tgs->tugas == '16' || $tgs->tugas == '19') {?>
                                                     <tr>
                                                         <td>Jurusan</td>
                                                         <td>:</td>

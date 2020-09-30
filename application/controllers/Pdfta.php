@@ -291,11 +291,12 @@ class Pdfta extends CI_Controller {
         $mhs = $this->ta_model->get_mahasiswa_detail($ta->npm);
 
         //ttd
-        if($ta->status >= 1){
+        if($ta->status <= 1 && $ta->status != -2){
             $ttd_pa = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Pembimbing Akademik');
             // $ttd_pa = $ttd_pa[0];
         }
-        if($ta->status >= 2){
+        if($ta->status >= 2 || $ta->status == -2){
+            $ttd_pa = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Pembimbing Akademik');
             $ttd_pb1 = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Pembimbing Utama');
             // $ttd_pb1 = $ttd_pb1[0];
         }
@@ -367,7 +368,7 @@ class Pdfta extends CI_Controller {
         $pdf->Ln(8);
 
         //ttd
-        if($ta->status <= 1 ){
+        if($ta->status <= 1 && $ta->status != -2){
             $pdf->SetWidths(array(45,5, 50, 12, 5, 50));
             $pdf->SetAligns(array('L','C','L','L','C','L'));
             $pdf->RowNoBorder(array('PEMBIMBING UTAMA',':',$pb->name,'NIP',':',$pb->nip_nik));
@@ -377,7 +378,7 @@ class Pdfta extends CI_Controller {
             $pdf->Cell(50, $spasi,"", 0, 0, 'L');
             $pdf->Ln(30);
         }
-        elseif($ta->status == 2){
+        elseif($ta->status >= 2 || $ta->status == -2){
             $pdf->SetWidths(array(45,5, 50, 12, 5, 50));
             $pdf->SetAligns(array('L','C','L','L','C','L'));
             $pdf->RowNoBorder(array('PEMBIMBING UTAMA',':',$pb->name,'NIP',':',$pb->nip_nik));
@@ -404,7 +405,7 @@ class Pdfta extends CI_Controller {
             $pdf->Cell(90, $spasi,$pdf->Image($blank_image,$pdf->GetX(), $pdf->GetY(),60,0,'PNG'), 0, 0, 'L'); 
             $pdf->Cell(30, $spasi,$pdf->Image("$ta->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         }
-        elseif($ta->status >= 1){
+        elseif($ta->status >= 1 ||$ta->status == -2 ){
             $pdf->Cell(90, $spasi,$pdf->Image($ttd_pa->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L'); 
             $pdf->Cell(30, $spasi,$pdf->Image("$ta->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         }
@@ -419,7 +420,7 @@ class Pdfta extends CI_Controller {
         $pdf->Cell(30, $spasi,"NPM. ".$mhs->npm, 0, 0, 'L');
         $pdf->Ln(10);
         
-        $pdf->Output();
+        $pdf->Output('I','pengajuan_bimbingan.pdf');
     }
 
     function form_verifikasi($ta,$jurusan)
@@ -429,7 +430,7 @@ class Pdfta extends CI_Controller {
         $mhs= $this->ta_model->get_mahasiswa_detail($ta->npm);
         $admin = $this->ta_model->get_admin_detail($ta->id_pengajuan);
 
-        if($ta->status == 7 || $ta->status == 4){
+        if($ta->status == 7 || $ta->status == 8 || $ta->status == 4){
             $koor_approve  = $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Koordinator');
             $koor_data = $this->user_model->get_dosen_data($koor_approve->id_user);
         }
@@ -673,6 +674,14 @@ class Pdfta extends CI_Controller {
             $pdf->MultiCell(150, $spasi, "Semua berkas dimasukkan kedalam map warna kuning.",0,'J',false);
             $pdf->Ln(10);
         }
+        else{
+            $pdf->AddPage('P');
+            $pdf->Ln(5);
+            $pdf->SetFont('Times','B',11);
+            $pdf->MultiCell(150, $spasi, "FORM VERIFIKASI BERKAS PERSYARATAN ".strtoupper($ta->jenis)."\nPENGAJUAN TEMA PENELITIAN DAN PEMBIMBING/PEMBAHAS",1,'C',false); 
+            $pdf->SetFont('Times','',11);
+            $pdf->Ln(10);
+        }
 
         $pdf->Cell(90, $spasi,"", 0, 0, 'L');
         $pdf->Cell(30, $spasi,"Bandar Lampung, ".$tgl_acc, 0, 0, 'L');
@@ -702,7 +711,7 @@ class Pdfta extends CI_Controller {
                 $pdf->Cell(30, $spasi,"NIP. ", 0, 0, 'L');
                 $pdf->Ln(10);
             }
-            elseif($ta->status < 7 && $ta->status != 4 && $ta->status > 3){
+            elseif($ta->status < 7 && $ta->status != 4 && $ta->status >= 3){
                 $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
                 $pdf->Ln(5);
 
@@ -816,7 +825,7 @@ class Pdfta extends CI_Controller {
             }
         }
 
-        $pdf->Output();
+        $pdf->Output('I','form_verifikasi.pdf');
     }
 
     function form_penetapan($ta,$jurusan)
@@ -980,10 +989,7 @@ class Pdfta extends CI_Controller {
                 $pdf->Ln(10);
             }
 
-           
-
-
-            $pdf->Output();
+            $pdf->Output('I','form_penetapan.pdf');
         }
 
     }
@@ -1151,7 +1157,7 @@ class Pdfta extends CI_Controller {
             $pdf->Cell(150, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'C');
         }
 
-        $pdf->Output();
+        $pdf->Output('I','pengajuan_seminar.pdf');
 
     }
 
@@ -1263,7 +1269,7 @@ class Pdfta extends CI_Controller {
           $pdf->SetAligns(array('L','C','L','L','C','L'));
           $pdf->RowNoBorder(array('Dosen Verifikasi',':',$g_depanv.$verifikator->nama.$g_belakangv));
           $pdf->Ln(2);  
-
+        $bulan = $this->get_month($date[1]);
         $pdf->Cell(90, $spasi,"", 0, 0, 'L');
         $pdf->Cell(150, $spasi,"Bandar Lampung, ".$date[2]." ".$bulan." ".$date[0]."", 0, 0, 'L');
         $pdf->Ln(7);
@@ -1360,7 +1366,7 @@ class Pdfta extends CI_Controller {
         }
 
 
-        $pdf->Output();
+        $pdf->Output('I','pengajuan_seminar_ta.pdf');
     }
 
     function pengajuan_seminar_kompre($seminar,$jurusan,$ta_seminar)
@@ -1492,7 +1498,7 @@ class Pdfta extends CI_Controller {
         $pdf->Cell(30, $spasi,"NIP. ".$pb->nip_nik, 0, 0, 'L');
         $pdf->Ln(20);
 
-        $pdf->Output();
+        $pdf->Output('I','pengajuan_seminar_kompre.pdf');
 
     }
 
@@ -2213,7 +2219,7 @@ class Pdfta extends CI_Controller {
             }
         
 
-        $pdf->Output();
+        $pdf->Output('I','form_verifikasi_seminar.pdf');
     }
 
     function undangan_seminar($seminar,$jurusan,$ta_seminar)
@@ -2464,7 +2470,7 @@ class Pdfta extends CI_Controller {
 
         }
         
-        $pdf->Output();
+        $pdf->Output('I','undangan_seminar.pdf');
 
     }
 
@@ -2684,7 +2690,7 @@ class Pdfta extends CI_Controller {
             }
 
         
-        $pdf->Output();
+        $pdf->Output('I','undangan_seminar.pdf');
     }
 
     function undangan_dosen($seminar,$jurusan,$ta_seminar,$status)
@@ -2922,7 +2928,7 @@ class Pdfta extends CI_Controller {
             }
 
         
-        $pdf->Output();
+        $pdf->Output('I','undangan_seminar.pdf');
     }
 
     function penilaian_seminar($seminar,$jurusan,$ta_seminar)
@@ -3083,7 +3089,7 @@ class Pdfta extends CI_Controller {
 
         }
 
-            $pdf->Output();
+            $pdf->Output('I','form_penilaian_seminar.pdf');
     }
 
     function penilaian_kompre($seminar,$jurusan,$ta_seminar)
@@ -3380,7 +3386,7 @@ class Pdfta extends CI_Controller {
         }
       
 
-            $pdf->Output();
+            $pdf->Output('I','form_penilaian_kompre.pdf');
     }
 
     function berita_acara($seminar,$jurusan,$ta_seminar)
@@ -3715,7 +3721,7 @@ class Pdfta extends CI_Controller {
 
             $pdf->Ln(5);
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-            $pdf->Cell(120, $spasi,'Bandar Lampung, '.$ba_date[2]."-".$ba_bulan."-".$ba_date[0], 0, 0, 'L');
+            $pdf->Cell(120, $spasi,'Bandar Lampung, '.$ba_date[2]." ".$ba_bulan." ".$ba_date[0], 0, 0, 'L');
             $pdf->Ln(7);
 
             $pdf->Cell(90, $spasi,"Mengetahui,", 0, 0, 'L');
@@ -3859,7 +3865,7 @@ class Pdfta extends CI_Controller {
         
                     $pdf->Ln(5);
                     $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-                    $pdf->Cell(120, $spasi,'Bandar Lampung, '.$ba_date[2]."-".$ba_bulan."-".$ba_date[0], 0, 0, 'L');
+                    $pdf->Cell(120, $spasi,'Bandar Lampung, '.$ba_date[2]." ".$ba_bulan." ".$ba_date[0], 0, 0, 'L');
                     $pdf->Ln(7);
         
                     $pdf->Cell(90, $spasi,"Mengetahui,", 0, 0, 'L');
@@ -3884,7 +3890,7 @@ class Pdfta extends CI_Controller {
                 } 
         }
 
-        $pdf->Output();
+        $pdf->Output('I','berita_acara.pdf');
     }
 
     function berita_acara_kompre($seminar,$jurusan,$ta_seminar)
@@ -4220,7 +4226,7 @@ class Pdfta extends CI_Controller {
         }
 
 
-        $pdf->Output();
+        $pdf->Output('I','berita_acara_kompre.pdf');
 
 
     }
@@ -4331,10 +4337,17 @@ class Pdfta extends CI_Controller {
             $pdf->Ln(4);
 
         $created = $this->ta_model->get_created_verifikasi_ta($ta->id_pengajuan);    
-        $date = explode("-",substr($created->created,0,10)); 
-        $bulan = $this->get_month($date[1]);
-        $pdf->Cell(150, $spasi,"Bandar Lampung, ".$date[2]." ".$bulan." ".$date[0]."", 0, 0, 'R');
-        $pdf->Ln(4);
+        if(!empty($created)){
+             $date = explode("-",substr($created->created,0,10)); 
+            $bulan = $this->get_month($date[1]);
+            $pdf->Cell(150, $spasi,"Bandar Lampung, ".$date[2]." ".$bulan." ".$date[0]."", 0, 0, 'R');
+        }
+        else
+        {
+            $pdf->Cell(150, $spasi,"Bandar Lampung, ", 0, 0, 'R');
+        }
+       
+        $pdf->Ln(8);
         if($verifikator->ket == 1){
             $pdf->Cell(150, $spasi,"Menyetujui", 0, 0, 'C');
             $pdf->Ln(5);
@@ -4373,9 +4386,9 @@ class Pdfta extends CI_Controller {
             $pdf->Ln(5);
             $pdf->Cell(150, $spasi,"NIP.".$pb_data->nip_nik, 0, 0, 'C');
 
-            $pdf->Ln(7);
+            $pdf->Ln(10);
             $pdf->Cell(150, $spasi,"Mengetahui,", 0, 0, 'C');
-            $pdf->Ln(7);
+            $pdf->Ln(10);
 
             $pdf->Cell(90, $spasi,"Ketua Program Studi", 0, 0, 'L');
             $pdf->Cell(30, $spasi,"Pembimbing Akademik", 0, 0, 'L');
@@ -4405,9 +4418,9 @@ class Pdfta extends CI_Controller {
             $pdf->Ln(5);
             $pdf->Cell(150, $spasi,"NIP.".$pb_data->nip_nik, 0, 0, 'C');
 
-            $pdf->Ln(7);
+            $pdf->Ln(10);
             $pdf->Cell(150, $spasi,"Mengetahui,", 0, 0, 'C');
-            $pdf->Ln(7);
+            $pdf->Ln(10);
 
             $pdf->Cell(90, $spasi,"Ketua Program Studi", 0, 0, 'L');
             $pdf->Cell(30, $spasi,"Pembimbing Akademik", 0, 0, 'L');
@@ -4444,9 +4457,9 @@ class Pdfta extends CI_Controller {
             $pdf->Ln(5);
             $pdf->Cell(150, $spasi,"NIP.".$pb_data->nip_nik, 0, 0, 'C');
 
-            $pdf->Ln(7);
+            $pdf->Ln(10);
             $pdf->Cell(150, $spasi,"Mengetahui,", 0, 0, 'C');
-            $pdf->Ln(7);
+            $pdf->Ln(10);
 
             $pdf->Cell(90, $spasi,"Ketua Program Studi", 0, 0, 'L');
             $pdf->Cell(30, $spasi,"Pembimbing Akademik", 0, 0, 'L');
@@ -4466,7 +4479,7 @@ class Pdfta extends CI_Controller {
 
         }
 
-        $pdf->Output();
+        $pdf->Output('I','form_verifikasi_ta.pdf');
 
     }
 
@@ -4633,7 +4646,7 @@ class Pdfta extends CI_Controller {
         $pdf->Cell(30, $spasi,"NIP. ".$verifikator->nip_nik, 0, 0, 'L');
         
         
-        $pdf->Output();   
+        $pdf->Output('I','form_nilai_verifikasi_ta.pdf');   
     }
 
 }

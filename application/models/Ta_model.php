@@ -64,10 +64,15 @@ class Ta_model extends CI_Model
 	//add raihan
 	function get_ta_by_id($id)
 	{
-		
 		$this->db->where(array('id_pengajuan' => $id));
 		$query = $this->db->get($this->table);
 		return $query->Row();
+	}
+	
+	function get_latest_ta_npm($npm)
+	{
+	    $query = $this->db->query("SELECT * FROM tugas_akhir WHERE npm = $npm ORDER BY id_pengajuan DESC LIMIT 1");
+	    return $query->row();
 	}
 
 	function update($data, $where)
@@ -75,6 +80,14 @@ class Ta_model extends CI_Model
 		$this->db->where('id_pengajuan', $where);
 	    $this->db->update($this->table, $data);
 	}
+	
+    function update_ta_approve($ttd, $iduser, $where)
+	{
+		$this->db->where('id_pengajuan', $where);
+		$this->db->where('id_user', $iduser);
+	    $this->db->update('tugas_akhir_approval', array('ttd' => $ttd));
+	}
+	
 	// raihan
 
 	function delete_lampiran($data)
@@ -703,7 +716,7 @@ class Ta_model extends CI_Model
 
 	function cek_seminar($npm,$jenis)
 	{
-		$result = $this->db->query("SELECT * FROM seminar_sidang,tugas_akhir WHERE tugas_akhir.npm = $npm AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.jenis = 'Seminar Hasil' AND (seminar_sidang.status = 4 OR seminar_sidang.status != 6 )");
+		$result = $this->db->query("SELECT * FROM seminar_sidang,tugas_akhir WHERE tugas_akhir.npm = $npm AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.jenis = '$jenis' AND (seminar_sidang.status = 4 OR seminar_sidang.status != 6 )");
 		return $result->result();
 	}
 
@@ -1236,10 +1249,22 @@ class Ta_model extends CI_Model
 		$query = $this->db->query("SELECT count(*) as jml FROM tugas_akhir,tbl_users_mahasiswa,tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.status = 4 AND tugas_akhir.npm NOT IN (SELECT npm FROM seminar_sidang_kompre)");
 		return $query->row();
 	}
+	
+	function get_mahasiswa_ta_rekap_jml_d3($id_user,$angkatan,$npm1,$npm2)
+	{
+	    $query = $this->db->query("SELECT count(*) as jml FROM tugas_akhir,tbl_users_mahasiswa,tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.status = 4 AND tugas_akhir.id_pengajuan NOT IN (SELECT seminar_sidang.id_tugas_akhir FROM seminar_sidang WHERE seminar_sidang.jenis = 'Seminar Tugas Akhir' AND seminar_sidang.status = 10)");
+		return $query->row();
+	}
 
 	function get_mahasiswa_ta_rekap_lulus($id_user,$angkatan,$npm1,$npm2)
 	{
 		$query = $this->db->query("SELECT count(*) as jml FROM tugas_akhir,tbl_users_mahasiswa,tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.status = 4 AND tugas_akhir.npm IN (SELECT npm FROM seminar_sidang_kompre WHERE seminar_sidang_kompre.ket = 1 AND seminar_sidang_kompre.status = 1)");
+		return $query->row();
+	}
+	
+	function get_mahasiswa_ta_rekap_lulus_d3($id_user,$angkatan,$npm1,$npm2)
+	{
+	    $query = $this->db->query("SELECT count(*) as jml FROM tugas_akhir,tbl_users_mahasiswa,tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.status = 4 AND tugas_akhir.id_pengajuan IN (SELECT seminar_sidang.id_tugas_akhir FROM seminar_sidang WHERE seminar_sidang.jenis = 'Seminar Tugas Akhir' AND seminar_sidang.status = 10)");
 		return $query->row();
 	}
 
@@ -1260,6 +1285,12 @@ class Ta_model extends CI_Model
 		$query = $this->db->query("SELECT * FROM tugas_akhir,tbl_users_mahasiswa,tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.status = 4 AND tugas_akhir.npm NOT IN (SELECT npm FROM seminar_sidang_kompre)");
 		return $query->result();
 	}
+	
+	function get_mahasiswa_ta_rekap_ta_detail_d3($id_user,$angkatan,$npm1,$npm2)
+	{
+	    $query = $this->db->query("SELECT tugas_akhir.*,tbl_users_mahasiswa.*,tbl_users_dosen.* FROM tugas_akhir,tbl_users_mahasiswa,tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.status = 4 AND tugas_akhir.id_pengajuan NOT IN (SELECT seminar_sidang.id_tugas_akhir FROM seminar_sidang WHERE seminar_sidang.jenis = 'Seminar Tugas Akhir' AND seminar_sidang.status = 10)");
+		return $query->result();
+	}
 
 	function get_mahasiswa_ta_rekap_ta_detail_seminar($npm,$seminar)
 	{
@@ -1271,6 +1302,18 @@ class Ta_model extends CI_Model
 	{
 		$query = $this->db->query("SELECT * FROM tugas_akhir,tbl_users_mahasiswa,tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.status = 4 AND tugas_akhir.npm IN (SELECT npm FROM seminar_sidang_kompre WHERE seminar_sidang_kompre.ket = 1 AND seminar_sidang_kompre.status = 1)");
 		return $query->result();
+	}
+	
+	function get_mahasiswa_ta_rekap_lulus_detail_d3($id_user,$angkatan,$npm1,$npm2)
+	{
+	    $query = $this->db->query("SELECT tugas_akhir.*,tbl_users_mahasiswa.*,tbl_users_dosen.* FROM tugas_akhir,tbl_users_mahasiswa,tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = tugas_akhir.npm AND tugas_akhir.npm LIKE '$angkatan%' AND (tugas_akhir.npm LIKE '__$npm1%' OR tugas_akhir.npm LIKE '__$npm2%') AND tugas_akhir.status = 4 AND tugas_akhir.id_pengajuan IN (SELECT seminar_sidang.id_tugas_akhir FROM seminar_sidang WHERE seminar_sidang.jenis = 'Seminar Tugas Akhir' AND seminar_sidang.status = 10)");
+		return $query->result();
+	}
+	
+	function lama_ta_mahasiswa_lulus($id_ta)
+	{
+	    $query = $this->db->query("SELECT seminar_sidang_kompre.updated_at as lulus,tugas_akhir_approval.created_at as acc FROM seminar_sidang_kompre,tugas_akhir,tugas_akhir_approval WHERE seminar_sidang_kompre.id_ta = $id_ta AND tugas_akhir.id_pengajuan = seminar_sidang_kompre.id_ta AND tugas_akhir.id_pengajuan = tugas_akhir_approval.id_pengajuan AND tugas_akhir_approval.status_slug = 'Koordinator'");
+		return $query->row();
 	}
 
 	function get_mahasiswa_ta_rekap_lulus_detail_data($id_seminar)
@@ -1314,6 +1357,7 @@ class Ta_model extends CI_Model
 		$query = $this->db->query('SELECT tugas_akhir_approval.created_at FROM tugas_akhir_approval, tugas_akhir WHERE tugas_akhir.id_pengajuan = tugas_akhir_approval.id_pengajuan AND tugas_akhir_approval.status_slug LIKE "%Koordinator%" AND tugas_akhir.id_pengajuan ='. $id);
 		return $query->row();
 	}
+	
 
 	function get_smr_acc_date($id)
 	{
@@ -1321,6 +1365,17 @@ class Ta_model extends CI_Model
 		return $query->row();
 	}
 
+    function get_smr_d3_nilai_date($id)
+    {
+        $query = $this->db->query("SELECT seminar_sidang_nilai_check.created_at FROM seminar_sidang_nilai_check,tugas_akhir,seminar_sidang WHERE tugas_akhir.id_pengajuan = $id AND tugas_akhir.id_pengajuan = seminar_sidang.id_tugas_akhir AND seminar_sidang.id = seminar_sidang_nilai_check.id_seminar AND seminar_sidang_nilai_check.status = 'Ketua Jurusan'");
+		return $query->row();
+    }
+    
+    function get_ta_smr_id($id)
+    {
+        $query = $this->db->query("SELECT * FROM `seminar_sidang` WHERE id_tugas_akhir = $id");
+		return $query->row();
+    }
 
 	function get_komisi_alter($token)
 	{
@@ -1909,4 +1964,8 @@ class Ta_model extends CI_Model
 		$query = $this->db->query("SELECT * FROM `tugas_akhir` WHERE npm = $npm ORDER BY id_pengajuan DESC LIMIT 1");
 		return $query->row();	
 	}
+
+
+	
+	
 }

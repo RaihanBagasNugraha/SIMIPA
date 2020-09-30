@@ -7,18 +7,18 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Kelola Tema Penelitian
-                                        <div class="page-title-subheading">Lorem ipsum.
+                                    <div>Kelola Pengajuan Tema Penelitian
+                                        <div class="page-title-subheading">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="page-title-actions">
-                                    <a href="<?php echo site_url("mahasiswa/tugas-akhir/tema/form") ?>" class="btn-shadow btn btn-success">
-                                            <span class="btn-icon-wrapper pr-2 opacity-7">
-                                                <i class="fas fa-file fa-w-20"></i>
-                                            </span>
-                                            Form Pengajuan Tema
-                                    </a>
+                                    <!--<a href="<?php echo site_url("mahasiswa/tugas-akhir/tema/form") ?>" class="btn-shadow btn btn-success">-->
+                                    <!--        <span class="btn-icon-wrapper pr-2 opacity-7">-->
+                                    <!--            <i class="fas fa-file fa-w-20"></i>-->
+                                    <!--        </span>-->
+                                    <!--        Form Pengajuan Tema-->
+                                    <!--</a>-->
                                 </div>
                                 
                             </div>
@@ -31,6 +31,10 @@
                         if(!empty($_GET['status']) && $_GET['status'] == 'sukses') {
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
+                        }
+                         if(!empty($_GET['status']) && $_GET['status'] == 'error') {
+
+                                echo '<div class="alert alert-danger fade show" role="alert">Terjadi Kesalahan saat mengirim email undangan</div>';
                         }
                         ?>
                         <?php 

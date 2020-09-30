@@ -1,7 +1,8 @@
 
 <ul class="vertical-nav-menu">
-                                <li class="app-sidebar__heading">Sistem Informasi Terpadu <br><br>Fakultas Matematika <br>dan Ilmu Pengetahuan Alam</li>
-
+                                <li class="app-sidebar__heading">Sistem Informasi Terpadu</li>
+                                <li class="app-sidebar__heading">Fakultas Matematika</li>
+                                <li class="app-sidebar__heading">dan Ilmu Pengetahuan Alam</li>
                             </ul>
                         </div> <!-- app-sidebar__inner -->
                     </div> <!-- scrollbar-sidebar -->

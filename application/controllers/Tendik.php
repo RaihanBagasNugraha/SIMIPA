@@ -11,6 +11,7 @@ class Tendik extends CI_Controller {
 		$this->load->model('jurusan_model');
 		$this->load->model('user_model');
 		$this->load->model('ta_model');
+		$this->load->model('pkl_model');
 		$this->load->library('pdf');
 		$this->load->library('encrypt');
 		
@@ -41,7 +42,7 @@ class Tendik extends CI_Controller {
 	
 	public function ubah_akun()
 	{
-		echo "<pre>";
+// 		echo "<pre>";
 		//print_r($_POST);
 		//print_r($_FILES);
 
@@ -510,5 +511,65 @@ class Tendik extends CI_Controller {
 		$this->load->view('tendik/seminar/approve_seminar',$data);
 		
 		$this->load->view('footer_global');
+	}
+
+	function verifikasi_berkas_pkl()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$data['pkl'] = $this->pkl_model->get_verifikasi_berkas_pkl($this->session->userdata('userId'));
+		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		// print_r($data);
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('tendik/pkl/approve_pkl',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function verifikasi_berkas_pkl_perbaiki()
+	{
+		// $data = $this->input->post();
+		// print_r($data);
+		$id = $this->input->post('pkl_id');
+		$status = $this->input->post('status');
+		$keterangan = $this->input->post('keterangan');
+		$ket = $keterangan."$#$".$status;
+		
+		$this->pkl_model->perbaikan_pkl($id,$ket);
+		redirect(site_url("/tendik/verifikasi-berkas/pkl"));
+	}
+
+	function verifikasi_berkas_pkl_setujui()
+	{
+		$status = $this->input->get('status');
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($id);
+		$data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('tendik/pkl/approve_pkl_ttd',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function verifikasi_berkas_pkl_save()
+	{
+		$data = $this->input->post();
+		// print_r($data);
+		$pkl_id = $data['id_pengajuan'];
+		$status = $data['status'];
+		$user_id = $this->session->userdata('userId');
+		$ttd = $data['ttd'];
+
+		$this->pkl_model->pkl_approve_setujui($status,$pkl_id,$user_id,$ttd);
+		redirect(site_url("/tendik/verifikasi-berkas/pkl"));
 	}
 }

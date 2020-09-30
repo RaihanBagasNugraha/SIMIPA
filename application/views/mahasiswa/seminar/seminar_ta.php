@@ -36,7 +36,7 @@
                         }
                         elseif(!empty($_GET['status']) && $_GET['status'] == 'gagal') {
 
-                            echo '<div class="alert alert-danger fade show" role="alert">Terdapat Duplikasi Data</div>';
+                            echo '<div class="alert alert-danger fade show" role="alert">Terdapat Duplikasi Data Seminar</div>';
                         }
                         elseif(!empty($_GET['status']) && $_GET['status'] == 'berhasil') {
 
@@ -295,7 +295,7 @@
                                             <?php    
                                             }
                                                 elseif($row->status == 4 || $row->status == 10){echo "-";} 
-                                                                                               
+                                                elseif($row->status == 6){echo 'Selesai';}                                  
                                                 else{echo "Menunggu";}  ?>
                                              
                                              

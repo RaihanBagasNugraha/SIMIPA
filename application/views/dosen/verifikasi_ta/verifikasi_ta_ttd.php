@@ -89,7 +89,7 @@
                                     <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label">Jumlah SKS</label>
                                             <div class="col-sm-3">
-                                                <input value="<?php echo $ta->ipk ?>" required name="sks" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
+                                                <input value="<?php echo $ta->sks ?>" required name="sks" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
                                             </div>
                                     </div>
 

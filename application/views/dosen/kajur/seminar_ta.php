@@ -7,8 +7,8 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Kelola Seminar
-                                        <div class="page-title-subheading">Lorem ipsum.
+                                    <div>Kelola Pengajuan Seminar
+                                        <div class="page-title-subheading">
                                         </div>
                                     </div>
                                 </div>
@@ -24,6 +24,10 @@
                         if(!empty($_GET['status']) && $_GET['status'] == 'sukses') {
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
+                        }
+                        if(!empty($_GET['status']) && $_GET['status'] == 'error') {
+
+                            echo '<div class="alert alert-dangar fade show" role="alert">Kesalahan Dalam Mengirim Email Undangan</div>';
                         }
                         ?>
                         <?php 

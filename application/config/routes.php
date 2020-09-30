@@ -65,6 +65,8 @@ $route['mahasiswa/kelola-akun'] = 'mahasiswa/akun';
 $route['mahasiswa/ubah-data-akun'] = 'mahasiswa/ubah_akun';
 $route['mahasiswa/kelola-biodata'] = 'mahasiswa/biodata';
 $route['mahasiswa/ubah-data-biodata'] = 'mahasiswa/ubah_biodata';
+
+    //mhs tema ta
 $route['mahasiswa/tugas-akhir/tema'] = 'mahasiswa/tugas_akhir';
 $route['mahasiswa/tugas-akhir/tema/form'] = 'mahasiswa/form_tugas_akhir';
 $route['mahasiswa/tugas-akhir/tema/lampiran'] = 'mahasiswa/form_tugas_akhir_lampiran';
@@ -77,6 +79,7 @@ $route['mahasiswa/hapus-data-ta'] = 'mahasiswa/hapus_data_ta';
 $route['mahasiswa/tugas-akhir/tema/ajukan'] = 'mahasiswa/ajukan_data_ta';
 $route['mahasiswa/tugas-akhir/tema/ajukan-perbaikan'] = 'mahasiswa/ajukan_data_ta_perbaikan';
     
+    //mhs seminar
 $route['mahasiswa/tugas-akhir/seminar'] = 'mahasiswa/seminar';
 $route['mahasiswa/tugas-akhir/seminar/form'] = 'mahasiswa/form_seminar';
 $route['mahasiswa/tugas-akhir/seminar/lampiran'] = 'mahasiswa/lampiran_seminar';
@@ -87,13 +90,28 @@ $route['mahasiswa/hapus-data-seminar'] = 'mahasiswa/hapus_data_seminar';
 $route['mahasiswa/ajukan-data-seminar'] = 'mahasiswa/ajukan_data_seminar';
 $route['mahasiswa/ajukan-perbaikan-seminar'] = 'mahasiswa/ajukan_perbaikan_seminar';
 
+    //mhs verif ta
 $route['mahasiswa/tugas-akhir/verifikasi-ta'] = 'mahasiswa/verifikasi_ta';
 $route['mahasiswa/tugas-akhir/verifikasi-ta/ajukan'] = 'mahasiswa/verifikasi_ta_ajukan';
 
+    //mhs bimbingan
 $route['mahasiswa/tugas-akhir/bimbingan'] = 'mahasiswa/bimbingan';
 
+    //mhs lembaga kemahasiswaan
 $route['mahasiswa/mahasiswa-add-lk'] = 'mahasiswa/add_lk';
 $route['mahasiswa/mahasiswa-update-lk'] = 'mahasiswa/update_lk';
+
+    //mhs kp pkl
+$route['mahasiswa/pkl/pkl-home'] = 'mahasiswa/pkl_home';
+$route['mahasiswa/pkl/pkl-home/form'] = 'mahasiswa/pkl_home_form';
+$route['mahasiswa/pkl/pkl-home/form/add'] = 'mahasiswa/pkl_home_form_add';
+$route['mahasiswa/pkl/pkl-home/delete'] = 'mahasiswa/pkl_home_delete';
+$route['mahasiswa/pkl/pkl-home/lampiran'] = 'mahasiswa/pkl_home_lampiran';
+$route['mahasiswa/pkl/pkl-home/lampiran/upload'] = 'mahasiswa/pkl_home_lampiran_upload';
+$route['mahasiswa/pkl/pkl-home/lampiran/delete'] = 'mahasiswa/pkl_home_lampiran_delete';
+$route['mahasiswa/pkl/pkl-home/ajukan'] = 'mahasiswa/pkl_home_ajukan';
+$route['mahasiswa/pkl/pkl-home/perbaikan'] = 'mahasiswa/pkl_home_ajukan_perbaikan';
+
 
 //PDF TA
 $route['mahasiswa/tugas-akhir/tema/form_pdf'] = 'pdfta/set_pdf';
@@ -197,7 +215,8 @@ $route['dosen/tugas-akhir/nilai-verifikasi-ta/verifikasi'] = 'dosen/nilai_verifi
 
 
 
-    //rekap koor
+    //rekap ta
+    //koor
 $route['dosen/koordinator/rekap/tugas-akhir'] = 'dosen/rekap_ta';
 $route['dosen/koordinator/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
 $route['dosen/koordinator/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
@@ -211,7 +230,55 @@ $route['dosen/koordinator/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_t
 $route['dosen/koordinator/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
 $route['dosen/koordinator/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
 
+    //kaprodi
+$route['dosen/kaprodi/rekap/tugas-akhir'] = 'dosen/rekap_ta';
+$route['dosen/kaprodi/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
+$route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
+$route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-ta'] = 'dosen/rekap_ganti_ta';
+$route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-pbb/save'] = 'dosen/rekap_ganti_pbb_save';
 
+$route['dosen/kaprodi/rekap/seminar'] = 'dosen/rekap_seminar_koor';
+$route['dosen/kaprodi/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
+$route['dosen/kaprodi/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
+$route['dosen/kaprodi/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
+$route['dosen/kaprodi/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
+$route['dosen/kaprodi/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
+
+    //kajur
+$route['dosen/struktural/rekap/tugas-akhir'] = 'dosen/rekap_ta';
+$route['dosen/struktural/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
+$route['dosen/struktural/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
+$route['dosen/struktural/rekap/tugas-akhir/detail/ganti-ta'] = 'dosen/rekap_ganti_ta';
+$route['dosen/struktural/rekap/tugas-akhir/detail/ganti-pbb/save'] = 'dosen/rekap_ganti_pbb_save';
+
+$route['dosen/struktural/rekap/seminar'] = 'dosen/rekap_seminar_koor';
+$route['dosen/struktural/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
+$route['dosen/struktural/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
+$route['dosen/struktural/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
+$route['dosen/struktural/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
+$route['dosen/struktural/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
+    //kajur pkl
+$route['dosen/struktural/pkl/add-pkl'] = 'dosen/kajur_add_pkl';
+$route['dosen/struktural/pkl/add-pkl/form'] = 'dosen/kajur_add_pkl_form';
+$route['dosen/struktural/pkl/add-pkl/form/save'] = 'dosen/kajur_add_pkl_form_save';
+$route['dosen/struktural/pkl/add-pkl/show'] = 'dosen/kajur_add_pkl_show';
+$route['dosen/struktural/pkl/add-pkl/delete'] = 'dosen/kajur_add_pkl_delete';
+$route['dosen/struktural/pkl/add-lokasi-pkl'] = 'dosen/kajur_add_lokasi_pkl';
+$route['dosen/struktural/pkl/add-lokasi-pkl/aksi'] = 'dosen/kajur_add_lokasi_pkl_aksi';
+$route['dosen/struktural/pkl/add-lokasi-pkl/aksi/save'] = 'dosen/kajur_add_lokasi_pkl_aksi_save';
+$route['dosen/struktural/pkl/add-lokasi-pkl/aksi/delete'] = 'dosen/kajur_add_lokasi_pkl_aksi_delete';
+$route['dosen/struktural/pkl/add-lokasi-pkl/aksi/edit'] = 'dosen/kajur_add_lokasi_pkl_aksi_edit';
+
+    //dosen pkl
+$route['dosen/pkl/approve'] = 'dosen/pkl_approve';
+$route['dosen/pkl/approve/perbaiki'] = 'dosen/pkl_approve_perbaiki';
+$route['dosen/pkl/approve/setujui'] = 'dosen/pkl_approve_setujui';
+$route['dosen/pkl/approve/setujui/save'] = 'dosen/pkl_approve_setujui_save';
+
+    //koor pkl
+$route['dosen/pkl/pengajuan/koordinator'] = 'dosen/pkl_approve_koor';
+$route['dosen/pkl/pengajuan/koordinator-tolak'] = 'dosen/pkl_approve_koor_tolak';
+$route['dosen/pkl/pengajuan/koordinator/approve'] = 'dosen/pkl_approve_koor_approve';
 
 
 // Tendik
@@ -233,7 +300,10 @@ $route['tendik/verifikasi-berkas/seminar/form'] = 'tendik/seminar_aksi';
 $route['tendik/verifikasi-berkas/seminar/decline'] = 'tendik/verifikasi_berkas_seminar_decline';
 $route['tendik/verifikasi-berkas/seminar/approve'] = 'tendik/verifikasi_berkas_seminar_approve';
 
-
+$route['tendik/verifikasi-berkas/pkl'] = 'tendik/verifikasi_berkas_pkl';
+$route['tendik/verifikasi-berkas/pkl/perbaiki'] = 'tendik/verifikasi_berkas_pkl_perbaiki';
+$route['tendik/verifikasi-berkas/pkl/setujui'] = 'tendik/verifikasi_berkas_pkl_setujui';
+$route['tendik/verifikasi-berkas/pkl/save'] = 'tendik/verifikasi_berkas_pkl_save';
 
 $route['beranda'] = 'admin';
 $route['admin'] = 'welcome';

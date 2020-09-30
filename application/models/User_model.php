@@ -293,9 +293,9 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
-	function check_tugas_tambahan_duplikat($id_tugas,$jurusan,$prodi,$aktif)
+	function check_tugas_tambahan_duplikat($id_tugas,$jurusan,$prodi,$aktif,$periode)
 	{
-		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = $id_tugas AND (jurusan_unit = $jurusan AND prodi = $prodi) AND aktif = $aktif");
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = $id_tugas AND periode '$periode' and (jurusan_unit = $jurusan AND prodi = $prodi) AND aktif = $aktif");
 		return $result->row();
 	}
 
@@ -327,6 +327,12 @@ class User_model extends CI_Model
 	function tugas_dosen_koor($userId)
 	{
 		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = 17  AND aktif = 1 AND id_user = $userId");
+		return $result->row();
+	}
+
+	function tugas_dosen_koor_kp($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = 19  AND aktif = 1 AND id_user = $userId");
 		return $result->row();
 	}
 
@@ -421,7 +427,7 @@ class User_model extends CI_Model
 
 	function update_tugas_lk($id,$ket)
 	{
-		if($ket == nonaktif){
+		if($ket == 'nonaktif'){
 			$this->db->where('id', $id);
 			$this->db->update('tbl_users_tugas_mahasiswa', array('aktif' => '0'));
 		}

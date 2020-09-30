@@ -49,7 +49,7 @@
                                     <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
-                                            <th>Judul</th>
+                                            <th>Nama/NPM</th>
                                             <th>Komisi Pembimbing</th>
                                             <th>Komisi Pembahas</th>
                                             <th>Berkas Lampiran</th>
@@ -59,7 +59,7 @@
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if(empty($ta) && empty($pa))
+                                        if(empty($ta))
                                         {
                                             echo "<tr><td colspan='6'>Data tidak tersedia</td></tr>";
                                         }
@@ -69,9 +69,12 @@
                                         ?>
                                             <tr>
                                                 <td>
-                                                    <?php echo $row->judul1 ?> 
-
-                                                    <?php if($row->judul2 != NULL){ echo "<br><br>$row->judul2"; } ?>
+                                                    <?php 
+                                                        echo $this->user_model->get_mahasiswa_name($row->npm);
+                                                        echo "<br>";
+                                                        echo $row->npm; 
+                                                    
+                                                    ?> 
                                                 </td>
                                                 <td>
                                                     <?php 
