@@ -73,7 +73,8 @@
                                         else
                                         {
                                             $n = 1;
-                                            $list = $this->pkl_model->get_mahasiswa_lokasi_daftar($pkl->id);
+                                            $a = 0;
+                                            $list = $this->pkl_model->get_mahasiswa_lokasi_daftar_tendik($pkl->id,$this->session->userdata('userId'));
                                             foreach($list as $row){   
                                         ?>
                                             <tr>
@@ -98,19 +99,20 @@
                                                 </td>
                                                 <td class="align-top">
                                                     <?php 
+                                                    
                                                         $tgl_pengajuan = $this->pkl_model->get_surat_pkl($row->pkl_id); 
                                                         echo "<b>Tanggal Mengajukan : </b><br>".substr($row->created_at,0,16);
                                                         echo "<br>";
-                                                        if(empty($tgl_pengajuan)){
-                                                            echo "<b><i>Sedang Proses Verifikasi Berkas</i></b>";
+                                                        if(empty($tgl_pengajuan) && $row->status != 5){
+                                                            echo "<b><i>Sedang Proses Approval Pembimbing Akademik</i></b>";
+                                                        }
+                                                        elseif($row->status == 5){
+                                                            echo "<b><i>Sedang Proses Perbaikan Berkas Pendukung</i></b>";
+                                                            
                                                         }
                                                         else{
-                                                            if($tgl_pengajuan->updated_at != NULL || $tgl_pengajuan->updated_at != ""){
-                                                                echo "<b>Tanggal Verifikasi Berkas : </b><br>".substr($tgl_pengajuan->updated_at,0,16);
-                                                            }
-                                                            else{
-                                                                echo "<b><i>Sedang Proses Verifikasi Berkas</i></b>";
-                                                            }
+                                                            echo "<b>Tanggal Berkas : </b><br>".substr($tgl_pengajuan->created_at,0,16);
+                                                            $a += 1;
                                                         }
                                                     //    echo $row->status;
                                                     ?>
@@ -119,6 +121,7 @@
 
                                                 <td class="align-top">
                                                     <?php 
+                                                        
                                                          $lampiran = $this->pkl_model->select_lampiran_by_pkl($row->pkl_id, $row->npm); 
                                                          if(empty($lampiran)) {
                                                              echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
@@ -135,19 +138,15 @@
                                                 </td>
 
                                                 <td class="align-top">
-                                                <?php if(!empty($tgl_pengajuan) && $row->status == "2" ){ ?>
-                                                    <a data-toggle = "modal" data-id="<?php echo $row->pkl_id ?>" data-lokasi="<?php echo $row->id_lokasi ?>" data-alm="<?php echo $periode_al."#$#$".$id_alamat ?>" class="passingID1" >
-                                                            <button type="button" class="btn mb-2 btn-wide btn-info btn-sm btn-block"  data-toggle="modal" data-target="#PklKoorSetuju">
-                                                                Setujui
+                                                <?php if(!empty($tgl_pengajuan) && $row->status == "1" ){ ?>
+                                                    <!-- <a href="<?php echo site_url("tendik/verifikasi-berkas/pkl/setujui?status=admin&id=".$this->encrypt->encode($row->pkl_id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                    </a> -->
+                                                    <a data-toggle = "modal" data-id="<?php echo $row->pkl_id ?>" periode="<?php echo $periode_al ?>" id_alamat="<?php echo $id_alamat ?>" data-status="admin" class="passingID" >
+                                                            <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalperbaikiAdm">
+                                                                Perbaiki
                                                             </button>
                                                     </a> 
-                                                    <!-- <?php echo $row->pkl_id; ?> -->
-                                                    <a data-toggle = "modal" data-id="<?php echo $row->pkl_id."#$#$"."koor" ?>" data-add="<?php echo $periode_al."#$#$".$id_alamat ?>" class="passingID2" >
-                                                            <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#PklKoorTolak">
-                                                                Tolak
-                                                            </button>
-                                                    </a> 
-                                                <?php }elseif(!empty($tgl_pengajuan) && $row->status >= 3){ echo "<b>Disetujui</b>";}else{ echo "-"; } ?>
+                                                <?php }elseif(!empty($tgl_pengajuan) && $row->status == 3){ echo "<b>Disetujui</b>";}else{ echo "<b>Menunggu</b>"; } ?>
                                                     
                                                 </td>
                                                
@@ -156,10 +155,31 @@
                                           $n++;  }
                                         }
                                         ?>
-                                    
-                                        
                                         </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="5"><i>Silahkan Lakukan Approval Setelah Verifikasi Berkas Selesai</i></td>
+                                                <td> 
+                                                <form id="form" method="post" action="<?php echo site_url('tendik/verifikasi-berkas/pkl/approve/ttd') ?>"> 
+                                                    <input type="hidden" name="jumlah" value="<?php echo $jml ?>">
+                                                    <input type="hidden" name="lokasi" value="<?php echo $pkl->id ?>">
+                                                    <?php 
+                                                    $b=1;
+                                                    foreach($list as $row){ ?>
+                                                        <input type="hidden" name="id[<?php echo $b ?>]" value = "<?php echo $row->pkl_id?>" >
+                                                    <?php $b++; } ?>
+                                                    
+                                                     <?php if($jml == $a && $jml != 0){$button = "";}else{$button = "disabled";} ?>
+                                                   <button type="submit" class="btn mb-2 btn-wide btn-primary btn-sm btn-block" <?php echo $button ?> id="btn-submit">
+                                                        Setujui
+                                                    </button>
+                                                </form>
+                                                </td>
+                                                
+                                            </tr>
+                                        </tfoot>
                                     </table>
+                                    
                                 </div>
                                 </div>
                             </div>
@@ -209,6 +229,8 @@ $(document).ready(function(){
             })
         }
 
+
+    })   
     });
 
     $("#kecamatan").change(function(){
@@ -225,32 +247,27 @@ $(document).ready(function(){
         }
 
     });
+
+    // $("#btn-submit").click(function(e){
+    //     e.preventDefault()
+    //     $("#form").submit()
+    // });
 });
 
 </script>
 
 <script>
-    $(".passingID1").click(function () {
+   $(".passingID").click(function () {
                 var id = $(this).attr('data-id');
-                var lokasi = $(this).attr('data-lokasi');
-                var al = $(this).attr('data-alm');
-                var almt = al.split("#$#$");
-                $("#ID_pkl").val( id );
-                $("#Lokasi").val( lokasi );
-                $("#periode1").val( almt[0] );
-                $("#id_al1").val( almt[1] );
-    });      
+                var status = $(this).attr('data-status');
+                var periode = $(this).attr('periode');
+                var id_alamat = $(this).attr('id_alamat');
+                $("#ID").val( id );
+                $("#status").val( status );
+                $("#periode").val( periode );
+                $("#id_alamat").val( id_alamat );
+            });        
 
-    $(".passingID2").click(function () {
-                var id = $(this).attr('data-id');
-                var al = $(this).attr('data-add');
-                var data = id.split("#$#$");
-                var almt = al.split("#$#$");
-                $("#ID").val( data[0] );
-                $("#status").val( data[1] );
-                $("#periode").val( almt[0] );
-                $("#id_al").val( almt[1] );
-    });      
-       
+
 </script>
                         

@@ -24,7 +24,7 @@
                             </div>
                         </div> <!-- app-page-title -->
                         <?php
-                        // debug
+                        // debuga
                         //echo "<pre>";
                         //print_r($biodata);
                         //echo "</pre>";
@@ -49,12 +49,12 @@
                                     <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
-                                            <th>Nama/Npm</th>
-                                            <th>Tahun/Periode</th>
-                                            <th>Lokasi</th>
-                                            <th>IPK/SKS</th>
-                                            <th>Berkas Lampiran</th>
-                                            <th>Aksi</th>
+                                            <th stlye="width:10%">Tahun</th>
+                                            <th stlye="width:5%">Periode</th>
+                                            <th stlye="width:50%">Lokasi</th>
+                                            <th stlye="width:5%">Jumlah<br>Mahasiswa<br>Mendaftar</th>
+                                            <!-- <th>Status</th> -->
+                                            <th stlye="width:30%">Aksi</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -66,73 +66,41 @@
                                         else
                                         {
                                             foreach($pkl as $row) {
-                                                $periode_data = $this->pkl_model->get_pkl_kajur_by_id($row->id_periode);
+                                                
                                         ?>
                                             <tr>
                                                 <td class="align-top">
                                                     <?php 
-                                                        echo $this->user_model->get_mahasiswa_name($row->npm);
-                                                        echo "<br>";
-                                                        echo $row->npm; 
+                                                       echo "$row->tahun";
+                                                    ?>
+                                                </td>
+                                                <td class="align-top">
+                                                    <?php 
+                                                       echo "$row->periode";
                                                     ?> 
                                                 </td>
-                                                
+
                                                 <td class="align-top">
                                                     <?php 
-                                                        $periode = $this->pkl_model->get_pkl_kajur_by_id($row->id_periode);
-                                                        echo "$periode->tahun <br> Periode $periode->periode";
+                                                        echo "<b>$row->lokasi</b>";
+                                                        echo "<br>";
+                                                        echo "$row->alamat";
                                                     
                                                     ?>
                                                 </td>
 
                                                 <td class="align-top">
                                                     <?php 
-                                                        $lokasi = $this->pkl_model->get_lokasi_pkl_by_id($row->id_lokasi);
-                                                        echo "$lokasi->lokasi";
-                                                    
+                                                        $jml_mhs = $this->pkl_model->get_jml_mahasiswa_lokasi_daftar_tendik($row->id,$this->session->userdata('userId'))->jml;
+                                                        echo $jml_mhs;
                                                     ?>
                                                 </td>
-
-                                                <td class="align-top">
-                                                    <?php 
-                                                       echo "<b>IPK : </b>".$row->ipk;
-                                                       echo "<br>";
-                                                       echo "<b>SKS : </b>".$row->sks;
-                                                    
-                                                    ?>
-                                                </td>
-
-                                                <td class="align-top">
-                                                    <?php 
-                                                         $lampiran = $this->pkl_model->select_lampiran_by_pkl($row->pkl_id, $row->npm); 
-                                                         if(empty($lampiran)) {
-                                                             echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
-                                                         } else {
-                                                         
-                                                             foreach($lampiran as $rw) {
-                                                                 echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
-                                                             }
-             
-                                                             echo "</ul>";
-                                                         }
-                                                    
-                                                    ?>
-                                                </td>
-
-                                                         
                                                 <td class="align-top">
 
-                                                    <a href="<?php echo site_url("tendik/verifikasi-berkas/pkl/setujui?status=admin&id=".$this->encrypt->encode($row->pkl_id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
-                                                    </a>
-                                                    
-                                                    <a data-toggle = "modal" data-id="<?php echo $row->pkl_id ?>" data-status="admin" class="passingID" >
-                                                            <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalperbaikiAdm">
-                                                                Perbaiki
-                                                            </button>
-                                                    </a> 
+                                                <a href="<?php echo site_url("tendik/verifikasi-berkas/pkl/approve?periode=$row->id_pkl&id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block <?php echo $jml_mhs == "0" ? "disabled" : "" ?>">Lihat
+                                                </a>
+                                              
                                                 </td>
-
-                                               
                                             </tr>
                                         <?php
                                             }

@@ -134,15 +134,15 @@
                                 <table class="mb-0 table table-striped">
                                     <thead>
                                         <tr>
-                                            <th style="width:90%">Lokasi</th>
-                                            <th>Kuota Mahasiswa</th>
+                                            <th style="width:40%">Lokasi</th>
+                                            <th style="width:60%">Alamat</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach($lokasi as $lok){ ?>
                                             <tr>
                                                 <td><?php echo $lok->lokasi; ?></td>
-                                                <td><?php echo $lok->maks_kuota == "99" ? "∞":$lok->maks_kuota." Orang"; ?> </td>
+                                                <td><?php echo $lok->alamat; ?></td>
                                             </tr>    
                                         <?php } ?>
                                     </tbody>

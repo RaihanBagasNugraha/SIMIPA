@@ -516,9 +516,8 @@ class Tendik extends CI_Controller {
 	function verifikasi_berkas_pkl()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pkl'] = $this->pkl_model->get_approve_tendik_lokasi($this->session->userdata('userId'));
 
-		$data['pkl'] = $this->pkl_model->get_verifikasi_berkas_pkl($this->session->userdata('userId'));
-		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 
 		// print_r($data);
 		$this->load->view('header_global', $header);
@@ -536,10 +535,12 @@ class Tendik extends CI_Controller {
 		$id = $this->input->post('pkl_id');
 		$status = $this->input->post('status');
 		$keterangan = $this->input->post('keterangan');
+		$periode = $this->input->post('periode');
+		$id_alamat = $this->input->post('id_alamat');
 		$ket = $keterangan."$#$".$status;
 		
 		$this->pkl_model->perbaikan_pkl($id,$ket);
-		redirect(site_url("/tendik/verifikasi-berkas/pkl"));
+		redirect(site_url("/tendik/verifikasi-berkas/pkl/approve?periode=$periode&id=$id_alamat"));
 	}
 
 	function verifikasi_berkas_pkl_setujui()
@@ -563,13 +564,73 @@ class Tendik extends CI_Controller {
 	function verifikasi_berkas_pkl_save()
 	{
 		$data = $this->input->post();
+		// echo "<pre>";
 		// print_r($data);
-		$pkl_id = $data['id_pengajuan'];
+
+		// echo $data['id'][1];
+		$jml = $data['jumlah'];
 		$status = $data['status'];
 		$user_id = $this->session->userdata('userId');
 		$ttd = $data['ttd'];
+		$no_surat = $data['no_penetapan'].$data['nomor'];
 
-		$this->pkl_model->pkl_approve_setujui($status,$pkl_id,$user_id,$ttd);
+		for($i=1;$i<=$jml;$i++){
+			//add no_surat pkl_mahasiswa
+			$this->pkl_model->pkl_add_no_surat($data['id'][$i],$no_surat);
+
+			//staff_surat
+			$this->pkl_model->update_surat($data['id'][$i],$no_surat);
+
+			$this->pkl_model->pkl_approve_setujui($status,$data['id'][$i],$user_id,$ttd);
+		}
 		redirect(site_url("/tendik/verifikasi-berkas/pkl"));
 	}
+
+	function verifikasi_berkas_pkl_list()
+	{
+		$periode = $this->input->get('periode');
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pkl'] = $this->pkl_model->get_lokasi_pkl_by_id($id);
+		$data['jml'] = $this->pkl_model->get_jml_mahasiswa_lokasi_daftar_tendik($id,$this->session->userdata('userId'))->jml;
+		$data['periode'] = $periode;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('tendik/pkl/approve_pkl_list',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function verifikasi_berkas_pkl_approve()
+	{
+		$input = $this->input->post();
+		// echo "<pre>";
+		// print_r($input);
+		$jml = $input['jumlah'];
+		for($i=1;$i<=$jml;$i++)
+		{
+			$data['pkl'][$i] = $this->pkl_model->select_pkl_by_id_pkl($input['id'][$i]);
+		}
+			$data['status'] = "admin";
+			$data['jml'] = $jml;
+			$data['lokasi'] = $this->pkl_model->get_lokasi_pkl_by_id($input['lokasi']);
+		
+		// print_r($data);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('tendik/pkl/approve_pkl_ttd',$data);
+		
+		$this->load->view('footer_global');
+
+		
+	}
+
+
 }

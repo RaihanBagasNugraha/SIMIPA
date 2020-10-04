@@ -2995,22 +2995,16 @@ class Dosen extends CI_Controller {
 		// echo "<pre>";
 		// print_r($data);
 		$lokasi = $data['lokasi'];
-		$kuota = $data['kuota'];
 		$id_pkl = $data['id_pkl'];
 		$alamat = $data['alamat'];
 
 		$id_aksi = $data['id_aksi'];
 		$aksi = $data['aksi'];
 
-		if($kuota == ""){
-			$kuota = "99";
-		}
-
 		$data_lokasi=array(
 			"id_pkl" => $id_pkl,
 			"lokasi" => $lokasi,
 			"alamat" => $alamat,
-			"maks_kuota" => $kuota
 		);
 		$this->pkl_model->insert_pkl_lokasi($data_lokasi);
 		redirect(site_url("/dosen/struktural/pkl/add-lokasi-pkl/aksi?aksi=$aksi&id=$id_aksi")); 
@@ -3039,14 +3033,9 @@ class Dosen extends CI_Controller {
 		$id_lokasi = $data['id_lokasi'];
 		$id_aksi = $data['id_aksi'];
 		$lokasi = $data['lokasi'];
-		$kuota = $data['kuota'];
 		$alamat = $data['alamat'];
 
-		if($kuota == ""){
-			$kuota = "99";
-		}
-
-		$this->pkl_model->update_pkl_lokasi($id_lokasi,$lokasi,$kuota,$alamat);
+		$this->pkl_model->update_pkl_lokasi($id_lokasi,$lokasi,$alamat);
 		redirect(site_url("/dosen/struktural/pkl/add-lokasi-pkl/aksi?aksi=tambah&id=$id_aksi"));
 	}
 	
@@ -3101,6 +3090,14 @@ class Dosen extends CI_Controller {
 		$user_id = $this->session->userdata('userId');
 		$ttd = $data['ttd'];
 
+		if($status == "pa"){
+			//save surat
+			$data_surat_pa = array(
+				"jenis" => 3,
+				"id_jenis" => $pkl_id
+			);
+			$this->pkl_model->save_surat_pa($data_surat_pa);	
+		}
 		$this->pkl_model->pkl_approve_setujui($status,$pkl_id,$user_id,$ttd);
 		redirect(site_url("/dosen/pkl/approve"));
 	}
@@ -3126,8 +3123,11 @@ class Dosen extends CI_Controller {
 		$keterangan = $this->input->post('keterangan');
 		$ket = $keterangan."$#$".$status;
 
+		$periode = $this->input->post('periode');
+		$id_al = $this->input->post('id_al');
+
 		$this->pkl_model->tolak_pkl($id,$ket);
-		redirect(site_url("/dosen/pkl/pengajuan/koordinator"));
+		redirect(site_url("/dosen/pkl/pengajuan/koordinator/approve?periode=$periode&id=$id_al"));
 	}
 
 	function pkl_approve_koor_approve()
@@ -3137,7 +3137,7 @@ class Dosen extends CI_Controller {
 		$id = $this->encrypt->decode($id);
 
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['pkl'] = $this->pkl_model->get_pkl_by_lokasi($id);
+		$data['pkl'] = $this->pkl_model->get_lokasi_pkl_by_id($id);
 		$data['periode'] = $periode;
 
 		$this->load->view('header_global', $header);
@@ -3146,5 +3146,40 @@ class Dosen extends CI_Controller {
 		$this->load->view('dosen/koordinator/pkl/pkl_koordinator_ttd',$data);
 		
 		$this->load->view('footer_global');
+	}
+
+	function pkl_approve_koor_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$pkl_id = $data['pkl_id'];
+		$pembimbing = $data['pembimbing'];
+		$lokasi = $data['lokasi'];
+
+		$id_alm = $data['id_alamat'];
+		$periode_alm = $data['periode_alamat'];
+
+		//input approval
+		$data_approval = array(
+			"lokasi_id"=>$lokasi,
+		);
+		$approval_id = $this->pkl_model->add_approval_pkl($data_approval);
+
+		//input approval_meta
+		$data_app_meta = array(
+			"approval_id" => $approval_id,
+			"pkl_id" => $pkl_id
+		);
+		$this->pkl_model->add_approval_pkl_meta($data_app_meta);
+
+		//update pembimbing & status
+		$data_koor = array(
+			"pembimbing" => $pembimbing,
+			"status" => "3"
+		);
+		$this->pkl_model->approval_koor_pkl($pkl_id,$data_koor);
+
+		redirect(site_url("/dosen/pkl/pengajuan/koordinator/approve?periode=$periode_alm&id=$id_alm"));
 	}
 }

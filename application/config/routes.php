@@ -279,6 +279,7 @@ $route['dosen/pkl/approve/setujui/save'] = 'dosen/pkl_approve_setujui_save';
 $route['dosen/pkl/pengajuan/koordinator'] = 'dosen/pkl_approve_koor';
 $route['dosen/pkl/pengajuan/koordinator-tolak'] = 'dosen/pkl_approve_koor_tolak';
 $route['dosen/pkl/pengajuan/koordinator/approve'] = 'dosen/pkl_approve_koor_approve';
+$route['dosen/pkl/pengajuan/koordinator-save'] = 'dosen/pkl_approve_koor_save';
 
 
 // Tendik
@@ -304,6 +305,9 @@ $route['tendik/verifikasi-berkas/pkl'] = 'tendik/verifikasi_berkas_pkl';
 $route['tendik/verifikasi-berkas/pkl/perbaiki'] = 'tendik/verifikasi_berkas_pkl_perbaiki';
 $route['tendik/verifikasi-berkas/pkl/setujui'] = 'tendik/verifikasi_berkas_pkl_setujui';
 $route['tendik/verifikasi-berkas/pkl/save'] = 'tendik/verifikasi_berkas_pkl_save';
+$route['tendik/verifikasi-berkas/pkl/approve'] = 'tendik/verifikasi_berkas_pkl_list';
+$route['tendik/verifikasi-berkas/pkl/approve/ttd'] = 'tendik/verifikasi_berkas_pkl_approve';
+
 
 $route['beranda'] = 'admin';
 $route['admin'] = 'welcome';

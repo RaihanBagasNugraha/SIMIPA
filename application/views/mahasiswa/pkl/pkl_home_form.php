@@ -82,10 +82,10 @@
                                                 <option value = "">-- Pilih Lokasi --</option>
                                                 <?php 
                                                     //get lokasi
-                                                    $lokasi = $this->pkl_model->get_lokasi_pkl_not_full($periode_cek->id_pkl);
+                                                    $lokasi = $this->pkl_model->get_lokasi_pkl($periode_cek->id_pkl);
                                                     foreach($lokasi as $lok){
                                                 ?>
-                                                    <option value=<?php echo $lok->id ?> <?php echo $data_pkl['id_lokasi'] == $lok->id ?"selected":"" ?>><?php echo  $lok->maks_kuota == "99"? $lok->lokasi." (".$lok->isi_kuota."/∞)" : $lok->lokasi." (".$lok->isi_kuota."/".$lok->maks_kuota.")" ?></option>
+                                                    <option value=<?php echo $lok->id ?> <?php echo $data_pkl['id_lokasi'] == $lok->id ?"selected":"" ?>><?php echo $lok->lokasi ?></option>
                                                 <?php } ?>    
                                                 </select>
                                             </div>

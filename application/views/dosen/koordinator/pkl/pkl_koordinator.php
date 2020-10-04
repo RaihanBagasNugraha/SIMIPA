@@ -49,13 +49,12 @@
                                     <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
-                                            <th>Tahun</th>
-                                            <th>Periode</th>
-                                            <th>Lokasi</th>
-                                            <th>Terisi/Kuota</th>
-                                            <th>Mendaftar</th>
+                                            <th stlye="width:10%">Tahun</th>
+                                            <th stlye="width:5%">Periode</th>
+                                            <th stlye="width:50%">Lokasi</th>
+                                            <th stlye="width:5%">Jumlah<br>Mahasiswa</th>
                                             <!-- <th>Status</th> -->
-                                            <th>Aksi</th>
+                                            <th stlye="width:30%">Aksi</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -83,14 +82,11 @@
                                                 </td>
 
                                                 <td class="align-top">
-                                                    <?php echo "$row->lokasi"; ?>
-                                                </td>
-
-                                                <td class="align-top">
                                                     <?php 
-                                                        echo "$row->isi_kuota";
-                                                        echo " / ";
-                                                        echo $row->maks_kuota == "99" ? "∞":$row->maks_kuota ;
+                                                        echo "<b>$row->lokasi</b>";
+                                                        echo "<br>";
+                                                        echo "$row->alamat";
+                                                    
                                                     ?>
                                                 </td>
 
@@ -99,9 +95,6 @@
                                                        echo $this->pkl_model->get_jml_mahasiswa_lokasi_daftar($row->id)->jml ;
                                                     ?>
                                                 </td>
-                                                
-
-
                                                 <td class="align-top">
 
                                                 <a href="<?php echo site_url("dosen/pkl/pengajuan/koordinator/approve?periode=$row->id_pkl&id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Lihat

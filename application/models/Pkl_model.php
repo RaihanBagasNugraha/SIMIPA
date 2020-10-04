@@ -92,9 +92,9 @@ class Pkl_model extends CI_Model
         $this->db->query("DELETE FROM pkl_lokasi WHERE id = $where");
     }
 
-    function update_pkl_lokasi($id_lokasi,$lokasi,$kuota,$alamat)
+    function update_pkl_lokasi($id_lokasi,$lokasi,$alamat)
     {
-        $this->db->query("UPDATE pkl_lokasi SET lokasi='$lokasi',alamat='$alamat',maks_kuota=$kuota WHERE id = $id_lokasi");
+        $this->db->query("UPDATE pkl_lokasi SET lokasi='$lokasi',alamat='$alamat' WHERE id = $id_lokasi");
     }
 
     function select_active_kp($npm)
@@ -114,7 +114,7 @@ class Pkl_model extends CI_Model
     function select_pkl_by_id($id, $npm)
 	{
         $result = $this->db->query("SELECT * FROM pkl_mahasiswa WHERE pkl_mahasiswa.pkl_id = $id AND pkl_mahasiswa.npm = $npm AND (pkl_mahasiswa.status = '-1' OR status = '5') AND pkl_mahasiswa.id_periode IN (SELECT id_pkl FROM pkl_periode WHERE pkl_periode.id_pkl = pkl_mahasiswa.id_periode )");
-		return $query->result_array();
+		return $result->result_array();
     }
 
     function select_pkl_by_id_pkl($id)
@@ -230,7 +230,7 @@ class Pkl_model extends CI_Model
     function tolak_pkl($where,$ket)
 	{
 		$this->db->where('pkl_id', $where);
-	    $this->db->update('pkl_mahasiswa', array('status' => '6', 'keterangan_tolak' => $ket));
+	    $this->db->update('pkl_mahasiswa', array('status' => '6', 'no_penetapan'=>NULL,'keterangan_tolak' => $ket));
     }
 
     function pkl_approve_setujui($status,$where,$user_id,$ttd)
@@ -257,7 +257,25 @@ class Pkl_model extends CI_Model
 		$query = $this->db->query("SELECT * FROM pkl_mahasiswa,pkl_periode,tbl_users_tendik,tbl_users_mahasiswa WHERE tbl_users_tendik.id_user = $id AND tbl_users_tendik.unit_kerja = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = pkl_mahasiswa.npm AND pkl_mahasiswa.id_periode = pkl_periode.id_pkl AND pkl_mahasiswa.status = 1 ORDER BY pkl_mahasiswa.created_at DESC");	
 		return $query->result();
     }
+
+    function get_approve_tendik_lokasi($id)
+    {
+        $query = $this->db->query("SELECT pkl_lokasi.*,pkl_periode.* FROM pkl_periode, pkl_periode_meta, tbl_users_tendik, pkl_lokasi WHERE tbl_users_tendik.id_user = $id AND tbl_users_tendik.unit_kerja = pkl_periode.jurusan AND pkl_periode.id_pkl = pkl_periode_meta.id_periode AND pkl_periode_meta.timeline = 1 AND pkl_periode.id_pkl = pkl_lokasi.id_pkl ORDER BY pkl_periode.tahun DESC,pkl_periode.periode ");	
+		return $query->result();
+    }
     
+    function get_jml_mahasiswa_lokasi_daftar_tendik($id_lok,$id_user)
+    {
+        $query = $this->db->query("SELECT COUNT(*) as jml FROM pkl_mahasiswa,tbl_users_tendik,pkl_periode,pkl_lokasi WHERE tbl_users_tendik.id_user = $id_user AND tbl_users_tendik.unit_kerja = pkl_periode.jurusan AND pkl_mahasiswa.id_lokasi = $id_lok AND pkl_lokasi.id = pkl_mahasiswa.id_lokasi AND pkl_lokasi.id_pkl = pkl_periode.id_pkl AND ((pkl_mahasiswa.status >= 0 AND pkl_mahasiswa.status != 6 AND pkl_mahasiswa.status < 2) OR pkl_mahasiswa.status = 5 )");	
+		return $query->row();
+    }
+
+    function get_mahasiswa_lokasi_daftar_tendik($id_lok,$id_user)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_mahasiswa,tbl_users_tendik,pkl_periode,pkl_lokasi WHERE tbl_users_tendik.id_user = $id_user AND tbl_users_tendik.unit_kerja = pkl_periode.jurusan AND pkl_mahasiswa.id_lokasi = $id_lok AND pkl_lokasi.id = pkl_mahasiswa.id_lokasi AND pkl_lokasi.id_pkl = pkl_periode.id_pkl AND ((pkl_mahasiswa.status >= 0 AND pkl_mahasiswa.status != 6 AND pkl_mahasiswa.status < 2) OR pkl_mahasiswa.status = 5 )");	
+		return $query->result();
+    }
+
 
     //koor
     function get_approve_koor_pkl($id)
@@ -274,14 +292,62 @@ class Pkl_model extends CI_Model
 
     function get_jml_mahasiswa_lokasi_daftar($id_lok)
     {
-        $query = $this->db->query("SELECT COUNT(*) as jml FROM pkl_mahasiswa WHERE pkl_mahasiswa.id_lokasi = $id_lok AND pkl_mahasiswa.status = 2");	
+        $query = $this->db->query("SELECT COUNT(*) as jml FROM pkl_mahasiswa WHERE pkl_mahasiswa.id_lokasi = $id_lok AND (pkl_mahasiswa.status >= 0 AND pkl_mahasiswa.status != 6)");	
 		return $query->row();
     }
 
-    function get_pkl_by_lokasi($id)
+    function get_mahasiswa_lokasi_daftar($id_lok)
     {
-        
+        $query = $this->db->query("SELECT * FROM pkl_mahasiswa WHERE pkl_mahasiswa.id_lokasi = $id_lok AND (pkl_mahasiswa.status >= 0 AND pkl_mahasiswa.status != 6)");	
+		return $query->result();
     }
+
+    function save_surat_pa($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('staff_surat', $data);
+		$this->db->trans_complete();
+    }
+
+    function get_surat_pkl($id_pkl)
+    {
+        $query = $this->db->query("SELECT * FROM staff_surat WHERE jenis = 3 AND id_jenis = $id_pkl");	
+		return $query->row();
+    }
+
+    function pkl_add_no_surat($where,$surat)
+    {
+        $this->db->where('pkl_id', $where);
+	    $this->db->update('pkl_mahasiswa', array('no_penetapan' => $surat));
+    }
+
+    function update_surat($where,$surat)
+    {
+        $this->db->where('jenis', 3);
+        $this->db->where('id_jenis', $where);
+	    $this->db->update('staff_surat', array('nomor' => $surat));
+    }
+
+    function add_approval_pkl($data)
+    {
+		$this->db->insert('pkl_mahasiswa_approval_koor', $data);
+        $insert_id = $this->db->insert_id();
+        return $insert_id;
+    }
+
+    function add_approval_pkl_meta($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('pkl_mahasiswa_approval_koor_meta', $data);
+        $this->db->trans_complete();
+    }
+
+    function approval_koor_pkl($where,$data)
+    {
+        $this->db->where('pkl_id', $where);
+	    $this->db->update('pkl_mahasiswa', $data);
+    }
+
 
 
 }

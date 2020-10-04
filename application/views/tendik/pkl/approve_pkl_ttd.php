@@ -29,43 +29,29 @@
                         <div class="col-md-12">
                          <div class="main-card mb-3 card">
                                 <div class="card-header">Approval KP/PKL</div>
+                                                                       
                                 <div class="card-body">
+                                    <?php $periode = $this->pkl_model->get_pkl_kajur_by_id($lokasi->id_pkl);  ?>
+                                    <p style="font-size:110%;">Tahun / Periode : <?php echo $periode->tahun." / ".$periode->periode ?></p>
+                                    <p style="font-size:110%;">Lokasi : <?php echo $lokasi->lokasi ?><br>Alamat : <?php echo $lokasi->alamat ?></p>    
+                                </div>
+                                <div class="card-body">       
                                 <form method="post" action="<?php echo site_url('tendik/verifikasi-berkas/pkl/save') ?>" >
-                                    <input value="<?php echo $pkl->pkl_id ?>" type = "hidden" required name="id_pengajuan" id="id_pengajuan">
-                                    <input value="<?php echo $status ?>" type = "hidden" required name="status" id="aksi">
-
-
-                                    <!-- NPM -->
+                                    <!-- id -->
+                                    <?php for($j=1;$j<=$jml;$j++){ ?>
+                                            <input type="hidden" class="form-control" name="id[<?php echo $j ?>]" value="<?php echo $pkl[$j]->pkl_id ?>">
+                                    <?php } ?>
+                                    <input type="hidden" class="form-control" name="jumlah" value="<?php echo $jml ?>">
+                                    <input type="hidden" class="form-control" name="status" value="<?php echo $status ?>">
+                                    <!-- Npm nama -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Npm</label>
-                                            <div class="col-sm-3">
-                                                <input value="<?php echo $pkl->npm ?>" required name="npm" class="form-control input-mask-trigger" readonly >
-                                            </div>
-                                    </div>
-
-                                    <!-- NAMA -->
-                                    <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Nama</label>
+                                            <label class="col-sm-3 col-form-label">Nama/NPM</label>
                                             <div class="col-sm-9">
-                                                <input value="<?php echo $this->user_model->get_mahasiswa_name($pkl->npm) ?>" required name="nama" class="form-control input-mask-trigger" readonly >
+                                                <?php for($i=1;$i<=$jml;$i++){ ?>
+                                                    <input type="text" class="form-control" disabled name="nama" value="<?php echo $pkl[$i]->npm." / ".$this->user_model->get_mahasiswa_name($pkl[$i]->npm) ?>">
+                                                <?php } ?>
                                             </div>
                                     </div>
-
-                                    <!-- IPK -->
-                                    <!-- <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">IPK</label>
-                                            <div class="col-sm-3">
-                                                <input value="<?php echo $pkl->ipk ?>" required name="ipk" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '9.99'" im-insert="true">
-                                            </div>
-                                    </div> -->
-
-                                    <!-- SKS -->
-                                    <!-- <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Jumlah SKS</label>
-                                            <div class="col-sm-3">
-                                                <input value="<?php echo $pkl->sks ?>" required name="sks" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
-                                            </div>
-                                    </div> -->
 
                                     <!-- Status -->
                                     <div class="position-relative row form-group">
@@ -83,6 +69,41 @@
                                                 echo "<input class=\"form-control\" value=\"$sts\" readonly>"
                                                 ?>
                                             </div>
+                                    </div>
+
+                                    <!-- no surat -->
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label">Nomor Surat</label>
+                                            <div class="col-sm-1">
+                                                <?php 
+                                                    $year = date("Y");
+                                                    $jurusanid = $this->user_model->get_jurusan(1617051005);
+                                                    $ta_jenis = "DT";
+                                                    if($jurusanid == '0'){
+                                                        $no = "/UN26.17.07/$ta_jenis/";
+                                                    }
+                                                    elseif($jurusanid == '1'){
+                                                        $no = "/UN26.17.03/$ta_jenis/";
+                                                    }
+                                                    elseif($jurusanid == '2'){
+                                                        $no = "/UN26.17.02/$ta_jenis/";
+                                                    }
+                                                    elseif($jurusanid == '3'){
+                                                        $no = "/UN26.17.05/$ta_jenis/";
+                                                    }
+                                                    elseif($jurusanid == '4'){
+                                                        $no = "/UN26.17.04/$ta_jenis/";
+                                                    }
+                                                    elseif($jurusanid == '5'){
+                                                        $no = "/UN26.17.06/$ta_jenis/";
+                                                    }
+                                                    $nomor = $no.$year;
+                                                    
+                                                ?>
+                                               <input type="text" name="no_penetapan" value="" class="form-control" /> 
+                                               <input type="hidden" value="<?php echo $nomor ?>" required name="nomor" id="nomor">
+                                            </div>
+                                            <?php echo "<h4>$nomor</h4>" ?>
                                     </div>
 
 

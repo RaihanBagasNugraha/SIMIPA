@@ -850,7 +850,7 @@
 
 <?php if($this->uri->segment(1) == 'dosen' && $this->uri->segment(2) == 'kelola-biodata') { ?>
 
-<div class="modal fade" id="tambahtugas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="tambahtugas" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -993,7 +993,7 @@
 
 <?php if($this->uri->segment(1) == 'tendik' && $this->uri->segment(2) == 'kelola-biodata') { ?>
 
-<div class="modal fade" id="tambahtugas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="tambahtugas" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -1136,7 +1136,7 @@
 
 <?php if($this->uri->segment(1) == 'mahasiswa' && $this->uri->segment(2) == 'kelola-biodata') { ?>
 
-    <div class="modal fade" id="tambahlk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="tambahlk"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -1392,10 +1392,6 @@
                     <br>
                     <label><b>Alamat Lokasi KP/PKL</b></label>
                     <textarea name="alamat" class="form-control" id="Alamat" placeholder="Alamat lokasi KP/PKL..."></textarea>
-                    <br>
-                    <label><b>Kuota Mahasiswa</b></label>
-                    <input type="number" name="kuota" id="Kuota" placeholder="Kuota Lokasi KP/PKL" value="" class = 'form-control'>
-                
                 </form>
                 
             </div>
@@ -1602,6 +1598,8 @@
                 <form id="perbaiki-pkl" method="post" action="<?php echo site_url("tendik/verifikasi-berkas/pkl/perbaiki") ?>">
                     <input type="hidden" name="pkl_id" id="ID" value="">
                     <input type="hidden" name="status" id="status" value="">
+                    <input type="hidden" name="periode" id="periode" value="">
+                    <input type="hidden" name="id_alamat" id="id_alamat" value="">
                     <label>Ajukan Perbaikan ?</label>
                     <textarea class = "form-control" name="keterangan" cols="70" rows="3" placeholder="Keterangan Tolak"></textarea>
                 </form>
@@ -1626,8 +1624,19 @@
 <?php } ?>
 
 <?php if($this->uri->segment(1) == 'dosen' && $this->uri->segment(2) == 'pkl' && $this->uri->segment(4) == 'koordinator') { ?>
+<script src="<?php echo site_url("assets/scripts/jquery_3.4.1_jquery.min.js") ?>"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.js"></script>
+<script src="<?php echo site_url("assets/scripts/dataTables.bootstrap4.min.js") ?>"></script>
+<script src="<?php echo site_url("assets/scripts/DataTables-1.10.21/jquery.dataTables.min.js") ?>"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("select").select2({
+        theme: "bootstrap"
+    });
+} );
+</script>
 
-<div class="modal fade" id="ApprovalTolak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="PklKoorTolak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -1641,6 +1650,8 @@
                 <form id="tolak-pkl" method="post" action="<?php echo site_url("dosen/pkl/pengajuan/koordinator-tolak") ?>">
                     <input type="hidden" name="pkl_id" id="ID" value="">
                     <input type="hidden" name="status" id="status" value="">
+                    <input type="hidden" name="periode" id="periode" value="">
+                    <input type="hidden" name="id_al" id="id_al" value="">
                     <label>Tolak Pengajuan KP/PKL ?</label>
                     <textarea class = "form-control" name="keterangan" cols="70" rows="3" placeholder="Keterangan Tolak"></textarea>
                 </form>
@@ -1661,5 +1672,51 @@
     </div>
 </div>
 
+<div class="modal fade" id="PklKoorSetuju" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <form id="approve-pkl" method="post" action="<?php echo site_url("dosen/pkl/pengajuan/koordinator-save") ?>">
+                    <input type="hidden" name="pkl_id" id="ID_pkl" value="">
+                    <input type="hidden" name="lokasi" id="Lokasi" value="">
+                    <input type="hidden" name="id_alamat" id="id_al1" value="">
+                    <input type="hidden" name="periode_alamat" id="periode1" value="">
+                    <label>Pilih Pembimbing KP/PKL</label>
+                    <select required name="pembimbing" class=" form-control">
+                        <option value="">-- Pilih Dosen Pembimbing --</option>
+                            <?php
+                                $list = $this->user_model->select_list_dosen();
+                                    foreach ($list as $row) {
+                                        $nama_dosen = "";
+                                        if($row->gelar_depan != "") $nama_dosen .= $row->gelar_depan." ";
+                                        $nama_dosen .= $row->name;
+                                        $select = "";
+                                                    
+                                        echo "<option ".$select." value='".$row->id_user."'>".$nama_dosen."</option>";
+                                    }
+                            ?>
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="approve-pkl" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php } ?>
