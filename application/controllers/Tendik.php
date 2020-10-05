@@ -573,6 +573,7 @@ class Tendik extends CI_Controller {
 		$user_id = $this->session->userdata('userId');
 		$ttd = $data['ttd'];
 		$no_surat = $data['no_penetapan'].$data['nomor'];
+		$id_lokasi = $data['id_lokasi'];
 
 		for($i=1;$i<=$jml;$i++){
 			//add no_surat pkl_mahasiswa
@@ -583,6 +584,13 @@ class Tendik extends CI_Controller {
 
 			$this->pkl_model->pkl_approve_setujui($status,$data['id'][$i],$user_id,$ttd);
 		}
+		//insert to pkl_mahasiswa_approval_koor
+		$approval = array(
+			"lokasi_id" => $id_lokasi,
+			"no_penetapan" => $no_surat
+		);
+		$this->pkl_model->insert_mhs_app_koor_tendik($approval);
+
 		redirect(site_url("/tendik/verifikasi-berkas/pkl"));
 	}
 

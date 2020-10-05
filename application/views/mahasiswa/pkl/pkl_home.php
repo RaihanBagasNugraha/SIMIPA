@@ -86,6 +86,12 @@
                                                     if(empty($lampiran)) {
                                                         echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                     } else {
+                                                        $approval = $this->pkl_model->get_approval_koor_by_pkl_id($row->pkl_id);
+                                                        if(!empty($approval)){
+                                                            if($approval->file != NULL){
+                                                                echo "<li><a href='".base_url($approval->file)."' download>".$approval->nama_file."</a></li>";
+                                                            }
+                                                        }
                                                     
                                                         foreach($lampiran as $rw) {
                                                             echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
@@ -116,7 +122,7 @@
                                                     $status = "Approval Koordinator";
                                                     break;
                                                     case "4":
-                                                    $status = "Approval Ketua Jurusan";
+                                                    $status = "Approval Ketua Prodi";
                                                     break;
                                                     case "5":
                                                     $status = "Perbaiki";
@@ -124,7 +130,11 @@
                                                     case "6":
                                                     $status = "Ditolak";
                                                     break;
+                                                    case "7":
+                                                    $status = "Approval Koordinator";
+                                                    break;
                                                 }
+                                                
 
                                                 echo "<i>".$status."</i>"; 
                                                 if($status == "Perbaiki" || $status == "Ditolak"){
@@ -170,6 +180,23 @@
                                                     </a>
 
                                             <?php    
+                                            }
+                                            elseif($row->status == 3){ 
+                                                $approval = $this->pkl_model->get_approval_koor_by_pkl_id($row->pkl_id);
+
+                                                if($approval->status == 1 && $approval->file != NULL){
+                                            ?>
+                                                 <a data-toggle = "modal" data-id="<?php echo $approval->approval_id ?>" class="passingIDInstansi" >
+                                                    <button type="button" class="btn-wide mb-1 btn btn-primary btn-sm btn-block"  data-toggle="modal" data-target="#AjukanInstansi">
+                                                            Ajukan
+                                                    </button>
+                                                </a>
+                                                <a href="<?php echo site_url("mahasiswa/pkl/pkl-home/lampiran?aksi=lampiran&id=".$this->encrypt->encode($row->pkl_id)) ?>" class="btn-wide mb-2 btn btn-focus btn-sm btn-block">Unggah Form Penerimaan Instansi</a>
+                                                <?php } elseif($approval->status == 1){ ?>
+                                                    <a href="<?php echo site_url("mahasiswa/pkl/pkl-home/lampiran?aksi=lampiran&id=".$this->encrypt->encode($row->pkl_id)) ?>" class="btn-wide mb-2 btn btn-focus btn-sm btn-block">Unggah Form Penerimaan Instansi</a>
+                                            <?php
+                                                }
+                                                else{echo "Menunggu Verifikasi Berkas";}
                                             }
                                             elseif($row->status == 4 || $row->status == 6){echo"Selesai";}
                                             elseif($row->status == 0){echo "Menunggu";}
@@ -274,6 +301,11 @@ $(document).ready(function() {
                 var status = $(this).attr('ket_status');
                 $("#IDPerbaikan").val( id );
                 $("#Status").val( status );
+    });  
+
+    $(".passingIDInstansi").click(function () {
+                var id = $(this).attr('data-id');
+                $("#IDInstansi").val( id );
     });  
               
      

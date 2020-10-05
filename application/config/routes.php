@@ -106,11 +106,13 @@ $route['mahasiswa/pkl/pkl-home'] = 'mahasiswa/pkl_home';
 $route['mahasiswa/pkl/pkl-home/form'] = 'mahasiswa/pkl_home_form';
 $route['mahasiswa/pkl/pkl-home/form/add'] = 'mahasiswa/pkl_home_form_add';
 $route['mahasiswa/pkl/pkl-home/delete'] = 'mahasiswa/pkl_home_delete';
+$route['mahasiswa/pkl/pkl-home/lampiran/delete-instansi'] = 'mahasiswa/pkl_home_delete_lampiran_instansi';
 $route['mahasiswa/pkl/pkl-home/lampiran'] = 'mahasiswa/pkl_home_lampiran';
 $route['mahasiswa/pkl/pkl-home/lampiran/upload'] = 'mahasiswa/pkl_home_lampiran_upload';
 $route['mahasiswa/pkl/pkl-home/lampiran/delete'] = 'mahasiswa/pkl_home_lampiran_delete';
 $route['mahasiswa/pkl/pkl-home/ajukan'] = 'mahasiswa/pkl_home_ajukan';
 $route['mahasiswa/pkl/pkl-home/perbaikan'] = 'mahasiswa/pkl_home_ajukan_perbaikan';
+$route['mahasiswa/pkl/pkl-home/berkas-instansi'] = 'mahasiswa/pkl_home_ajukan_berkas_instansi';
 
 
 //PDF TA
@@ -280,7 +282,7 @@ $route['dosen/pkl/pengajuan/koordinator'] = 'dosen/pkl_approve_koor';
 $route['dosen/pkl/pengajuan/koordinator-tolak'] = 'dosen/pkl_approve_koor_tolak';
 $route['dosen/pkl/pengajuan/koordinator/approve'] = 'dosen/pkl_approve_koor_approve';
 $route['dosen/pkl/pengajuan/koordinator-save'] = 'dosen/pkl_approve_koor_save';
-
+$route['dosen/pkl/pengajuan/koordinator-setuju'] = 'dosen/pkl_approve_koor_setuju';
 
 // Tendik
 $route['tendik/kelola-akun'] = 'tendik/akun';

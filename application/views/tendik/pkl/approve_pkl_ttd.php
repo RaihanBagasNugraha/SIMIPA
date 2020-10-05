@@ -43,6 +43,7 @@
                                     <?php } ?>
                                     <input type="hidden" class="form-control" name="jumlah" value="<?php echo $jml ?>">
                                     <input type="hidden" class="form-control" name="status" value="<?php echo $status ?>">
+                                    <input type="hidden" class="form-control" name="id_lokasi" value="<?php echo $lokasi->id_pkl ?>">
                                     <!-- Npm nama -->
                                     <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label">Nama/NPM</label>

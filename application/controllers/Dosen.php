@@ -3135,9 +3135,10 @@ class Dosen extends CI_Controller {
 		$periode = $this->input->get('periode');
 		$id = $this->input->get('id');
 		$id = $this->encrypt->decode($id);
+		// echo $id;
 
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['pkl'] = $this->pkl_model->get_lokasi_pkl_by_id($id);
+		$data['pkl'] = $this->pkl_model->get_pkl_mahasiswa_approval_koor_id($id);
 		$data['periode'] = $periode;
 
 		$this->load->view('header_global', $header);
@@ -3156,15 +3157,10 @@ class Dosen extends CI_Controller {
 		$pkl_id = $data['pkl_id'];
 		$pembimbing = $data['pembimbing'];
 		$lokasi = $data['lokasi'];
+		$approval_id = $data['approval_id'];
 
 		$id_alm = $data['id_alamat'];
 		$periode_alm = $data['periode_alamat'];
-
-		//input approval
-		$data_approval = array(
-			"lokasi_id"=>$lokasi,
-		);
-		$approval_id = $this->pkl_model->add_approval_pkl($data_approval);
 
 		//input approval_meta
 		$data_app_meta = array(
@@ -3180,6 +3176,41 @@ class Dosen extends CI_Controller {
 		);
 		$this->pkl_model->approval_koor_pkl($pkl_id,$data_koor);
 
+		//update status approval_pkl > 1
+		//check
+		$check = $this->pkl_model->check_approval_mahasiswa_koor($approval_id);
+		if(empty($check)){
+			//update status approval_pkl > 1
+			$this->pkl_model->update_approval_mahasiswa_koor($approval_id);
+		}
+
 		redirect(site_url("/dosen/pkl/pengajuan/koordinator/approve?periode=$periode_alm&id=$id_alm"));
 	}
+
+	function pkl_approve_koor_setuju()
+	{
+		$approval_id = $this->input->post('approval_id');
+		$periode = $this->input->post('periode_almt');
+		$id = $this->input->post('id_almt');
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		// set status = 3
+		$status = 3;
+		$this->pkl_model->approval_id_status($approval_id,$status);
+
+		//mahasiswa selain d3 set status > 7
+		//set status pkl_mahasiswa > 4
+		$list_mhs = $this->pkl_model->select_pkl_approval_koor($approval_id);
+		foreach($list_mhs as $list)
+		{
+			$this->pkl_model->approval_koor_pkl7($list->pkl_id);
+		}
+
+		//mahasiswa d3 set status = = 4
+
+		redirect(site_url("/dosen/pkl/pengajuan/koordinator/approve?periode=$periode&id=$id"));
+	}
+
 }

@@ -148,7 +148,6 @@ class User_model extends CI_Model
 	function get_mahasiswa_name($npm)
 	{
 		$result = $this->db->query('SELECT tbl_users.name FROM tbl_users, tbl_users_mahasiswa  WHERE tbl_users_mahasiswa.npm ='.$npm.' AND tbl_users_mahasiswa.id_user = tbl_users.userId')->row()->name;
-
 		return $result;
 	}
 

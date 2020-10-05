@@ -1061,6 +1061,45 @@ class Mahasiswa extends CI_Controller {
 
 	function pkl_home_lampiran_upload()
 	{
+		// $datas = $this->input->post();
+		// echo "<pre>";
+		// print_r($datas);
+		if($this->input->post('aksi') == "lampiran")
+		{
+			if($this->input->post('jenis_berkas') == "16" ){
+				$approval_id = $this->input->post('approval_id');
+				$file1 = file_get_contents($_FILES['file']['tmp_name']);
+				$file1 = substr($file1,0,4);
+				$size = $_FILES['file']['size'];
+				if(!empty($_FILES)) {
+					if($file1 == '%PDF' && $size <= 1200000){
+						$file = $_FILES['file']['tmp_name']; 
+						$sourceProperties = getimagesize($file);
+						$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$approval_id;
+						$folderPath = "assets/uploads/berkas-kp/lampiran_instansi/";
+						$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+		
+						$files = $folderPath. $fileNewName. ".". $ext;
+						move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+						$nama_berkas = $this->input->post('nama_berkas');
+
+						$this->pkl_model->insert_lampiran_kp_instansi($approval_id,$files,$nama_berkas);
+						redirect(site_url("mahasiswa/pkl/pkl-home/lampiran?aksi=lampiran&id=".$this->input->post('pkl_id')."&status=sukses"));
+					}
+					else{
+						redirect(site_url("mahasiswa/pkl/pkl-home/lampiran?aksi=lampiran&id=".$this->input->post('pkl_id')."&status=gagal"));
+					}
+				}
+				else{
+					redirect(site_url("mahasiswa/pkl/pkl-home/lampiran?aksi=lampiran&id=".$this->input->post('pkl_id')."&status=gagal"));
+				}
+
+			}
+			else{
+				redirect(site_url("mahasiswa/pkl/pkl-home/lampiran?aksi=lampiran&id=".$this->input->post('pkl_id')."&status=kesalahan"));
+			}
+		}
+		else{
 		$file1 = file_get_contents($_FILES['file']['tmp_name']);
 		$file1 = substr($file1,0,4);
 		$size = $_FILES['file']['size'];
@@ -1088,8 +1127,11 @@ class Mahasiswa extends CI_Controller {
 			else{
 				redirect(site_url("mahasiswa/pkl/pkl-home/lampiran?id=".$this->input->post('pkl_id')."&status=gagal"));
 			}
-
 		}
+		else{
+			redirect(site_url("mahasiswa/pkl/pkl-home/lampiran?id=".$this->input->post('pkl_id')."&status=gagal"));
+		}
+	  }
 	}
 
 	function pkl_home_lampiran_delete()
@@ -1102,6 +1144,17 @@ class Mahasiswa extends CI_Controller {
 		$data = array("id" => $id);
 		$this->pkl_model->delete_lampiran_kp($data);
 		unlink($file);
+	    
+	    redirect(site_url("mahasiswa/pkl/pkl-home"));
+	}
+
+	function pkl_home_delete_lampiran_instansi()
+	{
+		$id = $this->input->post('approval_id');
+		$instansi_file = $this->pkl_model->get_approval_koor_by_id($id);
+	
+		$this->pkl_model->delete_lampiran_kp_instansi($id);
+		unlink($instansi_file->file);
 	    
 	    redirect(site_url("mahasiswa/pkl/pkl-home"));
 	}
@@ -1126,6 +1179,17 @@ class Mahasiswa extends CI_Controller {
 
 		$this->pkl_model->ajukan_perbaikan_pkl($id,$status);
 		redirect(site_url("mahasiswa/pkl/pkl-home"));
+	}
+
+	function pkl_home_ajukan_berkas_instansi()
+	{
+		$approval_id = $this->input->post('approval_id');
+		// echo $approval_id;
+		//approval id status > 2
+		$status = 2;
+		$this->pkl_model->approval_id_status($approval_id,$status);
+		redirect(site_url("mahasiswa/pkl/pkl-home"));
+
 	}
 
 }

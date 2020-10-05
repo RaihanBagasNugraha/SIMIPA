@@ -51,10 +51,11 @@
                                         <tr>
                                             <th stlye="width:10%">Tahun</th>
                                             <th stlye="width:5%">Periode</th>
-                                            <th stlye="width:50%">Lokasi</th>
+                                            <th stlye="width:40%">Lokasi</th>
+                                            <th stlye="width:30%">Nomor Surat</th>
                                             <th stlye="width:5%">Jumlah<br>Mahasiswa</th>
                                             <!-- <th>Status</th> -->
-                                            <th stlye="width:30%">Aksi</th>
+                                            <th stlye="width:10%">Aksi</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -91,14 +92,36 @@
                                                 </td>
 
                                                 <td class="align-top">
+                                                    <?php echo "$row->no_penetapan" ?>
+                                                </td>
+
+                                                <td class="align-top">
                                                     <?php 
-                                                       echo $this->pkl_model->get_jml_mahasiswa_lokasi_daftar($row->id)->jml ;
+                                                       $jml_mahasiswa = $this->pkl_model->get_jml_mahasiswa_lokasi_daftar_koor($row->id,$this->session->userdata('userId'),$row->no_penetapan)->jml ;
+                                                       echo "<b>$jml_mahasiswa</b>";
                                                     ?>
                                                 </td>
                                                 <td class="align-top">
-
-                                                <a href="<?php echo site_url("dosen/pkl/pengajuan/koordinator/approve?periode=$row->id_pkl&id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Lihat
-                                                </a>
+                                                <?php 
+                                                    if($jml_mahasiswa == "0"){$disabled="disabled";}else{$disabled="";}
+                                                    if($row->status == 1 ){
+                                                        $class = "success";
+                                                        $ket = "Menunggu";
+                                                    }    
+                                                    elseif($row->status == 2){
+                                                        $class = "danger";
+                                                        $ket = "Setujui";
+                                                    }
+                                                    elseif($row->status == 3){
+                                                        $class = "success";
+                                                        $ket = "Selesai";
+                                                    }
+                                                    else{
+                                                        $class = "danger";
+                                                        $ket = "Setujui";
+                                                    }
+                                                ?>
+                                                <a href="<?php echo site_url("dosen/pkl/pengajuan/koordinator/approve?periode=$row->id_pkl&id=".$this->encrypt->encode($row->approval_id)) ?>" class="btn-wide mb-1 btn btn-<?php echo $class ?> btn-sm btn-block <?php echo $disabled ?> " ><?php echo $ket ?></a>
                                               
                                                 </td>
                                             </tr>

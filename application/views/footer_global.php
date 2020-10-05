@@ -1506,6 +1506,37 @@
         </div>
     </div>
 </div>
+
+<!-- ajukan berkas instansi-->
+<div class="modal fade" id="AjukanInstansi" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="ajukan-perbaikan-i" method="post" action="<?php echo site_url("mahasiswa/pkl/pkl-home/berkas-instansi") ?>">
+                    <input type="hidden" name="approval_id" id="IDInstansi" value="">
+                Ajukan Berkas ?
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="ajukan-perbaikan-i" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php } ?>
 
 <?php if($this->uri->segment(3) == 'pkl-home' && $this->uri->segment(4) == 'lampiran') { ?>
@@ -1534,6 +1565,37 @@
                                                 <i class="fas fa-times fa-w-20"></i>
                                             </span>Batal</button>
                 <button type="submit" form="delete-berkas" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya, hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delBerkaskps" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Berkas Lampiran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="delete-berkas2" method="post" action="<?php echo site_url("mahasiswa/pkl/pkl-home/lampiran/delete-instansi") ?>">
+                    <input type="hidden" name="approval_id" id="id" value="">
+                    
+                </form>
+                <p>Apakah Anda yakin akan menghapus berkas ?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="delete-berkas2" class="btn btn-primary">
                     <span class="btn-icon-wrapper pr-2 opacity-7">
                                                 <i class="fas fa-check fa-w-20"></i>
                                             </span>Ya, hapus</button>
@@ -1645,8 +1707,7 @@ $(document).ready(function() {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                
+            <div class="modal-body">    
                 <form id="tolak-pkl" method="post" action="<?php echo site_url("dosen/pkl/pengajuan/koordinator-tolak") ?>">
                     <input type="hidden" name="pkl_id" id="ID" value="">
                     <input type="hidden" name="status" id="status" value="">
@@ -1655,8 +1716,6 @@ $(document).ready(function() {
                     <label>Tolak Pengajuan KP/PKL ?</label>
                     <textarea class = "form-control" name="keterangan" cols="70" rows="3" placeholder="Keterangan Tolak"></textarea>
                 </form>
-                
-                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -1688,6 +1747,8 @@ $(document).ready(function() {
                     <input type="hidden" name="lokasi" id="Lokasi" value="">
                     <input type="hidden" name="id_alamat" id="id_al1" value="">
                     <input type="hidden" name="periode_alamat" id="periode1" value="">
+                    <input type="hidden" name="surat" id="surat" value="">
+                    <input type="hidden" name="approval_id" id="approval_id" value="">
                     <label>Pilih Pembimbing KP/PKL</label>
                     <select required name="pembimbing" class=" form-control">
                         <option value="">-- Pilih Dosen Pembimbing --</option>
@@ -1711,6 +1772,39 @@ $(document).ready(function() {
                                                 <i class="fas fa-times fa-w-20"></i>
                                             </span>Batal</button>
                 <button type="submit" form="approve-pkl" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- status > 3 -->
+<div class="modal fade" id="ApprovalKoorPkl" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <form id="approve-pkl2" method="post" action="<?php echo site_url("dosen/pkl/pengajuan/koordinator-setuju") ?>">
+                    <input type="hidden" name="approval_id" id="approval" value="">
+                    <input type="hidden" name="periode_almt" id="periode_almt" value="">
+                    <input type="hidden" name="id_almt" id="id_almt" value="">
+                    <label>Setujui Pengajuan KP/PKL ?</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="approve-pkl2" class="btn btn-primary">
                     <span class="btn-icon-wrapper pr-2 opacity-7">
                                                 <i class="fas fa-check fa-w-20"></i>
                                             </span>Ya</button>

@@ -47,9 +47,61 @@
                         
                          <div class="main-card mb-3 card">
                                 <div class="card-body">       
-                                <?php $periode = $this->pkl_model->get_pkl_kajur_by_id($pkl->id_pkl);  ?>
+                                <?php 
+                                    $get_lokasi = $this->pkl_model->get_lokasi_pkl_by_id($pkl->lokasi_id);
+                                    $periode = $this->pkl_model->get_pkl_kajur_by_id($get_lokasi->id_pkl);  ?>
                                 <p style="font-size:110%;">Tahun / Periode : <?php echo $periode->tahun." / ".$periode->periode ?></p>
-                                <p style="font-size:110%;">Lokasi : <?php echo $pkl->lokasi ?><br>Alamat : <?php echo $pkl->alamat ?></p>                         
+                                <p style="font-size:110%;">Lokasi : <?php echo $get_lokasi->lokasi ?><br>Alamat : <?php echo $get_lokasi->alamat ?></p>
+                                <p style="font-size:110%;">Nomor Surat : <b><?php echo $pkl->no_penetapan ?></b></p>
+
+                                <?php 
+                                    if($pkl->status == 1){ ?>
+                                        
+                                        <div class="position-relative row form-group">
+                                            <div class="col-sm-10">
+                                            <p style="font-size:110%;">Berkas Persetujuan Instansi : <b><a style="width: 60px;" href="<?php echo base_url() ?>" class="mr-1 mb-1 btn btn-danger btn-sm disabled" download>Unduh</a></b></p>                                
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <a data-toggle = "modal" data-id="" class="" >
+                                                    <button type="button" class="btn-wide mb-1 btn btn-danger btn-sm btn-block disabled"  data-toggle="modal" data-target="#">
+                                                            Setujui
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                <?php        
+                                    }elseif($pkl->status == 2){ ?>
+                                       <div class="position-relative row form-group">
+                                            <div class="col-sm-10">
+                                                <p style="font-size:110%;">Berkas Persetujuan Instansi : <b><a style="width: 60px;" href="<?php echo base_url($pkl->file) ?>" class="mr-1 mb-1 btn btn-success btn-sm" download>Unduh</a></b></p>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <a data-toggle = "modal" data-id="<?php echo $pkl->approval_id ?>" data-add="<?php echo $periode_al."#$#$".$id_alamat ?>" class="passingID3" >
+                                                    <button type="button" class="btn-wide mb-1 btn btn-success btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalKoorPkl">
+                                                            Setujui
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                <?php 
+                                    }
+                                    elseif($pkl->status == 3){ ?>
+                                    <div class="position-relative row form-group">
+                                            <div class="col-sm-10">
+                                                <p style="font-size:110%;">Berkas Persetujuan Instansi : <b><a style="width: 60px;" href="<?php echo base_url($pkl->file) ?>" class="mr-1 mb-1 btn btn-primary btn-sm" download>Unduh</a></b></p>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <a data-toggle = "modal" class="" >
+                                                    <button type="button" class="btn-wide mb-1 btn btn-primary btn-sm btn-block disabled"  data-toggle="modal" data-target="#">
+                                                            Selesai
+                                                    </button>
+                                                </a>
+                                            </div>
+                                    </div>
+                                <?php
+                                    }
+                                
+                                ?>                         
                                 <div class="table-responsive">
                                     <table class="mb-0 table table-striped" id="example">
                                         <thead>
@@ -73,7 +125,8 @@
                                         else
                                         {
                                             $n = 1;
-                                            $list = $this->pkl_model->get_mahasiswa_lokasi_daftar($pkl->id);
+                                            $c = 0;
+                                            $list = $this->pkl_model->get_mahasiswa_lokasi_daftar_koor($pkl->lokasi_id,$this->session->userdata('userId'),$pkl->no_penetapan);
                                             foreach($list as $row){   
                                         ?>
                                             <tr>
@@ -130,30 +183,35 @@
              
                                                              echo "</ul>";
                                                          }
-                                                    
+                                                         
                                                     ?>
                                                 </td>
-
+                                               
                                                 <td class="align-top">
                                                 <?php if(!empty($tgl_pengajuan) && $row->status == "2" ){ ?>
-                                                    <a data-toggle = "modal" data-id="<?php echo $row->pkl_id ?>" data-lokasi="<?php echo $row->id_lokasi ?>" data-alm="<?php echo $periode_al."#$#$".$id_alamat ?>" class="passingID1" >
+                                                    <a data-toggle = "modal" data-id="<?php echo $row->pkl_id ?>" data-lokasi="<?php echo $row->id_lokasi ?>" data-surat="<?php echo $row->no_penetapan ?>" data-alm="<?php echo $periode_al."#$#$".$id_alamat ?>" approval-id="<?php echo $pkl->approval_id ?>" class="passingID1" >
                                                             <button type="button" class="btn mb-2 btn-wide btn-info btn-sm btn-block"  data-toggle="modal" data-target="#PklKoorSetuju">
                                                                 Setujui
                                                             </button>
                                                     </a> 
-                                                    <!-- <?php echo $row->pkl_id; ?> -->
                                                     <a data-toggle = "modal" data-id="<?php echo $row->pkl_id."#$#$"."koor" ?>" data-add="<?php echo $periode_al."#$#$".$id_alamat ?>" class="passingID2" >
                                                             <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#PklKoorTolak">
                                                                 Tolak
                                                             </button>
                                                     </a> 
-                                                <?php }elseif(!empty($tgl_pengajuan) && $row->status >= 3){ echo "<b>Disetujui</b>";}else{ echo "-"; } ?>
+                                                <?php }
+                                                elseif(!empty($tgl_pengajuan) && $row->status >= 3){ 
+                                                    $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing);
+                                                    echo "<b>Dosen Pembimbing :</b><br>";
+                                                    echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;                                                   
+                                                }else{ echo "-"; } ?>
                                                     
                                                 </td>
                                                
                                             </tr>
                                         <?php
-                                          $n++;  }
+                                          $n++; 
+                                            }
                                         }
                                         ?>
                                     
@@ -235,10 +293,14 @@ $(document).ready(function(){
                 var lokasi = $(this).attr('data-lokasi');
                 var al = $(this).attr('data-alm');
                 var almt = al.split("#$#$");
+                var srt = $(this).attr('data-surat');
+                var approval= $(this).attr('approval-id');
                 $("#ID_pkl").val( id );
                 $("#Lokasi").val( lokasi );
                 $("#periode1").val( almt[0] );
                 $("#id_al1").val( almt[1] );
+                $("#surat").val( srt );
+                $("#approval_id").val( approval );
     });      
 
     $(".passingID2").click(function () {
@@ -250,6 +312,15 @@ $(document).ready(function(){
                 $("#status").val( data[1] );
                 $("#periode").val( almt[0] );
                 $("#id_al").val( almt[1] );
+    });      
+
+    $(".passingID3").click(function () {
+                var id = $(this).attr('data-id');
+                var al = $(this).attr('data-add');
+                var almt = al.split("#$#$");
+                $("#approval").val( id );
+                $("#periode_almt").val( almt[0] );
+                $("#id_almt").val( almt[1] );
     });      
        
 </script>
