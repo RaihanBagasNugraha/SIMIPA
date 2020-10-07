@@ -143,6 +143,18 @@ class User_model extends CI_Model
 		
 		return $query->row();
 	}
+
+	function get_tendik_name($id)
+	{
+		$this->db->select($this->tbl_tendik.'.gelar_depan, '.$this->tbl_tendik.'.gelar_belakang, '.$this->tbl_user.'.name,'.$this->tbl_tendik.'.nip_nik');
+		$this->db->from($this->tbl_tendik);
+		$this->db->join($this->tbl_user, $this->tbl_user.'.userId = '.$this->tbl_tendik.'.id_user');
+		$this->db->where($this->tbl_tendik.".id_user", $id);
+		$this->db->order_by('name', 'ASC');
+		$query = $this->db->get();
+		
+		return $query->row();
+	}
 	
 	//raihan
 	function get_mahasiswa_name($npm)
@@ -294,7 +306,7 @@ class User_model extends CI_Model
 
 	function check_tugas_tambahan_duplikat($id_tugas,$jurusan,$prodi,$aktif,$periode)
 	{
-		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = $id_tugas AND periode '$periode' and (jurusan_unit = $jurusan AND prodi = $prodi) AND aktif = $aktif");
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = $id_tugas AND periode = '$periode' and (jurusan_unit = $jurusan AND prodi = $prodi) AND aktif = $aktif");
 		return $result->row();
 	}
 
@@ -447,6 +459,11 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
+	function get_pa_by_npm($npm)
+	{
+		$result = $this->db->query("SELECT b.*, c.* FROM tbl_users_mahasiswa a, tbl_users_dosen b, tbl_users c WHERE a.npm = $npm AND a.dosen_pa = b.id_user AND b.id_user = c.userId ");
+		return $result->row();
+	}
 
 
 	/* ------------------------------------

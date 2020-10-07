@@ -1040,6 +1040,9 @@ class Mahasiswa extends CI_Controller {
 		$del = array("pkl_id"=>$id);
 
 		$this->pkl_model->delete_pengajuan_pkl($del);
+		//delete berkas dan lampiran
+		$this->pkl_model->delete_berkas_kp($id);
+
 		redirect(site_url("mahasiswa/pkl/pkl-home"));
 	}
 
@@ -1189,7 +1192,189 @@ class Mahasiswa extends CI_Controller {
 		$status = 2;
 		$this->pkl_model->approval_id_status($approval_id,$status);
 		redirect(site_url("mahasiswa/pkl/pkl-home"));
-
 	}
 
+	function pkl_seminar()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$check = $this->pkl_model->check_pkl_done($this->session->userdata('username'));
+		
+		if(empty($check)){
+			echo "<script type='text/javascript'>alert('Proses Pengajuan KP/PKL Belum Selesai');javascript:history.back();</script>";
+		}
+		else{
+			$data['seminar'] = $this->pkl_model->get_pkl_seminar($check->pkl_id);
+			$data['pkl'] = $this->pkl_model->check_pkl_done($this->session->userdata('username'));
+			$this->load->view('header_global', $header);
+			$this->load->view('mahasiswa/header');
+
+			$this->load->view('mahasiswa/pkl/seminar/pkl_seminar',$data);
+
+			$this->load->view('footer_global');
+		}
+	}
+
+	function pkl_seminar_form()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['biodata'] = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 3)->row();
+		$data['status_pkl'] = $this->pkl_model->select_active_seminar_kp($id);
+		$data['jurusan'] = $this->user_model->get_jurusan($this->session->userdata('username'));
+		$data['pkl'] = $this->pkl_model->check_pkl_done($this->session->userdata('username'));
+
+		if($this->input->get('aksi') == "ubah")
+		{
+			$pkl = $this->pkl_model->select_pkl_seminar_by_id($id);
+			$pkl = $pkl[0];
+		}
+		else
+		{
+			$pkl = array(
+				'seminar_id' => null,
+				'judul' => null,
+				'tgl_pelaksanaan' => null,
+				'waktu_pelaksanaan' => null,
+				'tempat' => null,
+				'ipk' => null,
+				'sks' => null,
+				'ttd' => null,
+			);
+		}
+
+		$data['data_pkl'] = $pkl;
+		
+			$this->load->view('header_global', $header);
+			$this->load->view('mahasiswa/header');
+			$this->load->view('mahasiswa/pkl/seminar/pkl_seminar_form',$data);
+			$this->load->view('footer_global');
+	}
+
+	function pkl_seminar_form_add()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$data_seminar = array(
+			"pkl_id" => $this->input->post('pkl_id'),
+			"judul" => $this->input->post('judul'),
+			"tgl_pelaksanaan" => $this->input->post('tanggal'),
+			"waktu_pelaksanaan" => $this->input->post('waktu'),
+			"pkl_id" => $this->input->post('pkl_id'),
+			"tempat" => $this->input->post('tempat'),
+			"pkl_id" => $this->input->post('pkl_id'),
+			"ipk" => $this->input->post('ipk'),
+			"sks" => $this->input->post('sks'),
+		);
+
+		if($this->input->post('aksi') == "ubah"){
+			$seminar_id = $this->input->post('seminar_id');
+			//update pkl_seminar
+			$this->pkl_model->update_seminar($seminar_id,$data_seminar);
+			//input pkl approval
+			$this->pkl_model->update_approval_seminar($seminar_id,'Mahasiswa',$this->input->post('ttd'));
+		}
+		else{
+			//input pkl_seminar
+			$insert_id = $this->pkl_model->input_seminar($data_seminar);
+
+			$data_approval = array(
+				"seminar_id" => $insert_id,
+				"status_slug" => "Mahasiswa",
+				"id_user"=> $this->session->userdata('userId'),
+				"ttd"=>$this->input->post('ttd')
+			);
+			//input pkl approval
+			$this->pkl_model->input_approval_seminar($data_approval);
+		}
+
+		redirect(site_url("/mahasiswa/pkl/seminar"));
+	}
+
+	function pkl_seminar_delete()
+	{
+		$id = $this->input->post('seminar_id');
+		$del = array("seminar_id"=>$id);
+		//delete
+		$this->pkl_model->delete_seminar($del);
+
+		//delete berkas dan lampiran
+		$this->pkl_model->delete_berkas_seminar_kp($id);
+
+		redirect(site_url("/mahasiswa/pkl/seminar"));
+	}
+
+	function pkl_seminar_lampiran()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['lampiran'] = $this->pkl_model->select_lampiran_seminar_kp($id);
+		// $data['status_pkl'] = $this->pkl_model->select_active_kp($this->session->userdata('username'));
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/pkl/seminar/pkl_seminar_lampiran',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function pkl_seminar_lampiran_upload()
+	{
+		$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+		$id = $this->encrypt->decode($this->input->post('seminar_id'));
+		$data = array(
+			'seminar_id' => $id,
+			'nama_berkas' => $this->input->post('nama_berkas'),
+			'jenis_berkas' => $this->input->post('jenis_berkas')
+		);
+
+		if(!empty($_FILES)) {
+			if($file1 == '%PDF' && $size <= 1200000){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
+				$folderPath = "assets/uploads/berkas-kp-seminar/";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+				$data['file'] = $folderPath. $fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				$this->pkl_model->insert_lampiran_seminar_kp($data);
+				redirect(site_url("mahasiswa/pkl/seminar/lampiran?id=".$this->input->post('seminar_id')."&status=sukses"));
+			}
+			else{
+				redirect(site_url("mahasiswa/pkl/seminar/lampiran?id=".$this->input->post('seminar_id')."&status=gagal"));
+			}
+		}
+		else{
+			redirect(site_url("mahasiswa/pkl/seminar/lampiran?id=".$this->input->post('seminar_id')."&status=gagal"));
+		}
+	}
+
+	function pkl_seminar_lampiran_delete()
+	{
+		$id = $this->input->post('id_berkas');
+		$file = $this->input->post('file_berkas');
+		
+		$data = array("id" => $id);
+		$this->pkl_model->delete_lampiran_seminar_kp($data);
+		unlink($file);
+	    
+	    redirect(site_url("mahasiswa/pkl/seminar"));
+	}
+
+	function pkl_seminar_ajukan()
+	{
+		$seminar_id = $this->input->post('seminar_id');
+		//status seminar > 0
+		$status = 0;
+		$this->pkl_model->update_seminar_pkl($seminar_id,$status);
+		redirect(site_url("mahasiswa/pkl/seminar"));
+	}
 }

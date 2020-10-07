@@ -7,7 +7,8 @@ class Pdfta extends CI_Controller {
         parent::__construct();
         $this->load->library('fpdf');
         $this->load->model('user_model');
-		$this->load->model('ta_model');
+        $this->load->model('ta_model');
+        $this->load->model('pkl_model');
     }
 
     function get_month($month)
@@ -4649,7 +4650,514 @@ class Pdfta extends CI_Controller {
         $pdf->Output('I','form_nilai_verifikasi_ta.pdf');   
     }
 
-}
+    //pkl
+    function set_pdf_pkl(){
+        $id = $this->input->get('id');
+        $pkl = $this->pkl_model->select_pkl_by_id_pkl($id);
 
+        $npm = $pkl->npm;
+        $jurusan = $this->ta_model->get_jurusan($npm);
+        $jenis = $this->input->get('jenis');
+
+        switch($jenis){
+            case "form_pengajuan":
+                $this->form_pengajuan_kp($pkl,$jurusan);
+                break;
+            case "form_verifikasi":
+                $this->form_verifikasi_kp($pkl,$jurusan);
+                break;
+            case "form_permohonan":
+                $this->form_permohonan_kp($pkl,$jurusan);
+                break;
+        }
+    }
+
+    function form_pengajuan_kp($pkl,$jurusan){
+        $jurusan_upper = strtoupper($jurusan);
+        $mhs = $this->ta_model->get_mahasiswa_detail($pkl->npm);
+        $pa = $this->user_model->get_pa_by_npm($pkl->npm);
+
+        switch($jurusan){
+            case "Ilmu Komputer":
+                $numPage = '';
+            break;
+            case "Kimia":
+                $numPage = '';
+            break;
+            case "Fisika":
+                $numPage = '';
+            break;
+            case "Biologi":
+                $numPage = '';
+            break;
+            case "Matematika":
+                $numPage = '';
+            break;
+        }
+
+        $kode = 0;
+        $type = 'Single';
+
+        $waktu = substr($pkl->created_at,0,10);
+        $waktu = explode("-",$waktu);
+        $tanggal = $waktu[2];
+        $bulan = $this->get_month($waktu[1]);
+        $tahun = $waktu[0];
+
+        $pdf = new FPDF('P','mm','A4');
+       
+        $spasi = 6;
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode, $type);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+
+        $pdf->AddPage();
+        $pdf->SetFont('Times','B',11);
+        $pdf->Ln(5);
+        $pdf->MultiCell(150, $spasi, "FORMULIR PENDAFTARAN KERJA PRAKTIK/PRAKTIK KERJA LAPANGAN \nJURUSAN ".$jurusan_upper." FMIPA UNIVERSITAS LAMPUNG",0,'C',false);
+        $pdf->SetFont('Times','',11);
+        $pdf->Ln(5);
+        $pdf->Cell(45, $spasi,"Kepada Yth.", 0,0, 'L');
+        $pdf->Ln(5);
+        $pdf->Cell(45, $spasi,"Ketua Jurusan ".$jurusan, 0,0, 'L');
+        $pdf->Ln(5);
+        $pdf->Cell(45, $spasi,"c.q. Koordinator Kerja Praktik/Praktik Kerja Lapangan", 0,0, 'L');
+        $pdf->Ln(5);
+        $pdf->Cell(45, $spasi,"di Tempat", 0,0, 'L');
+        $pdf->Ln(9);
+
+        $pdf->Cell(45, $spasi,"Dengan hormat,", 0,0, 'L');
+        $pdf->Ln(5);
+        $pdf->Cell(45, $spasi,"Berkenaan Dengan Pelaksanaan KP/PKL, dengan ini saya :", 0,0, 'L');
+        $pdf->Ln(9);
+
+        $pdf->SetWidths(array(45,5, 150));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Nama',':',$mhs->name));
+        $pdf->Ln(1);
+        $pdf->SetWidths(array(45,5, 150));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Npm',':',$mhs->npm));
+        $pdf->Ln(1);
+        $pdf->SetWidths(array(45,5, 150));
+        $pdf->SetAligns(array('L','C','L'));
+        $strata = substr($mhs->npm,2,1);
+        if($strata == 1){
+            $str = "S1";
+            $jur = $jurusan;
+        }
+        elseif($strata == 0){
+            $str = "D3";
+            $jur = "Manajemen Informatika";
+        }
+        $pdf->RowNoBorder(array('Program Studi',':',$str." ".$jur));
+        $periode = $this->pkl_model->get_pkl_kajur_by_id($pkl->id_periode);
+        $pdf->Ln(9);
+        $pdf->MultiCell(150, $spasi, "Mengajukan permohonan melaksanakan KP/PKL Periode $periode->periode Tahun $periode->tahun dengan syarat terlampir.",0,'L',false);
+        $pdf->Ln(9);
+
+        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+        $pdf->Cell(150, $spasi,"Bandar Lampung, ".$tanggal[1]." ".$bulan." ".$tahun."", 0, 0, 'L');
+        $pdf->Ln(8);  
+
+        $pdf->Cell(45, $spasi,"Mengetahui", 0, 0, 'L');
+        $pdf->Ln(5);
+        $pdf->Cell(90, $spasi,"Dosen Pembimbing Akademik,", 0, 0, 'L');
+        $pdf->Cell(30, $spasi,"Mahasiswa", 0, 0, 'L');
+        $pdf->Ln(5);
+
+        //ttd
+        if($pkl->status >= 1){
+            // $pa = $this->user_model->get_pa_by_npm($pkl->npm);
+            $ttd_pa = $this->pkl_model->get_ttd_approval($pkl->pkl_id,'Pembimbing Akademik');
+            $pdf->Cell(90, $spasi,$pdf->Image($ttd_pa->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+        }
+        else{
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+        }
+        $pdf->Cell(90, $spasi,$pdf->Image($pkl->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+        
+        $pdf->Ln(26);
+        $pdf->Cell(90, $spasi,$pa->gelar_depan.$pa->name.$pa->gelar_belakang, 0, 0, 'L');
+        $pdf->Cell(30, $spasi,$mhs->name, 0, 0, 'L');
+        $pdf->Ln(5);
+
+        $pdf->Cell(90, $spasi,"NIP. ".$pa->nip_nik, 0, 0, 'L');
+        $pdf->Cell(30, $spasi,"NPM. ".$mhs->npm, 0, 0, 'L');
+        $pdf->Ln(10);
+
+
+        $pdf->Output('I','pengajuan_kp.pdf');
+    }
+
+    function form_verifikasi_kp($pkl,$jurusan)
+    {
+        $jurusan_upper = strtoupper($jurusan);
+        $mhs = $this->ta_model->get_mahasiswa_detail($pkl->npm);
+
+        switch($jurusan){
+            case "Ilmu Komputer":
+                $numPage = '';
+            break;
+            case "Kimia":
+                $numPage = '';
+            break;
+            case "Fisika":
+                $numPage = '';
+            break;
+            case "Biologi":
+                $numPage = '';
+            break;
+            case "Matematika":
+                $numPage = '';
+            break;
+        }
+
+        $kode = 1;
+        $type = 'Single';
+
+        $waktu = substr($pkl->created_at,0,10);
+        $waktu = explode("-",$waktu);
+        $tanggal = $waktu[2];
+        $bulan = $this->get_month($waktu[1]);
+        $tahun = $waktu[0];
+        $bullet = chr(149);
+
+        $pdf = new FPDF('P','mm','A4');
+       
+        $spasi = 6;
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode, $type);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+
+        $pdf->AddPage();
+        $pdf->SetFont('Times','B',11);
+        $pdf->Ln(5);
+        $pdf->MultiCell(150, $spasi, "FORM VERIFIKASI BERKAS PERSYARATAN \nPENGAJUAN KERJA PRAKTIK/PRAKTIK KERJA LAPANGAN",0,'C',false);
+        $pdf->SetFont('Times','',11);
+        $pdf->Ln(8);
+        $pdf->SetWidths(array(45,5, 150));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Nama Mahasiswa',':',$mhs->name));
+        $pdf->Ln(1);
+        $pdf->SetWidths(array(45,5, 150));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Npm',':',$mhs->npm));
+        $pdf->Ln(1);
+        $strata = substr($mhs->npm,2,1);
+        if($strata == 1){
+            $str = "S1";
+            $jur = $jurusan;
+        }
+        elseif($strata == 0){
+            $str = "D3";
+            $jur = "Manajemen Informatika";
+        }
+        $pdf->SetWidths(array(45,5, 150));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Program Studi',':',$str." ".$jur));
+        $pdf->Ln(1);
+        $pdf->SetWidths(array(45,5, 150));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Fakultas/Jurusan',':','Matematika dan Ilmu Pengetahuan Alam/'.$jurusan));
+        $pdf->Ln(1);
+        $surat = $this->pkl_model->get_surat_pkl($pkl->pkl_id);
+        $surat = substr($surat->created_at,0,10);
+        $surat = explode("-",$surat);
+        $pdf->SetWidths(array(45,5, 150));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Tanggal Masuk Berkas',':',$surat[2]."-".$surat[1]."-".$surat[0]));
+        $pdf->Ln(8);
+
+        $pdf->Cell(45, $spasi,"Persayaratan Kerja Praktik yang harus dipenuhi oleh mahasiswa", 0, 0, 'L');
+        $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+        $pdf->Ln(8);
+
+        $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+        if($jurusan == "Kimia" || ($jurusan == "Ilmu Komputer" && $strata == 0)){
+            $pdf->MultiCell(150, $spasi, "Telah menyelesaikan minimal 80 SKS, dengan IPK 2,00.",0,'J',false);
+            $pdf->Ln(1);
+        }
+        else{
+            $pdf->Cell(83, $spasi,"Telah menyelesaikan minimal 100 SKS, dengan IPK ", 0, 0, 'L');
+            $pdf->SetFont("Symbol");
+            $pdf->Cell(5, $spasi,chr(179)." 2,00", 0, 2, 'L');
+            $pdf->SetFont('Times','',11);
+            $pdf->Ln(1);
+        }
+
+        $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+        $pdf->MultiCell(150, $spasi, "Menyerahkan 1 lembar Formulir Kerja Praktik/Praktik Kerja Lapangan yang sudah ditandatangani oleh pembimbing akademik.",0,'J',false);
+        $pdf->Ln(1);
+
+        $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+        $pdf->MultiCell(150, $spasi, "Menyerahkan 1 lembar Transkrip Akademik yang telah ditandatangani oleh Wakil Dekan 1 dan telah diberi cap fakultas.",0,'J',false);
+        $pdf->Ln(1);
+
+        $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+        $pdf->MultiCell(150, $spasi, "Menyerahkan 1 lembar KRS terakhir yang telah ditandatangani oleh Pembantu Dekan 1 dan telah diberi cap fakultas.",0,'J',false);
+        $pdf->Ln(1);
+
+        $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+        $pdf->MultiCell(150, $spasi, "Menyerahkan 1 lembar foto copy bukti pembayaran SPP terakhir.",0,'J',false);
+        $pdf->Ln(1);
+
+        if($jurusan == "Biologi"){
+            $pdf->Cell(5, $spasi,$bullet, 0, 0, 'L');
+            $pdf->MultiCell(150, $spasi, "Menyerahkan 1 lembar Formulir Surat permohonan Izin Praktik Kerja Lapangan.",0,'J',false);
+            $pdf->Ln(1);
+        }
+
+        $pdf->Cell(5, $spasi,"Catatan : ", 0, 0, 'L');
+        $pdf->Ln(5);
+        $pdf->Cell(5, $spasi,"", 0, 0, 'L');
+        $pdf->Cell(5, $spasi,"1.", 0, 0, 'L');
+        $pdf->MultiCell(150, $spasi, "Mahasiswa yang melaksanakan kerja praktik wajib mematuhi semua jadwal dan tata tertib pelaksanaan kerja praktik sesuai dengan persyaratan yang telah ditetapkan oleh jurusan maupun instansi/perusahaan tempat KP/PKL.",0,'J',false);
+        $pdf->Ln(1);
+        $pdf->Cell(5, $spasi,"", 0, 0, 'L');
+        $pdf->Cell(5, $spasi,"2.", 0, 0, 'L');
+        $pdf->MultiCell(150, $spasi, "Bagi mahasiswa yang tidak memenuhi persyaratan untuk melaksanakan kerja praktik, maka kerja praktik mahasiswa bersangkutan dapat dibatalkan oleh jurusan.",0,'J',false);
+        $pdf->Ln(9);
+
+        $surat2 = $this->pkl_model->get_surat_pkl($pkl->pkl_id);
+        if($surat2->updated_at != NULL){
+            $surat2 = substr($surat2->updated_at,0,10);
+            $surat2 = explode("-",$surat2);
+            $tgl_verifikasi = $surat2[2]." ".$this->get_month($surat2[1])." ".$surat2[0];
+        }
+        else{
+            $tgl_verifikasi = "";
+        }
+
+        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+        $pdf->Cell(150, $spasi,"Bandar Lampung, ".$tgl_verifikasi, 0, 0, 'L');
+        $pdf->Ln(8);  
+
+
+        $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+        $pdf->Cell(30, $spasi,"Pemeriksa Berkas", 0, 0, 'L');
+        $pdf->Ln(5);
+
+        //ttd
+        if($pkl->status >= 2){
+            $ttd_admin = $this->pkl_model->get_ttd_approval($pkl->pkl_id,'Administrasi');
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pdf->Image("$ttd_admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+        
+            $admin = $this->user_model->get_tendik_name($ttd_admin->id_user);
+            $pdf->Ln(26);
+            $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$admin->gelar_depan.$admin->name.$admin->gelar_belakang, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$admin->nip_nik, 0, 0, 'L');
+            $pdf->Ln(10);
+        }
+        else{
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,'', 0, 0, 'L');
+
+            $pdf->Ln(26);
+            $pdf->Cell(90, $spasi,'', 0, 0, 'L');
+            $pdf->Cell(30, $spasi,'', 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ",0, 0, 'L');
+            $pdf->Ln(10);
+        }
+
+        $pdf->Output('I','verifikasi_kp.pdf');
+    }
+
+    function form_permohonan_kp($pkl,$jurusan)
+    {
+        $jurusan_upper = strtoupper($jurusan);
+        $mhs = $this->ta_model->get_mahasiswa_detail($pkl->npm);
+
+        switch($jurusan){
+            case "Ilmu Komputer":
+                $numPage = '';
+            break;
+            case "Kimia":
+                $numPage = '';
+            break;
+            case "Fisika":
+                $numPage = '';
+            break;
+            case "Biologi":
+                $numPage = '';
+            break;
+            case "Matematika":
+                $numPage = '';
+            break;
+        }
+
+        $kode = 2;
+        $type = 'Single';
+
+        $waktu = substr($pkl->created_at,0,10);
+        $waktu = explode("-",$waktu);
+        $tanggal = $waktu[2];
+        $bulan = $this->get_month($waktu[1]);
+        $tahun = $waktu[0];
+        $bullet = chr(149);
+
+        $pdf = new FPDF('P','mm','A4');
+       
+        $spasi = 6;
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode, $type);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+
+        $pdf->AddPage();
+        $pdf->SetFont('Times','',11);
+        $pdf->SetWidths(array(30,5, 70,50));
+        $pdf->SetAligns(array('L','L','L','R'));
+        $pdf->RowNoBorder(array('Nomor',':',$pkl->no_penetapan,$tanggal." ".$bulan." 2020"));
+        // $pdf->Ln(8);
+        $pdf->SetFont('Times','',11);
+        $pdf->SetWidths(array(30,5, 70));
+        $pdf->SetAligns(array('L','L','L'));
+        $pdf->RowNoBorder(array('Lampiran',':',"1 Lembar"));
+        // $pdf->Ln(8);
+        $strata = substr($mhs->npm,2,1);
+        if($strata == 1){
+            $str = "S1";
+            $jur = $jurusan;
+        }
+        elseif($strata == 0){
+            $str = "D3";
+            $jur = "Manajemen Informatika";
+        }
+
+        $pdf->SetFont('Times','',11);
+        $pdf->SetWidths(array(30,5, 150));
+        $pdf->SetAligns(array('L','L','L'));
+        $pdf->RowNoBorder(array('Perihal',':',"Permohonan Suat Izin KP/PKL Mahasiswa ".$str." ".$jur));
+        $pdf->Ln(5);
+        $pdf->Cell(150, $spasi,"Kepada Yth. Dekan FMIPA Universitas Lampung", 0,0, 'L');
+        $pdf->Ln(5);
+        $pdf->Cell(45, $spasi,"Di Tempat", 0,0, 'L');
+        $pdf->Ln(9);
+
+        $pdf->Cell(150, $spasi,"Dengan Hormat,", 0,0, 'L');
+        $pdf->Ln(5);
+        $pdf->MultiCell(150, $spasi, "Berkenaan dengan pelaksanaan KP/PKL bagi mahasiswa Jurusan Ilmu Komputer yang rencananya akan dilaksakan di",0,'L',false);
+        $pdf->Ln(5);
+
+        //tempat
+        $lokasi = $this->pkl_model->get_lokasi_pkl_by_id($pkl->id_lokasi);
+        $pdf->SetFont('Times','',11);
+        $pdf->SetWidths(array(45,5,110));
+        $pdf->SetAligns(array('L','L','L'));
+        $pdf->RowNoBorder(array('Nama Instansi/Perusahaan',':',$lokasi->lokasi));
+
+        $pdf->SetFont('Times','',11);
+        $pdf->SetWidths(array(45,5, 110));
+        $pdf->SetAligns(array('L','L','L'));
+        $pdf->RowNoBorder(array('Alamat',':',$lokasi->alamat));
+
+        //mulai
+        $date_start = $this->pkl_model->date_start($pkl->id_periode);
+        $date_start = substr($date_start->date_start,0,10);
+        $date_start = explode("-",$date_start);
+        $date_start = $date_start[2]." ".$this->get_month($date_start[1])." ".$date_start[0];
+        //selesai
+        $date_end = $this->pkl_model->date_end($pkl->id_periode);
+        $date_end = substr($date_end->date_start,0,10);
+        $date_end = explode("-",$date_end);
+        $date_end = $date_end[2]." ".$this->get_month($date_end[1])." ".$date_end[0];
+
+        $pdf->SetFont('Times','',11);
+        $pdf->SetWidths(array(45,5, 110));
+        $pdf->SetAligns(array('L','L','L'));
+        $pdf->RowNoBorder(array('Waktu Pelaksanaan',':',$date_start." - ".$date_end));
+
+        $pdf->Ln(5);
+        $pdf->MultiCell(150, $spasi, "Mohon dibuatkan surat pengantar permohonan izin tempat KP/PKL ke instansi/perusahaan tersebut untuk mahasiswa berikut:",0,'L',false);
+        $pdf->Ln(5);
+
+        //tabel
+        $pdf->Cell(20,10,'No',1,0,'C',0);
+        $pdf->Cell(60,10,'NPM',1,0,'C',0);
+        $pdf->Cell(80,10,'Nama',1,0,'C',0);
+        //loop
+        $list = $this->pkl_model->get_mahasiswa_pkl_by_lok_no_per($pkl->id_lokasi,$pkl->no_penetapan,$pkl->id_periode);
+        $no = 0;
+        foreach($list as $lst)
+        {
+            $pdf->Ln();
+            $pdf->Cell(20,10,++$no,1,0,'C',0);
+            $pdf->Cell(60,10,$lst->npm,1,0,'C',0);
+            $pdf->Cell(80,10,$this->user_model->get_mahasiswa_name($lst->npm),1,0,'C',0);
+        }
+
+        $pdf->Ln(12);
+        $pdf->MultiCell(150, $spasi, "Demikian permohonan kami, atas perhatian dan kerjasamanya diucapkan terima kasih.",0,'L',false);
+        $pdf->Ln(5);
+
+        if($strata == 1)
+        {
+            $ttd_kajur = $this->pkl_model->get_ttd_approval($pkl->pkl_id,'Ketua Jurusan'); 
+            $kajur_data = $this->user_model->get_dosen_data($ttd_kajur->id_user);
+
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Ketua Jurusan", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$pdf->Image($ttd_kajur->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+            
+            $pdf->Ln(26);
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP.".$kajur_data->nip_nik, 0, 0, 'L');
+            $pdf->Ln(10);
+        }
+        elseif($strata == 0)
+        {
+            $ttd_kajur = $this->pkl_model->get_ttd_approval($pkl->pkl_id,'Ketua Jurusan'); 
+            $ttd_kaprodi = $this->pkl_model->get_ttd_approval($pkl->pkl_id,'Ketua Program Studi'); 
+            $kajur_data = $this->user_model->get_dosen_data($ttd_kajur->id_user);
+            $kaprodi_data = $this->user_model->get_dosen_data($ttd_kaprodi->id_user);
+
+            $pdf->Cell(90, $spasi,"Ketua Jurusan", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"Ketua Program Studi", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            
+            $pdf->Cell(90, $spasi,$pdf->Image($ttd_kajur->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$pdf->Image($ttd_kaprodi->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+
+            $pdf->Ln(26);
+            
+            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$kaprodi_data->gelar_depan.$kaprodi_data->name.$kaprodi_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP.".$kajur_data->nip_nik, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP.".$kaprodi_data->nip_nik, 0, 0, 'L');
+            $pdf->Ln(10);
+        }
+
+        $pdf->Output('I','permohonan_kp.pdf');
+    }
+
+}
 
 ?>

@@ -79,14 +79,14 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                                 </i>KP/PKL
                                             </a>
                                         </li>
-                                        <li>
+                                        <!-- <li>
                                             <a href="#">
                                                 <i class="metismenu-icon">
                                                 </i>Bimbingan
                                             </a>
-                                        </li>
+                                        </li> -->
                                         <li>
-                                            <a href="#">
+                                            <a href="<?php echo site_url('mahasiswa/pkl/seminar') ?>" <?php if($this->uri->segment(1) == "mahasiswa" && $this->uri->segment(2) == "pkl" && $this->uri->segment(3) == "seminar") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Seminar
                                             </a>

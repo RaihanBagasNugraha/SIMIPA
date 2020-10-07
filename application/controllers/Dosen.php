@@ -3038,6 +3038,49 @@ class Dosen extends CI_Controller {
 		$this->pkl_model->update_pkl_lokasi($id_lokasi,$lokasi,$alamat);
 		redirect(site_url("/dosen/struktural/pkl/add-lokasi-pkl/aksi?aksi=tambah&id=$id_aksi"));
 	}
+
+	function kajur_approve_pkl()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pkl'] = $this->pkl_model->get_pkl_mahasiswa_approval_kajur($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/pkl/pkl_approve',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function kajur_approve_pkl_setujui()
+	{
+		$status = $this->input->get('status');
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($id);
+		$data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+		$this->load->view('dosen/kajur/pkl/pkl_approve_ttd',$data);
+		$this->load->view('footer_global');
+	}
+
+	function kajur_approve_pkl_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $data['id_pengajuan'];
+		$status = $data['status'];
+		$ttd = $data['ttd'];
+		$user_id = $this->session->userdata('userId');
+
+		$this->pkl_model->pkl_approve_setujui($status,$id,$user_id,$ttd);
+		redirect(site_url("/dosen/struktural/pkl/approve-pkl"));
+	}
 	
 	function pkl_approve()
 	{
@@ -3205,12 +3248,60 @@ class Dosen extends CI_Controller {
 		$list_mhs = $this->pkl_model->select_pkl_approval_koor($approval_id);
 		foreach($list_mhs as $list)
 		{
-			$this->pkl_model->approval_koor_pkl7($list->pkl_id);
+			//cek strata
+			$npm = $this->pkl_model->select_pkl_by_id_pkl($list->pkl_id)->npm;
+			$strata = substr($npm,2,1);
+			if($strata == 1){
+				$this->pkl_model->approval_koor_pkl7($list->pkl_id);
+			}
+			elseif($strata == 0){
+				$this->pkl_model->approval_koor_pkl4($list->pkl_id);
+			}
 		}
-
-		//mahasiswa d3 set status = = 4
-
 		redirect(site_url("/dosen/pkl/pengajuan/koordinator/approve?periode=$periode&id=$id"));
+	}
+
+	function pkl_approve_kaprodi()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pkl'] = $this->pkl_model->get_pkl_mahasiswa_approval_kaprodi($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kaprodi/pkl/pkl_approve',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_approve_kaprodi_setujui()
+	{
+		$status = $this->input->get('status');
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($id);
+		$data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+		$this->load->view('dosen/kaprodi/pkl/pkl_approve_ttd',$data);
+		$this->load->view('footer_global');
+	}
+
+	function pkl_approve_kaprodi_simpan()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $data['id_pengajuan'];
+		$status = $data['status'];
+		$ttd = $data['ttd'];
+		$user_id = $this->session->userdata('userId');
+
+		$this->pkl_model->pkl_approve_setujui($status,$id,$user_id,$ttd);
+		redirect(site_url("/dosen/struktural/kaprodi/pkl"));
 	}
 
 }

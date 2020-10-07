@@ -155,6 +155,9 @@
 <script src="<?php echo site_url("assets/scripts/select2.full.js") ?>"></script>
 
 <script>
+ $("select").select2({
+        theme: "bootstrap"
+    });
                             $(document).on("click", ".passingID", function () {
                              var dataId = $(this).attr('data-id');
                              var data = dataId.split("#$#$");

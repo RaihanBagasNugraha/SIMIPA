@@ -28,18 +28,7 @@
 
                             echo '<div class="alert alert-danger fade show" role="alert">Ukuran atau Format Berkas Tidak Sesuai</div>';
                         }
-                        elseif(!empty($_GET['status']) && $_GET['status'] == 'kesalahan') {
 
-                            echo '<div class="alert alert-danger fade show" role="alert">Silahkan Pilih Jenis Berkas <b>Form Instansi KP/PKL</b></div>';
-                        }
-                        $aksi = $this->input->get('aksi');
-                        //get approval id
-                        $ids = $this->encrypt->decode($this->input->get('id'));
-                        // echo $id;
-                        if($aksi == "lampiran"){
-                            $approval_id = $this->pkl_model->get_approval_id_by_pkl_id($ids)->approval_id;
-                        }
-                        
                         ?>
                         <div class="row">
                         <div class="col-md-8">
@@ -74,8 +63,8 @@
                                                             <td>
                                                             <a style="width: 60px;" href="<?php echo base_url($row->file) ?>" class="mr-1 mb-1 btn btn-info btn-sm" download>Unduh
                                                             </a>
-                                                            <a data-toggle = "modal" data-id="<?php echo $row->id."#$#$".$row->nama_berkas."#$#$".$row->id_pkl."#$#$".$row->file ?>" class="passingID">
-                                                                <button style="width: 60px;" type="button" class="btn mb-1 btn-danger btn-sm aksi"  data-toggle="modal" data-target="#delBerkaskp">
+                                                            <a data-toggle = "modal" data-id="<?php echo $row->id."#$#$".$row->nama_berkas."#$#$".$row->seminar_id."#$#$".$row->file ?>" class="passingID">
+                                                                <button style="width: 60px;" type="button" class="btn mb-1 btn-danger btn-sm aksi"  data-toggle="modal" data-target="#delBerkasSmrkp">
                                                                     Hapus
                                                                 </button>
                                                             </a>
@@ -83,28 +72,6 @@
                                                             
                                                         </tr>
                                                         <?php
-                                                            }
-                                                            if($aksi == "lampiran"){
-                                                            $instansi_file = $this->pkl_model->get_approval_koor_by_id($approval_id);
-                                                               if($instansi_file->file != NULL){ 
-                                                        ?>
-                                                        <tr>
-                                                            <td><?php echo "#" ?></td>
-                                                            <td><?php echo "$instansi_file->nama_file" ?></td>
-                                                            <td><?php echo "Form Penerimaan Instansi KP/PKL" ?></td>
-                                                            <td>
-                                                            <a style="width: 60px;" href="<?php echo base_url($instansi_file->file) ?>" class="mr-1 mb-1 btn btn-info btn-sm" download>Unduh
-                                                            </a>
-                                                            <a data-toggle = "modal" data-id-approval="<?php echo $instansi_file->approval_id ?>" class="passingID2">
-                                                                <button style="width: 60px;" type="button" class="btn mb-1 btn-danger btn-sm aksi"  data-toggle="modal" data-target="#delBerkaskps">
-                                                                    Hapus
-                                                                </button>
-                                                            </a>
-                                                            </td>
-                                                            
-                                                        </tr>
-                                                        <?php        
-                                                               }
                                                             }
                                                         }
                                                         ?>
@@ -122,43 +89,13 @@
                                     <div class="card-header">Form Berkas Lampiran</div>
                                     <div class="card-body">
   
-                                        <form method="post" action="<?php echo site_url('mahasiswa/pkl/pkl-home/lampiran/upload') ?>" enctype="multipart/form-data" >
+                                        <form method="post" action="<?php echo site_url('mahasiswa/pkl/seminar/lampiran/upload') ?>" enctype="multipart/form-data" >
                                         <div class="position-relative row form-group">
                                             <div class="col-sm-12">
                                                 <input name="nama_berkas" class="form-control" required type="text" placeholder="Nama Berkas">
-                                                <input type="hidden" name="pkl_id" value="<?php echo $this->input->get('id') ?>">
-                                                <input type="hidden" name="aksi" value="">
-                                                <?php 
-                                                    if($aksi == "lampiran"){ 
-                                                ?>
-                                                    <input type="hidden" name="approval_id" value="<?php echo $approval_id ?>">
-                                                    <input type="hidden" name="aksi" value="lampiran">
-                                                <?php } ?>
+                                                <input type="hidden" name="seminar_id" value="<?php echo $this->input->get('id') ?>">
                                             </div>
-                                        </div>
-                                            <?php 
-                                                if($aksi == "lampiran"){ 
-                                            ?>
-                                            <div class="position-relative row form-group">
-                                                <div class="col-sm-12">
-                                                    <select name="jenis_berkas" class=" form-control" required>
-                                                    <option>-- Pilih Jenis Berkas --</option>
-                                                    <?php
-                                                    $list = $this->parameter_model->select_jenis_berkas_instansi();
-                                                    foreach ($list as $row) {
-                                                        $select = "";
-                                                        //if($biodata->jalur_masuk == $row->id_jalur_masuk) $select = "selected";
-                                                        
-                                                        echo "<option ".$select." value='".$row->id_jenis."'>".$row->nama."</option>";
-                                                        }
-                                                    ?>
-
-                                                    </select>
-                                                    
-                                                
-                                                </div>
-                                            </div>
-                                            <?php }else{ ?>
+                                        
                                                 <div class="col-sm-12">
                                                     <select name="jenis_berkas" class=" form-control" required>
                                                     <option>-- Pilih Jenis Berkas --</option>
@@ -173,10 +110,8 @@
                                                     ?>
 
                                                     </select>
-                                                    
-                                                
                                                 </div>
-                                            <?php } ?>
+                                            </div>
                                                 <div class="position-relative row form-group">
                                                 <div class="col-sm-12"><input oninvalid="this.setCustomValidity('Anda belum memilih berkas!')" oninput="this.setCustomValidity('')" accept=".pdf" name="file" id="file" type="file" class="form-control-file">
                                                 </div>
@@ -184,10 +119,6 @@
                                                 <div class="col-sm-12"><span style="color:red">*Max 1 MB/Format PDF</span></div>
                                                 <br>
                                                 <div class="col-sm-12"><span style="color:red">*Sesuaikan Nama Berkas Untuk Memudahkan Verifikasi</span></div>
-                                                <?php if($aksi == "lampiran") { ?>
-                                                <br>
-                                                <div class="col-sm-12"><span style="color:red">*Form Penerimaan Instansi KP/PKL Diunggah Satu Perwakilan Mahasiswa</span></div>
-                                                <?php } ?>
                                                 </div>
 
                                                                
@@ -224,13 +155,12 @@
     $("select").select2({
         theme: "bootstrap"
     });
-
     $(document).on("click", ".passingID", function () {
         var dataId = $(this).attr('data-id');
         var data = dataId.split("#$#$");
             $(".modal-body #berkasID").val( data[0] );
             $(".modal-body #berkasNama").text(data[1]);
-            $(".modal-body #pklID").val(data[2]);
+            $(".modal-body #smrID").val(data[2]);
             $(".modal-body #berkasFile").val(data[3]);
          //console.log("Tes");
     });

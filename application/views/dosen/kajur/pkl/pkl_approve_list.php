@@ -13,12 +13,7 @@
                                     </div>
                                 </div>
                                 <div class="page-title-actions">
-                                    <!--<a href="<?php echo site_url("mahasiswa/tugas-akhir/tema/form") ?>" class="btn-shadow btn btn-success">-->
-                                    <!--        <span class="btn-icon-wrapper pr-2 opacity-7">-->
-                                    <!--            <i class="fas fa-file fa-w-20"></i>-->
-                                    <!--        </span>-->
-                                    <!--        Form Pengajuan Tema-->
-                                    <!--</a>-->
+                                  
                                 </div>
                                 
                             </div>
@@ -61,13 +56,6 @@
                                             <div class="col-sm-10">
                                             <p style="font-size:110%;">Berkas Persetujuan Instansi : <b><a style="width: 60px;" href="<?php echo base_url() ?>" class="mr-1 mb-1 btn btn-danger btn-sm disabled" download>Unduh</a></b></p>                                
                                             </div>
-                                            <div class="col-sm-2">
-                                                <a data-toggle = "modal" data-id="" class="" >
-                                                    <button type="button" class="btn-wide mb-1 btn btn-danger btn-sm btn-block disabled"  data-toggle="modal" data-target="#">
-                                                            Setujui
-                                                    </button>
-                                                </a>
-                                            </div>
                                         </div>
                                 <?php        
                                     }elseif($pkl->status == 2){ ?>
@@ -75,32 +63,17 @@
                                             <div class="col-sm-10">
                                                 <p style="font-size:110%;">Berkas Persetujuan Instansi : <b><a style="width: 60px;" href="<?php echo base_url($pkl->file) ?>" class="mr-1 mb-1 btn btn-success btn-sm" download>Unduh</a></b></p>
                                             </div>
-                                            <div class="col-sm-2">
-                                                <a data-toggle = "modal" data-id="<?php echo $pkl->approval_id ?>" data-add="<?php echo $periode_al."#$#$".$id_alamat ?>" class="passingID3" >
-                                                    <button type="button" class="btn-wide mb-1 btn btn-success btn-sm btn-block"  data-toggle="modal" data-target="#ApprovalKoorPkl">
-                                                            Setujui
-                                                    </button>
-                                                </a>
-                                            </div>
                                         </div>
                                 <?php 
                                     }
-                                    elseif($pkl->status >= 3){ ?>
+                                    elseif($pkl->status == 3){ ?>
                                     <div class="position-relative row form-group">
                                             <div class="col-sm-10">
                                                 <p style="font-size:110%;">Berkas Persetujuan Instansi : <b><a style="width: 60px;" href="<?php echo base_url($pkl->file) ?>" class="mr-1 mb-1 btn btn-primary btn-sm" download>Unduh</a></b></p>
                                             </div>
-                                            <div class="col-sm-2">
-                                                <a data-toggle = "modal" class="" >
-                                                    <button type="button" class="btn-wide mb-1 btn btn-primary btn-sm btn-block disabled"  data-toggle="modal" data-target="#">
-                                                            Selesai
-                                                    </button>
-                                                </a>
-                                            </div>
                                     </div>
                                 <?php
-                                    }
-                                
+                                    }                               
                                 ?>                         
                                 <div class="table-responsive">
                                     <table class="mb-0 table table-striped" id="example">
@@ -113,6 +86,7 @@
                                             <th stlye="width:40 px">Berkas</th>
                                             <!-- <th>Status</th> -->
                                             <th stlye="width:10%">Aksi</th>
+                                            <th stlye="width:10%">Status</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -127,6 +101,8 @@
                                             $n = 1;
                                             $c = 0;
                                             $list = $this->pkl_model->get_mahasiswa_lokasi_daftar_koor($pkl->lokasi_id,$this->session->userdata('userId'),$pkl->no_penetapan);
+                                            $jml = count($list);
+                                            // echo $jml;
                                             foreach($list as $row){   
                                         ?>
                                             <tr>
@@ -176,23 +152,7 @@
                                                          if(empty($lampiran)) {
                                                              echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                          } else {
-                                                            $approval = $this->pkl_model->get_approval_koor_by_pkl_id($row->pkl_id);
-                                                            if(!empty($approval)){
-                                                                if($approval->file != NULL){
-                                                                    echo "<li><a href='".base_url($approval->file)."' download>".$approval->nama_file."</a></li>";
-                                                                }
-                                                            }
-    
-                                                            if($row->status >= 0 && $row->status != 6){
-                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/pkl/form_pdf?jenis=form_pengajuan&id=$row->pkl_id").">Form Pengajuan KP/PKL</a></li>"; 
-                                                            }
-                                                            if($row->status >= 2 && $row->status != 6){
-                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/pkl/form_pdf?jenis=form_verifikasi&id=$row->pkl_id").">Form Verifikasi Berkas</a></li>"; 
-                                                            }
-                                                            if($row->status >= 8){
-                                                                echo "<li><a href=".site_url("mahasiswa/tugas-akhir/pkl/form_pdf?jenis=form_permohonan&id=$row->pkl_id").">Form Permohonan KP/PKL</a></li>"; 
-                                                            }
-                                                            
+                                                         
                                                              foreach($lampiran as $rw) {
                                                                  echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
                                                              }
@@ -223,6 +183,20 @@
                                                 }else{ echo "-"; } ?>
                                                     
                                                 </td>
+                                                <td class="align-top">
+                                                    <?php 
+                                                    if($row->status == 7){
+                                                        echo "<b>Disetujui</b>";
+                                                        $c++;
+                                                    }
+                                                    elseif($row->status == 8){
+                                                        echo "<b>Disetujui</b>";
+                                                        $c = 0;
+                                                    }
+                                                    else{
+                                                        echo "<b>Menunggu <br>Approval<br> Koordinator</b>";
+                                                    } ?>
+                                                </td>
                                                
                                             </tr>
                                         <?php
@@ -230,9 +204,15 @@
                                             }
                                         }
                                         ?>
-                                    
-                                        
                                         </tbody>
+                                        <tfoot>
+                                            <td colspan="6">
+                                            </td>
+                                            <td>
+                                            <?php if($jml == $c){$button = "";}else{$button = "disabled";} ?>
+                                                <a href="<?php echo site_url("dosen/struktural/pkl/approve-pkl/setujui?status=kajur&id=".$this->encrypt->encode($pkl->approval_id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block <?php echo $button ?>" >Setujui</a>
+                                            </td>
+                                        </tfoot>
                                     </table>
                                 </div>
                                 </div>

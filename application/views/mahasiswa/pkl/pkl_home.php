@@ -92,7 +92,16 @@
                                                                 echo "<li><a href='".base_url($approval->file)."' download>".$approval->nama_file."</a></li>";
                                                             }
                                                         }
-                                                    
+
+                                                        if($row->status >= 0 && $row->status != 6){
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/pkl/form_pdf?jenis=form_pengajuan&id=$row->pkl_id").">Form Pengajuan KP/PKL</a></li>"; 
+                                                        }
+                                                        if($row->status >= 2 && $row->status != 6){
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/pkl/form_pdf?jenis=form_verifikasi&id=$row->pkl_id").">Form Verifikasi Berkas</a></li>"; 
+                                                        }
+                                                        if($row->status >= 8){
+                                                            echo "<li><a href=".site_url("mahasiswa/tugas-akhir/pkl/form_pdf?jenis=form_permohonan&id=$row->pkl_id").">Form Permohonan KP/PKL</a></li>"; 
+                                                        }
                                                         foreach($lampiran as $rw) {
                                                             echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
                                                         }
@@ -122,7 +131,7 @@
                                                     $status = "Approval Koordinator";
                                                     break;
                                                     case "4":
-                                                    $status = "Approval Ketua Prodi";
+                                                    $status = "Approval Koordinator";
                                                     break;
                                                     case "5":
                                                     $status = "Perbaiki";
@@ -132,6 +141,9 @@
                                                     break;
                                                     case "7":
                                                     $status = "Approval Koordinator";
+                                                    break;
+                                                    case "8":
+                                                    $status = "Approval Ketua Jurusan";
                                                     break;
                                                 }
                                                 
@@ -198,7 +210,7 @@
                                                 }
                                                 else{echo "Menunggu Verifikasi Berkas";}
                                             }
-                                            elseif($row->status == 4 || $row->status == 6){echo"Selesai";}
+                                            elseif($row->status == 8 || $row->status == 6){echo"Selesai";}
                                             elseif($row->status == 0){echo "Menunggu";}
 
                                             else{echo "Menunggu";} ?>

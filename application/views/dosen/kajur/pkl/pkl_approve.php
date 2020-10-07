@@ -49,12 +49,11 @@
                                     <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
-                                            <th stlye="width:10%">Tahun</th>
-                                            <th stlye="width:5%">Periode</th>
-                                            <th stlye="width:40%">Lokasi</th>
-                                            <th stlye="width:20%">Nomor Surat</th>
-                                            <th stlye="width:5%">Jumlah<br>Mahasiswa</th>
-                                            <th stlye="width:10%">Aksi</th>
+                                            <th>Nama/Npm</th>
+                                            <th>Tahun/Periode</th>
+                                            <th>Lokasi</th>
+                                            <th>Berkas Lampiran</th>
+                                            <th>Aksi</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -72,56 +71,49 @@
                                             <tr>
                                                 <td class="align-top">
                                                     <?php 
-                                                       echo "$row->tahun";
-                                                    ?>
-                                                </td>
-                                                <td class="align-top">
-                                                    <?php 
-                                                       echo "$row->periode";
+                                                        echo $this->user_model->get_mahasiswa_name($row->npm);
+                                                        echo "<br>";
+                                                        echo $row->npm; 
                                                     ?> 
                                                 </td>
 
                                                 <td class="align-top">
                                                     <?php 
-                                                        echo "<b>$row->lokasi</b>";
-                                                        echo "<br>";
-                                                        echo "$row->alamat";
+                                                        $periode = $this->pkl_model->get_pkl_kajur_by_id($row->id_periode);
+                                                        echo "$periode->tahun <br> Periode $periode->periode";
                                                     
                                                     ?>
                                                 </td>
 
                                                 <td class="align-top">
-                                                    <?php echo "$row->no_penetapan" ?>
+                                                    <?php 
+                                                        $lokasi = $this->pkl_model->get_lokasi_pkl_by_id($row->id_lokasi);
+                                                        echo "$lokasi->lokasi";
+                                                    
+                                                    ?>
                                                 </td>
 
                                                 <td class="align-top">
                                                     <?php 
-                                                       $jml_mahasiswa = $this->pkl_model->get_jml_mahasiswa_lokasi_daftar_koor($row->id,$this->session->userdata('userId'),$row->no_penetapan)->jml ;
-                                                       echo "<b>$jml_mahasiswa</b>";
+                                                         $lampiran = $this->pkl_model->select_lampiran_by_pkl($row->pkl_id, $row->npm); 
+                                                         if(empty($lampiran)) {
+                                                             echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
+                                                         } else {
+                                                         
+                                                             foreach($lampiran as $rw) {
+                                                                 echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
+                                                             }
+             
+                                                             echo "</ul>";
+                                                         }
+                                                    
                                                     ?>
                                                 </td>
+
                                                 <td class="align-top">
-                                                <?php 
-                                                    if($jml_mahasiswa == "0"){$disabled="disabled";}else{$disabled="";}
-                                                    if($row->status == 1 ){
-                                                        $class = "success";
-                                                        $ket = "Menunggu";
-                                                    }    
-                                                    elseif($row->status == 2){
-                                                        $class = "danger";
-                                                        $ket = "Setujui";
-                                                    }
-                                                    elseif($row->status >= 3){
-                                                        $class = "primary";
-                                                        $ket = "Selesai";
-                                                    }
-                                                    elseif($row->status==0){
-                                                        $class = "danger";
-                                                        $ket = "Setujui";
-                                                    }
-                                                ?>
-                                                <a href="<?php echo site_url("dosen/pkl/pengajuan/koordinator/approve?periode=$row->id_pkl&id=".$this->encrypt->encode($row->approval_id)) ?>" class="btn-wide mb-1 btn btn-<?php echo $class ?> btn-sm btn-block <?php echo $disabled ?> " ><?php echo $ket ?></a>
-                                              
+
+                                                <a href="<?php echo site_url("dosen/struktural/pkl/approve-pkl/setujui?status=kajur&id=".$this->encrypt->encode($row->pkl_id)) ?>" class="btn-wide mb-1 btn btn-primary btn-sm btn-block">Setujui
+                                                </a>
                                                 </td>
                                             </tr>
                                         <?php
@@ -202,12 +194,19 @@ $(document).ready(function(){
 </script>
 
 <script>
+    $(".passingID3").click(function () {
+                var id = $(this).attr('data-id');
+                var data = id.split("#$#$");
+                $("#ID3").val( data[0] );
+                $("#status").val( data[1] );
+
+            });
 
     $(".passingID4").click(function () {
                 var id = $(this).attr('data-id');
                 var data = id.split("#$#$");
-                $("#ID").val( data[0] );
-                $("#status").val( data[1] );
+                $("#ID4").val( data[0] );
+                $("#status2").val( data[1] );
 
     });      
        

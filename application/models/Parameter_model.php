@@ -59,5 +59,15 @@ class Parameter_model extends CI_Model
 		return $query->result();
 	}
 	
+	//berkas lampiran instansi
+	function select_jenis_berkas_instansi()
+	{
+		$this->db->select('*'); 
+		$this->db->from('jenis_berkas_lampiran');
+		$this->db->where('id_jenis', '16');
+
+		$query = $this->db->get();
+		return $query->result();
+	}
 	
 }
