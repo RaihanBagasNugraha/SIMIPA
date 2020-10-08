@@ -75,8 +75,39 @@
                                             </td>
                                             <td class="align-top">
                                                 <?php 
-                                                $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing);
-                                                echo $row->pembimbing == NULL ? "<i>(Belum Disetujui)</i>" : $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang; 
+                                                    $dosen_pmb = $this->user_model->get_dosen_name($row->pembimbing);
+                                                    echo $row->pembimbing == NULL ? "<i>(Belum Disetujui)</i>" : $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang; 
+                                                    echo "<br><br>";
+                                                    //pembimbing lapangan
+                                                    $pb_lp = $this->pkl_model->get_pb_lapangan($row->pkl_id);
+                                                    if($row->status == 8 && empty($pb_lp)){
+                                                        echo "<b>Pembimbing Lapangan :</b>";
+                                                    
+                                                    ?>
+                                                        <a data-toggle = "modal" data-id="<?php echo $row->pkl_id ?>" class="passingID4" >
+                                                                <button type="button" class="btn-wide mb-1 btn btn-danger btn-sm"  data-toggle="modal" data-target="#PbLapangan">
+                                                                    Isi Dosen Pembimbing Lapangan 
+                                                                </button>
+                                                        </a>
+                                                    <?php
+                                                    }
+                                                    else{
+                                                        echo "<b>Pembimbing Lapangan :</b>";
+                                                        echo "<br>";
+                                                        echo "$pb_lp->nama";
+                                                        echo "<br>";
+                                                        //cek seminar
+                                                        $smr = $this->pkl_model->get_seminar_by_npm($row->npm);
+                                                        if(empty($smr)){
+                                                    ?>
+                                                        <a data-toggle = "modal" data-id="<?php echo $row->pkl_id ?>" data-pb="<?php echo $pb_lp->nama."///".$pb_lp->nip_nik."///".$pb_lp->email."///".$pb_lp->no_telp ?>" class="passingID5" >
+                                                                <button type="button" class="btn-wide mb-1 btn btn-success btn-sm"  data-toggle="modal" data-target="#PbLapanganUbah">
+                                                                    Ubah 
+                                                                </button>
+                                                        </a>
+                                                    <?php    
+                                                    } else{}
+                                                }
                                                 ?>
                                             </td>
                                            
@@ -305,6 +336,24 @@ $(document).ready(function() {
     $(".passingID2").click(function () {
                 var id = $(this).attr('data-id');
                 $("#ID2").val( id );
+
+    });  
+
+    $(".passingID4").click(function () {
+                var id = $(this).attr('data-id');
+                $("#ID4").val( id );
+
+    });  
+
+    $(".passingID5").click(function () {
+                var id = $(this).attr('data-id');
+                var dataPb = $(this).attr('data-pb');
+                var data = dataPb.split("///");
+                $("#ID5").val( id );
+                $("#Nama").val( data[0] );
+                $("#nip").val( data[1] );
+                $("#email").val( data[2] );
+                $("#telp").val( data[3] );
 
     });  
 

@@ -3304,4 +3304,151 @@ class Dosen extends CI_Controller {
 		redirect(site_url("/dosen/struktural/kaprodi/pkl"));
 	}
 
+	//seminar
+	function pkl_approve_seminar()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pkl'] = $this->pkl_model->get_mahasiswa_pkl_bimbingan($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/seminar/pkl_seminar_approve',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_approve_seminar_perbaiki()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $this->input->post('seminar_id');
+		$status = $this->input->post('status');
+		$keterangan = $this->input->post('keterangan')."$#$".$status;
+		$this->pkl_model->perbaiki_seminar_pkl($id,$keterangan,$status);
+		redirect(site_url("/dosen/pkl/approve-seminar"));
+	}
+
+	function pkl_approve_seminar_setujui()
+	{
+		$status = $this->input->get('status');
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_seminar_by_id($id);
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($data['seminar']->pkl_id);
+		$data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/seminar/pkl_seminar_approve_ttd',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_approve_seminar_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$seminar_id = $data['seminar_id'];
+		$status = $data['status'];
+		$ttd = $data['ttd'];
+		$sts = 1;
+		$id_user = $this->session->userdata('userId');
+		//set seminar status
+		$this->pkl_model->update_seminar_pkl($seminar_id,$sts);
+		//insert ttd
+		$data_approval = array(
+			"seminar_id" => $seminar_id,
+			"status_slug" => "Dosen Pembimbing",
+			"id_user" => $id_user,
+			"ttd" => $ttd
+		);
+		//insert surat
+		$data_surat = array(
+			"jenis" => 4,
+			"id_jenis" => $seminar_id
+		);
+
+		$this->pkl_model->input_approval_seminar($data_approval);
+		$this->pkl_model->save_surat_pa($data_surat);
+		redirect(site_url("/dosen/pkl/approve-seminar"));
+	}
+
+	function pkl_approve_seminar_koor()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_seminar_mahasiswa_koor($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/pkl/seminar/pkl_seminar_koordinator',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_approve_seminar_tolak()
+	{
+		$id = $this->input->post('seminar_id');
+		$status = $this->input->post('status');
+		$keterangan = $this->input->post('keterangan')."$#$".$status;
+		$this->pkl_model->perbaiki_seminar_pkl($id,$keterangan,$status);
+		redirect(site_url("/dosen/pkl/seminar/koordinator"));
+	}
+
+	function pkl_approve_seminar_form()
+	{
+		$status = $this->input->get('status');
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_seminar_by_id($id);
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($data['seminar']->pkl_id);
+		$data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/pkl/seminar/pkl_seminar_koordinator_ttd',$data);
+		
+		$this->load->view('footer_global');
+	}
+	
+	function pkl_approve_seminar_save_koor()
+	{
+		$id = $this->input->post('seminar_id');
+		$status = $this->input->post('status');
+		$ttd = $this->input->post('ttd');
+		$surat = $this->input->post('surat');
+		$surat2 = $this->input->post('surat2');
+		$no_surat = $surat."/".$surat2;
+		$id_user = $this->session->userdata('userId');
+		// echo $no_surat;
+		//edit pkl_seminar
+		$data=array(
+			"status" => "3",
+			"no_form" =>$no_surat
+		);
+		$this->pkl_model->approve_koor_seminar($id,$data);
+
+		//insert ttd
+		$data_approval = array(
+			"seminar_id" => $id,
+			"status_slug" => "Koordinator",
+			"id_user" => $id_user,
+			"ttd" => $ttd
+		);
+		$this->pkl_model->input_approval_seminar($data_approval);
+
+		redirect(site_url("/dosen/pkl/seminar/koordinator"));
+	}
+
 }

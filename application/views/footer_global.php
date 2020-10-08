@@ -1537,6 +1537,89 @@
         </div>
     </div>
 </div>
+
+<!-- Pb lapangan -->
+<div class="modal fade" id="PbLapangan" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Data Pembimbing Lapangan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="pb-lapangan" method="post" action="<?php echo site_url("mahasiswa/pkl/pkl-home/pb-lapangan") ?>">
+                    <input type="hidden" name="pkl_id" id="ID4" value="">
+                    <label><b>Nama</b></label>
+                    <input type="text" required class="form-control" name="nama" placeholder="Nama Lengkap dan Gelar" value="">
+                    <br>
+                    <label><b>NIP / NIK</b></label>
+                    <input type="text" required class="form-control" name="nip_nik" placeholder="NIP Atau NIK" value="">
+                    <br>
+                    <label><b>Email</b></label>
+                    <input type="email" required class="form-control" name="email" placeholder="Alamat Email" value="">
+                    <br>
+                    <label><b>No. Handphone</b></label>
+                    <input type="text" required class="form-control" name="no_telp" placeholder="Nomor Handphone" value="">
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="pb-lapangan" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pb lapangan -->
+<div class="modal fade" id="PbLapanganUbah" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Data Pembimbing Lapangan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="pb-lapangan-edit" method="post" action="<?php echo site_url("mahasiswa/pkl/pkl-home/pb-lapangan-ubah") ?>">
+                    <input type="hidden" name="pkl_id" id="ID5" value="">
+                    <label><b>Nama</b></label>
+                    <input type="text" required class="form-control" name="nama" id="Nama" placeholder="Nama Lengkap dan Gelar" value="">
+                    <br>
+                    <label><b>NIP / NIK</b></label>
+                    <input type="text" required class="form-control" name="nip_nik" id="nip" placeholder="NIP Atau NIK" value="">
+                    <br>
+                    <label><b>Email</b></label>
+                    <input type="email" required class="form-control" name="email" id="email" placeholder="Alamat Email" value="">
+                    <br>
+                    <label><b>No. Handphone</b></label>
+                    <input type="text" required class="form-control" name="no_telp" id="telp" placeholder="Nomor Handphone" value="">
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="pb-lapangan-edit" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php } ?>
 
 <?php if($this->uri->segment(3) == 'pkl-home' && $this->uri->segment(4) == 'lampiran') { ?>
@@ -1644,7 +1727,7 @@
 
 <?php } ?>
 
-<?php if($this->uri->segment(1) == 'tendik' && $this->uri->segment(2) == 'verifikasi-berkas' && $this->uri->segment(3) == 'pkl') { ?>
+<?php if($this->uri->segment(1) == 'tendik' && $this->uri->segment(2) == 'verifikasi-berkas' && ($this->uri->segment(3) == 'pkl' || $this->uri->segment(3) == 'seminar-pkl')) { ?>
 
 <div class="modal fade" id="ApprovalperbaikiAdm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -1674,6 +1757,40 @@
                                                 <i class="fas fa-times fa-w-20"></i>
                                             </span>Batal</button>
                 <button type="submit" form="perbaiki-pkl" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="PerbaikiSeminarAdmin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <form id="perbaiki-pkl-smr" method="post" action="<?php echo site_url("tendik/verifikasi-berkas/seminar-pkl/perbaiki") ?>">
+                    <input type="hidden" name="seminar_id" id="IDsmr" value="">
+                    <input type="hidden" name="status" id="Statussmr" value="">
+                    <label>Ajukan Perbaikan ?</label>
+                    <textarea class = "form-control" name="keterangan" cols="70" rows="3" placeholder="Keterangan Tolak"></textarea>
+                </form>
+                
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="perbaiki-pkl-smr" class="btn btn-primary">
                     <span class="btn-icon-wrapper pr-2 opacity-7">
                                                 <i class="fas fa-check fa-w-20"></i>
                                             </span>Ya</button>
@@ -1813,6 +1930,37 @@ $(document).ready(function() {
     </div>
 </div>
 
+<!-- seminar pkl -->
+<div class="modal fade" id="TolakSeminarPKL" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="tolak-pkl-seminar" method="post" action="<?php echo site_url("dosen/pkl/seminar/koordinator/tolak") ?>">
+                    <input type="hidden" name="seminar_id" id="IDsmr" value="">
+                    <input type="hidden" name="status" id="Statussmr" value="">
+                    <label>Tolak Pengajuan Seminar KP/PKL ?</label>
+                    <textarea class = "form-control" name="keterangan" cols="70" rows="3" placeholder="Keterangan Tolak"></textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="tolak-pkl-seminar" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php } ?>
 
 <?php if($this->uri->segment(1) == 'mahasiswa' && $this->uri->segment(2) == 'pkl' && $this->uri->segment(3) == 'seminar') { ?>
@@ -1910,5 +2058,73 @@ $(document).ready(function() {
         </div>
     </div>
 </div>
+
+<!-- ajukan perbaikan seminar kp / pkl mahasiswa-->
+<div class="modal fade" id="AjukanSeminarPerbaikanPkl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="ajukan-perbaikan-smr-kp" method="post" action="<?php echo site_url("mahasiswa/pkl/seminar/perbaikan") ?>">
+                    <input type="hidden" name="seminar_id" id="SemID" value="">
+                    <input type="hidden" name="status" id="Sts" value="">
+                Ajukan Perbaikan KP/PKL ?
+                </form>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="ajukan-perbaikan-smr-kp" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>
+
+<?php if($this->uri->segment(1) == 'dosen' && $this->uri->segment(2) == 'pkl' && $this->uri->segment(3) == 'approve-seminar') { ?>
+
+<div class="modal fade" id="PerbaikiSeminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="perbaiki-pkl" method="post" action="<?php echo site_url("dosen/pkl/approve-seminar/perbaiki") ?>">
+                    <input type="hidden" name="seminar_id" id="ID" value="">
+                    <input type="hidden" name="status" id="Status" value="">
+                    <label>Ajukan Perbaikan KP/PKL ?</label>
+                    <textarea class = "form-control" name="keterangan" cols="70" rows="3" placeholder="Keterangan Perbaikan"></textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="perbaiki-pkl" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <?php } ?>

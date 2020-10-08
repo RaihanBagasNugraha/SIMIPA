@@ -12,7 +12,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <?php if(empty($seminar)) { ?>
+                                <?php if(empty($seminar_cek)) { ?>
                                 <div class="page-title-actions">
                                     <a href="<?php echo site_url("mahasiswa/pkl/seminar/form") ?>" class="btn-shadow btn btn-success">
                                             <span class="btn-icon-wrapper pr-2 opacity-7">
@@ -80,9 +80,15 @@
                                             </td>
                                             <td class="align-top">
                                                <?php 
-                                                $dosen_pmb = $this->user_model->get_dosen_name($pkl->pembimbing);
-                                                echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
-                                               ?>
+                                                    $dosen_pmb = $this->user_model->get_dosen_name($pkl->pembimbing);
+                                                    echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
+                                                    echo "<br><br>";
+                                                    echo "<b>Pembimbing Lapangan</b>";
+                                                    $pb_lp = $this->pkl_model->get_pb_lapangan($row->pkl_id);
+                                                    echo "<br>";
+                                                    echo "$pb_lp->nama";
+                                                ?>
+                                               
                                             </td>
                                             <td class="align-top">
                                                <?php 
@@ -109,7 +115,7 @@
                                                     $status = "Diajukan";
                                                     break;
                                                     case "1":
-                                                    $status = "Approval Pembimbing Akademik";
+                                                    $status = "Approval Pembimbing KP/PKL";
                                                     break;
                                                     case "2":
                                                     $status = "Approval Staff Administrasi";
@@ -166,7 +172,7 @@
                                                 <?php } 
                                                 elseif($row->status == 5){ ?>
                                                         <a data-toggle = "modal" data-id="<?php echo $row->seminar_id ?>" ket_status="<?php echo $ket[1] ?>" class="passingIDPerbaikan" >
-                                                                <button type="button" class="btn-wide mb-1 btn btn-primary btn-sm btn-block"  data-toggle="modal" data-target="#AjukanPerbaikanPkl">
+                                                                <button type="button" class="btn-wide mb-1 btn btn-primary btn-sm btn-block"  data-toggle="modal" data-target="#AjukanSeminarPerbaikanPkl">
                                                                     Ajukan Perbaikan
                                                                 </button>
                                                         </a>
@@ -271,6 +277,12 @@ $(document).ready(function() {
     $(".passingID2").click(function () {
             var id = $(this).attr('data-id');
             $("#SmrID").val( id );
+        });
+    $(".passingIDPerbaikan").click(function () {
+            var id = $(this).attr('data-id');
+            var sts = $(this).attr('ket_status');
+            $("#SemID").val( id );
+            $("#Sts").val( sts );
         });
              
      

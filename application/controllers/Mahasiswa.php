@@ -1198,12 +1198,14 @@ class Mahasiswa extends CI_Controller {
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		$check = $this->pkl_model->check_pkl_done($this->session->userdata('username'));
+		$check_pbl = $this->pkl_model->get_pb_lapangan_by_npm($this->session->userdata('username'));
 		
-		if(empty($check)){
+		if(empty($check) || empty($check_pbl)){
 			echo "<script type='text/javascript'>alert('Proses Pengajuan KP/PKL Belum Selesai');javascript:history.back();</script>";
 		}
 		else{
 			$data['seminar'] = $this->pkl_model->get_pkl_seminar($check->pkl_id);
+			$data['seminar_cek'] = $this->pkl_model->get_pkl_seminar_cek($check->pkl_id);
 			$data['pkl'] = $this->pkl_model->check_pkl_done($this->session->userdata('username'));
 			$this->load->view('header_global', $header);
 			$this->load->view('mahasiswa/header');
@@ -1375,6 +1377,39 @@ class Mahasiswa extends CI_Controller {
 		//status seminar > 0
 		$status = 0;
 		$this->pkl_model->update_seminar_pkl($seminar_id,$status);
+		redirect(site_url("mahasiswa/pkl/seminar"));
+	}
+
+	function pkl_home_pb_lapangan()
+	{
+		$data = $this->input->post();
+		// print_r($data);
+
+		$this->pkl_model->insert_pb_lapangan($data);
+		redirect(site_url("mahasiswa/pkl/pkl-home"));
+	}
+
+	function pkl_home_pb_lapangan_ubah()
+	{
+		$id = $this->input->post('pkl_id');
+
+		$data = array(
+			"nama" => $this->input->post('nama'),
+			"nip_nik" => $this->input->post('nip_nik'),
+			"email" => $this->input->post('email'),
+			"no_telp" => $this->input->post('no_telp'),
+		);
+		$this->pkl_model->update_pb_lapangan($id,$data);
+		redirect(site_url("mahasiswa/pkl/pkl-home"));
+	}
+
+	
+	function pkl_seminar_ajukan_perbaikan()
+	{
+		$id = $this->input->post('seminar_id');
+		$status = $this->input->post('status');
+
+		$this->pkl_model->ajukan_perbaikan_seminar_pkl($id,$status);
 		redirect(site_url("mahasiswa/pkl/seminar"));
 	}
 }

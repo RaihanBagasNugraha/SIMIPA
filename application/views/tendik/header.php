@@ -88,7 +88,7 @@ $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->us
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="<?php echo site_url("tendik/verifikasi-berkas") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas" && $this->uri->segment(3) != "seminar" && $this->uri->segment(3) != "pkl") echo 'class="mm-active"' ?>>
+                                            <a href="<?php echo site_url("tendik/verifikasi-berkas") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas" && $this->uri->segment(3) != "seminar" && $this->uri->segment(3) != "pkl" && $this->uri->segment(3) != "seminar-pkl") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon pe-7s-note2"></i>
                                                 Tema <span class="badge badge-danger"><?php echo $ta_admin > 0 ? $ta_admin : "" ?></span>
                                                 
@@ -106,6 +106,14 @@ $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->us
                                                 <i class="metismenu-icon pe-7s-note2"></i>
                                                 KP/PKL
                                                 <!-- KP/PKL <span class="badge badge-danger"><?php echo $kp_admin > 0 ? $kp_admin : "" ?></span> -->
+                                                
+                                            </a>
+                                        </li>    
+                                        <li>
+                                            <a href="<?php echo site_url("tendik/verifikasi-berkas/seminar-pkl") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas" && $this->uri->segment(3) == "seminar-pkl") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Seminar KP/PKL
+                                                <!-- KP/PKL <span class="badge badge-danger"></span> -->
                                                 
                                             </a>
                                         </li>    

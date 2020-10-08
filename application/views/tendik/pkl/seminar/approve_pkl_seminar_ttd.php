@@ -6,8 +6,8 @@
                                         <i class="pe-7s-file icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Approval KP/PKL
-                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan KP/PKL
+                                    <div>Approval Seminar KP/PKL
+                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan Seminar KP/PKL
                                         </div>
                                     </div>
                                 </div>
@@ -28,10 +28,11 @@
                         <div class="row">
                         <div class="col-md-12">
                          <div class="main-card mb-3 card">
-                                <div class="card-header">Approval KP/PKL</div>
+                                <div class="card-header">Approval Seminar KP/PKL</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('dosen/pkl/approve/setujui/save') ?>" >
-                                    <input value="<?php echo $pkl->pkl_id ?>" type = "hidden" required name="id_pengajuan" id="id_pengajuan">
+                                <form method="post" action="<?php echo site_url('tendik/verifikasi-berkas/seminar-pkl/form/setujui') ?>" >
+                                    <input value="<?php echo $seminar->seminar_id ?>" type = "hidden" required name="seminar_id" id="id_seminar">
+                                    <input value="<?php echo $seminar->pkl_id ?>" type = "hidden" required name="pkl_id" id="">
                                     <input value="<?php echo $status ?>" type = "hidden" required name="status" id="aksi">
 
 
@@ -73,13 +74,48 @@
                                             <div class="col-sm-9">
                                                 <?php 
                                                 switch($status){
-                                                    case "pa":
-                                                    $sts = "Pembimbing Akademik";
+                                                    case "admin":
+                                                    $sts = "Administrasi";
                                                     break;
                                                 }
                                                 echo "<input class=\"form-control\" value=\"$sts\" readonly>"
                                                 ?>
                                             </div>
+                                    </div>
+
+                                     <!-- no surat -->
+                                     <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label">Nomor Surat</label>
+                                            <div class="col-sm-1">
+                                                <?php 
+                                                    $year = date("Y");
+                                                    $jurusanid = $this->user_model->get_jurusan_tendik($this->session->userdata('userId'));
+                                                    $ta_jenis = "DT";
+                                                    if($jurusanid == '0'){
+                                                        $no = "/UN26.17.07/$ta_jenis/";
+                                                    }
+                                                    elseif($jurusanid == '1'){
+                                                        $no = "/UN26.17.03/$ta_jenis/";
+                                                    }
+                                                    elseif($jurusanid == '2'){
+                                                        $no = "/UN26.17.02/$ta_jenis/";
+                                                    }
+                                                    elseif($jurusanid == '3'){
+                                                        $no = "/UN26.17.05/$ta_jenis/";
+                                                    }
+                                                    elseif($jurusanid == '4'){
+                                                        $no = "/UN26.17.04/$ta_jenis/";
+                                                    }
+                                                    elseif($jurusanid == '5'){
+                                                        $no = "/UN26.17.06/$ta_jenis/";
+                                                    }
+                                                    $nomor = $no.$year;
+                                                    
+                                                ?>
+                                               <input type="text" name="no_penetapan" value="" class="form-control" /> 
+                                               <input type="hidden" value="<?php echo $nomor ?>" required name="nomor" id="nomor">
+                                            </div>
+                                            <?php echo "<h4>$nomor</h4>" ?>
                                     </div>
 
 

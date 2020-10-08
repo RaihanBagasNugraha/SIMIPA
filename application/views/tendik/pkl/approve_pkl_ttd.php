@@ -78,7 +78,7 @@
                                             <div class="col-sm-1">
                                                 <?php 
                                                     $year = date("Y");
-                                                    $jurusanid = $this->user_model->get_jurusan(1617051005);
+                                                    $jurusanid = $this->user_model->get_jurusan_tendik($this->session->userdata('userId'));
                                                     $ta_jenis = "DT";
                                                     if($jurusanid == '0'){
                                                         $no = "/UN26.17.07/$ta_jenis/";

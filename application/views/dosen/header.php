@@ -32,8 +32,8 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                         <i class="metismenu-icon pe-7s-note2"></i>
                                         <?php 
                                             $pa_kp = count($this->pkl_model->get_approve_pa_pkl($this->session->userdata('userId')));
-                                        
-                                            $manajemen_kp = $pa_kp;
+                                            $seminar_kp = count( $this->pkl_model->get_mahasiswa_pkl_bimbingan($this->session->userdata('userId')));
+                                            $manajemen_kp = $pa_kp + $seminar_kp;
                                         ?>
                                         Manajemen KP/PKL  <span class="badge badge-danger"><?php echo $manajemen_kp > 0 ? $manajemen_kp : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -43,6 +43,12 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                             <a href="<?php echo site_url("dosen/pkl/approve") ?>"  <?php if($this->uri->segment(2) == "pkl" && $this->uri->segment(3) == "approve") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Persetujuan KP/PKL  <span class="badge badge-danger"><?php echo $pa_kp > 0 ? $pa_kp : "" ?></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/pkl/approve-seminar") ?>"  <?php if($this->uri->segment(2) == "pkl" && $this->uri->segment(3) == "approve-seminar") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Seminar KP/PKL  <span class="badge badge-danger"><?php echo $seminar_kp > 0 ? $seminar_kp : "" ?></span>
                                             </a>
                                         </li>
                                         <li>
@@ -612,6 +618,12 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                             <a href="<?php echo site_url("dosen/pkl/pengajuan/koordinator") ?>" <?php if($this->uri->segment(2) == "pkl" && $this->uri->segment(3) == "pengajuan" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Pendaftaran KP/PKL
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/pkl/seminar/koordinator") ?>" <?php if($this->uri->segment(2) == "pkl" && $this->uri->segment(3) == "seminar" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Seminar KP/PKL
                                             </a>
                                         </li>
                                     </ul>

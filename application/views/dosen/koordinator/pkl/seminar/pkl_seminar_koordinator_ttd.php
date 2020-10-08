@@ -6,8 +6,8 @@
                                         <i class="pe-7s-file icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Approval KP/PKL
-                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan KP/PKL
+                                    <div>Approval Seminar KP/PKL
+                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan Seminar KP/PKL
                                         </div>
                                     </div>
                                 </div>
@@ -28,12 +28,23 @@
                         <div class="row">
                         <div class="col-md-12">
                          <div class="main-card mb-3 card">
-                                <div class="card-header">Approval KP/PKL</div>
+                                <div class="card-header">Approval Seminar KP/PKL</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('dosen/pkl/approve/setujui/save') ?>" >
-                                    <input value="<?php echo $pkl->pkl_id ?>" type = "hidden" required name="id_pengajuan" id="id_pengajuan">
+                                <form method="post" action="<?php echo site_url('dosen/pkl/seminar/koordinator/save') ?>" >
+                                    <input value="<?php echo $seminar->seminar_id ?>" type = "hidden" required name="seminar_id" id="id_seminar">
+                                    <input value="<?php echo $seminar->pkl_id ?>" type = "hidden" required name="pkl_id" id="">
                                     <input value="<?php echo $status ?>" type = "hidden" required name="status" id="aksi">
 
+                                     <!-- surat -->
+                                     <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label">Nomor Form</label>
+                                            <div class="col-sm-1">
+                                            <?php $surat = explode("/",$seminar->no_form); ?>
+                                                <input value="<?php echo $surat[0] ?>" required name="surat" class="form-control input-mask-trigger" >
+                                                <input value="<?php echo $surat[1]."/".$surat[2]."/".$surat[3] ?>" required name="surat2" type="hidden" class="form-control input-mask-trigger" >
+                                            </div>
+                                            <?php echo "<h4>$surat[1]/$surat[2]/$surat[3]</h4>" ?>
+                                    </div>
 
                                     <!-- NPM -->
                                     <div class="position-relative row form-group">
@@ -55,7 +66,7 @@
                                     <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label">IPK</label>
                                             <div class="col-sm-3">
-                                                <input value="<?php echo $pkl->ipk ?>" required name="ipk" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '9.99'" im-insert="true">
+                                                <input value="<?php echo $seminar->ipk ?>" required name="ipk" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '9.99'" im-insert="true">
                                             </div>
                                     </div>
 
@@ -63,7 +74,25 @@
                                     <div class="position-relative row form-group">
                                             <label class="col-sm-3 col-form-label">Jumlah SKS</label>
                                             <div class="col-sm-3">
-                                                <input value="<?php echo $pkl->sks ?>" required name="sks" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
+                                                <input value="<?php echo $seminar->sks ?>" required name="sks" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
+                                            </div>
+                                    </div>
+
+                                     <!-- dosenpmb -->
+                                     <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label">Dosen Pembimbing KP/PKL</label>
+                                            <div class="col-sm-6">
+                                            <?php $dosen_pmb = $this->user_model->get_dosen_name($pkl->pembimbing); ?>
+                                                <input value="<?php echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang; ?>" required name="pbb" class="form-control " readonly >
+                                            </div>
+                                    </div>
+
+                                     <!-- dosen lapangan -->
+                                     <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label">Dosen Pembimbing Lapangan</label>
+                                            <div class="col-sm-6">
+                                            <?php $pb_lp = $this->pkl_model->get_pb_lapangan($pkl->pkl_id); ?>
+                                                <input value="<?php echo $pb_lp->nama; ?>" required name="pbl" class="form-control " readonly >
                                             </div>
                                     </div>
 
@@ -73,8 +102,8 @@
                                             <div class="col-sm-9">
                                                 <?php 
                                                 switch($status){
-                                                    case "pa":
-                                                    $sts = "Pembimbing Akademik";
+                                                    case "koordinator":
+                                                    $sts = "Koordinator KP/PKL";
                                                     break;
                                                 }
                                                 echo "<input class=\"form-control\" value=\"$sts\" readonly>"

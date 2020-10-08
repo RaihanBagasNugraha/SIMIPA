@@ -526,6 +526,12 @@ class Pkl_model extends CI_Model
 		return $query->result();
     }
 
+    function get_pkl_seminar_cek($id_pkl)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_seminar` WHERE pkl_id = $id_pkl AND status != 6");	
+		return $query->result();
+    }
+
     function select_active_seminar_kp($id)
     {
         $this->db->where('seminar_id', $id);
@@ -539,6 +545,13 @@ class Pkl_model extends CI_Model
         $this->db->where('seminar_id', $id);
 		$query = $this->db->get('pkl_seminar');
 		return $query->result_array();
+    }
+
+    function get_seminar_by_id($id)
+    {
+        $this->db->where('seminar_id', $id);
+		$query = $this->db->get('pkl_seminar');
+		return $query->row();
     }
 
     function periode_seminar_kp($tahun,$jurusan)
@@ -633,5 +646,104 @@ class Pkl_model extends CI_Model
         $this->db->where('seminar_id', $where);
 	    $this->db->update('pkl_seminar',array("status"=>$status));
     }
+
+    function update_seminar_surat_pkl($where,$nomor)
+    {
+        $this->db->where('seminar_id', $where);
+	    $this->db->update('pkl_seminar',array("no_form"=>$nomor));
+    }
+
+    function get_pb_lapangan($pkl_id)
+    {
+        $this->db->where('pkl_id', $pkl_id);
+		$query = $this->db->get('pkl_mahasiswa_pb_lapangan');
+		return $query->row();
+    }
+
+    function insert_pb_lapangan($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('pkl_mahasiswa_pb_lapangan', $data);
+		$this->db->trans_complete();
+    }
+
+    function update_pb_lapangan($where,$data)
+    {
+        $this->db->where('pkl_id', $where);
+	    $this->db->update('pkl_mahasiswa_pb_lapangan',$data);
+    }
+
+    function get_pb_lapangan_by_npm($npm)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_mahasiswa,pkl_mahasiswa_pb_lapangan WHERE pkl_mahasiswa.npm = $npm AND pkl_mahasiswa.pkl_id = pkl_mahasiswa_pb_lapangan.pkl_id ");	
+		return $query->row();
+    }
+
+    function get_mahasiswa_pkl_bimbingan($user_id)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_seminar, pkl_mahasiswa WHERE pkl_mahasiswa.pembimbing = $user_id AND pkl_mahasiswa.pkl_id = pkl_seminar.pkl_id AND pkl_seminar.status = 0");	
+		return $query->result();
+    }
+
+    function perbaiki_seminar_pkl($where,$keterangan,$status)
+    {
+        if($status == "pbb"){
+            $this->db->where('seminar_id', $where);
+	        $this->db->update('pkl_seminar',array("status"=>5,"keterangan_tolak"=>$keterangan));
+        }
+        elseif($status == "admin"){
+            $this->db->where('seminar_id', $where);
+	        $this->db->update('pkl_seminar',array("status"=>5,"keterangan_tolak"=>$keterangan));
+        }
+        elseif($status == "koor"){
+            $this->db->where('seminar_id', $where);
+	        $this->db->update('pkl_seminar',array("status"=>6,"keterangan_tolak"=>$keterangan));
+        }
+        
+    }
+
+    function ajukan_perbaikan_seminar_pkl($where,$status)
+    {
+        if($status == "pbb"){
+            $this->db->where('seminar_id', $where);
+	        $this->db->update('pkl_seminar',array("status"=>0,"keterangan_tolak"=>NULL));
+        }
+        if($status == "admin"){
+            $this->db->where('seminar_id', $where);
+	        $this->db->update('pkl_seminar',array("status"=>1,"keterangan_tolak"=>NULL));
+        }
+    }
+
+    function get_seminar_tendik($id_user)
+    {
+        $query = $this->db->query("SELECT pkl_seminar.*,pkl_mahasiswa.npm,pkl_mahasiswa.id_periode FROM pkl_seminar,tbl_users_tendik,pkl_mahasiswa,tbl_users_mahasiswa WHERE tbl_users_tendik.id_user = $id_user AND tbl_users_tendik.unit_kerja = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = pkl_mahasiswa.npm AND pkl_mahasiswa.pkl_id = pkl_seminar.pkl_id AND pkl_seminar.status = 1");	
+		return $query->result();
+    }
+
+    function get_seminar_by_npm($npm)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_mahasiswa,pkl_seminar WHERE pkl_mahasiswa.npm = $npm AND pkl_mahasiswa.pkl_id = pkl_seminar.pkl_id AND pkl_seminar.status >= 0");	
+		return $query->row();
+    }
+
+    function update_seminar_staff_surat_pkl($where,$nomor)
+    {
+        $this->db->where('jenis', 4);
+        $this->db->where('id_jenis', $where);
+	    $this->db->update('staff_surat',array("nomor"=>$nomor));
+    }
+
+    function get_seminar_mahasiswa_koor($id_user)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_seminar, tbl_users_dosen,pkl_mahasiswa,tbl_users_mahasiswa WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = pkl_mahasiswa.npm AND pkl_mahasiswa.pkl_id = pkl_seminar.pkl_id AND pkl_seminar.status = 2");	
+		return $query->result();
+    }
+
+    function approve_koor_seminar($id,$data)
+    {
+        $this->db->where('seminar_id', $id);
+	    $this->db->update('pkl_seminar',$data);
+    }
+
 }
 ?>

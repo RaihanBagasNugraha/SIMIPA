@@ -6,8 +6,8 @@
                                         <i class="pe-7s-file icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Approval KP/PKL
-                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan KP/PKL
+                                    <div>Approval Seminar KP/PKL
+                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan Seminar KP/PKL
                                         </div>
                                     </div>
                                 </div>
@@ -28,10 +28,11 @@
                         <div class="row">
                         <div class="col-md-12">
                          <div class="main-card mb-3 card">
-                                <div class="card-header">Approval KP/PKL</div>
+                                <div class="card-header">Approval Seminar KP/PKL</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('dosen/pkl/approve/setujui/save') ?>" >
-                                    <input value="<?php echo $pkl->pkl_id ?>" type = "hidden" required name="id_pengajuan" id="id_pengajuan">
+                                <form method="post" action="<?php echo site_url('dosen/pkl/approve-seminar/save') ?>" >
+                                    <input value="<?php echo $seminar->seminar_id ?>" type = "hidden" required name="seminar_id" id="id_seminar">
+                                    <input value="<?php echo $seminar->pkl_id ?>" type = "hidden" required name="pkl_id" id="">
                                     <input value="<?php echo $status ?>" type = "hidden" required name="status" id="aksi">
 
 
@@ -73,8 +74,8 @@
                                             <div class="col-sm-9">
                                                 <?php 
                                                 switch($status){
-                                                    case "pa":
-                                                    $sts = "Pembimbing Akademik";
+                                                    case "pembimbing":
+                                                    $sts = "Dosen Pembimbing";
                                                     break;
                                                 }
                                                 echo "<input class=\"form-control\" value=\"$sts\" readonly>"

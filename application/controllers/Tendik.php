@@ -636,9 +636,81 @@ class Tendik extends CI_Controller {
 		$this->load->view('tendik/pkl/approve_pkl_ttd',$data);
 		
 		$this->load->view('footer_global');
-
-		
 	}
 
+	function verifikasi_berkas_pkl_seminar()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_seminar_tendik($this->session->userdata('userId'));
+		// $data['jml'] = $this->pkl_model->get_jml_mahasiswa_lokasi_daftar_tendik($id,$this->session->userdata('userId'))->jml;
+		// $data['periode'] = $periode;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('tendik/pkl/seminar/approve_pkl_seminar',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function verifikasi_berkas_pkl_seminar_perbaiki()
+	{
+		$id = $this->input->post('seminar_id');
+		$status = $this->input->post('status');
+		$keterangan = $this->input->post('keterangan')."$#$".$status;
+		// echo "<pre>";
+		// print_r($input);
+
+		$this->pkl_model->perbaiki_seminar_pkl($id,$keterangan,$status);
+		redirect(site_url("/tendik/verifikasi-berkas/seminar-pkl"));		
+	}
+
+	function verifikasi_berkas_pkl_seminar_form()
+	{
+		$status = $this->input->get('status');
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_seminar_by_id($id);
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($data['seminar']->pkl_id);
+		$data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('tendik/pkl/seminar/approve_pkl_seminar_ttd',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function verifikasi_berkas_pkl_seminar_form_setujui()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($input);
+
+		$seminar_id = $data['seminar_id'];
+		$status = $data['status'];
+		$ttd = $data['ttd'];
+		$nomor_surat = $data['no_penetapan'].$data['nomor'];
+		$sts = 2;
+		$id_user = $this->session->userdata('userId');
+		//set seminar status
+		$this->pkl_model->update_seminar_pkl($seminar_id,$sts);
+		//no surat
+		$this->pkl_model->update_seminar_surat_pkl($seminar_id,$nomor_surat);
+		//update staff surat
+		$this->pkl_model->update_seminar_staff_surat_pkl($seminar_id,$nomor_surat);
+		//insert ttd
+		$data_approval = array(
+			"seminar_id" => $seminar_id,
+			"status_slug" => "Administrasi",
+			"id_user" => $id_user,
+			"ttd" => $ttd
+		);
+		$this->pkl_model->input_approval_seminar($data_approval);
+		redirect(site_url("/tendik/verifikasi-berkas/seminar-pkl"));
+	}
 
 }

@@ -169,6 +169,12 @@ class User_model extends CI_Model
 		return $result;
 	}
 
+	function get_jurusan_tendik($id_user)
+	{
+		$result = $this->db->query("SELECT jurusan.id_jurusan FROM jurusan, tbl_users_tendik WHERE tbl_users_tendik.id_user = $id_user AND tbl_users_tendik.unit_kerja = jurusan.id_jurusan")->row()->id_jurusan;
+		return $result;
+	}
+
 	function get_dosen_by_nip($nip)
 	{
 		$this->db->select('*');
