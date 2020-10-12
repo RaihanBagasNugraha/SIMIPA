@@ -30,21 +30,10 @@
                          <div class="main-card mb-3 card">
                                 <div class="card-header">Approval Seminar KP/PKL</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('dosen/pkl/seminar/koordinator/save') ?>" >
+                                <form method="post" action="<?php echo site_url('dosen/struktural/pkl/approve-seminar-pkl/save') ?>" >
                                     <input value="<?php echo $seminar->seminar_id ?>" type = "hidden" required name="seminar_id" id="id_seminar">
                                     <input value="<?php echo $seminar->pkl_id ?>" type = "hidden" required name="pkl_id" id="">
                                     <input value="<?php echo $status ?>" type = "hidden" required name="status" id="aksi">
-
-                                     <!-- surat -->
-                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Nomor Form</label>
-                                            <div class="col-sm-1">
-                                            <?php $surat = explode("/",$seminar->no_form); ?>
-                                                <input value="<?php echo $surat[0] ?>" required name="surat" class="form-control input-mask-trigger" >
-                                                <input value="<?php echo $surat[1]."/".$surat[2]."/".$surat[3] ?>" required name="surat2" type="hidden" class="form-control input-mask-trigger" >
-                                            </div>
-                                            <?php echo "<h4>$surat[1]/$surat[2]/$surat[3]</h4>" ?>
-                                    </div>
 
                                     <!-- NPM -->
                                     <div class="position-relative row form-group">
@@ -92,13 +81,14 @@
                                             <label class="col-sm-3 col-form-label">Dosen Pembimbing Lapangan</label>
                                             <div class="col-sm-6">
                                             <?php 
-                                                $pb_lp = $this->pkl_model->get_pb_lapangan($pkl->pkl_id); 
-                                                if(!empty($pb_lp)){
+                                            $pb_lp = $this->pkl_model->get_pb_lapangan($pkl->pkl_id); 
+                                            if(!empty($pb_lp)){
+                                            
                                             ?>
                                                 <input value="<?php echo $pb_lp->nama; ?>" required name="pbl" class="form-control " readonly >
-                                                <?php }else{ ?>
+                                            <?php } else{?>
                                                 <input value="-" required name="pbl" class="form-control " readonly >
-                                                <?php } ?>
+                                            <?php } ?>
                                             </div>
                                     </div>
 
@@ -108,8 +98,8 @@
                                             <div class="col-sm-9">
                                                 <?php 
                                                 switch($status){
-                                                    case "koordinator":
-                                                    $sts = "Koordinator KP/PKL";
+                                                    case "kajur":
+                                                    $sts = "Ketua Jurusan";
                                                     break;
                                                 }
                                                 echo "<input class=\"form-control\" value=\"$sts\" readonly>"

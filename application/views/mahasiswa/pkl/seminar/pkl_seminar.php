@@ -85,8 +85,15 @@
                                                     echo "<br><br>";
                                                     echo "<b>Pembimbing Lapangan</b>";
                                                     $pb_lp = $this->pkl_model->get_pb_lapangan($row->pkl_id);
-                                                    echo "<br>";
-                                                    echo "$pb_lp->nama";
+                                                    if(!empty($pb_lp)){
+                                                        echo "<br>";
+                                                        echo "$pb_lp->nama";
+                                                    }
+                                                    else{
+                                                        echo "<br>";
+                                                        echo "-";
+                                                    }
+                                                 
                                                 ?>
                                                
                                             </td>
@@ -96,6 +103,18 @@
                                                 if(empty($lampiran)) {
                                                     echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                 } else {
+
+                                                    if($row->status >= 0 && $row->status != 6){
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=form_pengajuan_seminar_kp&id=$row->seminar_id").">Form Pengajuan Seminar KP/PKL</a></li>"; 
+                                                    }
+                                                    if($row->status >= 2 && $row->status != 6){
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=form_verifikasi_seminar_kp&id=$row->seminar_id").">Form Verifikasi Seminar KP/PKL</a></li>"; 
+                                                    }
+                                                    if($row->status >= 4 && $row->status != 6 && $row->status != 5){
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=undangan_seminar_kp&id=$row->seminar_id").">Undangan KP/PKL</a></li>"; 
+                                                    }
+                                                    
+
                                                     echo "<ul style='margin-left: -20px;'>";
                                                     foreach($lampiran as $rw) {
                                                         echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
@@ -124,7 +143,7 @@
                                                     $status = "Approval Koordinator";
                                                     break;
                                                     case "4":
-                                                    $status = "Approval Koordinator";
+                                                    $status = "Approval Ketua Jurusan/Kaprodi";
                                                     break;
                                                     case "5":
                                                     $status = "Perbaiki";
@@ -185,7 +204,7 @@
 
                                                 <?php    
                                                 }
-                                                elseif($row->status == 8 || $row->status == 6){echo"Selesai";}
+                                                elseif($row->status == 4 || $row->status == 6){echo"Selesai";}
                                                 elseif($row->status == 0){echo "Menunggu";}
 
                                                 else{echo "Menunggu";} ?>

@@ -78,9 +78,10 @@ $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->us
                                         <?php 
                                             $ta_admin = count($this->ta_model->get_verifikasi_berkas($this->session->userdata('userId')));
                                             $smr_admin = count($this->ta_model->get_verifikasi_berkas_seminar($this->session->userdata('userId')));
-                                            $kp_admin = count($this->pkl_model->get_verifikasi_berkas_pkl($this->session->userdata('userId')));
+                                            $kp_smr_admin = count($this->pkl_model->get_seminar_tendik($this->session->userdata('userId')));
 
-                                            $berkas = $ta_admin + $smr_admin;
+
+                                            $berkas = $ta_admin + $smr_admin + $kp_smr_admin;
                                         
                                         ?>
                                         Verifikasi Berkas <span class="badge badge-danger"><?php echo $berkas > 0 ? $berkas : "" ?></span>
@@ -112,7 +113,7 @@ $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->us
                                         <li>
                                             <a href="<?php echo site_url("tendik/verifikasi-berkas/seminar-pkl") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas" && $this->uri->segment(3) == "seminar-pkl") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon pe-7s-note2"></i>
-                                                Seminar KP/PKL
+                                                Seminar KP/PKL <span class="badge badge-danger"><?php echo $kp_smr_admin > 0 ? $kp_smr_admin : "" ?></span>
                                                 <!-- KP/PKL <span class="badge badge-danger"></span> -->
                                                 
                                             </a>

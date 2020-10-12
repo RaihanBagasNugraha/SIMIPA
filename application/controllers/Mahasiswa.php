@@ -1200,7 +1200,7 @@ class Mahasiswa extends CI_Controller {
 		$check = $this->pkl_model->check_pkl_done($this->session->userdata('username'));
 		$check_pbl = $this->pkl_model->get_pb_lapangan_by_npm($this->session->userdata('username'));
 		
-		if(empty($check) || empty($check_pbl)){
+		if(empty($check)){
 			echo "<script type='text/javascript'>alert('Proses Pengajuan KP/PKL Belum Selesai');javascript:history.back();</script>";
 		}
 		else{
@@ -1383,6 +1383,9 @@ class Mahasiswa extends CI_Controller {
 	function pkl_home_pb_lapangan()
 	{
 		$data = $this->input->post();
+		$str = "kp/pklfmipa";
+		$token = md5($str.$this->input->post('nama').$this->input->post('email'));
+		$data['token'] = $token;
 		// print_r($data);
 
 		$this->pkl_model->insert_pb_lapangan($data);
@@ -1392,12 +1395,15 @@ class Mahasiswa extends CI_Controller {
 	function pkl_home_pb_lapangan_ubah()
 	{
 		$id = $this->input->post('pkl_id');
+		$str = "kp/pklfmipa";
+		$token = md5($str.$this->input->post('nama').$this->input->post('email'));
 
 		$data = array(
 			"nama" => $this->input->post('nama'),
 			"nip_nik" => $this->input->post('nip_nik'),
 			"email" => $this->input->post('email'),
 			"no_telp" => $this->input->post('no_telp'),
+			"token" => $token,
 		);
 		$this->pkl_model->update_pb_lapangan($id,$data);
 		redirect(site_url("mahasiswa/pkl/pkl-home"));

@@ -3251,7 +3251,7 @@ class Dosen extends CI_Controller {
 			//cek strata
 			$npm = $this->pkl_model->select_pkl_by_id_pkl($list->pkl_id)->npm;
 			$strata = substr($npm,2,1);
-			if($strata == 1){
+			if($strata == 1 || $strata == 5){
 				$this->pkl_model->approval_koor_pkl7($list->pkl_id);
 			}
 			elseif($strata == 0){
@@ -3439,6 +3439,9 @@ class Dosen extends CI_Controller {
 		);
 		$this->pkl_model->approve_koor_seminar($id,$data);
 
+		//edit staff_surat
+		$this->pkl_model->update_seminar_staff_surat_pkl($id,$no_surat);
+
 		//insert ttd
 		$data_approval = array(
 			"seminar_id" => $id,
@@ -3449,6 +3452,214 @@ class Dosen extends CI_Controller {
 		$this->pkl_model->input_approval_seminar($data_approval);
 
 		redirect(site_url("/dosen/pkl/seminar/koordinator"));
+	}
+
+	function kajur_approve_pkl_seminar_list()
+	{
+	
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_mahasiswa_pkl_seminar_kajur($this->session->userdata('userId'));
+		// $data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($data['seminar']->pkl_id);
+		// $data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/pkl/seminar/pkl_seminar_approve_kajur',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function kajur_approve_pkl_seminar_form()
+	{
+		$status = $this->input->get('status');
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_seminar_by_id($id);
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($data['seminar']->pkl_id);
+		$data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/pkl/seminar/pkl_seminar_approve_kajur_ttd',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function kajur_approve_pkl_seminar_save()
+	{
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $this->input->post('seminar_id');
+		$status = $this->input->post('status');
+		$ttd = $this->input->post('ttd');
+		$id_user = $this->session->userdata('userId');
+
+		//edit pkl_seminar
+		$data=array(
+			"status" => "4",
+		);
+		$this->pkl_model->approve_koor_seminar($id,$data);
+
+		//insert ttd
+		$data_approval = array(
+			"seminar_id" => $id,
+			"status_slug" => "Ketua Jurusan",
+			"id_user" => $id_user,
+			"ttd" => $ttd
+		);
+		$this->pkl_model->input_approval_seminar($data_approval);
+
+		//send email
+		$pkl_id = $this->pkl_model->get_seminar_by_id($id)->pkl_id;
+		//pb lapangan
+		$pbl = $this->pkl_model->get_pb_lapangan($pkl_id);
+		// echo "<pre>";
+		// print_r($data);
+
+		if(!empty($pbl)){
+			$config = Array(  
+				'protocol' => 'smtp',  
+				'smtp_host' => 'ssl://smtp.googlemail.com',  
+				'smtp_port' => 465,  
+				'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+				'smtp_pass' => 'apps_fmipa 2020',   
+				'mailtype' => 'html',   
+				'charset' => 'iso-8859-1'  
+			);  
+				//send email
+					$this->load->library('email', $config);
+					$this->email->set_newline("\r\n");  
+					$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
+					$this->email->to($pbl->email);   
+					$this->email->subject('Penilaian Seminar KP/PKL Fakultas Matematika dan Ilmu Pengetahuan Alam');   
+					$this->email->message("
+					Kepada Yth. $pbl->nama
+					<br>
+					Untuk Melakukan Penilaian Seminar KP/PKL Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai Pembimbing Lapangan Silahkan Klik Link Berikut :<br>
+					http://apps.fmipa.unila.ac.id/simipa/approval/seminar?token=
+					<br><br>
+					Terimakasih.
+					
+					");
+					
+					if (!$this->email->send()) {  
+						echo $this->email->print_debugger();  
+					}else{  
+						
+					}   
+			}
+
+		redirect(site_url("/dosen/struktural/pkl/approve-seminar-pkl"));
+
+	}
+
+	function pkl_approve_kaprodi_seminar()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_mahasiswa_pkl_seminar_kaprodi($this->session->userdata('userId'));
+		// $data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($data['seminar']->pkl_id);
+		// $data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kaprodi/pkl/seminar/pkl_approve_seminar_kaprodi',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_approve_kaprodi_seminar_form()
+	{
+		$status = $this->input->get('status');
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_seminar_by_id($id);
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($data['seminar']->pkl_id);
+		$data['status'] = $status;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kaprodi/pkl/seminar/pkl_approve_seminar_kaprodi_ttd',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_approve_kaprodi_seminar_save()
+	{
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $this->input->post('seminar_id');
+		$status = $this->input->post('status');
+		$ttd = $this->input->post('ttd');
+		$id_user = $this->session->userdata('userId');
+
+		//edit pkl_seminar
+		$data=array(
+			"status" => "4"
+		);
+		$this->pkl_model->approve_koor_seminar($id,$data);
+
+		//insert ttd
+		$data_approval = array(
+			"seminar_id" => $id,
+			"status_slug" => "Ketua Program Studi",
+			"id_user" => $id_user,
+			"ttd" => $ttd
+		);
+		$this->pkl_model->input_approval_seminar($data_approval);
+
+		//send email
+		$pkl_id = $this->pkl_model->get_seminar_by_id($id)->pkl_id;
+		//pb lapangan
+		$pbl = $this->pkl_model->get_pb_lapangan($pkl_id);
+		// echo "<pre>";
+		// print_r($data);
+
+		if(!empty($pbl)){
+			$config = Array(  
+				'protocol' => 'smtp',  
+				'smtp_host' => 'ssl://smtp.googlemail.com',  
+				'smtp_port' => 465,  
+				'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+				'smtp_pass' => 'apps_fmipa 2020',   
+				'mailtype' => 'html',   
+				'charset' => 'iso-8859-1'  
+			);  
+				//send email
+					$this->load->library('email', $config);
+					$this->email->set_newline("\r\n");  
+					$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
+					$this->email->to($pbl->email);   
+					$this->email->subject('Penilaian Seminar KP/PKL Fakultas Matematika dan Ilmu Pengetahuan Alam');   
+					$this->email->message("
+					Kepada Yth. $pbl->nama
+					<br>
+					Untuk Melakukan Penilaian Seminar KP/PKL Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai Pembimbing Lapangan Silahkan Klik Link Berikut :<br>
+					http://apps.fmipa.unila.ac.id/simipa/approval/seminar?token=
+					<br><br>
+					Terimakasih.
+					
+					");
+					
+					if (!$this->email->send()) {  
+						echo $this->email->print_debugger();  
+					}else{  
+						
+					}   
+			}
+
+		redirect(site_url("/dosen/struktural/pkl/approve-seminar-pkl"));
 	}
 
 }

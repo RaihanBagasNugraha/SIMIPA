@@ -390,6 +390,12 @@ class Pkl_model extends CI_Model
 		return $query->row();
     }
 
+    function get_surat_seminar_pkl($id_pkl)
+    {
+        $query = $this->db->query("SELECT * FROM staff_surat WHERE jenis = 4 AND id_jenis = $id_pkl");	
+		return $query->row();
+    }
+
     function pkl_add_no_surat($where,$surat)
     {
         $this->db->where('pkl_id', $where);
@@ -480,6 +486,12 @@ class Pkl_model extends CI_Model
     function get_ttd_approval($id_pkl,$status)
     {
         $query = $this->db->query("SELECT * FROM pkl_mahasiswa_approval WHERE pkl_id = $id_pkl AND status_slug = '$status' ");	
+		return $query->row();
+    }
+
+    function get_ttd_approval_seminar($id_seminar,$status)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_seminar_approval WHERE seminar_id = $id_seminar AND status_slug = '$status' ");	
 		return $query->row();
     }
 
@@ -726,6 +738,12 @@ class Pkl_model extends CI_Model
 		return $query->row();
     }
 
+    function get_seminar_aktif_by_pkl_id($id)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_seminar` WHERE pkl_id = $id AND status >= 0");	
+		return $query->row();
+    }
+
     function update_seminar_staff_surat_pkl($where,$nomor)
     {
         $this->db->where('jenis', 4);
@@ -743,6 +761,18 @@ class Pkl_model extends CI_Model
     {
         $this->db->where('seminar_id', $id);
 	    $this->db->update('pkl_seminar',$data);
+    }
+
+    function get_mahasiswa_pkl_seminar_kajur($id_user)
+    {
+        $query = $this->db->query("SELECT pkl_seminar.*,pkl_mahasiswa.id_periode,pkl_mahasiswa.id_lokasi FROM pkl_seminar, tbl_users_dosen, tbl_users_mahasiswa,pkl_mahasiswa WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm NOT LIKE '__0%' AND tbl_users_mahasiswa.npm = pkl_mahasiswa.npm AND pkl_mahasiswa.pkl_id = pkl_seminar.pkl_id AND pkl_seminar.status = 3");	
+		return $query->result();
+    }
+
+    function get_mahasiswa_pkl_seminar_kaprodi($id_user)
+    {
+        $query = $this->db->query("SELECT pkl_seminar.*,pkl_mahasiswa.id_periode,pkl_mahasiswa.id_lokasi FROM pkl_seminar, tbl_users_dosen, tbl_users_mahasiswa,pkl_mahasiswa WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm LIKE '__0%' AND tbl_users_mahasiswa.npm = pkl_mahasiswa.npm AND pkl_mahasiswa.pkl_id = pkl_seminar.pkl_id AND pkl_seminar.status = 3");	
+		return $query->result();
     }
 
 }

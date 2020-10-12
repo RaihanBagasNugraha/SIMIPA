@@ -78,7 +78,6 @@
                                                     else{
                                                         echo "-";
                                                     }
-                                                   
                                                 ?>
                                             </td>
                                             <td class="align-top">
@@ -103,12 +102,8 @@
                                             </td>
                                           
                                             <td class="align-top">
-                                                <a href="<?php echo site_url("dosen/pkl/seminar/koordinator/form?status=koordinator&id=".$this->encrypt->encode($row->seminar_id)) ?>" class="btn-wide mb-2 btn btn-primary btn-sm btn-block">Setujui</a>
-                                                <a data-toggle = "modal" data-id="<?php echo $row->seminar_id ?>" data-status="koor" class="passingID" >
-                                                    <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#TolakSeminarPKL">
-                                                        Tolak
-                                                    </button>
-                                                </a>
+                                                <a href="<?php echo site_url("dosen/struktural/kaprodi/seminar-pkl/form?status=kaprodi&id=".$this->encrypt->encode($row->seminar_id)) ?>" class="btn-wide mb-2 btn btn-primary btn-sm btn-block">Setujui</a>
+                                               
                                             </td>                                        
                                         </tr>
                                         <?php
