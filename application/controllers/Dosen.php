@@ -3516,44 +3516,44 @@ class Dosen extends CI_Controller {
 		$this->pkl_model->input_approval_seminar($data_approval);
 
 		//send email
-		$pkl_id = $this->pkl_model->get_seminar_by_id($id)->pkl_id;
-		//pb lapangan
-		$pbl = $this->pkl_model->get_pb_lapangan($pkl_id);
-		// echo "<pre>";
-		// print_r($data);
+		// $pkl_id = $this->pkl_model->get_seminar_by_id($id)->pkl_id;
+		// //pb lapangan
+		// $pbl = $this->pkl_model->get_pb_lapangan($pkl_id);
+		// // echo "<pre>";
+		// // print_r($data);
 
-		if(!empty($pbl)){
-			$config = Array(  
-				'protocol' => 'smtp',  
-				'smtp_host' => 'ssl://smtp.googlemail.com',  
-				'smtp_port' => 465,  
-				'smtp_user' => 'apps.fmipa.unila@gmail.com',   
-				'smtp_pass' => 'apps_fmipa 2020',   
-				'mailtype' => 'html',   
-				'charset' => 'iso-8859-1'  
-			);  
-				//send email
-					$this->load->library('email', $config);
-					$this->email->set_newline("\r\n");  
-					$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
-					$this->email->to($pbl->email);   
-					$this->email->subject('Penilaian Seminar KP/PKL Fakultas Matematika dan Ilmu Pengetahuan Alam');   
-					$this->email->message("
-					Kepada Yth. $pbl->nama
-					<br>
-					Untuk Melakukan Penilaian Seminar KP/PKL Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai Pembimbing Lapangan Silahkan Klik Link Berikut :<br>
-					http://apps.fmipa.unila.ac.id/simipa/approval/seminar?token=
-					<br><br>
-					Terimakasih.
+		// if(!empty($pbl)){
+		// 	$config = Array(  
+		// 		'protocol' => 'smtp',  
+		// 		'smtp_host' => 'ssl://smtp.googlemail.com',  
+		// 		'smtp_port' => 465,  
+		// 		'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+		// 		'smtp_pass' => 'apps_fmipa 2020',   
+		// 		'mailtype' => 'html',   
+		// 		'charset' => 'iso-8859-1'  
+		// 	);  
+		// 		//send email
+		// 			$this->load->library('email', $config);
+		// 			$this->email->set_newline("\r\n");  
+		// 			$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
+		// 			$this->email->to($pbl->email);   
+		// 			$this->email->subject('Penilaian Seminar KP/PKL Fakultas Matematika dan Ilmu Pengetahuan Alam');   
+		// 			$this->email->message("
+		// 			Kepada Yth. $pbl->nama
+		// 			<br>
+		// 			Untuk Melakukan Penilaian Seminar KP/PKL Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai Pembimbing Lapangan Silahkan Klik Link Berikut :<br>
+		// 			http://apps.fmipa.unila.ac.id/simipa/approval/seminar?token=
+		// 			<br><br>
+		// 			Terimakasih.
 					
-					");
+		// 			");
 					
-					if (!$this->email->send()) {  
-						echo $this->email->print_debugger();  
-					}else{  
+		// 			if (!$this->email->send()) {  
+		// 				echo $this->email->print_debugger();  
+		// 			}else{  
 						
-					}   
-			}
+		// 			}   
+		// 	}
 
 		redirect(site_url("/dosen/struktural/pkl/approve-seminar-pkl"));
 
@@ -3620,46 +3620,456 @@ class Dosen extends CI_Controller {
 		$this->pkl_model->input_approval_seminar($data_approval);
 
 		//send email
-		$pkl_id = $this->pkl_model->get_seminar_by_id($id)->pkl_id;
-		//pb lapangan
-		$pbl = $this->pkl_model->get_pb_lapangan($pkl_id);
+		// $pkl_id = $this->pkl_model->get_seminar_by_id($id)->pkl_id;
+		// //pb lapangan
+		// $pbl = $this->pkl_model->get_pb_lapangan($pkl_id);
+		// // echo "<pre>";
+		// // print_r($data);
+
+		// if(!empty($pbl)){
+		// 	$config = Array(  
+		// 		'protocol' => 'smtp',  
+		// 		'smtp_host' => 'ssl://smtp.googlemail.com',  
+		// 		'smtp_port' => 465,  
+		// 		'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+		// 		'smtp_pass' => 'apps_fmipa 2020',   
+		// 		'mailtype' => 'html',   
+		// 		'charset' => 'iso-8859-1'  
+		// 	);  
+		// 		//send email
+		// 			$this->load->library('email', $config);
+		// 			$this->email->set_newline("\r\n");  
+		// 			$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
+		// 			$this->email->to($pbl->email);   
+		// 			$this->email->subject('Penilaian Seminar KP/PKL Fakultas Matematika dan Ilmu Pengetahuan Alam');   
+		// 			$this->email->message("
+		// 			Kepada Yth. $pbl->nama
+		// 			<br>
+		// 			Untuk Melakukan Penilaian Seminar KP/PKL Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai Pembimbing Lapangan Silahkan Klik Link Berikut :<br>
+		// 			http://apps.fmipa.unila.ac.id/simipa/approval/seminar?token=
+		// 			<br><br>
+		// 			Terimakasih.
+					
+		// 			");
+					
+		// 			if (!$this->email->send()) {  
+		// 				echo $this->email->print_debugger();  
+		// 			}else{  
+						
+		// 			}   
+		// 	}
+
+		redirect(site_url("/dosen/struktural/pkl/approve-seminar-pkl"));
+	}
+
+	function komponen_nilai_pkl_home()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$jurusan = $this->user_model->get_dosen_data($this->session->userdata('userId'))->jurusan;
+		$data['komponen'] = $this->pkl_model->get_komponen_kajur($jurusan);
+		$data['cek'] = $this->pkl_model->cek_komp_seminar($jurusan);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/pkl/seminar/pkl_seminar_nilai_tambah_list',$data);
+		
+		$this->load->view('footer_global');	
+	}
+
+
+	function komponen_nilai_pkl()
+	{
+		$aksi = $this->input->get('aksi');
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		
+		if($aksi == "ubah"){
+			$id = $this->input->get('id');
+			$komponen = $this->pkl_model->get_pkl_seminar_komponen2($id);
+			$data_komponen = $komponen[0];
+			$data['aksi'] = $aksi;
+			$data['ida'] = $id;
+		}
+		else{
+			$data_komponen = array(
+				"id" => null,
+				"jurusan" => null,
+				"bobot" => null,
+				"status" => 1
+			);
+			$data['aksi'] = null;
+			$data['ida'] = null;
+		}
+		// $komponen = $this->pkl_model->get_pkl_seminar_komponen($this->session->userdata('userId'));
+
+		// if(!empty($komponen)){
+		// 	$data_komponen = $komponen[0];
+		// }
+		// else{
+		// 	$data_komponen = array(
+		// 		"id" => null,
+		// 		"jurusan" => null,
+		// 		"bobot" => null
+		// 	);
+		// }
+
+		$data['komponen'] = $data_komponen;
+		// print_r($data);
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/pkl/seminar/pkl_seminar_nilai_tambah',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function komponen_nilai_pkl_add()
+	{
+		$id = $this->input->post('jurusan');
+		$jenis = $this->input->post('jenis');
+		$komponen = $this->input->post('komponen');
+		$persentase = $this->input->post('persentase');
+		$aksi = $this->input->post('aksi');
+		$ida = $this->input->post('ida');
+		// echo $id;
+		
+		if($id == ""){
+			$user = $this->session->userdata('userId');
+			$jurusan = $this->user_model->get_dosen_jur($user)->id_jurusan;
+			$data_komponen = array(
+				"jurusan" => $jurusan,
+				"bobot" => "0#0",
+				"status" => "1"
+			);
+			$id = $this->pkl_model->insert_seminar_komponen($data_komponen);
+			$aksi = "ubah";
+			$ida = $id;
+		}
+
+		$data = array(
+			"komponen" => $id,
+			"unsur" => $jenis,
+			"attribut" => $komponen,
+			"persentase" => $persentase 
+		);
+
+		$jml1 = $this->pkl_model->jml_persen_meta($id)->jml;
+		$jml = $jml1 + $persentase;
+		if($jml >= 101){
+			redirect(site_url("dosen/struktural/pkl/komponen-nilai-pkl/form?aksi=$aksi&id=$ida&status=komponen"));
+		}
+		else{
+			$this->pkl_model->input_seminar_komponen_meta($data);
+			redirect(site_url("dosen/struktural/pkl/komponen-nilai-pkl/form?aksi=$aksi&id=$ida"));
+		}
+	}
+
+	function komponen_nilai_pkl_delete()
+	{
+		$id = $this->input->post('komponen_id');
+		$aksi = $this->input->post('aksi');
+		$ida = $this->input->post('ida');
+		$this->pkl_model->delete_seminar_komponen_meta($id);
+		redirect(site_url("dosen/struktural/pkl/komponen-nilai-pkl/form?aksi=$aksi&id=$ida"));
+	}
+
+	function komponen_nilai_pkl_nonaktif()
+	{
+		$id = $this->input->post('id');
+
+		$this->pkl_model->nonaktif_seminar_komponen($id);
+		redirect(site_url("dosen/struktural/pkl/komponen-nilai-pkl"));		
+	}
+
+	function komponen_nilai_pkl_edit()
+	{
+		$id = $this->input->post('id_meta');
+		$komponen = $this->input->post('komponen');
+		$persentase = $this->input->post('persentase');
+		$aksi = $this->input->post('aksi');
+		$ida = $this->input->post('ida');
+
+		$data = array(
+			"attribut" => $komponen,
+			"persentase" => $persentase 
+		);
+
+		$this->pkl_model->update_seminar_komponen_meta($id,$data);
+		redirect(site_url("dosen/struktural/pkl/komponen-nilai-pkl/form?aksi=$aksi&id=$ida"));
+	}
+
+	function komponen_nilai_pkl_save()
+	{
+		$aksi = $this->input->post('aksi');
+
+		if($aksi == "ubah"){
+			$id = $this->input->post('id');
+			$pbb = $this->input->post('pbb');
+			$pbl = $this->input->post('pbl');
+
+			$jml = $pbb + $pbl;
+			$jml2 = $this->pkl_model->jml_persen_meta($id)->jml;
+			if($jml != 100 || $jml2 != 100){
+				redirect(site_url("/dosen/struktural/pkl/komponen-nilai-pkl/form?aksi=$aksi&id=$id&status=pembimbing"));
+			}
+			else{
+				$bobot = $pbb."#".$pbl;
+				$this->pkl_model->update_seminar_komponen_bobot($id,$bobot);
+				redirect(site_url("/dosen/struktural/pkl/komponen-nilai-pkl/form?aksi=$aksi&id=$id&status=berhasil"));
+			}
+		}
+		else{
+			$data = $this->input->post(); 
+			$pbb = $data['pbb'];
+			$pbl = $data['pbl'];
+
+			$user = $this->session->userdata('userId');
+			$jurusan = $this->user_model->get_dosen_jur($user)->id_jurusan;
+			$data_komponen = array(
+				"jurusan" => $jurusan,
+				"bobot" => "$pbb#$pbl",
+				"status" => "1"
+			);
+			$id = $this->pkl_model->insert_seminar_komponen($data_komponen);
+			$aksi = "ubah";
+
+			$jml = $pbb + $pbl;
+			$jml2 = $this->pkl_model->jml_persen_meta($id)->jml;
+			if($jml != 100 || $jml2 != 100){
+				redirect(site_url("/dosen/struktural/pkl/komponen-nilai-pkl/form?aksi=$aksi&id=$id&status=pembimbing"));
+			}
+			else{
+				redirect(site_url("/dosen/struktural/pkl/komponen-nilai-pkl/form?aksi=$aksi&id=$id&status=berhasil"));
+			}
+		}
+		
+
+	}
+
+	function pkl_approve_seminar_nilai()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_mahasiswa_seminar_nilai_pbb($this->session->userdata('userId'));
+		$data['cek_nilai'] = $this->pkl_model->pkl_cek_nilai_ada($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/seminar/nilai/pkl_seminar_approve_nilai',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_approve_seminar_nilai_form()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_seminar_by_id($id);
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($data['seminar']->pkl_id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/seminar/nilai/pkl_seminar_approve_nilai_form',$data);
+		
+		$this->load->view('footer_global');
+
+	}
+
+	function pkl_approve_seminar_nilai_save()
+	{
+		$data = $this->input->post();
 		// echo "<pre>";
 		// print_r($data);
 
-		if(!empty($pbl)){
-			$config = Array(  
-				'protocol' => 'smtp',  
-				'smtp_host' => 'ssl://smtp.googlemail.com',  
-				'smtp_port' => 465,  
-				'smtp_user' => 'apps.fmipa.unila@gmail.com',   
-				'smtp_pass' => 'apps_fmipa 2020',   
-				'mailtype' => 'html',   
-				'charset' => 'iso-8859-1'  
-			);  
-				//send email
-					$this->load->library('email', $config);
-					$this->email->set_newline("\r\n");  
-					$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
-					$this->email->to($pbl->email);   
-					$this->email->subject('Penilaian Seminar KP/PKL Fakultas Matematika dan Ilmu Pengetahuan Alam');   
-					$this->email->message("
-					Kepada Yth. $pbl->nama
-					<br>
-					Untuk Melakukan Penilaian Seminar KP/PKL Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai Pembimbing Lapangan Silahkan Klik Link Berikut :<br>
-					http://apps.fmipa.unila.ac.id/simipa/approval/seminar?token=
-					<br><br>
-					Terimakasih.
-					
-					");
-					
-					if (!$this->email->send()) {  
-						echo $this->email->print_debugger();  
-					}else{  
-						
-					}   
-			}
+		$id = $data['seminar_id'];
+		$jml_s = $data['jml_seminar'];
+		$jml_l = $data['jml_laporan'];
+		$seminar = $data['seminar'];
+		$id_seminar = $data['id_seminar'];
+		$laporan = $data['laporan'];
+		$id_laporan = $data['id_laporan'];
+		$ttd = $data['ttd'];
+		$user = $this->session->userdata('userId');
+		$komponen = $data['komponen'];
 
-		redirect(site_url("/dosen/struktural/pkl/approve-seminar-pkl"));
+		for($s=1;$s<=$jml_s;$s++){
+			$data_s = array(
+				"komponen_id" => $id_seminar[$s],
+				"seminar_id"=> $id,
+				"nilai"=> $seminar[$s],
+				"status_slug"=> "Dosen Pembimbing",
+			);
+			$this->pkl_model->input_nilai_seminar($data_s);
+		}
+
+		for($l=1;$l<=$jml_l;$l++){
+			$data_l = array(
+				"komponen_id" => $id_laporan[$l],
+				"seminar_id"=> $id,
+				"nilai"=> $laporan[$l],
+				"status_slug"=> "Dosen Pembimbing",
+			);
+			$this->pkl_model->input_nilai_seminar($data_l);
+		}
+
+		//ttd
+		$data_ttd = array(
+			"status_slug" => "Dosen Pembimbing",
+			"id_user" => $user,
+			"seminar_id" => $id,
+			"ttd" => $ttd,
+		);
+		$this->pkl_model->insert_approval_nilai_seminar($data_ttd);
+
+		//status > 7
+		$status = 7;
+		$this->pkl_model->update_seminar_pkl($id,$status);
+
+		redirect(site_url("/dosen/pkl/approve-nilai-seminar"));
+	}
+
+	function pkl_approve_seminar_nilai_koor()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_mahasiswa_seminar_nilai_koor($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/pkl/nilai/pkl_seminar_koordinator_nilai',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_approve_seminar_nilai_koor_form()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_seminar_by_id($id);
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($data['seminar']->pkl_id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/koordinator/pkl/nilai/pkl_seminar_koordinator_nilai_ttd',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_approve_seminar_nilai_koor_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);	
+
+		$seminar_id = $data['seminar_id'];
+		$pkl_id = $data['pkl_id'];
+		$nilai_pbb = $data['nilai_pbb'];
+		$nilai_pbl = $data['nilai_pbl'];
+
+		$koor = $data['pengurangan_koor']; 
+		$ttd = $data['ttd'];
+		$user = $this->session->userdata('userId');
+
+		//nilai pb
+		$data_pb = array(
+			"seminar_id" => $seminar_id,
+			"pkl_id" => $pkl_id,
+			"status_slug" => "Dosen Pembimbing",
+			"nilai" => $nilai_pbb
+		);
+		$this->pkl_model->insert_nilai_pkl($data_pb);
+
+		//nilai pbl
+		$data_pbl = array(
+			"seminar_id" => $seminar_id,
+			"pkl_id" => $pkl_id,
+			"status_slug" => "Pembimbing Lapangan",
+			"nilai" => $nilai_pbl
+		);
+		$this->pkl_model->insert_nilai_pkl($data_pbl);
+
+		//pengurangan koor
+		$data_k = array(
+			"seminar_id" => $seminar_id,
+			"pkl_id" => $pkl_id,
+			"status_slug" => "Koordinator",
+			"nilai" => $koor
+		);
+		$this->pkl_model->insert_nilai_pkl($data_k);
+
+		//ttd koor
+		$data_k_approve = array(
+			"status_slug" => "Koordinator",
+			"id_user" => $user,
+			"seminar_id" => $seminar_id,
+			"ttd" => $ttd,
+		);
+		$this->pkl_model->insert_approval_nilai_seminar($data_k_approve);
+
+		//status > 8
+		$status = 8;
+		$this->pkl_model->update_seminar_pkl($seminar_id,$status);
+
+		redirect(site_url("/dosen/pkl/seminar-nilai/koordinator"));
+	}
+
+	function kajur_approve_pkl_seminar_nilai()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_mahasiswa_seminar_nilai_kajur($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/pkl/seminar/pkl_seminar_nilai_kajur',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function kajur_approve_pkl_seminar_nilai_form()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['seminar'] = $this->pkl_model->get_seminar_by_id($id);
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($data['seminar']->pkl_id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kajur/pkl/seminar/pkl_seminar_nilai_kajur_ttd',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function kajur_approve_pkl_seminar_nilai_save()
+	{
+		$ttd = $this->input->post('ttd');
+		$seminar_id = $this->input->post('seminar_id');
+		$user = $this->session->userdata('userId');
+
+		//ttd koor
+		$data_kajur = array(
+			"status_slug" => "Ketua Jurusan",
+			"id_user" => $user,
+			"seminar_id" => $seminar_id,
+			"ttd" => $ttd,
+		);
+		$this->pkl_model->insert_approval_nilai_seminar($data_kajur);
+
+		//status > 8
+		$status = 9;
+		$this->pkl_model->update_seminar_pkl($seminar_id,$status);
+
+		redirect(site_url("/dosen/struktural/pkl/approve-seminar-nilai-pkl"));
 	}
 
 }

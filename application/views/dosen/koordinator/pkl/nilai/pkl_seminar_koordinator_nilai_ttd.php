@@ -28,13 +28,11 @@
                         <div class="row">
                         <div class="col-md-12">
                          <div class="main-card mb-3 card">
-                                <div class="card-header">Approval Seminar KP/PKL</div>
+                                <div class="card-header">Approval Nilai Seminar KP/PKL</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('dosen/pkl/approve-seminar/save') ?>" >
+                                <form method="post" action="<?php echo site_url('dosen/pkl/seminar-nilai/koordinator/save') ?>" >
                                     <input value="<?php echo $seminar->seminar_id ?>" type = "hidden" required name="seminar_id" id="id_seminar">
                                     <input value="<?php echo $seminar->pkl_id ?>" type = "hidden" required name="pkl_id" id="">
-                                    <input value="<?php echo $status ?>" type = "hidden" required name="status" id="aksi">
-
 
                                     <!-- NPM -->
                                     <div class="position-relative row form-group">
@@ -52,40 +50,101 @@
                                             </div>
                                     </div>
 
-                                    <!-- IPK -->
+                                    <!-- Judul -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">IPK</label>
-                                            <div class="col-sm-3">
-                                                <input value="<?php echo $pkl->ipk ?>" required name="ipk" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '9.99'" im-insert="true">
-                                            </div>
-                                    </div>
-
-                                    <!-- SKS -->
-                                    <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Jumlah SKS</label>
-                                            <div class="col-sm-3">
-                                                <input value="<?php echo $pkl->sks ?>" required name="sks" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
-                                            </div>
-                                    </div>
-
-                                    <!-- Status -->
-                                    <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Status</label>
+                                            <label class="col-sm-3 col-form-label">Judul</label>
                                             <div class="col-sm-9">
-                                                <?php 
-                                                switch($status){
-                                                    case "pembimbing":
-                                                    $sts = "Dosen Pembimbing";
-                                                    break;
-                                                }
-                                                echo "<input class=\"form-control\" value=\"$sts\" readonly>"
-                                                ?>
+                                                <textarea class= "form-control" readonly><?php echo $seminar->judul ?></textarea>
                                             </div>
                                     </div>
 
+                                    <!-- NILAI -->
+                                    <?php 
+                                        //bobot
+                                        $jurusan = $this->user_model->get_jurusan($pkl->npm);
+                                        $bobot1 = $this->pkl_model->get_pkl_seminar_komponen_jurusan($jurusan);
+                                        $bobot = explode("#",$bobot1->bobot);
+                                    ?>
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Penilaian</b></label>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label">Dosen Pembimbing KP/PKL</label>
+                                            <div class="col-sm-6">
+                                            <?php $dosen_pmb = $this->user_model->get_dosen_name($pkl->pembimbing); ?>
+                                                <input value="<?php echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang; ?>" required name="pbb" class="form-control " readonly >
+                                            </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label">Nilai</label>
+                                           
+                                            <div class="col-sm-2">
+                                            <?php 
+                                                //nilai
+                                                $nilai = $this->pkl_model->get_nilai_seminar($seminar->seminar_id);
+                                                $tot_nilai = 0;
+                                                foreach($nilai as $nil){
+                                                    $tot_nilai += $nil->nilai * ($nil->persentase/100);
+                                                }
+                                               $total_nilai = round($tot_nilai,2);
+                                            ?>
+                                            <input value="<?php echo $total_nilai ?>" required name="nilai_pbb" class="form-control input-mask-trigger" readonly >
+                                            </div>
+                                           
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label">Dosen Pembimbing Lapangan</label>
+                                            <div class="col-sm-6">
+                                            <?php 
+                                                 $pb_lp = $this->pkl_model->get_pb_lapangan($seminar->pkl_id);
+                                                if(!empty($pb_lp)){
+                                            ?>
+                                                <input value="<?php echo $pb_lp->nama ?>" required name="pbl" class="form-control " readonly >
+                                            <?php } else { ?>
+                                                <input value="-" required name="pbl" class="form-control " readonly >
+                                            <?php } ?>
+                                            
+                                            </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label">Nilai</label>
+                                           
+                                            <div class="col-sm-2">
+                                            <?php 
+                                                 $pb_lp = $this->pkl_model->get_pb_lapangan($seminar->pkl_id);
+                                                if(!empty($pb_lp)){
+                                            ?>
+                                                <input value="0" type="number" min="0" max="100" name="nilai_pbl" class="form-control input-mask-trigger" required placeholder="Nilai" >
+                                            <?php } else { ?>
+                                                <input value="0" type="number" min="0" max="100" name="nilai_pbl" class="form-control input-mask-trigger" required placeholder="Nilai" readonly>
+                                            <?php } ?>
+                                            </div>    
+                                            
+                                    </div>
+      
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label">Pengurangan Nilai Akhir</label>
+                                            <div class="col-sm-2">
+                                            <input value="0" type="number" min="0" max="100" name="pengurangan_koor" class="form-control input-mask-trigger" placeholder="Nilai" >
+                                            </div>    
+                                            <div class="col-sm-10">
+                                            </div>    
+                                            <div class="col-sm-3">
+                                            </div>    
+                                            <div class="col-sm-9">
+                                            <small><span style="color:red" >*</span> Isi Jika Terdapat Pengurangan Nilai Akhir Oleh Koordinator KP/PKL</small>
+                                            </div>    
+                                            
+                                    </div>
+                                    
 
                                     <!-- TTD -->
-                                    <div class="position-relative row form-group"><label for="ttd" class="col-sm-3 col-form-label">Tanda Tangan Digital</label>
+                                    <div class="position-relative row form-group">
+                                    <label for="ttd" class="col-sm-3 col-form-label">Tanda Tangan Digital</label>
                                             <div class="col-sm-4">
                                             <canvas style="border: 1px solid #aaa; height: 200px; background-color: #efefef;" id="signature-pad" class="signature-pad col-sm-12" height="200px"></canvas>
                                             <small class="form-text text-muted">Silahkan tanda tangan pada canvas di atas, jangan lupa Klik <b>Oke</b> sebelum menyimpan data.</small>
@@ -113,7 +172,7 @@
                                             </div>
                                     
                                         </div>
-
+                                                
                                     <div class="position-relative row form-group">
                                             <div class="col-sm-9 offset-sm-3">
                                             <button id="preview" value="<?php if($this->input->get('aksi') == "ubah") echo "ubah"; ?>" type="submit" class="btn-shadow btn btn-info">

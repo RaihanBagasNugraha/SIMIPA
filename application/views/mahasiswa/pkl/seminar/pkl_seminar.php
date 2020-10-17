@@ -103,6 +103,12 @@
                                                 if(empty($lampiran)) {
                                                     echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                 } else {
+                                                    echo "<ul style='margin-left: -20px;'>";
+                                                    //penilaian seminar
+                                                    if($row->status == 9 ){
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=form_penilaian_kp&id=$row->seminar_id").">Form Penilaian Seminar KP/PKL</a></li>"; 
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=berita_acara_kp&id=$row->seminar_id").">Form Berita Acara</a></li>"; 
+                                                    }
 
                                                     if($row->status >= 0 && $row->status != 6){
                                                         echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=form_pengajuan_seminar_kp&id=$row->seminar_id").">Form Pengajuan Seminar KP/PKL</a></li>"; 
@@ -113,9 +119,10 @@
                                                     if($row->status >= 4 && $row->status != 6 && $row->status != 5){
                                                         echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=undangan_seminar_kp&id=$row->seminar_id").">Undangan KP/PKL</a></li>"; 
                                                     }
-                                                    
 
-                                                    echo "<ul style='margin-left: -20px;'>";
+                                               
+
+                                                    
                                                     foreach($lampiran as $rw) {
                                                         echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
                                                     }
@@ -152,10 +159,13 @@
                                                     $status = "Ditolak";
                                                     break;
                                                     case "7":
-                                                    $status = "Approval Koordinator";
+                                                    $status = "Penilaian Seminar";
                                                     break;
                                                     case "8":
-                                                    $status = "Approval Ketua Jurusan";
+                                                    $status = "Approval Nilai Oleh Koordinator";
+                                                    break;
+                                                    case "9":
+                                                    $status = "Approval Nilai Oleh Ketua Jurusan";
                                                     break;
                                                 }
                                                 
@@ -204,7 +214,8 @@
 
                                                 <?php    
                                                 }
-                                                elseif($row->status == 4 || $row->status == 6){echo"Selesai";}
+                                                elseif($row->status == 6 || $row->status == 9){echo "Selesai";}
+                                                elseif($row->status == 4){echo "Pelaksanaan Seminar";}
                                                 elseif($row->status == 0){echo "Menunggu";}
 
                                                 else{echo "Menunggu";} ?>

@@ -740,7 +740,7 @@ class Pkl_model extends CI_Model
 
     function get_seminar_aktif_by_pkl_id($id)
     {
-        $query = $this->db->query("SELECT * FROM `pkl_seminar` WHERE pkl_id = $id AND status >= 0");	
+        $query = $this->db->query("SELECT * FROM `pkl_seminar` WHERE pkl_id = $id AND status >= 0 AND status != 6");	
 		return $query->row();
     }
 
@@ -773,6 +773,178 @@ class Pkl_model extends CI_Model
     {
         $query = $this->db->query("SELECT pkl_seminar.*,pkl_mahasiswa.id_periode,pkl_mahasiswa.id_lokasi FROM pkl_seminar, tbl_users_dosen, tbl_users_mahasiswa,pkl_mahasiswa WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm LIKE '__0%' AND tbl_users_mahasiswa.npm = pkl_mahasiswa.npm AND pkl_mahasiswa.pkl_id = pkl_seminar.pkl_id AND pkl_seminar.status = 3");	
 		return $query->result();
+    }
+
+    function get_pkl_seminar_komponen($id_user)
+    {
+        $query = $this->db->query("SELECT pkl_seminar_komponen.* FROM pkl_seminar_komponen, tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = pkl_seminar_komponen.jurusan");	
+		return $query->result_array();
+    }
+
+    function get_pkl_seminar_komponen2($id)
+    {
+        $query = $this->db->query("SELECT pkl_seminar_komponen.* FROM pkl_seminar_komponen where id = $id");	
+		return $query->result_array();
+    }
+
+    function get_pkl_seminar_komponen_jurusan($jurusan)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_seminar_komponen` WHERE jurusan = $jurusan");	
+		return $query->row();
+    }
+
+    function input_seminar_komponen_meta($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('pkl_seminar_komponen_meta', $data);
+		$this->db->trans_complete();
+    }
+
+    function get_seminar_komponen_meta($jurusan,$unsur)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_seminar_komponen_meta` WHERE komponen = $jurusan AND unsur = '$unsur'");	
+		return $query->result();
+    }
+
+    function get_seminar_komponen_meta2($id,$unsur)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_seminar_komponen_meta` WHERE komponen = '$id' AND unsur = '$unsur'");	
+		return $query->result();
+    }
+
+    function delete_seminar_komponen_meta($data)
+	{
+        $this->db->delete('pkl_seminar_komponen_meta', array("id" => $data));
+    }
+
+    function update_seminar_komponen_meta($where,$data)
+    {
+        $this->db->where('id', $where);
+	    $this->db->update('pkl_seminar_komponen_meta',$data);
+    }
+
+    function nonaktif_seminar_komponen($where)
+    {
+        $this->db->where('id', $where);
+	    $this->db->update('pkl_seminar_komponen',array('status' => 0));
+    }
+
+    function jml_persen_meta($id)
+    {
+        $query = $this->db->query("SELECT SUM(persentase) as jml FROM `pkl_seminar_komponen_meta` WHERE komponen = $id");	
+		return $query->row();
+    }
+
+    function cek_komp_seminar($jurusan)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_seminar_komponen` WHERE status = 1 AND jurusan = $jurusan");	
+		return $query->result();
+    }
+
+    function update_seminar_komponen_bobot($where,$data)
+    {
+        $this->db->where('id', $where);
+	    $this->db->update('pkl_seminar_komponen',array("bobot"=>$data));
+    }
+
+    function get_mahasiswa_seminar_nilai_pbb($id_user)
+    {
+        $query = $this->db->query("SELECT pkl_seminar.*,pkl_mahasiswa.id_periode,pkl_mahasiswa.id_lokasi FROM pkl_seminar, pkl_mahasiswa WHERE pkl_mahasiswa.pembimbing = $id_user AND pkl_mahasiswa.pkl_id = pkl_seminar.pkl_id AND pkl_seminar.status = 4");	
+		return $query->result();
+    }
+
+    function input_nilai_seminar($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('pkl_seminar_nilai', $data);
+		$this->db->trans_complete();
+    }
+
+    function insert_approval_nilai_seminar($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('pkl_seminar_nilai_approve', $data);
+		$this->db->trans_complete();
+    }
+
+    function get_mahasiswa_seminar_nilai_koor($id_user)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_seminar, tbl_users_dosen,tbl_users_mahasiswa,pkl_mahasiswa WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = pkl_mahasiswa.npm AND pkl_mahasiswa.pkl_id = pkl_seminar.pkl_id AND pkl_seminar.status = 7");	
+		return $query->result();
+    }
+
+    function get_mahasiswa_seminar_nilai_kajur($id_user)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_seminar, tbl_users_dosen,tbl_users_mahasiswa,pkl_mahasiswa WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm = pkl_mahasiswa.npm AND pkl_mahasiswa.pkl_id = pkl_seminar.pkl_id AND pkl_seminar.status = 8");	
+		return $query->result();
+    }
+
+    function get_nilai_seminar($id_seminar)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_seminar_nilai,pkl_seminar_komponen_meta WHERE seminar_id = $id_seminar AND status_slug = 'Dosen Pembimbing' AND pkl_seminar_nilai.komponen_id = pkl_seminar_komponen_meta.id");	
+		return $query->result();
+    }
+
+    function insert_nilai_pkl($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('pkl_nilai', $data);
+		$this->db->trans_complete();
+    }
+
+    function get_nilai_pkl_by_id($id_seminar,$unsur)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_seminar_nilai, pkl_seminar_komponen_meta, pkl_seminar_komponen WHERE pkl_seminar_nilai.seminar_id = $id_seminar AND pkl_seminar_nilai.komponen_id = pkl_seminar_komponen_meta.id AND pkl_seminar_komponen_meta.komponen = pkl_seminar_komponen.id AND pkl_seminar_komponen_meta.unsur = '$unsur'");	
+		return $query->result();
+    }
+
+    function get_nilai_approval_pkl($id_seminar,$status)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_seminar_nilai_approve` WHERE seminar_id = $id_seminar AND status_slug = '$status'");	
+		return $query->row();
+    }
+
+    function get_seminar_komponen($jurusan)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_seminar_komponen` WHERE jurusan = $jurusan");	
+		return $query->row();
+    }
+
+    function get_pkl_nilai_status($seminar,$pkl,$status)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_nilai` WHERE seminar_id = $seminar AND pkl_id = $pkl AND status_slug = '$status'");	
+		return $query->row();
+    }
+
+    function get_komponen_kajur($jurusan)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_seminar_komponen` where jurusan = $jurusan order by created_at DESC");	
+		return $query->result();
+    }
+
+    function insert_seminar_komponen($data)
+    {
+		$this->db->insert('pkl_seminar_komponen', $data);
+        $insert_id = $this->db->insert_id();
+		return $insert_id;
+    }
+
+    function pkl_cek_nilai_ada($id_user)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_seminar_komponen, tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = pkl_seminar_komponen.jurusan AND pkl_seminar_komponen.status = 1 AND pkl_seminar_komponen.bobot NOT LIKE ".'0#0'." AND pkl_seminar_komponen.id IN (SELECT pkl_seminar_komponen_meta.komponen FROM pkl_seminar_komponen_meta WHERE pkl_seminar_komponen_meta.komponen = pkl_seminar_komponen.id)");	
+		return $query->row();
+    }
+    
+    function get_pkl_nilai_id_user($id_user)
+    {
+        $query = $this->db->query("SELECT pkl_seminar_komponen.* FROM pkl_seminar_komponen, tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = pkl_seminar_komponen.jurusan AND pkl_seminar_komponen.status = 1 ");	
+		return $query->row();
+    }
+
+    function get_pkl_nilai_npm($npm)
+    {
+        $query = $this->db->query("SELECT pkl_seminar_komponen.* FROM pkl_seminar_komponen, tbl_users_mahasiswa WHERE tbl_users_mahasiswa.npm = $npm AND tbl_users_mahasiswa.jurusan = pkl_seminar_komponen.jurusan AND pkl_seminar_komponen.status = 1 ");	
+		return $query->row();
     }
 
 }

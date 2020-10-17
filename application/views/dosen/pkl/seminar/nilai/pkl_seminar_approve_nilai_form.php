@@ -6,8 +6,8 @@
                                         <i class="pe-7s-file icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Approval Nilai Seminar KP/PKL
-                                        <div class="page-title-subheading">
+                                    <div>Approval Seminar KP/PKL
+                                        <div class="page-title-subheading">Setujui Atau Tolak Pengajuan Seminar KP/PKL
                                         </div>
                                     </div>
                                 </div>
@@ -30,11 +30,8 @@
                          <div class="main-card mb-3 card">
                                 <div class="card-header">Approval Seminar KP/PKL</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('dosen/pkl/approve-seminar/save') ?>" >
+                                <form method="post" action="<?php echo site_url('dosen/pkl/approve-nilai-seminar/save') ?>" >
                                     <input value="<?php echo $seminar->seminar_id ?>" type = "hidden" required name="seminar_id" id="id_seminar">
-                                    <input value="<?php echo $seminar->pkl_id ?>" type = "hidden" required name="pkl_id" id="">
-                                    <input value="<?php echo $status ?>" type = "hidden" required name="status" id="aksi">
-
 
                                     <!-- NPM -->
                                     <div class="position-relative row form-group">
@@ -52,38 +49,97 @@
                                             </div>
                                     </div>
 
-                                    <!-- IPK -->
+                                    <!-- Judul -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">IPK</label>
-                                            <div class="col-sm-3">
-                                                <input value="<?php echo $pkl->ipk ?>" required name="ipk" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '9.99'" im-insert="true">
-                                            </div>
-                                    </div>
-
-                                    <!-- SKS -->
-                                    <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Jumlah SKS</label>
-                                            <div class="col-sm-3">
-                                                <input value="<?php echo $pkl->sks ?>" required name="sks" class="form-control input-mask-trigger" readonly data-inputmask="'mask': '999'" im-insert="true">
-                                            </div>
-                                    </div>
-
-                                    <!-- Status -->
-                                    <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label">Status</label>
+                                            <label class="col-sm-3 col-form-label">Judul</label>
                                             <div class="col-sm-9">
-                                                <?php 
-                                                switch($status){
-                                                    case "pembimbing":
-                                                    $sts = "Dosen Pembimbing";
-                                                    break;
-                                                }
-                                                echo "<input class=\"form-control\" value=\"$sts\" readonly>"
-                                                ?>
+                                                <textarea class= "form-control" readonly><?php echo $seminar->judul ?></textarea>
                                             </div>
                                     </div>
+                                    
+                                    <?php $id_komp = $this->pkl_model->get_pkl_nilai_npm($pkl->npm)->id; ?>
+                                    <input value="<?php echo  $id_komp ?>" type = "hidden" required name="komponen">
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Komponen Penilaian</b></label>
+                                    </div>
+                                    <table class="mb-0 table table-striped"  id="example">
+                                            <thead>
+                                            <tr>
+                                                <th style="width:60%">Aspek Yang Dinilai</th>
+                                                <th style="width:20%">Persentase</th>
+                                                <th style="width:20%">Nilai</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="align-top" colspan = "3">
+                                                    1. Seminar
+                                                </td> 
+                                               
+                                            </tr>
+                                            <?php 
+                                                $kom_seminar = $this->pkl_model->get_seminar_komponen_meta($id_komp,"Seminar"); 
+                                                $s = 1;
+                                                if(!empty($kom_seminar)){
+                                                    foreach($kom_seminar as $kom){
+                                            ?>
+                                                <tr>
+                                                <td class="align-top">
+                                                    <?php echo "&emsp;&emsp;&emsp;$s. $kom->attribut" ?>
+                                                </td> 
+                                                <td class="align-top">
+                                                    <?php echo $kom->persentase."%" ?>
+                                                </td> 
+                                                <td>
+                                                    <input value="" required name="seminar[<?php echo $s ?>]" type="number" min="0" placeholder="Input Nilai" max="100" class="form-control input-mask-trigger">
+                                                    <input value="<?php echo $kom->id ?>" required name="id_seminar[<?php echo $s ?>]" type="hidden" min="0" placeholder="Input Nilai" max="100" class="form-control input-mask-trigger">
+                                                </td>
+                                               
+                                                </tr>
+                                            <?php   
+                                                $s++;         
+                                                    }
+                                                }
+                                            ?>
 
+                                            <tr>
+                                                <td class="align-top" colspan = "3"> 
+                                                    2. Laporan
+                                                </td> 
+                                                
+                                            </tr>
+                                            <?php 
+                                                $kom_seminar = $this->pkl_model->get_seminar_komponen_meta($id_komp,"Laporan"); 
+                                                $l = 1;
+                                                if(!empty($kom_seminar)){
+                                                
+                                                    foreach($kom_seminar as $kom){
+                                            ?>
+                                                <tr>
+                                                <td class="align-top">
+                                                    <?php echo "&emsp;&emsp;&emsp;$l. $kom->attribut" ?>
+                                                </td> 
+                                                <td class="align-top">
+                                                    <?php echo $kom->persentase."%" ?>
+                                                </td> 
 
+                                                <td>
+                                                    <input value="" required name="laporan[<?php echo $l ?>]" type="number" min="0" placeholder="Input Nilai" max="100" class="form-control input-mask-trigger">
+                                                    <input value="<?php echo $kom->id ?>" required name="id_laporan[<?php echo $l?>]" type="hidden" min="0" placeholder="Input Nilai" max="100" class="form-control input-mask-trigger">
+                                                </td>
+                                               
+                                                </tr>
+                                            <?php    
+                                                $l++;        
+                                                    }
+                                                }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                    <input value="<?php echo $s-1 ?>" type = "hidden" required name="jml_seminar">
+                                    <input value="<?php echo $l-1 ?>" type = "hidden" required name="jml_laporan">
+
+                                    <br><br><br><br>
                                     <!-- TTD -->
                                     <div class="position-relative row form-group"><label for="ttd" class="col-sm-3 col-form-label">Tanda Tangan Digital</label>
                                             <div class="col-sm-4">

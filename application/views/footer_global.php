@@ -1559,6 +1559,7 @@
                     <br>
                     <label><b>Email</b></label>
                     <input type="email" required class="form-control" name="email" placeholder="Alamat Email" value="">
+                    <!-- <small><span style="color:red">* Form Penilaian Pembimbing Lapangan Akan Dikirim Melalui Email</span></small> -->
                     <br>
                     <label><b>No. Handphone</b></label>
                     <input type="text" required class="form-control" name="no_telp" placeholder="Nomor Handphone" value="">
@@ -1600,6 +1601,7 @@
                     <br>
                     <label><b>Email</b></label>
                     <input type="email" required class="form-control" name="email" id="email" placeholder="Alamat Email" value="">
+                    <!-- <small><span style="color:red">* Form Penilaian Pembimbing Lapangan Akan Dikirim Melalui Email</span></small> -->
                     <br>
                     <label><b>No. Handphone</b></label>
                     <input type="text" required class="form-control" name="no_telp" id="telp" placeholder="Nomor Handphone" value="">
@@ -2126,5 +2128,139 @@ $(document).ready(function() {
     </div>
 </div>
 
+
+<?php } ?>
+
+<?php if($this->uri->segment(1) == 'dosen' && $this->uri->segment(2) == 'struktural' && $this->uri->segment(3) == 'pkl' && $this->uri->segment(4) == 'komponen-nilai-pkl' ) { ?>
+
+<div class="modal fade" id="komponensmr" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="komponen-pkl" method="post" action="<?php echo site_url("dosen/struktural/pkl/komponen-nilai-pkl/add") ?>">
+                    <input type="hidden" name="jurusan" id="IDJur" value="">
+                    <input type="hidden" name="jenis" id="Jenis" value="">
+                    <input type="hidden" name="aksi" id="Aksi3" value="">
+                    <input type="hidden" name="ida" id="Ida3" value="">
+                    <label class="col-form-label" >Nama Komponen</label>
+                    <input type="text" name="komponen" id="" class="form-control" placeholder = "Komponen Penilaian" value="">
+                    <label class="col-form-label" >Persentase</label>
+                    <input type="number" min="0" max="100" name="persentase" id="" class="form-control" placeholder = "Persentase Komponen" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="komponen-pkl" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="komponensmrhapus" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <form id="insert-seminar-pkl" method="post" action="<?php echo site_url("dosen/struktural/pkl/komponen-nilai-pkl/delete") ?>">
+                    <input type="hidden" name="komponen_id" id="IDMeta" value="">
+                    <input type="hidden" name="aksi" id="Aksi" value="">
+                    <input type="hidden" name="ida" id="Ida" value="">
+                    <label>Hapus Komponen Nilai Seminar KP/PKL ?</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="insert-seminar-pkl" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="komponensmrubah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Ubah</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="komponen-pkl-edit" method="post" action="<?php echo site_url("dosen/struktural/pkl/komponen-nilai-pkl/edit") ?>">
+                    <input type="hidden" name="id_meta" id="IDMeta2" value="">
+                    <input type="hidden" name="aksi" id="Aksi2" value="">
+                    <input type="hidden" name="ida" id="Ida2" value="">
+                    <label class="col-form-label" >Nama Komponen</label>
+                    <input type="text" name="komponen" id="Attr" class="form-control" placeholder = "Komponen Penilaian" value="">
+                    <label class="col-form-label" >Persentase</label>
+                    <input type="number" min="0" max="100" name="persentase" id="Persentase" class="form-control" placeholder = "Persentase Komponen" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="komponen-pkl-edit" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="nonaktifkomponenPkl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="komponennon-pkl" method="post" action="<?php echo site_url("dosen/struktural/pkl/komponen-nilai-pkl/nonaktif") ?>">
+                    <input type="hidden" name="id" id="IDk" value="">
+                    <label class="col-form-label" >Nonaktifkan Komponen Penilaian</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="komponennon-pkl" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php } ?>

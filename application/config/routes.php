@@ -289,6 +289,16 @@ $route['dosen/struktural/pkl/approve-pkl/list'] = 'dosen/kajur_approve_pkl_list'
 $route['dosen/struktural/pkl/approve-seminar-pkl'] = 'dosen/kajur_approve_pkl_seminar_list';
 $route['dosen/struktural/pkl/approve-seminar-pkl/form'] = 'dosen/kajur_approve_pkl_seminar_form';
 $route['dosen/struktural/pkl/approve-seminar-pkl/save'] = 'dosen/kajur_approve_pkl_seminar_save';
+$route['dosen/struktural/pkl/komponen-nilai-pkl'] = 'dosen/komponen_nilai_pkl_home';
+$route['dosen/struktural/pkl/komponen-nilai-pkl/form'] = 'dosen/komponen_nilai_pkl';
+$route['dosen/struktural/pkl/komponen-nilai-pkl/add'] = 'dosen/komponen_nilai_pkl_add';
+$route['dosen/struktural/pkl/komponen-nilai-pkl/delete'] = 'dosen/komponen_nilai_pkl_delete';
+$route['dosen/struktural/pkl/komponen-nilai-pkl/edit'] = 'dosen/komponen_nilai_pkl_edit';
+$route['dosen/struktural/pkl/komponen-nilai-pkl/simpan'] = 'dosen/komponen_nilai_pkl_save';
+$route['dosen/struktural/pkl/komponen-nilai-pkl/nonaktif'] = 'dosen/komponen_nilai_pkl_nonaktif';
+$route['dosen/struktural/pkl/approve-seminar-nilai-pkl'] = 'dosen/kajur_approve_pkl_seminar_nilai';
+$route['dosen/struktural/pkl/approve-seminar-nilai-pkl/form'] = 'dosen/kajur_approve_pkl_seminar_nilai_form';
+$route['dosen/struktural/pkl/approve-seminar-nilai-pkl/save'] = 'dosen/kajur_approve_pkl_seminar_nilai_save';
 
     //dosen pkl
 $route['dosen/pkl/approve'] = 'dosen/pkl_approve';
@@ -299,6 +309,9 @@ $route['dosen/pkl/approve-seminar'] = 'dosen/pkl_approve_seminar';
 $route['dosen/pkl/approve-seminar/perbaiki'] = 'dosen/pkl_approve_seminar_perbaiki';
 $route['dosen/pkl/approve-seminar/form'] = 'dosen/pkl_approve_seminar_setujui';
 $route['dosen/pkl/approve-seminar/save'] = 'dosen/pkl_approve_seminar_save';
+$route['dosen/pkl/approve-nilai-seminar'] = 'dosen/pkl_approve_seminar_nilai';
+$route['dosen/pkl/approve-nilai-seminar/form'] = 'dosen/pkl_approve_seminar_nilai_form';
+$route['dosen/pkl/approve-nilai-seminar/save'] = 'dosen/pkl_approve_seminar_nilai_save';
 
 
     //koor pkl
@@ -311,6 +324,9 @@ $route['dosen/pkl/seminar/koordinator'] = 'dosen/pkl_approve_seminar_koor';
 $route['dosen/pkl/seminar/koordinator/tolak'] = 'dosen/pkl_approve_seminar_tolak';
 $route['dosen/pkl/seminar/koordinator/form'] = 'dosen/pkl_approve_seminar_form';
 $route['dosen/pkl/seminar/koordinator/save'] = 'dosen/pkl_approve_seminar_save_koor';
+$route['dosen/pkl/seminar-nilai/koordinator'] = 'dosen/pkl_approve_seminar_nilai_koor';
+$route['dosen/pkl/seminar-nilai/koordinator/form'] = 'dosen/pkl_approve_seminar_nilai_koor_form';
+$route['dosen/pkl/seminar-nilai/koordinator/save'] = 'dosen/pkl_approve_seminar_nilai_koor_save';
 
     //kaprodi pkl
 $route['dosen/struktural/kaprodi/pkl'] = 'dosen/pkl_approve_kaprodi';   

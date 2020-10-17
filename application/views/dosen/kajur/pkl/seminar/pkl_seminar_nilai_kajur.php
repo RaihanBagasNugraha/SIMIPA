@@ -7,7 +7,7 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Kelola Seminar KP/PKL
+                                    <div>Penilaian Seminar KP/PKL
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
@@ -36,7 +36,6 @@
                                             <th style="width: 10%;">Tahun<br>Periode</th>
                                             <th style="width: 10%;">Npm<br>Nama</th>
                                             <th style="width: 30%;">Judul</th>
-                                            <th style="width: 20%;">Dosen Pembimbing</th>
                                             <th style="width: 20%;">Pelaksanaan</th>
                                             <th style="width: 30%;">Lampiran</th>
                                             <th style="width: 10%;">Aksi</th>
@@ -65,23 +64,6 @@
                                                <?php echo $row->judul; ?>
                                             </td>
                                             <td class="align-top">
-                                                <?php 
-                                                    $dosen_pmb = $this->user_model->get_dosen_name($pkl_data->pembimbing);
-                                                    echo $dosen_pmb->gelar_depan." ".$dosen_pmb->name.", ".$dosen_pmb->gelar_belakang;
-                                                    echo "<br><br>";
-                                                    echo "<b>Pembimbing Lapangan</b>";
-                                                    $pb_lp = $this->pkl_model->get_pb_lapangan($pkl_data->pkl_id);
-                                                    echo "<br>";
-                                                    if(!empty($pb_lp)){
-                                                        echo "$pb_lp->nama";
-                                                    }
-                                                    else{
-                                                        echo "-";
-                                                    }
-                                                   
-                                                ?>
-                                            </td>
-                                            <td class="align-top">
                                                 <?php
                                                     echo "$row->tempat<br>$row->tgl_pelaksanaan<br>$row->waktu_pelaksanaan<br>"
                                                 ?>
@@ -93,17 +75,10 @@
                                                     echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                 } else {
                                                     echo "<ul style='margin-left: -20px;'>";
-                                                    if($row->status >= 0 && $row->status != 6){
-                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=form_pengajuan_seminar_kp&id=$row->seminar_id").">Form Pengajuan Seminar KP/PKL</a></li>"; 
-                                                    }
-                                                    if($row->status >= 2 && $row->status != 6){
-                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=form_verifikasi_seminar_kp&id=$row->seminar_id").">Form Verifikasi Seminar KP/PKL</a></li>"; 
-                                                    }
-                                                    if($row->status >= 4 && $row->status != 6 && $row->status != 5){
-                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=undangan_seminar_kp&id=$row->seminar_id").">Undangan KP/PKL</a></li>"; 
-                                                    }
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=form_penilaian_kp&id=$row->seminar_id").">Form Penilaian Seminar KP/PKL</a></li>"; 
+                                                        echo "<li><a href=".site_url("mahasiswa/tugas-akhir/seminar-pkl/form_pdf?jenis=berita_acara_kp&id=$row->seminar_id").">Form Berita Acara</a></li>"; 
+
                                                     
-                                                   
                                                     foreach($lampiran as $rw) {
                                                         echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
                                                     }
@@ -112,15 +87,13 @@
                                                 }
                                             ?>
                                             </td>
-                                          
+                                           
                                             <td class="align-top">
-                                                <a href="<?php echo site_url("dosen/pkl/seminar/koordinator/form?status=koordinator&id=".$this->encrypt->encode($row->seminar_id)) ?>" class="btn-wide mb-2 btn btn-primary btn-sm btn-block">Setujui</a>
-                                                <a data-toggle = "modal" data-id="<?php echo $row->seminar_id ?>" data-status="koor" class="passingID" >
-                                                    <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#TolakSeminarPKL">
-                                                        Tolak
-                                                    </button>
+                                                <a href="<?php echo site_url("dosen/struktural/pkl/approve-seminar-nilai-pkl/form?id=".$this->encrypt->encode($row->seminar_id)) ?>" class="btn-wide mb-2 btn btn-primary btn-sm btn-block">Nilai
                                                 </a>
-                                            </td>                                        
+                                            </td>
+                                            
+
                                         </tr>
                                         <?php
                                             }
@@ -203,8 +176,8 @@ $(document).ready(function() {
     $(".passingID").click(function () {
                 var id = $(this).attr('data-id');
                 var sts = $(this).attr('data-status');
-                $("#IDsmr").val( id );
-                $("#Statussmr").val( sts );
+                $("#ID").val( id );
+                $("#Status").val( sts );
             });
 
     $(".passingID2").click(function () {

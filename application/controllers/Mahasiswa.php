@@ -1386,16 +1386,57 @@ class Mahasiswa extends CI_Controller {
 		$str = "kp/pklfmipa";
 		$token = md5($str.$this->input->post('nama').$this->input->post('email'));
 		$data['token'] = $token;
-		// print_r($data);
 
 		$this->pkl_model->insert_pb_lapangan($data);
+
+		$pkl_id = $this->input->post('pkl_id');
+		// //send email
+		// // $pkl_id = $this->pkl_model->get_seminar_by_id($id)->pkl_id;
+		// //pb lapangan
+		// $pbl = $this->pkl_model->get_pb_lapangan($pkl_id);
+		// // echo "<pre>";
+		// // print_r($data);
+
+		// if(!empty($pbl)){
+		// 	$config = Array(  
+		// 		'protocol' => 'smtp',  
+		// 		'smtp_host' => 'ssl://smtp.googlemail.com',  
+		// 		'smtp_port' => 465,  
+		// 		'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+		// 		'smtp_pass' => 'apps_fmipa 2020',   
+		// 		'mailtype' => 'html',   
+		// 		'charset' => 'iso-8859-1'  
+		// 	);  
+		// 		//send email
+		// 			$this->load->library('email', $config);
+		// 			$this->email->set_newline("\r\n");  
+		// 			$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
+		// 			$this->email->to($pbl->email);   
+		// 			$this->email->subject('Penilaian Seminar KP/PKL Fakultas Matematika dan Ilmu Pengetahuan Alam');   
+		// 			$this->email->message("
+		// 			Kepada Yth. $pbl->nama
+		// 			<br>
+		// 			Untuk Melakukan Penilaian Seminar KP/PKL Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai Pembimbing Lapangan Silahkan Klik Link Berikut :<br>
+		// 			http://apps.fmipa.unila.ac.id/simipa/approval/seminar?token=$token
+		// 			<br><br>
+		// 			Terimakasih.
+					
+		// 			");
+					
+		// 			if (!$this->email->send()) {  
+		// 				echo $this->email->print_debugger();  
+		// 			}else{  
+						
+		// 			}   
+		// 	}
+
 		redirect(site_url("mahasiswa/pkl/pkl-home"));
 	}
 
 	function pkl_home_pb_lapangan_ubah()
 	{
 		$id = $this->input->post('pkl_id');
-		$str = "kp/pklfmipa";
+		$str = "kp/pklfmipa_ubah";
 		$token = md5($str.$this->input->post('nama').$this->input->post('email'));
 
 		$data = array(
@@ -1406,6 +1447,47 @@ class Mahasiswa extends CI_Controller {
 			"token" => $token,
 		);
 		$this->pkl_model->update_pb_lapangan($id,$data);
+
+		//send email
+		// // $pkl_id = $this->pkl_model->get_seminar_by_id($id)->pkl_id;
+		// //pb lapangan
+		// $pbl = $this->pkl_model->get_pb_lapangan($id);
+		// // echo "<pre>";
+		// // print_r($data);
+
+		// if(!empty($pbl)){
+		// 	$config = Array(  
+		// 		'protocol' => 'smtp',  
+		// 		'smtp_host' => 'ssl://smtp.googlemail.com',  
+		// 		'smtp_port' => 465,  
+		// 		'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+		// 		'smtp_pass' => 'apps_fmipa 2020',   
+		// 		'mailtype' => 'html',   
+		// 		'charset' => 'iso-8859-1'  
+		// 	);  
+		// 		//send email
+		// 			$this->load->library('email', $config);
+		// 			$this->email->set_newline("\r\n");  
+		// 			$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
+		// 			$this->email->to($pbl->email);   
+		// 			$this->email->subject('Penilaian Seminar KP/PKL Fakultas Matematika dan Ilmu Pengetahuan Alam');   
+		// 			$this->email->message("
+		// 			Kepada Yth. $pbl->nama
+		// 			<br>
+		// 			Untuk Melakukan Penilaian Seminar KP/PKL Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai Pembimbing Lapangan Silahkan Klik Link Berikut :<br>
+		// 			http://apps.fmipa.unila.ac.id/simipa/approval/seminar?token=$token
+		// 			<br><br>
+		// 			Terimakasih.
+					
+		// 			");
+					
+		// 			if (!$this->email->send()) {  
+		// 				echo $this->email->print_debugger();  
+		// 			}else{  
+						
+		// 			}   
+		// 	}
+
 		redirect(site_url("mahasiswa/pkl/pkl-home"));
 	}
 

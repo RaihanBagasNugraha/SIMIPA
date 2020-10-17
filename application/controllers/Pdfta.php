@@ -4691,6 +4691,12 @@ class Pdfta extends CI_Controller {
             case "undangan_seminar_kp":
                 $this->undangan_seminar_kp($pkl,$seminar,$jurusan);
                 break;
+            case "form_penilaian_kp":
+                $this->form_penilaian_kp($pkl,$seminar,$jurusan);
+                break;
+            case "berita_acara_kp":
+                $this->berita_acara_kp($pkl,$seminar,$jurusan);
+                break;
         }
     }
 
@@ -5347,7 +5353,7 @@ class Pdfta extends CI_Controller {
             break;
         }
 
-        $kode = 1;
+        $kode = 0;
         $type = 'Single';
 
         $waktu = substr($pkl->created_at,0,10);
@@ -5498,7 +5504,7 @@ class Pdfta extends CI_Controller {
             break;
         }
 
-        $kode = 1;
+        $kode = 0;
         $type = 'Single';
 
         $waktu = substr($pkl->created_at,0,10);
@@ -5541,7 +5547,7 @@ class Pdfta extends CI_Controller {
         $pdf->SetAligns(array('L','C','L'));
         $pdf->RowNoBorder(array('Nama/NPM',':',$mhs->name."/".$mhs->npm));
         $pdf->Ln(1);
-        $pdf->SetWidths(array(45,5, 150));
+        $pdf->SetWidths(array(45,5, 120));
         $pdf->SetAligns(array('L','C','L'));
         $pdf->RowNoBorder(array('Judul',':',$seminar->judul));
         $pdf->Ln(5);
@@ -5635,6 +5641,415 @@ class Pdfta extends CI_Controller {
 
         $pdf->Output('I','undangan_seminar_kp.pdf');
     }
+
+    function form_penilaian_kp($pkl,$seminar,$jurusan)
+    {
+        $jurusan_upper = strtoupper($jurusan);
+        $mhs = $this->ta_model->get_mahasiswa_detail($pkl->npm);
+
+        switch($jurusan){
+            case "Ilmu Komputer":
+                $numPage = '';
+            break;
+            case "Kimia":
+                $numPage = '';
+            break;
+            case "Fisika":
+                $numPage = '';
+            break;
+            case "Biologi":
+                $numPage = '';
+            break;
+            case "Matematika":
+                $numPage = '';
+            break;
+        }
+
+        $kode = 0;
+        $type = 'Single';
+
+        $pdf = new FPDF('P','mm','A4');
+       
+        $spasi = 6;
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode, $type);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+
+        $pdf->AddPage();
+        $pdf->SetFont('Times','B',11);
+        $pdf->Ln(5);
+        $pdf->MultiCell(150, $spasi, "LEMBAR PENILAIAN KERJA PRAKTIK/PRAKTIK KERJA LAPANGAN \nDOSEN PEMBIMBING",1,'C',false);
+        $pdf->SetFont('Times','',11);
+        $pdf->Ln(5);
+        $pdf->SetWidths(array(45,5, 150));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Nama / NPM',':',$mhs->name." / ".$mhs->npm));
+        $pdf->Ln(1);
+        $pdf->SetWidths(array(45,5, 120));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Judul KP/PKL',':',$seminar->judul));
+        $pdf->Ln(1);
+        $pdf->SetWidths(array(45,5, 120));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Tempat KP/PKL',':',$this->pkl_model->get_lokasi_pkl_by_id($pkl->id_lokasi)->lokasi));
+        $pdf->Ln(5);
+
+          //tables
+          $pdf->Cell(80,10,'Aspek yang dinilai',1,0,'C',0);
+          $pdf->Cell(20,10,'Nilai',1,0,'C',0);
+          $pdf->Cell(30,10,'Persentase',1,0,'C',0);
+          $pdf->Cell(20,10,'NA',1,0,'C',0);
+
+          //nilai 1
+          $pdf->Ln();
+          $pdf->Cell(80,7,"1. Seminar",1,0,'L',0);
+          $pdf->Cell(20,7,'',1,0,'C',0);
+          $pdf->Cell(30,7,'',1,0,'C',0);
+          $pdf->Cell(20,7,'',1,0,'C',0);
+          $kom_seminar = $this->pkl_model->get_nilai_pkl_by_id($seminar->seminar_id,"Seminar"); 
+          $n = 1;
+          $nilai_seminar_total = 0;
+          foreach($kom_seminar as $nilai_seminar){
+              $pdf->Ln();
+              $pdf->Cell(80,7,"       $n. ".$nilai_seminar->attribut,1,0,'L',0);
+              $pdf->Cell(20,7,$nilai_seminar->nilai,1,0,'C',0);
+              $pdf->Cell(30,7,$nilai_seminar->persentase." %",1,0,'C',0);
+              $n1 = $nilai_seminar->nilai * ($nilai_seminar->persentase / 100);
+              $pdf->Cell(20,7,$n1,1,0,'C',0);
+              $nilai_seminar_total += $n1;
+              $n++;
+          }
+
+          //nilai 2
+          $pdf->Ln();
+          $pdf->Cell(80,7,"2. Laporan",1,0,'L',0);
+          $pdf->Cell(20,7,'',1,0,'C',0);
+          $pdf->Cell(30,7,'',1,0,'C',0);
+          $pdf->Cell(20,7,'',1,0,'C',0);
+          $kom_laporan = $this->pkl_model->get_nilai_pkl_by_id($seminar->seminar_id,"Laporan"); 
+          $n = 1;
+          $nilai_laporan_total = 0;
+          foreach($kom_laporan as $nilai_laporan){
+              $pdf->Ln();
+              $pdf->Cell(80,7,"       $n. ".$nilai_laporan->attribut,1,0,'L',0);
+              $pdf->Cell(20,7,$nilai_laporan->nilai,1,0,'C',0);
+              $pdf->Cell(30,7,$nilai_laporan->persentase." %",1,0,'C',0);
+              $n2 = $nilai_laporan->nilai * ($nilai_laporan->persentase / 100);
+              $pdf->Cell(20,7,$n2,1,0,'C',0);
+              $nilai_laporan_total += $n2;
+              $n++;
+          }
+
+          //total
+          $pdf->Ln();
+          $pdf->Cell(130,10,'NILAI TOTAL',1,0,'C',0);
+          $pdf->Cell(20,10,$nilai_seminar_total + $nilai_laporan_total,1,0,'C',0);
+          $pdf->Ln();
+
+          $pbb_approve = $this->pkl_model->get_nilai_approval_pkl($seminar->seminar_id,"Dosen Pembimbing");
+          $pbb_data = $this->user_model->get_dosen_data($pbb_approve->id_user);
+          //tanggal
+          $tgl = explode("-",substr($pbb_approve->created_at,0,10));
+          $bulan = $this->get_month($tgl[1]);
+          $pdf->Ln(8);
+          $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+          $pdf->Cell(150, $spasi,"Bandar Lampung, ".$tgl[2]." ".$bulan." ".$tgl[0]."", 0, 0, 'L');
+          $pdf->Ln(8);
+
+          $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+          $pdf->Cell(30, $spasi,"Dosen Pembimbing", 0, 0, 'L');
+          $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$pdf->Image($pbb_approve->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+        
+            $pdf->Ln(26);
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pbb_data->gelar_depan.$pbb_data->name.$pbb_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$pbb_data->nip_nik, 0, 0, 'L');
+            $pdf->Ln(10);
+
+
+        $pdf->Output('I','form_penilaian_kp.pdf');
+    }
+
+    function berita_acara_kp($pkl,$seminar,$jurusan)
+    {
+        $jurusan_upper = strtoupper($jurusan);
+        $mhs = $this->ta_model->get_mahasiswa_detail($pkl->npm);
+
+        switch($jurusan){
+            case "Ilmu Komputer":
+                $numPage = '';
+            break;
+            case "Kimia":
+                $numPage = '';
+            break;
+            case "Fisika":
+                $numPage = '';
+            break;
+            case "Biologi":
+                $numPage = '';
+            break;
+            case "Matematika":
+                $numPage = '';
+            break;
+        }
+
+        $kode = 0;
+        $type = 'Single';
+
+        $date = strtotime($seminar->tgl_pelaksanaan);
+        $date = date('l', $date);
+        $hari = $this->get_day($date);
+
+        $dates = substr("$seminar->created_at",0,10);
+        $dates = explode('-',$dates);
+        $bulan = $this->get_month($dates[1]);
+
+        $pdf = new FPDF('P','mm','A4');
+       
+        $spasi = 6;
+        $pdf->number_footer(0);
+        $pdf->setting_page_footer($numPage, $kode, $type);
+        $pdf->set_header_jur($jurusan_upper);
+        $pdf->set_header($jurusan);
+        $pdf->SetLeftMargin(30);
+        $pdf->SetTopMargin(20);
+
+        $pdf->AddPage();
+        $pdf->SetFont('Times','B',11);
+        $pdf->Ln(5);
+        $pdf->MultiCell(150, $spasi, "FORMULIR BERITA ACARA \nPENILAIAN KEGIATAN KP/PKL",1,'C',false);
+        $pdf->SetFont('Times','',11);
+        $pdf->Ln(2);
+        $pdf->MultiCell(150, $spasi, "Nomor : ".$seminar->no_form,0,'C',false);
+        $pdf->Ln(5);
+        $pdf->MultiCell(150, $spasi, "Pada hari ".$hari." tanggal ".$dates[2]." ".$bulan." ".$dates[0]." pukul ".$seminar->waktu_pelaksanaan." WIB, telah dilaksanakan kegiatan seminar KP/PKL sebagai evaluasi akhir pelaksanaan KP/PKL oleh mahasiswa:",0,'J',false);
+        $pdf->Ln(5);
+        $pdf->SetWidths(array(45,5, 150));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Nama / NPM',':',$mhs->name." / ".$mhs->npm));
+        $pdf->Ln(1);
+        $pdf->SetWidths(array(45,5, 120));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Judul KP/PKL',':',$seminar->judul));
+        $pdf->Ln(3);
+
+        //pembimbing
+        $pbb_data = $this->user_model->get_dosen_data($pkl->pembimbing);
+        $pdf->SetWidths(array(45,5, 120));
+        $pdf->SetAligns(array('L','C','L'));
+        $pdf->RowNoBorder(array('Dosen Pembimbing',':',$pbb_data->gelar_depan.$pbb_data->name.$pbb_data->gelar_belakang));
+        $pdf->Ln(1);
+        //pbl 
+        $pbl_data = $this->pkl_model->get_pb_lapangan($pkl->pkl_id);
+        $pdf->SetWidths(array(45,5, 120));
+        $pdf->SetAligns(array('L','C','L'));
+        if(!empty($pbl_data)){
+            $pdf->RowNoBorder(array('Pembimbing Lapangan',':',$pbl_data->nama));
+        }
+        else{
+            $pdf->RowNoBorder(array('Pembimbing Lapangan',':',""));
+        }
+       
+        $pdf->Ln(5);
+
+        $pdf->Cell(40,5,'Penilai',1,0,'C',0);
+        $pdf->Cell(70,5,'Nama/NIP',1,0,'C',0);
+        $pdf->Cell(15,5,'Nilai',1,0,'C',0);
+        $pdf->Cell(10,5,'%',1,0,'C',0);
+        $pdf->Cell(15,5,'NA',1,0,'C',0);
+        $pdf->Ln();
+        $komponen = $this->pkl_model->get_seminar_komponen($mhs->jurusan);
+        $bobot = explode("#",$komponen->bobot);
+        if(!empty($pbl_data)){
+            $bobot_pbb = $bobot[0];
+            $bobot_pbl = $bobot[1];
+        }
+        else{
+            $bobot_pbb = 100;
+            $bobot_pbl = 0;
+        }
+       
+
+        if($seminar->status >= 8){
+        //dosen pbb
+        $nilai_pbb = $this->pkl_model->get_pkl_nilai_status($seminar->seminar_id,$pkl->pkl_id,'Dosen Pembimbing');
+        $na_pbb = $nilai_pbb->nilai * ($bobot_pbb/100);
+        $pdf->SetWidths(array(40,70,15,10,15));
+        $pdf->SetAligns(array('C','L','C','C','C'));
+        $pdf->Row(array("\nDosen\nPembimbing","\n".$pbb_data->gelar_depan.$pbb_data->name.$pbb_data->gelar_belakang."\nNIP.".$pbb_data->nip_nik,"\n".$nilai_pbb->nilai,"\n".$bobot_pbb,"\n".$na_pbb)); 
+        }
+        else{
+        //nilai
+        $nilai_pb = $this->pkl_model->get_nilai_seminar($seminar->seminar_id);
+        $tot_nilai_pb = 0;
+            foreach($nilai_pb as $nil){
+                $tot_nilai_pb += $nil->nilai * ($nil->persentase/100);
+            }
+        $tot_nilai_pb = round($tot_nilai_pb,2);
+
+        $na_pb = $tot_nilai_pb * ($bobot_pbb/100);
+        //dosen pbb
+        $pdf->SetWidths(array(40,70,15,10,15));
+        $pdf->SetAligns(array('C','L','C','C','C'));
+        $pdf->Row(array("\nDosen\nPembimbing","\n".$pbb_data->gelar_depan.$pbb_data->name.$pbb_data->gelar_belakang."\nNIP.".$pbb_data->nip_nik,"\n".$tot_nilai_pb,"\n".$bobot_pbb,"\n".$na_pb)); 
+        }
+
+        if($seminar->status >= 8){
+         //dosen pbl
+            //pb not null
+            if(!empty($pbl_data)){
+            $nilai_pbl = $this->pkl_model->get_pkl_nilai_status($seminar->seminar_id,$pkl->pkl_id,'Pembimbing Lapangan');
+            $na_pbl = $nilai_pbl->nilai * ($bobot_pbl/100);
+            $pdf->SetWidths(array(40,70,15,10,15));
+            $pdf->SetAligns(array('C','L','C','C','C'));
+            $pdf->Row(array("\nPembimbing\nlapangan","\n".$pbl_data->nama."\nNIP/NIK.".$pbl_data->nip_nik,"\n".$nilai_pbl->nilai,"\n".$bobot_pbl,"\n".$na_pbl)); 
+            }
+            else{ //pb null
+                // $nilai_pbl = $this->pkl_model->get_pkl_nilai_status($seminar->seminar_id,$pkl->pkl_id,'Pembimbing Lapangan');
+                $na_pbl = 0;
+                $pdf->SetWidths(array(40,70,15,10,15));
+                $pdf->SetAligns(array('C','L','C','C','C'));
+                $pdf->Row(array("\nPembimbing\nlapangan","\n".""."\nNIP/NIK."."","\n"."0","\n".$bobot_pbl,"\n".$na_pbl)); 
+            }
+        }
+        else{
+         //dosen pbl
+         if(!empty($pbl_data)){
+            $pdf->SetWidths(array(40,70,15,10,15));
+            $pdf->SetAligns(array('C','L','C','C','C'));
+            $pdf->Row(array("\nPembimbing\nlapangan","\n".$pbl_data->nama."\nNIP/NIK.".$pbl_data->nip_nik,"\n","\n".$bobot_pbl,"\n")); 
+         }
+         else{
+            $pdf->SetWidths(array(40,70,15,10,15));
+            $pdf->SetAligns(array('C','L','C','C','C'));
+            $pdf->Row(array("\nPembimbing\nlapangan","\n".""."\nNIP/NIK."."","\n","\n".$bobot_pbl,"\n")); 
+         }
+        }
+
+         if($seminar->status >= 8){
+            //dosen koordinator
+            $koor_approve = $this->pkl_model->get_nilai_approval_pkl($seminar->seminar_id,"Koordinator");
+            $koor_data = $this->user_model->get_dosen_data($koor_approve->id_user);
+            $nilai_k = $this->pkl_model->get_pkl_nilai_status($seminar->seminar_id,$pkl->pkl_id,'Koordinator')->nilai;
+            $pdf->SetWidths(array(40,70,25,15));
+            $pdf->SetAligns(array('C','L','C','C'));
+            $pdf->Row(array("\nKoordinator","\n".$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang."\nNIP.".$koor_data->nip_nik,"\nPengurangan","\n".$nilai_k)); 
+
+            //total Nilai
+            $total_nilai = ($na_pbb + $na_pbl) - $nilai_k;
+            $pdf->SetWidths(array(135,15));
+            $pdf->SetAligns(array('R','C'));
+            $pdf->Row(array("\nTotal Nilai ","\n".$total_nilai)); 
+
+            //Huruf Mutu
+            $total_nilai = ($na_pbb + $na_pbl) - $nilai_k;
+            $pdf->SetWidths(array(135,15));
+            $pdf->SetAligns(array('R','C'));
+            $pdf->Row(array("\nHuruf Mutu ","\n".$this->huruf_mutu($total_nilai))); 
+         }
+         else{
+            //dosen koordinator
+            $pdf->SetWidths(array(40,70,25,15));
+            $pdf->SetAligns(array('C','L','C','C'));
+            $pdf->Row(array("\nKoordinator",".....\nNIP.","\nPengurangan","\n")); 
+
+            //total Nilai
+            $pdf->SetWidths(array(135,15));
+            $pdf->SetAligns(array('R','C'));
+            $pdf->Row(array("\nTotal Nilai ","\n -")); 
+
+            //Huruf Mutu
+            $pdf->SetWidths(array(135,15));
+            $pdf->SetAligns(array('R','C'));
+            $pdf->Row(array("\nHuruf Mutu ","\n -")); 
+         }
+
+          $pdf->Ln(8);
+          if($seminar->status != 9){
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(150, $spasi,"Bandar Lampung, ", 0, 0, 'L');
+          }
+          elseif($seminar->status == 9){
+            $kajur_approve = $this->pkl_model->get_nilai_approval_pkl($seminar->seminar_id,"Ketua Jurusan");
+
+            $tgl_ba = explode("-",substr($kajur_approve->created_at,0,10));
+            $tanggal_ba = $tgl_ba[2];
+            $bulan_ba = $this->get_month($tgl_ba[1]);
+            $tahun_ba = $tgl_ba[0];
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(150, $spasi,"Bandar Lampung, ".$tanggal_ba." ".$bulan_ba." ".$tahun_ba."", 0, 0, 'L');
+          }
+          $pdf->Ln(8);
+
+          $pdf->Cell(90, $spasi,"Mengetahui,", 0, 0, 'L');
+          $pdf->Cell(45, $spasi,"Menyetujui", 0, 0, 'L');
+          $pdf->Ln(5);
+
+          $pdf->Cell(90, $spasi,"Ketua Jurusan ".$jurusan, 0, 0, 'L');
+          $pdf->Cell(30, $spasi,"Koordinator KP/PKL", 0, 0, 'L');
+          $pdf->Ln(5);
+
+          if($seminar->status < 8){
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+        
+            $pdf->Ln(26);
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"", 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP.", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ", 0, 0, 'L');
+            $pdf->Ln(10);
+          }
+          elseif($seminar->status == 8){
+            $koor_approve = $this->pkl_model->get_nilai_approval_pkl($seminar->seminar_id,"Koordinator");
+            $koor_data = $this->user_model->get_dosen_data($koor_approve->id_user);
+
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$pdf->Image($koor_approve->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+        
+            $pdf->Ln(26);
+            $pdf->Cell(90, $spasi,"", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
+            $pdf->Ln(10);
+          }
+          elseif($seminar->status > 8 )
+          {
+            $kajur_approve = $this->pkl_model->get_nilai_approval_pkl($seminar->seminar_id,"Ketua Jurusan");
+            $koor_approve = $this->pkl_model->get_nilai_approval_pkl($seminar->seminar_id,"Koordinator");
+            $koor_data = $this->user_model->get_dosen_data($koor_approve->id_user);
+            $kajur_data = $this->user_model->get_dosen_data($kajur_approve->id_user);
+
+            $pdf->Cell(90, $spasi,$pdf->Image($kajur_approve->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$pdf->Image($koor_approve->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+        
+            $pdf->Ln(26);
+            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Ln(5);
+
+            $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
+            $pdf->Ln(10);
+          }
+
+        $pdf->Output('I','berita_acara_kp.pdf');
+    }
+
 }
 
 ?>
