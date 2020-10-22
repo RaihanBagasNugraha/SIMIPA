@@ -271,6 +271,7 @@ $route['dosen/struktural/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
 $route['dosen/struktural/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
 $route['dosen/struktural/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
 $route['dosen/struktural/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
+
     //kajur pkl
 $route['dosen/struktural/pkl/add-pkl'] = 'dosen/kajur_add_pkl';
 $route['dosen/struktural/pkl/add-pkl/form'] = 'dosen/kajur_add_pkl_form';
@@ -300,6 +301,19 @@ $route['dosen/struktural/pkl/approve-seminar-nilai-pkl'] = 'dosen/kajur_approve_
 $route['dosen/struktural/pkl/approve-seminar-nilai-pkl/form'] = 'dosen/kajur_approve_pkl_seminar_nilai_form';
 $route['dosen/struktural/pkl/approve-seminar-nilai-pkl/save'] = 'dosen/kajur_approve_pkl_seminar_nilai_save';
 
+$route['dosen/struktural/rekap-pkl/mahasiswa'] = 'dosen/pkl_rekap_mahasiswa';
+$route['dosen/struktural/rekap-pkl/mahasiswa/detail'] = 'dosen/pkl_rekap_mahasiswa_detail';
+$route['dosen/struktural/rekap-pkl/mahasiswa/detail/pkl'] = 'dosen/pkl_rekap_mahasiswa_detail_mahasiswa';
+$route['dosen/struktural/rekap-pkl/periode'] = 'dosen/pkl_rekap_periode';
+$route['dosen/struktural/rekap-pkl/periode/timeline'] = 'dosen/pkl_rekap_periode_timeline';
+$route['dosen/struktural/rekap-pkl/periode/detail'] = 'dosen/pkl_rekap_periode_detail';
+$route['dosen/struktural/rekap-pkl/periode/detail/pkl'] = 'dosen/pkl_rekap_mahasiswa_detail_mahasiswa';
+$route['dosen/struktural/rekap-pkl/periode/detail/seminar'] = 'dosen/pkl_rekap_mahasiswa_detail_seminar';
+$route['dosen/struktural/rekap-pkl/pembimbing'] = 'dosen/pkl_rekap_pembimbing';
+$route['dosen/struktural/rekap-pkl/pembimbing/detail'] = 'dosen/pkl_rekap_pembimbing_detail';
+$route['dosen/struktural/rekap-pkl/pembimbing/detail/bimbingan'] = 'dosen/pkl_rekap_pembimbing_detail_bimbingan';
+$route['dosen/struktural/rekap-pkl/pembimbing/detail/bimbingan/mahasiswa'] = 'dosen/pkl_rekap_mahasiswa_detail_mahasiswa';
+
     //dosen pkl
 $route['dosen/pkl/approve'] = 'dosen/pkl_approve';
 $route['dosen/pkl/approve/perbaiki'] = 'dosen/pkl_approve_perbaiki';
@@ -327,6 +341,19 @@ $route['dosen/pkl/seminar/koordinator/save'] = 'dosen/pkl_approve_seminar_save_k
 $route['dosen/pkl/seminar-nilai/koordinator'] = 'dosen/pkl_approve_seminar_nilai_koor';
 $route['dosen/pkl/seminar-nilai/koordinator/form'] = 'dosen/pkl_approve_seminar_nilai_koor_form';
 $route['dosen/pkl/seminar-nilai/koordinator/save'] = 'dosen/pkl_approve_seminar_nilai_koor_save';
+
+$route['dosen/rekap-pkl/mahasiswa'] = 'dosen/pkl_rekap_mahasiswa';
+$route['dosen/rekap-pkl/mahasiswa/detail'] = 'dosen/pkl_rekap_mahasiswa_detail';
+$route['dosen/rekap-pkl/mahasiswa/detail/pkl'] = 'dosen/pkl_rekap_mahasiswa_detail_mahasiswa';
+$route['dosen/rekap-pkl/periode'] = 'dosen/pkl_rekap_periode';
+$route['dosen/rekap-pkl/periode/timeline'] = 'dosen/pkl_rekap_periode_timeline';
+$route['dosen/rekap-pkl/periode/detail'] = 'dosen/pkl_rekap_periode_detail';
+$route['dosen/rekap-pkl/periode/detail/pkl'] = 'dosen/pkl_rekap_mahasiswa_detail_mahasiswa';
+$route['dosen/rekap-pkl/periode/detail/seminar'] = 'dosen/pkl_rekap_mahasiswa_detail_seminar';
+$route['dosen/rekap-pkl/pembimbing'] = 'dosen/pkl_rekap_pembimbing';
+$route['dosen/rekap-pkl/pembimbing/detail'] = 'dosen/pkl_rekap_pembimbing_detail';
+$route['dosen/rekap-pkl/pembimbing/detail/bimbingan'] = 'dosen/pkl_rekap_pembimbing_detail_bimbingan';
+$route['dosen/rekap-pkl/pembimbing/detail/bimbingan/mahasiswa'] = 'dosen/pkl_rekap_mahasiswa_detail_mahasiswa';
 
     //kaprodi pkl
 $route['dosen/struktural/kaprodi/pkl'] = 'dosen/pkl_approve_kaprodi';   

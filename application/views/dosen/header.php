@@ -270,7 +270,7 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                 <!-- Menu Kajur/Sekjur -->
 
                                 <li class="app-sidebar__heading">Ketua Jurusan</li>
-                                <li <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) != "bidang-nilai" && $this->uri->segment(3) != "kaprodi" && $this->uri->segment(3) != "komposisi-nilai" && $this->uri->segment(3) != "pkl" ) echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) != "bidang-nilai" && $this->uri->segment(3) != "kaprodi" && $this->uri->segment(3) != "komposisi-nilai" && $this->uri->segment(3) != "pkl"  && $this->uri->segment(3) != "rekap-pkl" ) echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-pen"></i>
                                         <?php 
@@ -439,17 +439,12 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                         <!-- <?php 
                                             $rekap = count($this->ta_model->get_ta_rekap($this->session->userdata('userId')));
                                         ?> -->
-                                        Rekap 
+                                        Rekap Tugas Akhir
                                         <!-- <span class="badge badge-danger"><?php echo $jml?></span> -->
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
-                                        <li>
-                                            <a href="#">
-                                                <i class="metismenu-icon">
-                                                </i>KP/PKL
-                                            </a>
-                                        </li>
+                                       
                                         <li>
                                             <a href="<?php echo site_url("dosen/struktural/rekap/tugas-akhir") ?>" <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
@@ -481,6 +476,37 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                             </a>
                                         </li> -->
                                        
+                                    </ul>
+                                </li>
+
+                                <li <?php if($this->uri->segment(2) == "rekap-pkl" || ($this->uri->segment(3) == "rekap-pkl" && $this->uri->segment(2) == "struktural")) echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-copy-file"></i>
+                                        <?php 
+                                          
+                                        ?>
+                                        Rekap KP/PKL 
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/struktural/rekap-pkl/mahasiswa") ?>" <?php if(($this->uri->segment(2) == "rekap-pkl" && $this->uri->segment(3) == "mahasiswa") || ($this->uri->segment(3) == "rekap-pkl" && $this->uri->segment(2) == "struktural" && $this->uri->segment(4) == "mahasiswa")) echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Angkatan
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/struktural/rekap-pkl/periode") ?>" <?php if(($this->uri->segment(2) == "rekap-pkl" && $this->uri->segment(3) == "periode") || ($this->uri->segment(3) == "rekap-pkl" && $this->uri->segment(2) == "struktural" && $this->uri->segment(4) == "periode")) echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Periode
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/struktural/rekap-pkl/pembimbing") ?>" <?php if(($this->uri->segment(2) == "rekap-pkl" && $this->uri->segment(3) == "pembimbing") || ($this->uri->segment(3) == "rekap-pkl" && $this->uri->segment(2) == "struktural" && $this->uri->segment(4) == "pembimbing")) echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Pembimbing
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                                 
@@ -594,7 +620,7 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                 <!--        <li>-->
                                 <!--            <a href="<?php echo site_url("dosen/kaprodi/rekap/tugas-akhir") ?>" <?php if($this->uri->segment(2) == "kaprodi" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>-->
                                 <!--                <i class="metismenu-icon">-->
-                                <!--                 </i>Tugas Akhir <!--<span class="badge badge-danger"><?php echo $rekap > 0 ? $rekap : "" ?></span> -->
+                                <!--                 </i>Tugas Akhir
                                 <!--            </a>-->
                                 <!--        </li>-->
                                 <!--        <li>-->
@@ -662,56 +688,37 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                         </li>
                                     </ul>
                                 </li>
-                                <!--<li <?php if($this->uri->segment(2) == "kaprodi" && $this->uri->segment(3) == "rekap") echo 'class="mm-active"' ?>>-->
-                                <!--    <a href="#">-->
-                                <!--        <i class="metismenu-icon pe-7s-copy-file"></i>-->
-                                         <?php 
-                                            // $rekap = count($this->ta_model->get_ta_rekap($this->session->userdata('userId')));
-                                        ?> 
-                                <!--        Rekap -->
-                                <!--         <span class="badge badge-danger"><?php echo $jml?></span> -->
-                                <!--        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>-->
-                                <!--    </a>-->
-                                <!--    <ul>-->
-                                <!--        <li>-->
-                                <!--            <a href="#">-->
-                                <!--                <i class="metismenu-icon">-->
-                                <!--                </i>KP/PKL-->
-                                <!--            </a>-->
-                                <!--        </li>-->
-                                <!--        <li>-->
-                                <!--            <a href="<?php echo site_url("dosen/kaprodi/rekap/tugas-akhir") ?>" <?php if($this->uri->segment(2) == "kaprodi" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>-->
-                                <!--                <i class="metismenu-icon">-->
-                                <!--                 </i>Tugas Akhir <!--<span class="badge badge-danger"><?php echo $rekap > 0 ? $rekap : "" ?></span> -->
-                                <!--            </a>-->
-                                <!--        </li>-->
-                                <!--        <li>-->
-                                <!--            <a href="<?php echo site_url("dosen/kaprodi/rekap/seminar") ?>" <?php if($this->uri->segment(2) == "kaprodi" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "seminar") echo 'class="mm-active"' ?>>-->
-                                <!--                <i class="metismenu-icon">-->
-                                <!--                </i>Seminar-->
-                                <!--            </a>-->
-                                <!--        </li>-->
-                                <!--        <li>-->
-                                <!--            <a href="<?php echo site_url("dosen/kaprodi/rekap/mahasiswa-ta") ?>" <?php if($this->uri->segment(2) == "kaprodi" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "mahasiswa-ta") echo 'class="mm-active"' ?>>-->
-                                <!--                <i class="metismenu-icon">-->
-                                <!--                </i>Mahasiswa Tugas Akhir-->
-                                <!--            </a>-->
-                                <!--        </li>-->
-                                <!--        <li>-->
-                                <!--            <a href="<?php echo site_url("dosen/kaprodi/rekap/bimbingan-dosen") ?>" <?php if($this->uri->segment(2) == "kaprodi" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "bimbingan-dosen") echo 'class="mm-active"' ?>>-->
-                                <!--                <i class="metismenu-icon">-->
-                                <!--                </i>Bimbingan Dosen-->
-                                <!--            </a>-->
-                                <!--        </li>-->
-                                <!--         <li>-->
-                                <!--            <a href="<?php echo site_url("dosen/kaprodi/rekap/ganti-ta-pbb") ?>" <?php if($this->uri->segment(2) == "kaprodi" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "ganti-ta-pbb") echo 'class="mm-active"' ?>>-->
-                                <!--                <i class="metismenu-icon">-->
-                                <!--                </i>Ganti Tema/Pembimbing-->
-                                <!--            </a>-->
-                                <!--        </li> -->
-                                       
-                                <!--    </ul>-->
-                                <!--</li>-->
+                                <li <?php if($this->uri->segment(2) == "rekap-pkl") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-copy-file"></i>
+                                        <?php 
+                                          
+                                        ?>
+                                        Rekap KP/PKL 
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/rekap-pkl/mahasiswa") ?>" <?php if($this->uri->segment(2) == "rekap-pkl" && $this->uri->segment(3) == "mahasiswa") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Angkatan
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/rekap-pkl/periode") ?>" <?php if($this->uri->segment(2) == "rekap-pkl" && $this->uri->segment(3) == "periode") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Periode
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/rekap-pkl/pembimbing") ?>" <?php if($this->uri->segment(2) == "rekap-pkl" && $this->uri->segment(3) == "pembimbing") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Pembimbing
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                               
                                 <?php } ?>
 
                                 <?php if(!empty($tb_dekan)) { ?>

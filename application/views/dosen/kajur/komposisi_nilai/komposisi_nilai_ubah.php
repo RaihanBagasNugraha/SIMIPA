@@ -44,7 +44,7 @@
                                     <input value="<?php echo $komponen->id ?>" type = "hidden" required name="id">
 
                                 <div class="position-relative row form-group">
-                                    <label class="col-sm-3 col-form-label"><b>Jurusan</b></label>
+                                    <label class="col-sm-3 col-form-label">Jurusan</label>
                                             <div class="col-sm-3">
                                             <?php 
                                                 switch($komponen->id_prodi)
@@ -76,9 +76,13 @@
                                     </div>
                                 </div>
 
+                                <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Waktu Pengisian :</b></label>
+                                </div>
+
                                 <!-- semester -->
                                 <div class="position-relative row form-group">
-                                    <label class="col-sm-3 col-form-label"><b>Semester</b></label>
+                                    <label class="col-sm-3 col-form-label">Semester</label>
                                             <?php 
                                                 $checked = "checked";
                                             ?>
@@ -92,7 +96,7 @@
 
                                  <!-- thn akademik -->
                                  <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label"><b>Tahun Akademik</b></label>
+                                            <label class="col-sm-3 col-form-label">Tahun Akademik</label>
                                             <div class="col-sm-3">
                                             <?php 
                                                 $year = date("Y");
@@ -109,9 +113,12 @@
                                             </div>
                                     </div>
 
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Seminar dan TA :</b></label>
+                                    </div>
                                     <!-- Jenis -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label"><b>Jenis</b></label>
+                                            <label class="col-sm-3 col-form-label">Jenis</label>
                                             <div class="col-sm-3">
                                                 <input value="<?php echo $komponen->jenis?>" type = "text" name="jenis" readonly class="form-control">
                                             </div>
@@ -119,7 +126,7 @@
 
                                      <!-- Tipe -->
                                      <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label"><b>Seminar</b></label>
+                                            <label class="col-sm-3 col-form-label">Seminar</label>
                                             <div class="col-sm-3">
                                                 <input value="<?php echo $komponen->tipe?>" type = "text" name="tipe" readonly class="form-control">
                                             </div>
@@ -128,14 +135,14 @@
                                     
                                      <!-- komponen nilai -->
                                      <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label"><b>Komponen Nilai</b></label>
+                                            <label class="col-sm-3 col-form-label"><b>Komponen Nilai : </b></label>
                                             <div class="col-sm-8">
-                                            <h5><b>Ujian/Presentasi</h5>                                     
+                                            <h6><b>Ujian/Presentasi</b></h6>                                     
                                             <ul class="container2">
                                                 <li><input type="text" name="ujian_komponen[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="number" name="ujian_nilai[]"placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-primary add_form_field_sub">+</label></li>
                                             </ul>
                                             <br>
-                                            <h5><b>Tugas Akhir/Skripsi/Tesis/Disertasi</h5>                                     
+                                            <h6><b>Tugas Akhir/Skripsi/Tesis/Disertasi</b></h6>                                     
                                             <ul class="container3">
                                                 <li><input type="text" name="skripsi_komponen[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="number" name="skripsi_nilai[]"placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-primary add_form_field_sub2">+</label></li>
                                             </ul>
@@ -164,8 +171,10 @@
                                    
 
 
-                                    <h6><b>Bobot Penilaian Pembimbing / Penguji </h6>
-                                    <br>            
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-6 col-form-label"><b>Bobot Penilaian Pembimbing / Penguji :</b></label>
+                                    </div>
+                                     
                                     <?php if($komponen->jenis == "Skripsi") { 
                                          $bobot = (explode("#","$komponen->bobot"));
                                          $pb2 = (explode("-",$bobot[0])); 
@@ -183,7 +192,7 @@
 
                                      <div class="row"> 
                                         <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing 1</b></label>
+                                                <label class="">Pembimbing 1</label>
                                                 
                                         </div>
                                         <div class="col-sm-2">
@@ -194,7 +203,7 @@
                                         </div>
 
                                         <div class="col-sm-2">
-                                            <label class=""><b>Pembimbing 1</b></label>
+                                            <label class="">Pembimbing 1</label>
                                             
                                         </div>
 
@@ -205,7 +214,7 @@
                                     <br>
                                      <div class="row">
                                         <div class="col-sm-2">
-                                            <label class=""><b>Pembimbing 2</b></label>
+                                            <label class="">Pembimbing 2</label>
                                                     
                                             </div>
                                             <div class="col-sm-2">
@@ -216,7 +225,7 @@
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label class=""><b>Penguji 1</b></label>
+                                                <label class="">Penguji 1</label>
                                                 
                                             </div>
 
@@ -227,7 +236,7 @@
                                      <br>
                                      <div class="row" >
                                         <div class="col-sm-2">
-                                            <label class=""><b>Penguji 1</b></label>
+                                            <label class="">Penguji 1</label>
                                                     
                                             </div>
                                             <div class="col-sm-2">
@@ -238,7 +247,7 @@
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label class=""><b>Penguji 2</b></label>
+                                                <label class="">Penguji 2</label>
                                                 
                                             </div>
 
@@ -252,7 +261,7 @@
                                         ?>    
                                          <div class="row"> 
                                         <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing</b></label>
+                                                <label class="">Pembimbing</label>
                                                 
                                         </div>
                                         <div class="col-sm-2">
@@ -265,7 +274,7 @@
                                     <br>
                                      <div class="row">
                                         <div class="col-sm-2">
-                                            <label class=""><b>Pembahas</b></label>
+                                            <label class="">Pembahas</label>
                                                     
                                             </div>
                                             <div class="col-sm-2">
@@ -283,7 +292,7 @@
                                     ?>
                                         <div class="row"> 
                                             <div class="col-sm-2">
-                                                    <label class=""><b>Pembimbing 1</b></label>
+                                                    <label class="">Pembimbing 1</label>
                                                     
                                             </div>
                                             <div class="col-sm-2">
@@ -294,7 +303,7 @@
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label class=""><b>Penguji 1</b></label>
+                                                <label class="">Penguji 1</label>
                                                 
                                             </div>
 
@@ -305,7 +314,7 @@
                                         <br>
                                         <div class="row">
                                             <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing 2</b></label>
+                                                <label class="">Pembimbing 2</label>
                                                         
                                                 </div>
                                                 <div class="col-sm-2">
@@ -316,7 +325,7 @@
                                                 </div>
 
                                                 <div class="col-sm-2">
-                                                    <label class=""><b>Penguji 2</b></label>
+                                                    <label class="">Penguji 2</label>
                                                     
                                                 </div>
 
@@ -327,7 +336,7 @@
                                         <br>
                                         <div class="row">
                                             <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing 3</b></label>
+                                                <label class="">Pembimbing 3</label>
                                                         
                                                 </div>
                                                 <div class="col-sm-2">
@@ -338,7 +347,7 @@
                                                 </div>
 
                                                 <div class="col-sm-2">
-                                                    <label class=""><b>Penguji 3</b></label>
+                                                    <label class="">Penguji 3</label>
                                                     
                                                 </div>
 
@@ -352,7 +361,7 @@
                                         $bobot = (explode("-","$komponen->bobot")); ?>
                                          <div class="row"> 
                                             <div class="col-sm-2">
-                                                    <label class=""><b>Pembimbing 1</b></label>
+                                                    <label class="">Pembimbing 1</label>
                                                     
                                             </div>
                                             <div class="col-sm-2">
@@ -363,7 +372,7 @@
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label class=""><b>Penguji 1</b></label>
+                                                <label class="">Penguji 1</label>
                                                 
                                             </div>
 
@@ -374,7 +383,7 @@
                                         <br>
                                         <div class="row">
                                             <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing 2</b></label>
+                                                <label class="">Pembimbing 2</label>
                                                         
                                                 </div>
                                                 <div class="col-sm-2">
@@ -385,7 +394,7 @@
                                                 </div>
 
                                                 <div class="col-sm-2">
-                                                    <label class=""><b>Penguji 2</b></label>
+                                                    <label class="">Penguji 2</label>
                                                     
                                                 </div>
 
@@ -396,7 +405,7 @@
                                         <br>
                                         <div class="row">
                                             <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing 3</b></label>
+                                                <label class="">Pembimbing 3</label>
                                                         
                                                 </div>
                                                 <div class="col-sm-2">
@@ -407,7 +416,7 @@
                                                 </div>
 
                                                 <div class="col-sm-2">
-                                                    <label class=""><b>Penguji 3</b></label>
+                                                    <label class="">Penguji 3</label>
                                                     
                                                 </div>
 

@@ -7,18 +7,43 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Komposisi Nilai
+                                    <?php
+                                    $data_dosen = $this->user_model->get_dosen_data($this->session->userdata('userId'));
+                                    
+                                    if($data_dosen->jurusan != NULL){
+                                    switch($data_dosen->jurusan)
+                                        {
+                                            case "0":
+                                            $jur_dosen = "Dokter MIPA";
+                                            break;
+                                            case "1":
+                                            $jur_dosen = "Kimia";
+                                            break;
+                                            case "2":
+                                            $jur_dosen = "Biologi";
+                                            break;
+                                            case "3":
+                                            $jur_dosen = "Matematika";
+                                            break;
+                                            case "4":
+                                            $jur_dosen = "Fisika";
+                                            break;
+                                            case "5":
+                                            $jur_dosen = "Ilmu Komputer";
+                                            break;
+                                        }
+                                    }
+                                    else{
+                                        $jur_dosen = "";
+                                    }
+
+                                    $id_user = $this->session->userdata('userId');
+                                    ?>
+
+                                    <div>Detail Rekap Dosen Pembimbing KP/PKL Mahasiswa Jurusan <?php echo $jur_dosen; ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="page-title-actions">
-                                    <a href="<?php echo site_url("dosen/struktural/komposisi-nilai/add") ?>" class="btn-shadow btn btn-success">
-                                            <span class="btn-icon-wrapper pr-2 opacity-7">
-                                                <i class="fas fa-file fa-w-20"></i>
-                                            </span>
-                                            Tambah Komposisi Nilai
-                                    </a>
                                 </div>
                                 
                             </div>
@@ -46,68 +71,48 @@
                          <div class="main-card mb-3 card">
                                 <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="mb-0 table table-striped"  id="example">
+                                    <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
-                                            <!-- <th>Nomor</th> -->
-                                            <th>Jenis</th>
-                                            <th>Keterangan</th>
-                                            <th>Pengisian</th>
-                                            <th>Komponen Nilai</th>
-                                            <th>Status</th>
-                                            <th>Aksi</th>
+                                            <!-- <th>No</th> -->
+                                            <th style="width: 30%;">Nama<br>NIP</th>
+                                            <th style="width: 20%;">Jumlah <br>Bimbingan</th>
+                                            <th style="width: 40%;">Detail</th>
+                                          
+                                            <!-- <th style="width: 10%;">KP/PKL</th>
+                                            <th style="width: 10%;">Seminar</th> -->
+                                            <!-- <th>Persentase</th> -->
+                                            
+                                           
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if(empty($nilai))
+                                        if(empty($dosen))
                                         {
                                             echo "<tr><td colspan='6'>Data tidak tersedia</td></tr>";
                                         }
                                         else
                                         {
-                                            $no = 1;
-                                            foreach($nilai as $row) {
-                                                
+                                           
+                                            foreach($dosen as $row) {
                                         ?>
                                             <tr>
-                                                <!-- <td class="align-top">
-                                                    <?php echo $no++;?>
-                                                </td> -->
                                                 <td class="align-top">
-                                                    <?php echo $row->jenis;?>
+                                                    <?php echo $row->gelar_depan." ".$row->name.", ".$row->gelar_belakang."<br>".$row->nip_nik ?>
                                                 </td>
                                                 <td class="align-top">
-                                                    <?php echo $row->tipe;?>
+                                                    <?php echo $this->pkl_model->count_mahasiswa_bimbingan_kp_rekap($row->id_user)->jml; ?>
                                                 </td>
                                                 <td class="align-top">
-                                                    <?php 
-                                                    $tgl = explode("-",substr($row->created_at,0,10));
-                                                    echo $tgl[2]."-".$tgl[1]."-".$tgl[0];?>
+                                                    <a style="color: white;" class="btn-wide btn btn-primary" href="<?php echo site_url("dosen/rekap-pkl/pembimbing/detail/bimbingan?id=".$this->encrypt->encode($row->id_user))?>"><b>Lihat</b></a>
                                                 </td>
-                                                <td class="align-top">
-                                                    <a href=<?php echo site_url("dosen/struktural/komposisi-nilai/komponen?id=".$this->encrypt->encode($row->id)) ?>><label class = "btn btn-primary"><?php echo "Komponen Nilai";?></label></a>
-                                                </td>
-                                                <td class="align-top">
-                                                    <?php echo $row->status == 0 ? "Aktif" : "Nonaktif";?>
-                                                </td>
-                                                <td class="align-top">
-
-                                                <?php if($row->status != 1){?>
-                                                    <a href=<?php echo site_url("dosen/struktural/komposisi-nilai/ubah?id=".$this->encrypt->encode($row->id)) ?>><label class = "btn-wide mb-2 btn btn-warning btn-sm "><?php echo "Ubah";?></label></a>
-
-                                                    <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="passingID" >
-                                                        <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm "  data-toggle="modal" data-target="#nonaktifkan">
-                                                            Nonaktifkan 
-                                                        </button>
-                                                    </a>
-
-                                                <?php } else{echo "-";}?>    
-                                                </td>
+                                               
+                                               
                                                 
                                             </tr>
                                         <?php
-                                            }       
+                                            }
                                         }
                                         ?>
                                     
@@ -121,11 +126,14 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.js"></script>
 <script src="<?php echo site_url("assets/scripts/dataTables.bootstrap4.min.js") ?>"></script>
 <script src="<?php echo site_url("assets/scripts/DataTables-1.10.21/jquery.dataTables.min.js") ?>"></script>
+
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#example').DataTable();
-} );
+
 $(document).ready(function(){
+    $('#example').DataTable( {
+        "order": [[ 3, "desc" ]]
+    } );
+    
     $("select").select2({
         theme: "bootstrap"
     });
@@ -184,9 +192,9 @@ $(document).ready(function(){
 </script>
 
 <script>
-    $(".passingID").click(function () {
+    $(".passingIDKoor").click(function () {
                 var id = $(this).attr('data-id');
-                $("#ID").val( id );
+                $("#IDKoor").val( id );
 
             });
       

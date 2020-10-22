@@ -49,16 +49,20 @@
 
                                     <!-- jurusan -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label"><b>Jurusan</b></label>
+                                            <label class="col-sm-3 col-form-label">Jurusan</label>
                                             <div class="col-sm-3">
                                                 <b>: <?php echo $this->user_model->get_dosen_jur($this->session->userdata('userId'))->nama; ?></b>
                                                 <input value="<?php echo $this->user_model->get_dosen_jur($this->session->userdata('userId'))->id_jurusan;?>" type = "hidden" required name="jurusan" class="form-control input-mask-trigger" readonly >
                                             </div>
                                     </div>
 
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Waktu Pengisian :</b></label>
+                                    </div>
+
                                     <!-- semester -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label"><b>Semester</b></label>
+                                            <label class="col-sm-3 col-form-label">Semester</label>
                                             <div class="col-sm-3">
                                                 <input type="radio" id="ganjil" name="semester" value="Ganjil" required>
                                                 <label for="ganjil">Ganjil</label><br>
@@ -69,7 +73,7 @@
 
                                      <!-- thn akademik -->
                                      <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label"><b>Tahun Akademik</b></label>
+                                            <label class="col-sm-3 col-form-label">Tahun Akademik</label>
                                             <div class="col-sm-3">
                                             <?php 
                                                 $year = date("Y");
@@ -85,23 +89,13 @@
                                             </div>
                                     </div>
 
-                                     <!-- Jenis -->
-                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label"><b>Jenis</b></label>
-                                            <div class="col-sm-3">
-                                                <select name="jenis" class=" form-control" id="jenis" required>
-                                                    <option value="">[Jenis]</option>
-                                                    <option value="Tugas Akhir">Tugas Akhir</option>
-                                                    <option value="Skripsi">Skripsi</option>
-                                                    <option value="Tesis">Tesis</option>
-                                                    <option value="Disertasi">Disertasi</option>
-                                                </select>
-                                            </div>
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Seminar dan TA :</b></label>
                                     </div>
 
                                     <!-- Seminar -->
                                     <div class="position-relative row form-group">
-                                            <label class="col-sm-3 col-form-label"><b>Seminar</b></label>
+                                            <label class="col-sm-3 col-form-label">Seminar</label>
                                             <div class="col-sm-3">
                                                 <select name="tipe" class=" form-control" id="tipe" required>
                                                     <option value="">[Pilih Jenis Seminar]</option>
@@ -113,18 +107,33 @@
                                             </div>
                                     </div>
 
+                                     <!-- Jenis -->
+                                     <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label">Jenis</label>
+                                            <div class="col-sm-3">
+                                                <select name="jenis" class=" form-control" id="jenis" required>
+                                                    <option value="">[Jenis]</option>
+                                                    <option value="Tugas Akhir">Tugas Akhir</option>
+                                                    <option value="Skripsi">Skripsi</option>
+                                                    <option value="Tesis">Tesis</option>
+                                                    <option value="Disertasi">Disertasi</option>
+                                                </select>
+                                            </div>
+                                    </div>
+
+                                    
 
                                     <!-- komponen nilai -->
                                     <div style="display: none;" id="nilai">
                                         <div class="position-relative row form-group">
-                                                <label class="col-sm-3 col-form-label"><b>Komponen Nilai</b></label>
+                                                <label class="col-sm-3 col-form-label"><b>Komponen Nilai :</b></label>
                                                 <div class="col-sm-8">
-                                                <h5><b>Ujian/Presentasi</h5>                                     
+                                                <h6><b>Ujian/Presentasi</b></h6>                                     
                                                 <ul class="container2">
                                                     <li><input type="text" name="ujian_komponen[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="number"  name="ujian_nilai[]"placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-primary add_form_field_sub">+</label></li>
                                                 </ul>
                                                 <br>
-                                                <h5><b>Tugas Akhir/Skripsi/Tesis/Disertasi</h5>                                     
+                                                <h6><b>Tugas Akhir/Skripsi/Tesis/Disertasi</b></h6>                                     
                                                 <ul class="container3">
                                                     <li><input type="text" name="skripsi_komponen[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="number"  name="skripsi_nilai[]"placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-primary add_form_field_sub2">+</label></li>
                                                 </ul>
@@ -136,14 +145,14 @@
                                     <!-- komponen nilai kompre -->
                                     <div style="display: none;" >
                                         <div class="position-relative row form-group">
-                                                <label class="col-sm-3 col-form-label"><b>Komponen Nilai</b></label>
+                                                <label class="col-sm-3 col-form-label"><b>Komponen Nilai :</b></label>
                                                 <div class="col-sm-8">
-                                                <h5><b>Ujian/Presentasi</h5>                                     
+                                                <h6><b>Ujian/Presentasi</b></h6>                                     
                                                 <ul class="container4">
                                                     <li><input type="text" name="ujian_komponen_kompre[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="hidden" value = "0" name="ujian_nilai_kompre[]"placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-primary add_form_field_sub_kompre">+</label></li>
                                                 </ul>
                                                 <br>
-                                                <h5><b>Tugas Akhir/Skripsi/Tesis/Disertasi</h5>                                     
+                                                <h6><b>Tugas Akhir/Skripsi/Tesis/Disertasi</b></h6>                                     
                                                 <ul class="container5">
                                                     <li><input type="text" name="skripsi_komponen_kompre[]" size="40" placeholder = "Aspek yang dinilai">&nbsp;&nbsp;<input type="hidden" value = "0" name="skripsi_nilai_kompre[]"placeholder = "%" min=0 max=100>&nbsp;&nbsp; <label class="btn btn-primary add_form_field_sub2_kompre">+</label></li>
                                                 </ul>
@@ -153,13 +162,15 @@
                                     </div>
 
                                     <div style="display: none;" id="ta">
-                                    <br><br>
-                                    <h6><b>Bobot Penilaian Pembimbing / Penguji </h6>
+                                    <br>
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-6 col-form-label"><b>Bobot Penilaian Pembimbing / Penguji :</b></label>
+                                    </div>
 
                                     <!-- Tugas Akhir -->
                                      <div class="row"> 
                                         <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing</b></label> 
+                                                <label class="">Pembimbing</label> 
                                         </div>
                                         <div class="col-sm-2">
                                                     <input value="" type = "number" name="ta_pb1" class=" form-control" min = 0 max = 100 placeholder = "%">
@@ -180,7 +191,7 @@
                                     <br>
                                      <div class="row">
                                         <div class="col-sm-2">
-                                            <label class=""><b>Pembahas</b></label>
+                                            <label class="">Pembahas</label>
                                                     
                                             </div>
                                             <div class="col-sm-2">
@@ -205,6 +216,10 @@
                                      
                                      <!-- Skripsi -->
                                      <div style="display: none;" id="skripsi">
+                                     <br>
+                                     <div class="position-relative row form-group">
+                                            <label class="col-sm-6 col-form-label"><b>Bobot Penilaian Pembimbing / Penguji :</b></label>
+                                    </div>
                                      <div class="row">  
                                         <div class="col-sm-6">
                                                 <label class=""><b>2 Pembimbing :</b></label>
@@ -217,7 +232,7 @@
 
                                      <div class="row"> 
                                         <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing 1</b></label>
+                                                <label class="">Pembimbing 1</label>
                                                 
                                         </div>
                                         <div class="col-sm-2">
@@ -228,7 +243,7 @@
                                         </div>
 
                                         <div class="col-sm-2">
-                                            <label class=""><b>Pembimbing 1</b></label>
+                                            <label class="">Pembimbing 1</label>
                                             
                                         </div>
 
@@ -239,7 +254,7 @@
                                     <br>
                                      <div class="row">
                                         <div class="col-sm-2">
-                                            <label class=""><b>Pembimbing 2</b></label>
+                                            <label class="">Pembimbing 2</label>
                                                     
                                             </div>
                                             <div class="col-sm-2">
@@ -250,7 +265,7 @@
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label class=""><b>Penguji 1</b></label>
+                                                <label class="">Penguji 1</label>
                                                 
                                             </div>
 
@@ -261,7 +276,7 @@
                                      <br>
                                      <div class="row" >
                                         <div class="col-sm-2">
-                                            <label class=""><b>Penguji 1</b></label>
+                                            <label class="">Penguji 1</label>
                                                     
                                             </div>
                                             <div class="col-sm-2">
@@ -272,7 +287,7 @@
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label class=""><b>Penguji 2</b></label>
+                                                <label class="">Penguji 2</label>
                                                 
                                             </div>
 
@@ -283,10 +298,13 @@
                                      </div>     
                                     
                                     <div id="tesis" style="display: none;">
-                                        
+                                    <br>
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-6 col-form-label"><b>Bobot Penilaian Pembimbing / Penguji :</b></label>
+                                    </div>
                                         <div class="row"> 
                                             <div class="col-sm-2">
-                                                    <label class=""><b>Pembimbing 1</b></label>
+                                                    <label class="">Pembimbing 1</label>
                                                     
                                             </div>
                                             <div class="col-sm-2">
@@ -297,7 +315,7 @@
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label class=""><b>Penguji 1</b></label>
+                                                <label class="">Penguji 1</label>
                                                 
                                             </div>
 
@@ -308,7 +326,7 @@
                                         <br>
                                         <div class="row">
                                             <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing 2</b></label>
+                                                <label class="">Pembimbing 2</label>
                                                         
                                                 </div>
                                                 <div class="col-sm-2">
@@ -319,7 +337,7 @@
                                                 </div>
 
                                                 <div class="col-sm-2">
-                                                    <label class=""><b>Penguji 2</b></label>
+                                                    <label class="">Penguji 2</label>
                                                     
                                                 </div>
 
@@ -330,7 +348,7 @@
                                         <br>
                                         <div class="row">
                                             <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing 3</b></label>
+                                                <label class="">Pembimbing 3</label>
                                                         
                                                 </div>
                                                 <div class="col-sm-2">
@@ -341,7 +359,7 @@
                                                 </div>
 
                                                 <div class="col-sm-2">
-                                                    <label class=""><b>Penguji 3</b></label>
+                                                    <label class="">Penguji 3</label>
                                                     
                                                 </div>
 
@@ -353,10 +371,13 @@
                                     </div>
 
                                     <div id="disertasi" style="display: none;">
-                                        
+                                    <br>
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-6 col-form-label"><b>Bobot Penilaian Pembimbing / Penguji :</b></label>
+                                    </div>
                                         <div class="row"> 
                                             <div class="col-sm-2">
-                                                    <label class=""><b>Pembimbing 1</b></label>
+                                                    <label class="">Pembimbing 1</label>
                                                     
                                             </div>
                                             <div class="col-sm-2">
@@ -367,7 +388,7 @@
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <label class=""><b>Penguji 1</b></label>
+                                                <label class="">Penguji 1</label>
                                                 
                                             </div>
 
@@ -378,7 +399,7 @@
                                         <br>
                                         <div class="row">
                                             <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing 2</b></label>
+                                                <label class="">Pembimbing 2</label>
                                                         
                                                 </div>
                                                 <div class="col-sm-2">
@@ -389,7 +410,7 @@
                                                 </div>
 
                                                 <div class="col-sm-2">
-                                                    <label class=""><b>Penguji 2</b></label>
+                                                    <label class="">Penguji 2</label>
                                                     
                                                 </div>
 
@@ -400,7 +421,7 @@
                                         <br>
                                         <div class="row">
                                             <div class="col-sm-2">
-                                                <label class=""><b>Pembimbing 3</b></label>
+                                                <label class="">Pembimbing 3</label>
                                                         
                                                 </div>
                                                 <div class="col-sm-2">
@@ -411,7 +432,7 @@
                                                 </div>
 
                                                 <div class="col-sm-2">
-                                                    <label class=""><b>Penguji 3</b></label>
+                                                    <label class="">Penguji 3</label>
                                                     
                                                 </div>
 

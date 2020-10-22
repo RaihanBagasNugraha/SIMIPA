@@ -88,7 +88,7 @@
                                 <div class="table-responsive">
                                     <?php 
                                         $dosen = $this->user_model->get_dosen_data($id_dosen);
-                                        echo "<h6><b>$dosen->name</b></h6>";
+                                        echo "<h6><b>$dosen->gelar_depan"." ".$dosen->name.", ".$dosen->gelar_belakang."</b></h6>";
                                         // echo "<br>";
                                         echo "<h6><b>$dosen->nip_nik</b></h6>";
                                         echo "<br>";

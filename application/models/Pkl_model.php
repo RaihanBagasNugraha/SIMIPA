@@ -947,5 +947,82 @@ class Pkl_model extends CI_Model
 		return $query->row();
     }
 
+    function get_jml_mahasiswa_angkatan($id_user,$angkatan,$npm1,$npm2)
+	{
+		$query = $this->db->query("SELECT COUNT(*) as jml FROM tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm LIKE '$angkatan%' AND (tbl_users_mahasiswa.npm LIKE '__$npm1%' OR tbl_users_mahasiswa.npm LIKE '__$npm2%' )");
+		return $query->row()->jml;
+    }
+
+    function get_mahasiswa_angkatan($id_user,$angkatan,$npm1,$npm2)
+	{
+		$query = $this->db->query("SELECT * FROM tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm LIKE '$angkatan%' AND (tbl_users_mahasiswa.npm LIKE '__$npm1%' OR tbl_users_mahasiswa.npm LIKE '__$npm2%' )");
+		return $query->result();
+    }
+    
+    function get_jml_mahasiswa_pkl($id_user,$angkatan,$npm1,$npm2)
+    {
+        $query = $this->db->query("SELECT COUNT(*) as jml FROM tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = tbl_users_mahasiswa.jurusan AND tbl_users_mahasiswa.npm LIKE '$angkatan%' AND (tbl_users_mahasiswa.npm LIKE '__$npm1%' OR tbl_users_mahasiswa.npm LIKE '__$npm2%') AND tbl_users_mahasiswa.npm IN (SELECT pkl_mahasiswa.npm FROM pkl_mahasiswa WHERE pkl_mahasiswa.status >=0 AND pkl_mahasiswa.status != 6)");
+		return $query->row()->jml;
+    }
+
+    function get_pkl_by_npm($npm)
+    {
+        $this->db->where('npm =', $npm);
+        $this->db->where('status !=', '6');
+        $this->db->where('status >=', '0');
+		$query = $this->db->get('pkl_mahasiswa');
+		return $query->row();
+    }
+
+    function get_periode_pkl_rekap($id_user)
+    {
+        $query = $this->db->query("SELECT pkl_periode.* FROM pkl_periode, tbl_users_dosen WHERE tbl_users_dosen.id_user = $id_user AND tbl_users_dosen.jurusan = pkl_periode.jurusan");
+		return $query->result();
+    }
+
+    function get_pkl_by_periode($id_periode)
+    {
+        $query = $this->db->query("SELECT * FROM pkl_mahasiswa WHERE id_periode = $id_periode AND (status >= 0 AND status != 6)");
+		return $query->result();
+    }
+
+    function get_pkl_seminar_by_pkl_id($id_pkl)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_seminar` WHERE pkl_id = $id_pkl AND (status >=0 and status != 6)");	
+		return $query->row();
+    }
+
+    function get_dosen_jurusan($id_user)
+	{
+		$query = $this->db->query("SELECT b.*, c.name FROM tbl_users_dosen a, tbl_users_dosen b, tbl_users c WHERE a.id_user = $id_user AND a.jurusan = b.jurusan AND b.id_user = c.userId ORDER by c.name");
+		return $query->result();
+    }
+    
+    function get_mahasiswa_bimbingan_kp_rekap($id_user)
+    {
+        $query = $this->db->query("SELECT * from pkl_mahasiswa where pembimbing = $id_user ");
+		return $query->result();
+    }
+
+    function count_mahasiswa_bimbingan_kp_rekap($id_user)
+    {
+        $query = $this->db->query("SELECT count(*) as jml from pkl_mahasiswa where pembimbing = $id_user ");
+		return $query->row();
+    }
+
+    function get_lokasi_by_pembimbing_distinct($id_user)
+    {
+        $query = $this->db->query("SELECT DISTINCT(id_lokasi) FROM `pkl_mahasiswa` WHERE pembimbing = $id_user");
+		return $query->result();
+    }
+
+    function get_mhs_by_pbb_lok($pbb,$lok)
+    {
+        $query = $this->db->query("SELECT * FROM `pkl_mahasiswa` WHERE pembimbing = $pbb AND id_lokasi = $lok");
+		return $query->result();
+    }
+
+
+
 }
 ?>

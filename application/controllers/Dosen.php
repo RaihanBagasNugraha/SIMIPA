@@ -4072,4 +4072,167 @@ class Dosen extends CI_Controller {
 		redirect(site_url("/dosen/struktural/pkl/approve-seminar-nilai-pkl"));
 	}
 
+	//rekap pkl
+	function pkl_rekap_mahasiswa()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/rekap/pkl_rekap_mahasiswa');
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_rekap_mahasiswa_detail()
+	{
+		$strata = $this->input->get('strata');
+		$angkatan = $this->input->get('angkatan');
+
+		if($strata == "d3"){
+			$npm1 = 0;
+			$npm2 = 0;
+		}
+		elseif($strata == "s1"){
+			$npm1 = 1;
+			$npm2 = 5;
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['mahasiswa'] =  $this->pkl_model->get_mahasiswa_angkatan($this->session->userdata('userId'),$angkatan,$npm1,$npm2);
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/rekap/pkl_rekap_mahasiswa_detail',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_rekap_mahasiswa_detail_mahasiswa()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($id);
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/rekap/pkl_rekap_mahasiswa_detail_pkl',$data);
+		
+		$this->load->view('footer_global');
+
+	}
+
+	function pkl_rekap_periode()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['periode'] = $this->pkl_model->get_periode_pkl_rekap($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/rekap/pkl_rekap_periode',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_rekap_periode_timeline()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['meta'] = $this->pkl_model->get_pkl_periode_meta($id);
+		$data['periode'] = $this->pkl_model->get_pkl_kajur_by_id($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/rekap/pkl_rekap_periode_timeline',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_rekap_periode_detail()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pkl'] = $this->pkl_model->get_pkl_by_periode($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/rekap/pkl_rekap_periode_detail',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_rekap_mahasiswa_detail_seminar()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pkl'] = $this->pkl_model->select_pkl_by_id_pkl($id);
+		$data['seminar'] = $this->pkl_model->get_pkl_seminar_by_pkl_id($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/rekap/pkl_rekap_periode_detail_seminar',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_rekap_pembimbing()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['periode'] = $this->pkl_model->get_periode_pkl_rekap($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/rekap/pkl_rekap_pembimbing',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function pkl_rekap_pembimbing_detail()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['dosen'] = $this->pkl_model->get_dosen_jurusan($this->session->userdata('userId'));
+		$data['pkl'] = $this->pkl_model->get_pkl_by_periode($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/rekap/pkl_rekap_pembimbing_detail',$data);
+		$this->load->view('footer_global');
+	}
+
+	function pkl_rekap_pembimbing_detail_bimbingan()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['lokasi'] = $this->pkl_model->get_lokasi_by_pembimbing_distinct($id);
+		$data['id'] = $id;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/pkl/rekap/pkl_rekap_pembimbing_detail_bimbingan',$data);
+		$this->load->view('footer_global');
+	}
+
 }
