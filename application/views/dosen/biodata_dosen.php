@@ -34,7 +34,7 @@
                             $id_duplikat = $_GET['id'];
                             $id_duplikat = $this->encrypt->decode($id_duplikat);
                             $data_duplikat = $this->user_model->get_dosen_data($id_duplikat);
-                            echo '<div class="alert alert-danger fade show" role="alert">Terdapat User Dengan Tugas Yang Sama dan Status Yang Masih Aktif : <a href="javascript:void(0);" class="alert-link">'.$data_duplikat->name.'</a></div>';
+                            echo '<div class="alert alert-danger fade show" role="alert"> Terdapat user dengan tugas yang sama dan status yang masih aktif : <a href="javascript:void(0);" class="alert-link">'.$data_duplikat->name.'</a></div>';
                         }
                         $id_user = $this->session->userdata('userId');
                         ?>
@@ -272,11 +272,17 @@
                                                         <td><?php echo $this->user_model->get_prodi_id($tgs->prodi)->nama ?></td>
                                                     </tr>   
                                                 <?php } ?>
-                                                <?php if($tgs->tugas == '12' || $tgs->tugas == '13' || $tgs->tugas == '17' || $tgs->tugas == '18' || $tgs->tugas == '15' || $tgs->tugas == '16' || $tgs->tugas == '19') {?>
+                                                <?php if($tgs->tugas == '12' || $tgs->tugas == '13' || $tgs->tugas == '17' || $tgs->tugas == '18' || $tgs->tugas == '19') {?>
                                                     <tr>
                                                         <td>Jurusan</td>
                                                         <td>:</td>
                                                         <td><?php echo $this->user_model->get_jurusan_id($tgs->jurusan_unit)->nama ?></td>
+                                                    </tr>   
+                                                <?php }if($tgs->tugas == '15' || $tgs->tugas == '16' ){ ?>
+                                                    <tr>
+                                                        <td>Laboratorium</td>
+                                                        <td>:</td>
+                                                        <td><?php echo $this->user_model->get_lab_by_id($tgs->jurusan_unit)->nama_lab ?></td>
                                                     </tr>   
                                                 <?php } ?>
                                                 <tr>

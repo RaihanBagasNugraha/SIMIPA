@@ -38,25 +38,25 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="#" class="mm-active">
+                                            <a href="#" >
                                                 <i class="metismenu-icon">
                                                 </i>Lacak
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="<?php echo site_url('mahasiswa/layanan-fakultas/akademik') ?>" <?php if($this->uri->segment(2) == "layanan-fakultas" && $this->uri->segment(3) == "akademik") echo 'class="mm-active"' ?> >
                                                 <i class="metismenu-icon">
                                                 </i>Akademik
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="<?php echo site_url('mahasiswa/layanan-fakultas/umum-keuangan') ?>" <?php if($this->uri->segment(2) == "layanan-fakultas" && $this->uri->segment(3) == "umum-keuangan") echo 'class="mm-active"' ?> >
                                                 <i class="metismenu-icon">
                                                 </i>Umum & Keuangan
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="<?php echo site_url('mahasiswa/layanan-fakultas/kemahasiswaan') ?>" <?php if($this->uri->segment(2) == "layanan-fakultas" && $this->uri->segment(3) == "kemahasiswaan") echo 'class="mm-active"' ?> >
                                                 <i class="metismenu-icon">
                                                 </i>Kemahasiswaan
                                             </a>

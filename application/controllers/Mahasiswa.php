@@ -12,6 +12,7 @@ class Mahasiswa extends CI_Controller {
 		$this->load->model('user_model');
 		$this->load->model('ta_model');
 		$this->load->model('pkl_model');
+		$this->load->model('layanan_model');
 		$this->load->library('pdf');
 		$this->load->library('encrypt');
 		// $this->load->library('encryption');
@@ -191,7 +192,6 @@ class Mahasiswa extends CI_Controller {
 		if($src_img)imagedestroy($src_img);
 	}
 
-
 	// Manajemen Tugas Akhir
 	function tugas_akhir()
 	{
@@ -201,7 +201,7 @@ class Mahasiswa extends CI_Controller {
 		$data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
 
 		if($biodata->prodi == NULL || $biodata->dosen_pa == NULL || $biodata->dosen_pa == "0"){
-			echo "<script type='text/javascript'>alert('Silahkan Isi Biodata Terlebih Dahulu');window.location = ('biodata') </script>";
+			echo "<script type='text/javascript'>alert('Silahkan Isi Biodata Terlebih Dahulu');window.location.href ='" . base_url() . "mahasiswa/biodata';</script>";
 		}
 		else{
 			$this->load->view('header_global', $header);
@@ -936,7 +936,7 @@ class Mahasiswa extends CI_Controller {
 		$data['status_kp'] = $this->pkl_model->select_active_kp($this->session->userdata('username'));
 
 		if($biodata->prodi == NULL || $biodata->dosen_pa == NULL || $biodata->dosen_pa == "0"){
-			echo "<script type='text/javascript'>alert('Silahkan Isi Biodata Terlebih Dahulu');window.location = ('biodata') </script>";
+			echo "<script type='text/javascript'>alert('Silahkan Isi Biodata Terlebih Dahulu');window.location.href ='" . base_url() . "mahasiswa/biodata';</script>";
 		}
 		else{
 			$this->load->view('header_global', $header);
@@ -1500,4 +1500,114 @@ class Mahasiswa extends CI_Controller {
 		$this->pkl_model->ajukan_perbaikan_seminar_pkl($id,$status);
 		redirect(site_url("mahasiswa/pkl/seminar"));
 	}
+
+	function layanan_fakultas()
+	{
+		$jenis = $this->uri->segment(3);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		
+		//get form
+		$data['form'] = $this->layanan_model->get_form_mhs2($this->session->userdata('username'),$jenis);
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/layanan/layanan_fakultas',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function layanan_fakultas_form()
+	{
+		$jenis = $this->uri->segment(3);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		// $data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['biodata'] = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 3)->row();
+		
+		if(($data['biodata']->prodi == NULL || $data['biodata']->prodi == "0") || ($data['biodata']->dosen_pa == NULL || $data['biodata']->dosen_pa == "0" ) 
+		|| ($data['biodata']->jalur_masuk == NULL || $data['biodata']->jalur_masuk == "0") || ($data['biodata']->asal_sekolah == NULL || $data['biodata']->asal_sekolah == "0")
+		|| ($data['biodata']->nama_sekolah == '') || ($header['akun']->tempat_lahir == NULL) || ($header['akun']->tanggal_lahir == NULL) || ($header['akun']->jalan == NULL)
+		|| ($header['akun']->provinsi == NULL) || ($header['akun']->kota_kabupaten == NULL) || ($header['akun']->kecamatan == NULL) || ($header['akun']->kelurahan_desa == NULL)
+		|| ($header['akun']->kode_pos == NULL) || ($header['akun']->foto == NULL || $header['akun']->foto == '')){
+			echo "<script type='text/javascript'>alert('Silahkan Lengkapi Informasi Akun dan Biodata Terlebih Dahulu');window.location.href ='" . base_url() . "mahasiswa/biodata';</script>";
+		}
+		else{
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/layanan/layanan_fakultas_form2',$data);
+
+		$this->load->view('footer_global');
+		}
+	}
+
+	function layanan_fakultas_form_layanan()
+	{
+		// $data = $this->input->post();
+		// echo " $this->input->post('layanan')";
+		// print_r($data);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['layanan'] = $this->layanan_model->select_layanan_by_id($this->input->post('layanan'));
+		$data['atribut'] = $this->layanan_model->select_layanan_atribut_by_id($this->input->post('layanan'));
+		$jenis = $this->uri->segment(3);
+
+		// if(!empty($data['atribut'])){
+			$this->load->view('header_global', $header);
+			$this->load->view('mahasiswa/header');
+	
+			$this->load->view('mahasiswa/layanan/layanan_fakultas_form_atribut',$data);
+	
+			$this->load->view('footer_global');
+		// }
+		// else{
+		// 	echo "<script type='text/javascript'>alert('Form Layanan Ini Belum Dapat Di Unduh, Silahkan Hubungi Administrasi Layanan');window.location.href ='" . base_url() . "mahasiswa/layanan-fakultas/$jenis/form';</script>";
+		// }
+	}
+
+	function layanan_fakultas_form_simpan()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$jns = $data['jenis'];
+		$npm = $this->session->userdata('username');
+		$ttd = $data['ttd'];
+		$data_layanan = array(
+			"npm" => $npm,
+			"id_layanan_fakultas" => $data['id_layanan'],
+			"ttd" => $ttd
+		);
+		//input layanan fak mhs
+		$insert_id = $this->layanan_model->insert_layanan_fak_mhs($data_layanan);
+
+		$atribut_id = $data['id_attribut'];
+		foreach($atribut_id as $atr)
+		{
+			$meta_val = $data[$atr];
+			$data_atr = array(
+				"id_layanan_fak_mhs" => $insert_id,
+				"meta_key" => $atr,
+				"meta_value" => $meta_val,
+			);
+			//input layanan_fakultas_mahasiswa_meta
+			$this->layanan_model->insert_layanan_fak_mhs_meta($data_atr);
+		}
+		redirect(site_url("mahasiswa/layanan-fakultas/$jns"));
+	}
+
+	function layanan_fakultas_delete()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $data['id_layanan'];
+		$jns= $data['jenis'];
+
+		//delete
+		$this->layanan_model->delete_layanan_mhs($id);
+		redirect(site_url("mahasiswa/layanan-fakultas/$jns"));
+	}
+
 }

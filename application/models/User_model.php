@@ -204,9 +204,45 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
+	function get_mahasiswa_data_npm($npm)
+	{
+		$result = $this->db->query("SELECT * FROM tbl_users_mahasiswa a,tbl_users b WHERE a.npm = $npm AND a.id_user = b.userId");
+		return $result->row();	
+	}
+
+	function get_dosen_pa_by_npm($npm)
+	{
+		$result = $this->db->query("SELECT b.*,c.* FROM tbl_users_mahasiswa a, tbl_users_dosen b, tbl_users c WHERE a.npm = $npm AND a.dosen_pa = b.id_user AND b.id_user = c.userId");
+		return $result->row();
+	}
+
+	function get_kajur_by_npm($npm)
+    {
+        $result = $this->db->query("SELECT c.*,d.* FROM tbl_users_tugas a, tbl_users_mahasiswa b,tbl_users_dosen c, tbl_users d WHERE a.tugas = 12 AND b.npm = $npm AND b.jurusan = a.jurusan_unit AND a.aktif = 1 AND a.id_user = c.id_user AND c.id_user = d.userId");
+		return $result->row();
+    }
+
+	function get_dekan()
+	{
+		$result = $this->db->query("SELECT b.*,c.* FROM tbl_users_tugas a,tbl_users_dosen b, tbl_users c WHERE a.tugas = 1 AND a.aktif = 1 AND a.id_user = b.id_user AND b.id_user = c.userId  ORDER BY created_at DESC");
+		return $result->row();
+	}
+
+	function get_wd_akademik()
+	{
+		$result = $this->db->query("SELECT b.*,c.* FROM tbl_users_tugas a,tbl_users_dosen b, tbl_users c WHERE a.tugas = 2 AND a.aktif = 1 AND a.id_user = b.id_user AND b.id_user = c.userId  ORDER BY created_at DESC");
+		return $result->row();
+	}
+
 	function get_kajur($id)
 	{
 		$result = $this->db->query('SELECT tbl_users_dosen.*, tbl_users.name, jurusan.nama FROM tbl_users_dosen, tbl_users, jurusan, tbl_users_tugas WHERE jurusan.id_jurusan = '.$id.' AND jurusan.id_jurusan = tbl_users_dosen.jurusan AND tbl_users_dosen.id_user = tbl_users.userId AND tbl_users_tugas.id_user = tbl_users_dosen.id_user AND tbl_users_tugas.jurusan_unit = tbl_users_dosen.jurusan AND tbl_users_tugas.tugas = 12');
+		return $result->row();
+	}
+
+	function get_kalab($idlab)
+	{
+		$result = $this->db->query("SELECT * FROM laboratorium a, tbl_users_tugas b, tbl_users_dosen c, tbl_users d WHERE a.id_lab = $idlab AND b.tugas = 15 AND b.aktif = 1 AND b.jurusan_unit = a.id_lab AND b.id_user = c.id_user AND c.id_user = d.userId");
 		return $result->row();
 	}
 
@@ -254,6 +290,13 @@ class User_model extends CI_Model
 	{
 	    $this->db->select('*');
 		$query = $this->db->get('jurusan')->result();
+		return $query;
+	}
+
+	function get_lab_all()
+	{
+		$this->db->select('*');
+		$query = $this->db->get('laboratorium')->result();
 		return $query;
 	}
 
@@ -313,6 +356,12 @@ class User_model extends CI_Model
 	function check_tugas_tambahan_duplikat($id_tugas,$jurusan,$prodi,$aktif,$periode)
 	{
 		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = $id_tugas AND periode = '$periode' and (jurusan_unit = $jurusan AND prodi = $prodi) AND aktif = $aktif");
+		return $result->row();
+	}
+
+	function get_lab_by_id($id)
+	{
+		$result = $this->db->query("SELECT * FROM laboratorium WHERE id_lab = $id");
 		return $result->row();
 	}
 

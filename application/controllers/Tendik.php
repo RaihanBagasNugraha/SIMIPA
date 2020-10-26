@@ -12,6 +12,7 @@ class Tendik extends CI_Controller {
 		$this->load->model('user_model');
 		$this->load->model('ta_model');
 		$this->load->model('pkl_model');
+		$this->load->model('layanan_model');
 		$this->load->library('pdf');
 		$this->load->library('encrypt');
 		
@@ -711,6 +712,75 @@ class Tendik extends CI_Controller {
 		);
 		$this->pkl_model->input_approval_seminar($data_approval);
 		redirect(site_url("/tendik/verifikasi-berkas/seminar-pkl"));
+	}
+
+	function tambah_atribut()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('tendik/fakultas/atribut/tambah_atribut');
+		
+		$this->load->view('footer_global');
+	}
+
+	function tambah_atribut_add()
+	{
+		$jns = $this->input->post('jns_layanan');
+
+		if($jns == 'Akademik'){
+			$form = $this->input->post('form');
+		}
+		elseif($jns == 'Umum dan Keuangan'){
+			$form = $this->input->post('form2');
+		}
+		elseif($jns == 'Kemahasiswaan'){
+			$form = $this->input->post('form3');
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['jenis'] = $jns;
+		$data['form'] = $form;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('tendik/fakultas/atribut/tambah_atribut_tambah',$data);
+		
+		$this->load->view('footer_global');
+
+	}
+
+	function tambah_atribut_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id_form = $data['id_form'];
+		$nama = $data['nama'];
+
+		$i = 0;
+		foreach($nama as $row){
+			$slug = str_replace(" ","-",strtolower($data['nama'][$i]));
+
+			$input = array(
+				"id_layanan" => $id_form,
+				"slug" => $slug,
+				"nama" => $data['nama'][$i],
+				"placeholder" => $data['placeholder'][$i],
+				"tipe" => $data['tipe'][$i],
+				"pilihan" => $data['pilihan'][$i]
+			);
+			//input atribut layanan
+			$this->layanan_model->insert_atribut_layanan($input);
+			$i++;
+		}
+		redirect(site_url("/tendik/atribut-form/atribut"));
+		
+
 	}
 
 }

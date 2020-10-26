@@ -67,6 +67,24 @@ $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->us
                                     </a>
                                     
                                 </li>
+                                <li <?php if($this->uri->segment(2) == "atribut-form") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-note"></i>
+                                        <?php 
+                                        ?>
+                                        Atribut Form Layanan
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("tendik/atribut-form/atribut") ?>" <?php if($this->uri->segment(2) == "atribut-form" && $this->uri->segment(3) == "atribut") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Tambah Atribut
+                                            </a>
+                                        </li> 
+                                    </ul>
+                                    
+                                </li>
                                 <?php } ?>
                                 <?php if(!empty($tb_admin_jur)) { ?>
                                 <!-- Menu Admin Jurusan -->

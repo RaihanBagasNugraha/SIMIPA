@@ -908,7 +908,24 @@
                                 ?>
                         </select>
                     <br> 
-                    </div>    
+                    </div>   
+
+                    <div id="lab" style="display: none;">
+                    <label><b>Laboratorium</b></label>
+                        <select name="lab" class="input-lg form-control">
+                        <option value = "">-- Pilih Laboratorium --</option>
+                                <?php
+                                $list_lab = $this->user_model->get_lab_all();
+                                            
+                                foreach ($list_lab as $row) {
+                                    // if($biodata->pangkat_gol == $row->id_pangkat_gol) $select = "selected";
+                                    // else $select = "";
+                                    echo "<option ".$select." value='".$row->id_lab."'>".$row->nama_lab."</option>";
+                                }
+                                ?>
+                        </select>
+                    <br> 
+                    </div>     
                        
                     <label><b>Periode</b></label>    
                         <input name="periode" id="periode" value="" type="text" placeholder="2020/2024" class="form-control"> 
@@ -974,15 +991,24 @@
           {
             jQuery("#prodi").show();
             jQuery("#jurusan").hide();
+            jQuery("#lab").hide();
           }
-          else if(this.value == '19' || this.value == '12' || this.value == '13' || this.value == '17' || this.value == '18' || this.value == '15' || this.value == '16')
+          else if(this.value == '19' || this.value == '12' || this.value == '13' || this.value == '17' || this.value == '18')
           {
             jQuery("#prodi").hide();
             jQuery("#jurusan").show();
+            jQuery("#lab").hide();
+          }
+          else if(this.value == '15' || this.value == '16')
+          {
+            jQuery("#prodi").hide();
+            jQuery("#jurusan").hide();
+            jQuery("#lab").show();
           }
           else{
             jQuery("#prodi").hide();
             jQuery("#jurusan").hide();
+            jQuery("#lab").hide();
           }
         });
     }); 
@@ -2262,5 +2288,40 @@ $(document).ready(function() {
         </div>
     </div>
 </div>
+
+<?php } ?>
+
+<?php if($this->uri->segment(2) == 'layanan-fakultas') { ?>
+
+<div class="modal fade" id="delFormMhs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="del-form" method="post" action="<?php echo site_url("mahasiswa/layanan-fakultas/form/delete") ?>">
+                    <input type="hidden" name="id_layanan" id="ID" value="">
+                    <input type="hidden" name="jenis" id="Jns" value="">
+                    <label class="col-form-label" >Hapus Form Layanan ?</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="del-form" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <?php } ?>

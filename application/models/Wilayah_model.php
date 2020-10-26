@@ -97,6 +97,12 @@ class Wilayah_model extends CI_Model
 		}
 		
 		return $desa;
-    }
+	}
+	
+	function get_desa_by_id($desId)
+	{
+		$query = $this->db->query("SELECT a.nama as desa, b.nama as kecamatan, c.nama as kabupaten, d.nama as provinsi FROM wilayah_desa a, wilayah_kecamatan b, wilayah_kabupaten c, wilayah_provinsi d WHERE a.id = $desId AND a.kecamatan_id = b.id AND b.kabupaten_id = c.id AND c.provinsi_id = d.id");
+		return $query->row();
+	}
 	
 }

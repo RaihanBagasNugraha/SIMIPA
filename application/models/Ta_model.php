@@ -1965,6 +1965,11 @@ class Ta_model extends CI_Model
 		return $query->row();	
 	}
 
+	function get_ta_aktif_npm($npm)
+	{
+		$query = $this->db->query("SELECT * FROM `tugas_akhir` WHERE npm = $npm AND status != 0 AND status !=6");
+		return $query->row();	
+	}
 
 	
 	

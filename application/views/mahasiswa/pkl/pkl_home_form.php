@@ -96,7 +96,7 @@
                                             <div class="col-sm-4">
                                             <canvas style="border: 1px solid #aaa; height: 200px; background-color: #efefef;" id="signature-pad" class="signature-pad col-sm-12" height="200px"></canvas>
                                             
-                                            <small class="form-text text-muted">Silahkan tanda tangan pada canvas di atas, jangan lupa Klik <b>Oke</b> sebelum menyimpan data.</small>
+                                            <small class="form-text text-muted"> </small>
                                             </div>
                                             <div class="col-sm-5">
                                             <div role="group" class="btn-group btn-group btn-group-toggle"  style="margin-bottom: 10px;">
@@ -116,7 +116,7 @@
                                             </a>
                                             <!--<a id="preview2" class="mb-2 btn btn-light">Oke-->
                                             <!--</a>-->
-                                            <input type="hidden" style="background-color: #efefef;" type="text" class="form-control readonly" required placeholder="Klik Oke setelah tanda tangan di canvas." name="ttd" id="output" value="<?php echo $data_pkl['ttd'] ?>">
+                                            <input type="hidden" style="background-color: #efefef;" type="text" class="form-control readonly" required placeholder=" " name="ttd" id="output" value="<?php echo $data_pkl['ttd'] ?>">
                                             <input type="hidden" name="aksi" value="<?php if(!empty($this->input->get("aksi"))) echo $this->input->get("aksi") ?>">
                                             </div>
                                     
