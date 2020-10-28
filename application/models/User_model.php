@@ -520,6 +520,11 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
+	function get_agama_by_id($id)
+	{
+		$result = $this->db->query("SELECT * FROM `agama` WHERE id = $id");
+		return $result->row();
+	}
 
 	/* ------------------------------------
 	function select_all()

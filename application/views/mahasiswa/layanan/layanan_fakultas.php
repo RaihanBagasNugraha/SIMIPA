@@ -72,8 +72,9 @@
                                         }
                                         else
                                         {
+                                            $n = 0;
                                             foreach($form as $row) {
-                                               $n = 0;
+                                              
                                         ?>
                                         <tr>
                                             <td class="align-top">
@@ -95,9 +96,11 @@
                                             <td class="align-top">
                                                 <?php 
                                                     $keterangan = $this->layanan_model->get_keterangan_form($row->id);
+                                                if(!empty($keterangan)){
                                                     foreach($keterangan as $ket){
                                                         echo "<b>$ket->nama : </b>$ket->meta_value<br>";
                                                     }
+                                                }else{ echo "-"; }
                                                 ?>
                                             </td>
 

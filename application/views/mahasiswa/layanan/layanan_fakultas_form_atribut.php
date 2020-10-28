@@ -46,20 +46,20 @@
 
                                         <!--atribut-->
                                         <?php if(!empty($atribut)){ 
-                                            
+                                            $i = 0;
                                             foreach($atribut as $row){
                                                 $tipe = $row->tipe;
                                         ?>
                                             <input type="hidden" name = "id_attribut[]" value="<?php echo $row->id_atribut ?>" />                            
                                             <div class="position-relative row form-group">
-                                                <label for="prodi" class="col-sm-3 col-form-label"><?php echo $row->nama ?></label>
+                                                <label for="prodi" class="col-sm-3 col-form-label"><b><?php echo $row->nama ?></b></label>
                                                 <?php if($tipe == "text"){ ?>
                                                     <div class="col-sm-9">
                                                         <input type="text" class = "form-control" placeholder="<?php echo $row->placeholder == null ? "" : $row->placeholder ?>" name = "<?php echo $row->id_atribut ?>" value=""/>                                         
                                                     </div>  
                                                 <?php } elseif($tipe == "textarea"){ ?>
                                                     <div class="col-sm-9">
-                                                        <textarea name = "<?php echo $row->id_atribut ?>" class="form-control" placeholder="<?php echo $row->placeholder == null ? "" : $row->placeholder ?>" ></textarea>
+                                                        <textarea name = "<?php echo $row->id_atribut ?>" class="form-control" placeholder="<?php echo $row->placeholder == null ? "" : $row->placeholder ?>" value="" ></textarea>
                                                     </div>
                                                 <?php } elseif($tipe == "option"){ ?>
                                                     <div class="col-sm-9">
@@ -70,8 +70,9 @@
                                                                 $p = 0;
                                                                 foreach($pilihan as $pil){
                                                             ?>
-                                                                <option value=<?php echo $pilihan[$p] ?>><?php echo $pilihan[$p] ?></option>
-                                                            <?php $p++; } ?>    
+                                                                <option value="<?php echo $pilihan[$p] ?>"><?php echo $pilihan[$p] ?></option>
+                                                        <?php $p++;
+                                                        } ?>    
                                                         </select>
                                                          
                                                     </div>
@@ -82,7 +83,15 @@
                                                 <?php }  ?>
                                             </div>
                                         <?php 
-                                            }
+                                            $i++;
+                                            if($layanan->id_layanan_fakultas == 4){
+                                                if($i % 6 == 0){
+                                                    echo "<br>";
+                                                                                                    
+                                                }
+                                            }    
+                                        }
+                                       
                                         } else{ 
                                         ?>
                                         <div class="position-relative row form-group">

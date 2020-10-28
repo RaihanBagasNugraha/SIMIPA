@@ -25,6 +25,12 @@ class Jurusan_model extends CI_Model
 		$query = $this->db->get('jurusan')->result();
 		return $query;
 	}
+
+	function get_prodi_id($id)
+	{
+		$result = $this->db->query("SELECT * FROM prodi WHERE id_prodi = $id");
+		return $result->row();
+	}
 	
 	
 }

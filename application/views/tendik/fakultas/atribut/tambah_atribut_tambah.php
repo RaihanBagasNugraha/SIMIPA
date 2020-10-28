@@ -63,7 +63,7 @@
                                                     <span class="btn-icon-wrapper pr-2 opacity-7">
                                                         <i class="fa fa-save fa-w-20"></i>
                                                     </span>
-                                                    <?php if($this->input->get('aksi') == "ubah") echo "Ubah"; else echo "Tambah" ?>
+                                                    <?php if($this->input->get('aksi') == "ubah") echo "Ubah"; else echo "Simpan" ?>
                                                 </button>
                                                 </div>
                                             </div>
@@ -159,7 +159,7 @@ $(document).ready(function(){
     var i = 1;
     $('#tambah_attr').click(function(){
         $(wrapper).append("<div class='position-relative row form-group field'><div class='col-sm-3'>Nama</div><div class='col-lg-3'>Tipe</div><div class='col-lg-3'>Placeholder</div><div class='col-lg-3' style='display: none;'  id = 'opsih_"+i+"'>Pilihan</div></div>");
-        $(wrapper).append('<div class="position-relative row form-group field"><div class="col-sm-3"><input value="" type = "text" placeholder ="Nama" name="nama[]" class="form-control" ></div><div class="col-lg-3"><select name="tipe[]" class = "form-control select_option" id ="opsi_'+i+'"><option value = "">-- Pilih Tipe --</option><option value = "text">Text</option><option value="text">Textarea</option><option value="date">Date</option><option value="option" >Option</option> </select></div><div class="col-lg-3"><input value="" type = "text" placeholder ="Placeholder" name="placeholder[]" class="form-control" ></div><div class="col-lg-3" id = "opsir_'+i+'" style="display: none;"><input value="" type = "text" placeholder ="Pilihan1#Pilihan2#Pilihan3" name="pilihan[]" class="form-control" ></div></div>');
+        $(wrapper).append('<div class="position-relative row form-group field"><div class="col-sm-3"><input value="" type = "text" placeholder ="Nama" name="nama[]" class="form-control" ></div><div class="col-lg-3"><select name="tipe[]" class = "form-control select_option" id ="opsi_'+i+'"><option value = "">-- Pilih Tipe --</option><option value = "text">Text</option><option value="textarea">Textarea</option><option value="date">Date</option><option value="option" >Option</option> </select></div><div class="col-lg-3"><input value="" type = "text" placeholder ="Placeholder" name="placeholder[]" class="form-control" ></div><div class="col-lg-3" id = "opsir_'+i+'" style="display: none;"><input value="" type = "text" placeholder ="Pilihan1#Pilihan2#Pilihan3" name="pilihan[]" class="form-control" ></div></div>');
         i++;   
         $(".select_option").on('change', function() {
             var id = $(this).attr('id');
