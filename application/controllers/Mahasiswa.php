@@ -1507,6 +1507,9 @@ class Mahasiswa extends CI_Controller {
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		
 		//get form
+		if($jenis == 'umum-keuangan'){
+			$jenis = 'Umum dan Keuangan';
+		}
 		$data['form'] = $this->layanan_model->get_form_mhs2($this->session->userdata('username'),$jenis);
 		
 		$this->load->view('header_global', $header);

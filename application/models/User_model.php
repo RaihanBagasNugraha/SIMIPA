@@ -526,6 +526,18 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
+	function get_pangkat_gol_by_id($id)
+	{
+		$result = $this->db->query("SELECT * FROM `pangkat_gol` WHERE id_pangkat_gol = $id");
+		return $result->row();
+	}
+
+	function get_jabfung_gol_by_id($id)
+	{
+		$result = $this->db->query("SELECT * FROM `fungsional` WHERE id_fungsional = $id");
+		return $result->row();
+	}
+
 	/* ------------------------------------
 	function select_all()
 	{

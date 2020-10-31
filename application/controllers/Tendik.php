@@ -133,6 +133,7 @@ class Tendik extends CI_Controller {
 		$iduser = $data['iduser'];
 		$tugas = $data['tugas_tambahan'];
 		$prodi = $data['prodi'];
+		$lab = $data['lab'];
 		$jurusan = $data['jurusan'];
 		$periode = $data['periode'];
 		$status = $data['status_tgs'];
@@ -143,23 +144,62 @@ class Tendik extends CI_Controller {
 		if($prodi == ""){
 			$prodi = 0;
 		}
+		if($lab == ""){
+			$lab = 0;
+		}
 
-		$check = $this->user_model->check_tugas_tambahan($iduser,$tugas,$jurusan,$prodi,$status);
+		if($tugas == 16 || $tugas == 15)
+		{
+			$jur_unit = $lab;
+		}
+		elseif($tugas == 14)
+		{
+			$jur_prodi = $this->jurusan_model->get_prodi_id($prodi);
+			$jur_unit = $jur_prodi->jurusan;
+		}
+		else{
+			$jur_unit = $jurusan;
+		}
 
+		$check = $this->user_model->check_tugas_tambahan($iduser,$tugas,$jur_unit,$prodi,$status);
+		
 		if(!empty($check)){
 			redirect(site_url("tendik/kelola-biodata?status=duplikat"));
 		}
 		else{
-			$data_tugas = array(
-				'id_user' => $iduser,
-				'tugas' => $tugas,
-				'jurusan_unit' => $jurusan,
-				'prodi' => $prodi,
-				'periode' => $periode,
-				'aktif' => $status,
-			);
+			if($tugas != 16 || $tugas != 18 || $tugas != 11){
+				
+				$check_double =  $this->user_model->check_tugas_tambahan_duplikat($tugas,$jur_unit,$prodi,$status,$periode);
+				// $check_double =  $this->user_model->check_tugas_tambahan_duplikat($tugas,$jurusan,$prodi,$status,$periode);
+				if(!empty($check_double)){
+					$id_user_double = $check_double->id_user;
+					redirect(site_url("tendik/kelola-biodata?status=duplikat_user&id=".$this->encrypt->encode($id_user_double)));
+				}
+				else{
+						$data_tugas = array(
+							'id_user' => $iduser,
+							'tugas' => $tugas,
+							'jurusan_unit' => $jur_unit,
+							'prodi' => $prodi,
+							'periode' => $periode,
+							'aktif' => $status,
+						);			
+					$this->user_model->insert_tugas_tambah($data_tugas);
+				}
+			}
+			else{
+		
+				$data_tugas = array(
+					'id_user' => $iduser,
+					'tugas' => $tugas,
+					'jurusan_unit' => $jur_unit,
+					'prodi' => $prodi,
+					'periode' => $periode,
+					'aktif' => $status,
+				);		
 	
 			$this->user_model->insert_tugas_tambah($data_tugas);		
+			}
 			redirect(site_url("tendik/kelola-biodata?status=sukses"));
 		}
 	}

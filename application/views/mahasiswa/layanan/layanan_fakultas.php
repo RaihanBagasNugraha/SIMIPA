@@ -95,10 +95,12 @@
 
                                             <td class="align-top">
                                                 <?php 
-                                                    $keterangan = $this->layanan_model->get_keterangan_form($row->id);
+                                                $keterangan = $this->layanan_model->get_keterangan_form($row->id);
+                                                $m = 1;
                                                 if(!empty($keterangan)){
                                                     foreach($keterangan as $ket){
-                                                        echo "<b>$ket->nama : </b>$ket->meta_value<br>";
+                                                        echo "<b>$m. $ket->nama : </b>$ket->meta_value<br>";
+                                                        $m++;
                                                     }
                                                 }else{ echo "-"; }
                                                 ?>

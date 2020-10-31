@@ -78,7 +78,7 @@
                                                     </div>
                                                 <?php } elseif($tipe == "date"){ ?>
                                                     <div class="col-sm-3">
-                                                        <input type="text" class = "form-control tgl" placeholder="<?php echo $row->placeholder == null ? "" : $row->placeholder ?>" name = "<?php echo $row->id_atribut ?>" id="tgl" value=""/> 
+                                                        <input type="text" class = "form-control tgl" placeholder="<?php echo $row->placeholder == null ? "" : $row->placeholder ?>" name = "<?php echo $row->id_atribut ?>" value=""/> 
                                                     </div>
                                                 <?php }  ?>
                                             </div>
@@ -86,6 +86,12 @@
                                             $i++;
                                             if($layanan->id_layanan_fakultas == 4){
                                                 if($i % 6 == 0){
+                                                    echo "<br>";
+                                                                                                    
+                                                }
+                                            }
+                                            elseif($layanan->id_layanan_fakultas == 34){
+                                                if($i % 5 == 0){
                                                     echo "<br>";
                                                                                                     
                                                 }

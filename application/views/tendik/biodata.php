@@ -28,9 +28,20 @@
 
                             echo '<div class="alert alert-danger fade show" role="alert">Terdapat Tugas Tambahan Yang Sama Dengan Status Yang Aktif</div>';
                         }
+                        if(!empty($_GET['status']) && $_GET['status'] == 'duplikat_user') {
+                            $id_duplikat = $_GET['id'];
+                            $id_duplikat = $this->encrypt->decode($id_duplikat);
+                            $data_duplikat = $this->user_model->get_dosen_data($id_duplikat);
+                            if(!empty($data_duplikat)){
+                                $dup_name = $data_duplikat->name;
+                            }else{
+                                $tendik = $this->user_model->get_tendik_name($id_duplikat);
+                                $dup_name =  $tendik->gelar_depan." ".$tendik->name.", ".$tendik->gelar_belakang;
+                            }
+                            echo '<div class="alert alert-danger fade show" role="alert"> Terdapat user dengan tugas yang sama dan status yang masih aktif : <a href="javascript:void(0);" class="alert-link">'.$dup_name.'</a></div>';
+                        }
                         $id_user = $this->session->userdata('userId');
-                        ?>
-                        
+                        ?>                        
                          <div class="main-card mb-3 card">
                                 <div class="card-header">Form Kelola Biodata</div>
                                 <div class="card-body">

@@ -158,17 +158,16 @@ class Dosen extends CI_Controller {
 		{
 			$jur_unit = $lab;
 		}
-		else{
-			$jur_unit = $jurusan;
-		}
-
-		if($tugas == 14)
+		elseif($tugas == 14)
 		{
 			$jur_prodi = $this->jurusan_model->get_prodi_id($prodi);
 			$jur_unit = $jur_prodi->jurusan;
 		}
+		else{
+			$jur_unit = $jurusan;
+		}
 
-		$check = $this->user_model->check_tugas_tambahan($iduser,$tugas,$jurusan,$prodi,$status);
+		$check = $this->user_model->check_tugas_tambahan($iduser,$tugas,$jur_unit,$prodi,$status);
 		
 		if(!empty($check)){
 			redirect(site_url("dosen/kelola-biodata?status=duplikat"));
