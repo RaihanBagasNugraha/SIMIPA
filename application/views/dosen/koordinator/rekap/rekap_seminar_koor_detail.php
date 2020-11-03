@@ -9,7 +9,7 @@
                                     </div>
                                     <?php
                                     $data_dosen = $this->user_model->get_dosen_data($this->session->userdata('userId'));
-
+                                    $seg = $this->uri->segment(2);
                                     switch($data_dosen->jurusan)
                                     {
                                         case "0":

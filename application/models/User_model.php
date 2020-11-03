@@ -169,6 +169,12 @@ class User_model extends CI_Model
 		return $result;
 	}
 
+	function get_jurusan_nama($npm)
+	{
+		$result = $this->db->query('SELECT jurusan.nama FROM jurusan, tbl_users_mahasiswa WHERE tbl_users_mahasiswa.npm ='.$npm.' AND tbl_users_mahasiswa.jurusan = jurusan.id_jurusan')->row()->nama;
+		return $result;
+	}
+
 	function get_jurusan_tendik($id_user)
 	{
 		$result = $this->db->query("SELECT jurusan.id_jurusan FROM jurusan, tbl_users_tendik WHERE tbl_users_tendik.id_user = $id_user AND tbl_users_tendik.unit_kerja = jurusan.id_jurusan")->row()->id_jurusan;
@@ -414,9 +420,15 @@ class User_model extends CI_Model
 		return $result->row();
 	}
 
+	function tugas_tendik_laboratorium_pranata($userId)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = 16 AND aktif = 1 AND id_user = $userId");
+		return $result->row();
+	}
+
 	function tugas_tendik_laboratorium($userId)
 	{
-		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE (tugas = 15 OR tugas = 16) AND aktif = 1 AND id_user = $userId");
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = 15 AND aktif = 1 AND id_user = $userId");
 		return $result->row();
 	}
 
@@ -424,6 +436,12 @@ class User_model extends CI_Model
 	{
 		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = 5 AND aktif = 1 AND id_user = $userId");
 		return $result->row();
+	}
+
+	function tugas_tambahan_get($userId)
+	{
+		$result = $this->db->query("SELECT tugas FROM `tbl_users_tugas` WHERE id_user = $userId");
+		return $result->result();
 	}
 
 	//tendik

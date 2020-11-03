@@ -196,10 +196,10 @@ class Layanan extends CI_Controller {
             //alih studi
             $this->form_1($data,$meta);
             case "2":
-            //Form Bebas Laboratorium
+            //Form Bebas Laboratorium  --> Menu baru
             $this->form_2($data,$meta);
             case "3":
-            //Form Bebas Laboratorium --> Menu baru
+            //Form Bukti penyerahan TA
             $this->form_3($data,$meta);
             case "4":
             //Form Hapus Mata Kuliah
@@ -8435,4 +8435,175 @@ class Layanan extends CI_Controller {
 
         $pdf->Output('I','form_wawancara.pdf');
     }
+
+
+    //bebas lab
+    function layanan_fakultas_bebas_lab()
+    {
+        $id = $this->input->get('id');
+        // echo $id;
+        $lab = $this->layanan_model->get_bebas_lab_by_id($id);
+        $lab_meta = $this->layanan_model->get_bebas_lab_meta_by_id($id);
+
+        // echo $lab_meta[2]->id_meta;
+        $this->form_bebas_lab($lab,$lab_meta);
+    }
+
+    function form_bebas_lab($lab,$lab_meta)
+    {
+        $numPage = '/PM/MIPA/I/22';
+        $spasi = 4.6;
+        $spasi2 = 6;
+        $kode = 0;
+        $type = '';
+        $mhs = $this->user_model->get_mahasiswa_data_npm($lab->npm);
+        $pa = $this->user_model->get_dosen_pa_by_npm($lab->npm);
+        $kajur = $this->user_model->get_kajur_by_npm($lab->npm);
+        $jurusan = $this->ta_model->get_jurusan($lab->npm);
+        $status = $this->get_prodi_from_npm($lab->npm);     
+        $tahun = date("Y");
+
+        $pdf = new FPDF('P','mm',array(210,330));
+        //$pdf->setting_page_footer($numPage, $qrKode, $kode);
+        $pdf->setting_page_footer($numPage, $kode, $type);
+        //$pdf->setting_no_header(array(2));
+        $pdf->SetLeftMargin(20);
+        $pdf->SetTopMargin(20);
+        $pdf->AddPage();
+        $pdf->SetFont('Times','BU',14);
+        $pdf->Cell(170, $spasi, "FORMULIR BEBAS LABORATORIUM",0,1,'C');
+        $pdf->SetFont('Times','',12);
+        $pdf->Cell(170, $spasi, "Nomor: ............/UN26.17/DT/".$tahun,0,1,'C');
+        $pdf->Ln(3);
+        $pdf->MultiCell(170, $spasi,'Dengan ini Dekan FMIPA Universitas Lampung menerangkan bahwa:', 0, 'L');
+        $pdf->Ln(1);
+        $pdf->Cell(45, $spasi,'Nama Lengkap', 0, 0, 'L');
+        $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+        $pdf->Cell(100, $spasi,$mhs->name, 0, 1, 'L');
+        $pdf->Cell(45, $spasi,'NPM', 0, 0, 'L');
+        $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+        $pdf->Cell(100, $spasi, $mhs->npm, 0, 1, 'L');
+        $pdf->Cell(45, $spasi,'Jurusan/Program Studi', 0, 0, 'L');
+        $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+        $pdf->Cell(100, $spasi, $status['jurusan'].'/'.$status['prodi'], 0, 1, 'L');
+        $pdf->Ln(1);
+        $pdf->SetWidths(array(85,85));
+        $pdf->SetAligns(array('L','L'));
+        $pdf->SetSpacing($spasi);
+        $labs = $this->user_model->get_lab_all();
+        $count = count($labs);
+        for($n=0;$n<$count;$n+=2)
+        {
+            $kpl_lab = $this->user_model->get_kalab($labs[$n]->id_lab);
+            $kpl_lab2 = $this->user_model->get_kalab($labs[$n+1]->id_lab);
+            if(!empty($kpl_lab)){
+                $kpl_nama[$n] = $kpl_lab->gelar_depan." ".$kpl_lab->name.", ".$kpl_lab->gelar_belakang;
+                $kpl_nip[$n] = $kpl_lab->nip_nik;      
+            }
+            else{
+                $kpl_nama[$n] = "";
+                $kpl_nip[$n] = "";
+            }
+            if(!empty($kpl_lab2))
+            {
+                $kpl_nama[$n+1] = $kpl_lab2->gelar_depan." ".$kpl_lab2->name.", ".$kpl_lab2->gelar_belakang;
+                $kpl_nip[$n+1] = $kpl_lab2->nip_nik;
+            }
+            else{
+                $kpl_nama[$n+1] = "";
+                $kpl_nip[$n+1] = "";
+            }
+            //ttd
+            if($lab_meta[$n]->ttd_kalab != null){
+                $ttd[$n] = $lab_meta[$n]->ttd_kalab;
+            }
+            else{
+                $ttd[$n] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=';
+            }
+            if($lab_meta[$n+1]->ttd_kalab != null){
+                $ttd[$n+1] = $lab_meta[$n+1]->ttd_kalab;
+            }
+            else{
+                $ttd[$n+1] = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=';
+            }
+            
+
+            $pdf->Row(array("Kepala ".str_replace("Laboratorium","Lab.",$labs[$n]->nama_lab)."\n".$pdf->Image($ttd[$n],$pdf->GetX()+20, $pdf->GetY(),40,0,'PNG')."\n\n".$kpl_nama[$n]."\nNIP. ".$kpl_nip[$n], "Kepala ".str_replace("Laboratorium","Lab.",$labs[$n+1]->nama_lab)."\n".$pdf->Image($ttd[$n+1],$pdf->GetX()+100, $pdf->GetY(),40,0,'PNG')."\n\n".$kpl_nama[$n+1]."\nNIP. ".$kpl_nip[$n+1]));
+        }
+
+        $wd2 = $this->user_model->get_wd_akademik();
+        if(empty($wd2)){
+            $wd2_name = "";
+            $wd2_nip = "";
+        }
+        else{
+            $wd2_name = $wd2->gelar_depan." ".$wd2->name.", ".$wd2->gelar_belakang;
+            $wd2_nip = $wd2->nip_nik;
+        }
+
+        if($lab->ttd_dekan == null || $lab->ttd_dekan == ''){
+            $ttd_dekan = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=";
+        }
+        else{
+            $ttd_dekan = $lab->ttd_dekan;
+        }
+
+        $pdf->Ln(3);
+        $y_now = $pdf->GetY();
+        $pdf->SetFont('Times','',12);
+        $pdf->SetX(100);
+        $pdf->MultiCell(80, $spasi, "Bandar Lampung, ".$this->convert_date($lab->updated_at)."\na.n. Dekan,\nWakil Dekan Bid. Akademik dan Kerjasama\n\n".$pdf->Image("$ttd_dekan",$pdf->GetX(), $pdf->GetY()+6,40,0,'PNG')."\n\n".$wd2_name."\nNIP. ".$wd2_nip, 0, 'L');
+
+        $pdf->SetFont('Times','',10);
+        $pdf->SetY($y_now);
+        $pdf->Cell(75, $spasi, 'Catatan:',0,1,'L');
+        $pdf->SetWidths(array(5,70));
+        $pdf->SetAligns(array('L','L'));
+        $pdf->SetSpacing($spasi);
+        $pdf->RowNoBorder(array("1)", 'Semua calon lulusan S1 harus mendapatkan Bebas Lab. dari semua lab yang ada di FMIPA (untuk D3 hanya lab. di jurusan masing-masing).  Tanda tangan semua kalab harus dilakukan sebelum ujian skripsi dan tanggal penandatangan'));
+        $pdf->RowNoBorder(array("2)", 'Lampirkan fotocopy berita acara seminar hasil.'));
+
+        // LEMBAR VERIFIKASI
+        $pdf->AddPage('P');
+        $pdf->SetFillColor(205,205,205);
+        $pdf->SetLeftMargin(30);
+
+         // Title
+         $pdf->Ln(5);
+         $pdf->SetFont('Times','B',16);
+         $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+         $pdf->SetFont('Times','',12);
+         $pdf->Ln(5);
+         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
+         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+         $pdf->Cell(100, $spasi,'2', 0, 1, 'L');
+         $pdf->Cell(45, $spasi,'Jenis Layanan', 0, 0, 'L');
+         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+         $pdf->Cell(100, $spasi,'Bebas Laboratorium', 0, 1, 'L');
+         $pdf->Ln(5);
+         $pdf->Cell(45, $spasi,'Nama Lengkap', 0, 0, 'L');
+         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+         $pdf->Cell(100, $spasi,$mhs->name, 0, 1, 'L');
+         $pdf->Cell(45, $spasi,'NPM', 0, 0, 'L');
+         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+         $pdf->Cell(100, $spasi, $mhs->npm, 0, 1, 'L');
+         $pdf->Cell(45, $spasi,'Jurusan', 0, 0, 'L');
+         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+         $pdf->Cell(100, $spasi, $jurusan, 0, 1, 'L');
+         $pdf->Cell(45, $spasi,'Tanggal Pengisian', 0, 0, 'L');
+         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+         $pdf->Cell(100, $spasi, $this->convert_date($lab->created_at), 0, 1, 'L');
+         $pdf->Ln(6);
+
+        $pdf->SetWidths(array(8,90,35,35));
+        $pdf->SubHeader(array('No', 'Jenis Persyaratan', 'Jumlah', 'Verifikasi'));
+
+        // Isi
+        $pdf->SetAligns(array('C','L'));
+        $pdf->Row(array('1',"Formulir Bebas Laboratorium FMIPA yang sudah ditandatangani oleh seluruh pejabat Laboratorium FMIPA (Asli dan copy)",'1+4 Lbr.',''));
+        $pdf->Row(array('2',"Copy Berita Acara Seminar Tugas Akhir/Skripsi/Tesis/ Disertasi",'1 lbr.',''));
+
+        $pdf->Output('I','form_bebas_lab.pdf');
+    }
+
 }

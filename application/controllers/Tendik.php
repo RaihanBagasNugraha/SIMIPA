@@ -167,7 +167,7 @@ class Tendik extends CI_Controller {
 			redirect(site_url("tendik/kelola-biodata?status=duplikat"));
 		}
 		else{
-			if($tugas != 16 || $tugas != 18 || $tugas != 11){
+			if($tugas != 16 && $tugas != 18 && $tugas != 11){
 				
 				$check_double =  $this->user_model->check_tugas_tambahan_duplikat($tugas,$jur_unit,$prodi,$status,$periode);
 				// $check_double =  $this->user_model->check_tugas_tambahan_duplikat($tugas,$jurusan,$prodi,$status,$periode);
@@ -819,8 +819,40 @@ class Tendik extends CI_Controller {
 			$i++;
 		}
 		redirect(site_url("/tendik/atribut-form/atribut"));
-		
-
 	}
+
+	function bebas_lab()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['lab'] = $this->layanan_model->get_lab_pranata_user($this->session->userdata('userId'))->jurusan_unit;
+		$data['form'] = $this->layanan_model->get_lab_pranata_form($data['lab']);
+	
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('tendik/laboratorium/verifikasi_lab',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function bebas_lab_aksi()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id_meta = $data['id_meta'];
+		if($data['aksi'] == "tolak"){
+			$status = 3;
+			$keterangan = $data['keterangan'];
+			$this->layanan_model->update_bebas_meta($id_meta,$status,$keterangan);
+		}
+		else{
+			$status = 1;
+			$keterangan = null;
+			$this->layanan_model->update_bebas_meta($id_meta,$status,$keterangan);
+		}
+		redirect(site_url("/tendik/bebas-lab/pengajuan"));
+	}
+
 
 }

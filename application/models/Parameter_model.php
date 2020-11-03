@@ -69,5 +69,16 @@ class Parameter_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+	//berkas lampiran lab
+	function select_jenis_berkas_lab()
+	{
+		$this->db->select('*'); 
+		$this->db->from('jenis_berkas_lampiran');
+		$this->db->where('id_jenis', '17');
+
+		$query = $this->db->get();
+		return $query->result();
+	}
 	
 }

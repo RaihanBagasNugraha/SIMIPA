@@ -244,11 +244,17 @@
                                                         <td><?php echo $this->user_model->get_prodi_id($tgs->prodi)->nama ?></td>
                                                     </tr>   
                                                 <?php } ?>
-                                                <?php if($tgs->tugas == '12' || $tgs->tugas == '13' || $tgs->tugas == '17' || $tgs->tugas == '18' || $tgs->tugas == '15' || $tgs->tugas == '16') {?>
+                                                <?php if($tgs->tugas == '12' || $tgs->tugas == '13' || $tgs->tugas == '17' || $tgs->tugas == '18') {?>
                                                     <tr>
                                                         <td>Jurusan</td>
                                                         <td>:</td>
                                                         <td><?php echo $this->user_model->get_jurusan_id($tgs->jurusan_unit)->nama ?></td>
+                                                    </tr>   
+                                                <?php }if($tgs->tugas == '15' || $tgs->tugas == '16' ){ ?>
+                                                    <tr>
+                                                        <td>Laboratorium</td>
+                                                        <td>:</td>
+                                                        <td><?php echo $this->user_model->get_lab_by_id($tgs->jurusan_unit)->nama_lab ?></td>
                                                     </tr>   
                                                 <?php } ?>
                                                 <tr>

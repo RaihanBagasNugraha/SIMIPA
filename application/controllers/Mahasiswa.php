@@ -1555,17 +1555,18 @@ class Mahasiswa extends CI_Controller {
 		$data['atribut'] = $this->layanan_model->select_layanan_atribut_by_id($this->input->post('layanan'));
 		$jenis = $this->uri->segment(3);
 
-		// if(!empty($data['atribut'])){
+		if($this->input->post('layanan') == 2){
+			redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab"));
+		}
+		else{
 			$this->load->view('header_global', $header);
 			$this->load->view('mahasiswa/header');
-	
+		
 			$this->load->view('mahasiswa/layanan/layanan_fakultas_form_atribut',$data);
-	
+		
 			$this->load->view('footer_global');
-		// }
-		// else{
-		// 	echo "<script type='text/javascript'>alert('Form Layanan Ini Belum Dapat Di Unduh, Silahkan Hubungi Administrasi Layanan');window.location.href ='" . base_url() . "mahasiswa/layanan-fakultas/$jenis/form';</script>";
-		// }
+		}
+		
 	}
 
 	function layanan_fakultas_form_simpan()
@@ -1611,6 +1612,236 @@ class Mahasiswa extends CI_Controller {
 		//delete
 		$this->layanan_model->delete_layanan_mhs($id);
 		redirect(site_url("mahasiswa/layanan-fakultas/$jns"));
+	}
+
+	function layanan_bebas_lab()
+	{
+		$jenis = $this->uri->segment(3);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['form'] = $this->layanan_model->get_bebas_lab($this->session->userdata('username'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/layanan/layanan_fakultas_bebas_lab',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function layanan_bebas_lab_tambah()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		$seg = $this->uri->segment(5);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		if($seg == 'tambah'){
+			$data['lampiran'] = $this->layanan_model->get_berkas_lab2($this->session->userdata('username'));
+		}
+		else{
+			$data['lampiran'] = $this->layanan_model->get_berkas_lab($this->session->userdata('username'));
+		}
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/layanan/layanan_fakultas_bebas_lab_form',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function layanan_bebas_lab_form()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['lampiran'] = $this->layanan_model->get_berkas_lab($this->session->userdata('username'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/layanan/layanan_fakultas_bebas_lab_form',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function tambah_berkas_lab()
+	{
+		// print_r($_POST);
+		// print_r($_FILES);
+		$aksi = $this->input->post('aksi');
+
+		if($aksi == 'tambah'){
+			$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+
+		$id = $this->encrypt->decode($this->input->post('id_bebas'));
+		$input_by = $this->session->userdata('username'); 
+		$data = array(
+			'id_bebas_lab' => null,
+			'nama_berkas' => $this->input->post('nama_berkas'),
+			'jenis_berkas' => $this->input->post('jenis_berkas'),
+			'input_by' => $input_by
+		);
+
+		if(!empty($_FILES)) {
+			if($file1 == '%PDF' && $size <= 2100000){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
+				$folderPath = "assets/uploads/berkas-layanan/";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+				$data['file'] = $folderPath. $fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				$this->layanan_model->insert_lampiran_lab($data);
+				redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab/tambah?status=berhasil"));
+			}
+			else{
+				redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab/tambah?status=gagal"));
+			}
+		}
+		else{
+			redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab/tambah?status=gagal"));
+		}
+
+		}
+		else{
+
+		$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+
+		$id = $this->encrypt->decode($this->input->post('id_bebas'));
+		$input_by = $this->session->userdata('username'); 
+		$data = array(
+			'id_bebas_lab' => $id,
+			'nama_berkas' => $this->input->post('nama_berkas'),
+			'jenis_berkas' => $this->input->post('jenis_berkas'),
+			'input_by' => $input_by
+		);
+
+		if(!empty($_FILES)) {
+			if($file1 == '%PDF' && $size <= 2100000){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
+				$folderPath = "assets/uploads/berkas-layanan/";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+				$data['file'] = $folderPath. $fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				$this->layanan_model->insert_lampiran_lab($data);
+				redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab/form?id=".$this->input->post('id_bebas')."&status=sukses"));
+			}
+			else{
+				redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab/form?id=".$this->input->post('id_bebas')."&status=gagal"));
+			}
+		}
+		else{
+			redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab/form?id=".$this->input->post('id_bebas')."&status=gagal"));
+		}
+	  }
+	}
+
+	function hapus_berkas_lab()
+	{
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $this->input->post('id_berkas');
+		$id_bebas = $this->input->post('id_bebas');
+		$id_bebas = $this->encrypt->decode($id);
+		$file = $this->input->post('file_berkas');
+		
+		$data = array("id" => $id);
+		$this->layanan_model->delete_lampiran_lab($data);
+		unlink($file);
+		redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab"));
+	    
+	}
+
+	function hapus_lab()
+	{
+		$id = $this->input->post('IDBebasLab');
+		
+		$data = array("id_bebas_lab" => $id);
+		$this->layanan_model->delete_berkas_lab($id);
+		$this->layanan_model->delete_lab($data);
+		$this->layanan_model->delete_meta_lab($data);
+		$this->layanan_model->delete_lampiran_lab($data);
+		
+	    redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab"));
+	}
+
+	function layanan_bebas_lab_detail()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['lampiran'] = $this->layanan_model->get_berkas_lab($this->session->userdata('username'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/layanan/layanan_fakultas_bebas_lab_detail',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function simpan_data_lab()
+	{
+		$berkas_id = $this->input->post('ids');
+		$npm =  $this->session->userdata('username');
+		//tambah bebas_lab
+		$data_lab = array(
+			"npm" => $npm,
+		);
+		$insert_id = $this->layanan_model->insert_bebas_lab($data_lab);
+
+		//tambah bebas_lab_berkas
+		$i=0;
+		foreach($berkas_id as $berkas){
+			$this->layanan_model->update_bebas_id_berkas($berkas_id[$i],$insert_id);
+			$i++;
+		}
+
+		//tambah bebas_lab_meta
+		$list_lab = $this->user_model->get_lab_all();
+		foreach ($list_lab as $list){
+			$data_meta = array(
+				"id_bebas_lab" => $insert_id,
+				"id_lab"=> $list->id_lab,
+			);
+			$id_meta = $this->layanan_model->insert_lab_meta($data_meta);
+			//tambah berkas meta
+			// $j=0;
+			// foreach($berkas_id as $berkas){
+			// 	$berkas_meta = $this->layanan_model->get_berkas_lab_by_id2($berkas_id[$j]);
+
+			// 	$data_berkas = array(
+			// 		"id_meta" => $id_meta,
+			// 		"nama_berkas" => $berkas_meta->nama_berkas,
+			// 		"jenis_berkas" => $berkas_meta->jenis_berkas,
+			// 		"file" => $berkas_meta->file
+			// 	);
+			// 	$this->layanan_model->insert_berkas_lab_meta($data_berkas);
+			// 	$j++;
+			// }
+		}
+		redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab"));
+	}
+
+	function ajukan_bebas_lab()
+	{
+		$data = $this->input->post('id_meta');
+		$status = 0;
+		$keterangan = null;
+		$this->layanan_model->update_bebas_meta($data,$status,$keterangan);
+		redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab"));
 	}
 
 }

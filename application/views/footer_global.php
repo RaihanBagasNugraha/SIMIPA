@@ -1078,6 +1078,23 @@
                         </select>
                     <br> 
                     </div>    
+
+                    <div id="lab" style="display: none;">
+                    <label><b>Laboratorium</b></label>
+                        <select name="lab" class="input-lg form-control">
+                        <option value = "">-- Pilih Laboratorium --</option>
+                                <?php
+                                $list_lab = $this->user_model->get_lab_all();
+                                            
+                                foreach ($list_lab as $row) {
+                                    // if($biodata->pangkat_gol == $row->id_pangkat_gol) $select = "selected";
+                                    // else $select = "";
+                                    echo "<option ".$select." value='".$row->id_lab."'>".$row->nama_lab."</option>";
+                                }
+                                ?>
+                        </select>
+                    <br> 
+                    </div>     
                        
                     <label><b>Periode</b></label>    
                         <input name="periode" id="periode" value="" type="text" placeholder="2020/2024" class="form-control"> 
@@ -1137,21 +1154,30 @@
 </div>
 
 <script>
- $(document).ready(function(){
+ $(document).ready(function(){   
     $('#tugas').on('change', function() {
           if (this.value == '14')
           {
             jQuery("#prodi").show();
             jQuery("#jurusan").hide();
+            jQuery("#lab").hide();
           }
-          else if(this.value == '12' || this.value == '13' || this.value == '17' || this.value == '18' || this.value == '15' || this.value == '16')
+          else if(this.value == '19' || this.value == '12' || this.value == '13' || this.value == '17' || this.value == '18')
           {
             jQuery("#prodi").hide();
             jQuery("#jurusan").show();
+            jQuery("#lab").hide();
+          }
+          else if(this.value == '15' || this.value == '16')
+          {
+            jQuery("#prodi").hide();
+            jQuery("#jurusan").hide();
+            jQuery("#lab").show();
           }
           else{
             jQuery("#prodi").hide();
             jQuery("#jurusan").hide();
+            jQuery("#lab").hide();
           }
         });
     }); 
@@ -2323,5 +2349,172 @@ $(document).ready(function() {
     </div>
 </div>
 
+
+<?php } ?>
+
+<?php if($this->uri->segment(2) == 'layanan-fakultas') { ?>
+
+<!-- Del Lampiran bebas lab -->
+<div class="modal fade" id="delBerkaslab" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Berkas Lampiran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteberkas" method="post" action="<?php echo site_url("mahasiswa/hapus-berkas-lab") ?>">
+                    <input type="hidden" name="id_berkas" id="berkasID" value="">
+                    <input type="hidden" name="id_bebas" id="IDBebas" value="">
+                    <input type="hidden" name="file_berkas" id="berkasFile" value="">
+                </form>
+                <p>Apakah Anda yakin akan menghapus <span id="berkasNama" class="text-danger"> ?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="deleteberkas" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya, hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Del bebas lab -->
+<div class="modal fade" id="dellab" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="deletelab" method="post" action="<?php echo site_url("mahasiswa/hapus-lab") ?>">
+                    <input type="hidden" name="IDBebasLab" id="IDBebasLab" value="">
+                </form>
+                <p>Hapus Pengajuan ini ?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="deletelab" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya, hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ajukan bebas lab -->
+<div class="modal fade" id="Ajukanlab" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="ajukan-lab" method="post" action="<?php echo site_url("mahasiswa/ajukan-bebas-lab") ?>">
+                    <input type="hidden" name="id_meta" id="IDMeta" value="">
+                </form>
+                <p>Ajukan Bebas <span id="Nama" class=""></span> ?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="ajukan-lab" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+<?php if($this->uri->segment(2) == 'bebas-lab') { ?>
+
+<!-- Del bebas lab -->
+<div class="modal fade" id="tolaklab" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="deletelab" method="post" action="<?php echo site_url("tendik/bebas-lab/pengajuan/aksi") ?>">
+                    <input type="hidden" name="id_meta" id="IDtolak" value="">
+                    <input type="hidden" name="aksi" id="" value="tolak">
+                
+                <p>Tolak Pengajuan ?</p>
+                <textarea name="keterangan" cols="70" rows="3" placeholder="Keterangan Tolak"></textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="deletelab" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- verif pranata lab -->
+<div class="modal fade" id="verifikasilab" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="veriflab" method="post" action="<?php echo site_url("tendik/bebas-lab/pengajuan/aksi") ?>">
+                    <input type="hidden" name="id_meta" id="IDverif" value="">
+                    <input type="hidden" name="aksi" id="" value="terima">
+                
+                <p>Verifikasi Pengajuan ?</p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="veriflab" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php } ?>

@@ -9,6 +9,11 @@ $tb_wd = $this->user_model->tugas_dosen_wakil_dekan($this->session->userdata('us
 $tb_koor = $this->user_model->tugas_dosen_koor($this->session->userdata('userId'));
 $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('userId'));
 
+$tugas = $this->user_model->tugas_tambahan_get($this->session->userdata('userId'));
+foreach($tugas as $row){
+    $tb[] = $row->tugas;
+}
+
 ?>
 <ul class="vertical-nav-menu">
                                 <li class="app-sidebar__heading">Profil</li>
@@ -160,7 +165,7 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                     </a>
                                 </li>
 
-                                <?php if(!empty($tb_koor)) { ?>
+                                <?php if(in_array(17,$tb)){ ?>
                                 <!-- Menu Koordinator -->
 
                                 <li class="app-sidebar__heading">Koordinator Tugas Akhir</li>
@@ -266,11 +271,12 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                     </ul>
                                 </li>
                                 <?php } ?>
-                                <?php if(!empty($tb_kajur)) { ?>
+
+                                <?php if(in_array(12,$tb)){ ?>
                                 <!-- Menu Kajur/Sekjur -->
 
                                 <li class="app-sidebar__heading">Ketua Jurusan</li>
-                                <li <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) != "bidang-nilai" && $this->uri->segment(3) != "kaprodi" && $this->uri->segment(3) != "komposisi-nilai" && $this->uri->segment(3) != "pkl"  && $this->uri->segment(3) != "rekap-pkl" ) echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) != "bidang-nilai" && $this->uri->segment(3) != "kaprodi" && $this->uri->segment(3) != "komposisi-nilai" && $this->uri->segment(3) != "pkl"  && $this->uri->segment(3) != "rekap-pkl" && $this->uri->segment(3) != "rekap" ) echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-pen"></i>
                                         <?php 
@@ -517,7 +523,8 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                     </a>
                                 </li>
                                 <?php } ?>
-                                <?php if(!empty($tb_kaprodi)) { ?>
+
+                                <?php if(in_array(14,$tb)){ ?>
                                 <!-- Menu Kaprodi -->
 
                                 <li class="app-sidebar__heading">Ketua Program Studi</li>
@@ -652,7 +659,7 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                 <!--</li>-->
                                 <?php } ?>
 
-                                <?php if(!empty($tb_koor_kp)) { ?>
+                                <?php if(in_array(19,$tb)){ ?>
                                 <!-- Menu Koordinator kp-->
 
                                 <li class="app-sidebar__heading">Koordinator KP/PKL</li>
@@ -721,7 +728,7 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                
                                 <?php } ?>
 
-                                <?php if(!empty($tb_dekan)) { ?>
+                                <?php if(in_array(1,$tb)){ ?>
                                 <!-- Menu Dekan -->
 
                                 <li class="app-sidebar__heading">Dekan</li>
@@ -779,9 +786,38 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                     </ul>
                                 </li>
                                 <?php } ?>
-                                <?php if(!empty($tb_wd)) { ?>
-                                <!-- WD 3 -->
 
+                                <?php if(in_array(2,$tb)){ ?>
+                                <!-- WD 1 -->
+
+                                <li class="app-sidebar__heading">Wakil Dekan II</li>
+                                <li <?php if($this->uri->segment(2) == "wd-layanan-akademik") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                    <?php 
+                                        $lay_aka_form = count($this->layanan_model->get_bebas_lab_wd1());
+
+                                        $lay_aka = $lay_aka_form;
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Akademik <span class="badge badge-danger"><?php echo $lay_aka > 0 ? $lay_aka : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                        <a href="<?php echo site_url("dosen/wd-layanan-akademik/pengajuan") ?>" <?php if($this->uri->segment(2) == "wd-layanan-akademik" && $this->uri->segment(3) == "pengajuan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Form Akademik <span class="badge badge-danger"><?php echo $lay_aka_form > 0 ? $lay_aka_form : "" ?></span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+
+                                    
+                                <?php } ?>
+
+                                <?php if(in_array(4,$tb)){ ?>
+                                <!-- WD 3 -->
 
                                 <li class="app-sidebar__heading">Wakil Dekan III</li>
                                 <li >
@@ -811,6 +847,33 @@ $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('u
                                         </li>
                                         
                                        
+                                    </ul>
+                                </li>
+                                <?php } ?>
+
+                                <?php if(in_array(15,$tb)){ ?>
+                                <!-- kepala laboratorium -->
+
+                                <li class="app-sidebar__heading">Kepala Laboratorium</li>
+                                <li <?php if($this->uri->segment(2) == "bebas-lab") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                    <?php 
+                                        $cek_lab = $this->layanan_model->get_lab_kalab_user($this->session->userdata('userId'))->jurusan_unit;
+                                        $lab_approve = count($this->layanan_model->get_lab_kalab_form($cek_lab));
+                                    
+                                        $verif_lab = $lab_approve;
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Verifikasi Bebas Lab <span class="badge badge-danger"><?php echo $verif_lab > 0 ? $verif_lab : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/bebas-lab/pengajuan") ?>" <?php if($this->uri->segment(2) == "bebas-lab" && $this->uri->segment(3) == "pengajuan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Pengajuan Bebas Lab <span class="badge badge-danger"><?php echo $lab_approve > 0 ? $lab_approve : "" ?></span>
+                                            </a>
+                                        </li>    
                                     </ul>
                                 </li>
                                 <?php } ?>

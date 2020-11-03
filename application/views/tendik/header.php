@@ -1,8 +1,14 @@
 <?php 
-$tb_admin_jur = $this->user_model->tugas_tendik_admin_jurusan($this->session->userdata('userId'));
-$tb_admin_fak = $this->user_model->tugas_tendik_admin_fakultas($this->session->userdata('userId'));
-$tb_admin_labor = $this->user_model->tugas_tendik_laboratorium($this->session->userdata('userId'));
-$tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->userdata('userId'));
+// $tb_admin_jur = $this->user_model->tugas_tendik_admin_jurusan($this->session->userdata('userId'));
+// $tb_admin_fak = $this->user_model->tugas_tendik_admin_fakultas($this->session->userdata('userId'));
+// $tb_admin_labor = $this->user_model->tugas_tendik_laboratorium_pranata($this->session->userdata('userId'));
+// $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->userdata('userId'));
+// $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->userdata('userId'));
+
+$tugas = $this->user_model->tugas_tambahan_get($this->session->userdata('userId'));
+foreach($tugas as $row){
+    $tb[] = $row->tugas;
+}
 
 ?>
 
@@ -20,7 +26,7 @@ $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->us
                                         Biodata
                                     </a>
                                 </li>
-                                <?php if(!empty($tb_admin_fak)) { ?>
+                                <?php if(in_array(5,$tb)){ ?>
                                 <!-- Menu Kabag TU Fakultas -->
                                 <li class="app-sidebar__heading">Kabag Tata Usaha</li>
                                 
@@ -55,7 +61,8 @@ $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->us
                                     </ul>
                                 </li>
                                 <?php } ?>
-                                <?php if(!empty($tb_admin_fak)) { ?>
+
+                                <?php if(in_array(11,$tb)){ ?>
                                 <!-- Menu Admin Fakultas -->
                                 
                                 <li class="app-sidebar__heading">Admin Fakultas</li>
@@ -86,7 +93,8 @@ $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->us
                                     
                                 </li>
                                 <?php } ?>
-                                <?php if(!empty($tb_admin_jur)) { ?>
+
+                                <?php if(in_array(18,$tb)){ ?>
                                 <!-- Menu Admin Jurusan -->
                                 
                                 <li class="app-sidebar__heading">Admin Jurusan</li>
@@ -140,19 +148,36 @@ $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->us
                                     
                                 </li>
                                 <?php } ?>
-                                <?php if(!empty($tb_admin_labor)) { ?>
+                                
+                                <?php if(in_array(16,$tb)){ ?>
                                 <!-- Menu Staf Laboran -->
                                 
                                 <li class="app-sidebar__heading">Staf Laboran</li>
-                                <li <?php if($this->uri->segment(2) == "") echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "bebas-lab") echo 'class="mm-active"' ?>>
                                     <a href="#">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
-                                        Verifikasi Bebas Lab
-                                        
-                                    </a>
+                                    <?php 
+                                        $lab_prn = $this->layanan_model->get_lab_pranata_user($this->session->userdata('userId'))->jurusan_unit;
+                                        $jml_frm_prn = count($this->layanan_model->get_lab_pranata_form($lab_prn));
+
+                                        $verifikasi_pranata = $jml_frm_prn;
                                     
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Verifikasi Bebas Lab  <span class="badge badge-danger"><?php echo $verifikasi_pranata > 0 ? $verifikasi_pranata : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("tendik/bebas-lab/pengajuan") ?>" <?php if($this->uri->segment(2) == "bebas-lab" && $this->uri->segment(3) == "pengajuan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Pengajuan Bebas Lab  <span class="badge badge-danger"><?php echo $jml_frm_prn > 0 ? $jml_frm_prn : "" ?></span>
+                                            </a>
+                                        </li>    
+                                    </ul>
                                 </li>
                                 <?php } ?>
+
+                                <?php if(in_array(20,$tb)){ ?>
                                 <!-- Menu Staf Ruang Baca -->
                                 
                                 <li class="app-sidebar__heading">Staf Ruang Baca</li>
@@ -164,7 +189,7 @@ $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->us
                                     </a>
                                     
                                 </li>
-
+                                <?php } ?>
                                
                                 <div class="divider"></div>
                                 <li>

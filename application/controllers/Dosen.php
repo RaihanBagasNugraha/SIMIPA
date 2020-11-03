@@ -12,6 +12,7 @@ class Dosen extends CI_Controller {
 		$this->load->model('user_model');
 		$this->load->model('ta_model');
 		$this->load->model('pkl_model');
+		$this->load->model('layanan_model');
 		$this->load->library('pdf');
 		$this->load->library('encrypt');
 		 // Load PHPMailer library
@@ -136,6 +137,7 @@ class Dosen extends CI_Controller {
 		// echo "<pre>";
 		// print_r($data);
 
+		
 		$iduser = $data['iduser'];
 		$tugas = $data['tugas_tambahan'];
 		$prodi = $data['prodi'];
@@ -143,7 +145,7 @@ class Dosen extends CI_Controller {
 		$jurusan = $data['jurusan'];
 		$periode = $data['periode'];
 		$status = $data['status_tgs'];
-
+		// echo $tugas;
 		if($jurusan == ""){
 			$jurusan = 0;
 		}
@@ -168,18 +170,19 @@ class Dosen extends CI_Controller {
 		}
 
 		$check = $this->user_model->check_tugas_tambahan($iduser,$tugas,$jur_unit,$prodi,$status);
-		
+		// $tugas_double = array("16", "18", "11");
 		if(!empty($check)){
 			redirect(site_url("dosen/kelola-biodata?status=duplikat"));
 		}
 		else{
-			if($tugas != 16 || $tugas != 18 || $tugas != 11){
+			if($tugas != 16 && $tugas != 18 && $tugas != 11){
 				
 				$check_double =  $this->user_model->check_tugas_tambahan_duplikat($tugas,$jur_unit,$prodi,$status,$periode);
 				// $check_double =  $this->user_model->check_tugas_tambahan_duplikat($tugas,$jurusan,$prodi,$status,$periode);
 				if(!empty($check_double)){
 					$id_user_double = $check_double->id_user;
 					redirect(site_url("dosen/kelola-biodata?status=duplikat_user&id=".$this->encrypt->encode($id_user_double)));
+					// echo "1";
 				}
 				else{
 						$data_tugas = array(
@@ -191,10 +194,11 @@ class Dosen extends CI_Controller {
 							'aktif' => $status,
 						);			
 					$this->user_model->insert_tugas_tambah($data_tugas);
+					// echo "2";
 				}
 			}
 			else{
-		
+				// echo "3";
 				$data_tugas = array(
 					'id_user' => $iduser,
 					'tugas' => $tugas,
@@ -1518,13 +1522,14 @@ class Dosen extends CI_Controller {
 	function rekap_ganti_ta()
 	{
 		$data = $this->input->post();
+		$seg = $this->uri->segment(2);
 		// echo "<pre>";
 		// print_r($data);
 		$id = $data['id_ta'];
 		$ket = $data['keterangan'];
 
 		$this->ta_model->rekap_ganti_ta($id,$ket);
-		redirect(site_url("/dosen/koordinator/rekap/tugas-akhir"));
+		redirect(site_url("/dosen/$seg/rekap/tugas-akhir"));
 	}
 
 	function rekap_ganti_pbb_save()
@@ -1786,7 +1791,8 @@ class Dosen extends CI_Controller {
 				$this->ta_model->insert_approval_ta($data_approval);
 			}
 		}
-		redirect(site_url("dosen/koordinator/rekap/tugas-akhir"));
+		$seg = $this->uri->segment(2);
+		redirect(site_url("dosen/$seg/rekap/tugas-akhir"));
 	}
 	
 	function komposisi_nilai()
@@ -4252,6 +4258,105 @@ class Dosen extends CI_Controller {
 
 		$this->load->view('dosen/pkl/rekap/pkl_rekap_pembimbing_detail_bimbingan',$data);
 		$this->load->view('footer_global');
+	}
+
+	function bebas_lab()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['lab'] = $this->layanan_model->get_lab_kalab_user($this->session->userdata('userId'))->jurusan_unit;
+		$data['form'] = $this->layanan_model->get_lab_kalab_form($data['lab']);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kalab/verifikasi_lab',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function bebas_lab_approve()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['form'] = $this->layanan_model->get_kalab_bebas_lab_meta($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/kalab/verifikasi_lab_approve',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function bebas_lab_simpan()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);	
+
+		$id_meta = $data['id_meta'];
+		$id_bebas = $data['id_bebas_lab'];
+		$ttd = $data['ttd'];
+
+		//update status dan ttd
+		$kalab = array(
+			"status" => 2,
+			"ttd_kalab" => $ttd
+		);
+		$this->layanan_model->approve_kalab($id_meta,$kalab);
+
+		//cek
+		$cek = $this->layanan_model->cek_bebas_lab_status($id_bebas);
+		if(empty($cek)){
+			$status = 1;
+			$this->layanan_model->update_bebas_lab_status($id_bebas,$status);
+		}
+
+		redirect(site_url("/dosen/bebas-lab/pengajuan"));
+	}
+
+	//layanan akademik wd 1
+	function wd_layanan_akademik()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['form'] = $this->layanan_model->get_bebas_lab_wd1();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd1/verifikasi_lab',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function wd_layanan_akademik_approve()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['form'] = $this->layanan_model->get_bebas_lab_by_id($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd1/verifikasi_lab_approve',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function wd_layanan_akademik_simpan()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $data['id_bebas_lab'];
+		$ttd = $data['ttd'];
+
+		//update bebas lab
+		$this->layanan_model->approve_bebas_lab_wd($id,$ttd);
+		redirect(site_url("/dosen/wd-layanan-akademik/pengajuan"));
 	}
 
 }

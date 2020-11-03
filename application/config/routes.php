@@ -231,46 +231,46 @@ $route['dosen/struktural/seminar/approve'] = 'dosen/seminar_approve';
 
     //rekap ta
     //koor
-    $route['dosen/koordinator/rekap/tugas-akhir'] = 'dosen/rekap_ta';
-    $route['dosen/koordinator/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
-    $route['dosen/koordinator/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
-    $route['dosen/koordinator/rekap/tugas-akhir/detail/ganti-ta'] = 'dosen/rekap_ganti_ta';
-    $route['dosen/koordinator/rekap/tugas-akhir/detail/ganti-pbb/save'] = 'dosen/rekap_ganti_pbb_save';
+    $route['dosen/(:any)/rekap/tugas-akhir'] = 'dosen/rekap_ta';
+    $route['dosen/(:any)/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
+    $route['dosen/(:any)/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
+    $route['dosen/(:any)/rekap/tugas-akhir/detail/ganti-ta'] = 'dosen/rekap_ganti_ta';
+    $route['dosen/(:any)/rekap/tugas-akhir/detail/ganti-pbb/save'] = 'dosen/rekap_ganti_pbb_save';
 
-    $route['dosen/koordinator/rekap/seminar'] = 'dosen/rekap_seminar_koor';
-    $route['dosen/koordinator/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
-    $route['dosen/koordinator/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
-    $route['dosen/koordinator/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
-    $route['dosen/koordinator/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
-    $route['dosen/koordinator/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
+    $route['dosen/(:any)/rekap/seminar'] = 'dosen/rekap_seminar_koor';
+    $route['dosen/(:any)/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
+    $route['dosen/(:any)/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
+    $route['dosen/(:any)/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
+    $route['dosen/(:any)/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
+    $route['dosen/(:any)/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
 
-    //kaprodi
-    $route['dosen/kaprodi/rekap/tugas-akhir'] = 'dosen/rekap_ta';
-    $route['dosen/kaprodi/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
-    $route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
-    $route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-ta'] = 'dosen/rekap_ganti_ta';
-    $route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-pbb/save'] = 'dosen/rekap_ganti_pbb_save';
+    // //kaprodi
+    // $route['dosen/(:any)/rekap/tugas-akhir'] = 'dosen/rekap_ta';
+    // $route['dosen/kaprodi/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
+    // $route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
+    // $route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-ta'] = 'dosen/rekap_ganti_ta';
+    // $route['dosen/kaprodi/rekap/tugas-akhir/detail/ganti-pbb/save'] = 'dosen/rekap_ganti_pbb_save';
 
-    $route['dosen/kaprodi/rekap/seminar'] = 'dosen/rekap_seminar_koor';
-    $route['dosen/kaprodi/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
-    $route['dosen/kaprodi/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
-    $route['dosen/kaprodi/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
-    $route['dosen/kaprodi/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
-    $route['dosen/kaprodi/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
+    // $route['dosen/kaprodi/rekap/seminar'] = 'dosen/rekap_seminar_koor';
+    // $route['dosen/kaprodi/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
+    // $route['dosen/kaprodi/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
+    // $route['dosen/kaprodi/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
+    // $route['dosen/kaprodi/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
+    // $route['dosen/kaprodi/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
 
-    //kajur
-    $route['dosen/struktural/rekap/tugas-akhir'] = 'dosen/rekap_ta';
-    $route['dosen/struktural/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
-    $route['dosen/struktural/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
-    $route['dosen/struktural/rekap/tugas-akhir/detail/ganti-ta'] = 'dosen/rekap_ganti_ta';
-    $route['dosen/struktural/rekap/tugas-akhir/detail/ganti-pbb/save'] = 'dosen/rekap_ganti_pbb_save';
+    // //kajur
+    // $route['dosen/(:any)/rekap/tugas-akhir'] = 'dosen/rekap_ta';
+    // $route['dosen/struktural/rekap/tugas-akhir/detail'] = 'dosen/rekap_ta_detail';
+    // $route['dosen/struktural/rekap/tugas-akhir/detail/ganti-pbb'] = 'dosen/rekap_ganti_pbb';
+    // $route['dosen/struktural/rekap/tugas-akhir/detail/ganti-ta'] = 'dosen/rekap_ganti_ta';
+    // $route['dosen/struktural/rekap/tugas-akhir/detail/ganti-pbb/save'] = 'dosen/rekap_ganti_pbb_save';
 
-    $route['dosen/struktural/rekap/seminar'] = 'dosen/rekap_seminar_koor';
-    $route['dosen/struktural/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
-    $route['dosen/struktural/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
-    $route['dosen/struktural/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
-    $route['dosen/struktural/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
-    $route['dosen/struktural/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
+    // $route['dosen/struktural/rekap/seminar'] = 'dosen/rekap_seminar_koor';
+    // $route['dosen/struktural/rekap/seminar/detail'] = 'dosen/rekap_seminar_koor_detail';
+    // $route['dosen/struktural/rekap/mahasiswa-ta'] = 'dosen/rekap_mahasiswa_ta';
+    // $route['dosen/struktural/rekap/mahasiswa-ta/detail'] = 'dosen/rekap_mahasiswa_ta_detail';
+    // $route['dosen/struktural/rekap/bimbingan-dosen'] = 'dosen/rekap_bimbingan_dosen';
+    // $route['dosen/struktural/rekap/bimbingan-dosen/detail'] = 'dosen/rekap_bimbingan_dosen_detail';
 
     //kajur pkl
     $route['dosen/struktural/pkl/add-pkl'] = 'dosen/kajur_add_pkl';
@@ -406,8 +406,35 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
     $route['mahasiswa/layanan-fakultas/(:any)/form'] = 'mahasiswa/layanan_fakultas_form';
     $route['mahasiswa/layanan-fakultas/(:any)/form-layanan'] = 'mahasiswa/layanan_fakultas_form_layanan';
     $route['mahasiswa/layanan-fakultas/(:any)/form-simpan'] = 'mahasiswa/layanan_fakultas_form_simpan';
+
+    $route['mahasiswa/layanan-fakultas/akademik/bebas-lab'] = 'mahasiswa/layanan_bebas_lab';
+    $route['mahasiswa/layanan-fakultas/akademik/bebas-lab/tambah'] = 'mahasiswa/layanan_bebas_lab_tambah';
+    $route['mahasiswa/layanan-fakultas/akademik/bebas-lab/form'] = 'mahasiswa/layanan_bebas_lab_form';
+    $route['mahasiswa/layanan-fakultas/akademik/bebas-lab/detail'] = 'mahasiswa/layanan_bebas_lab_detail';
+    $route['mahasiswa/tambah-berkas-lab'] = 'mahasiswa/tambah_berkas_lab';
+    $route['mahasiswa/hapus-berkas-lab'] = 'mahasiswa/hapus_berkas_lab';
+    $route['mahasiswa/hapus-lab'] = 'mahasiswa/hapus_lab';
+    $route['mahasiswa/simpan-data-lab'] = 'mahasiswa/simpan_data_lab';
+    $route['mahasiswa/ajukan-bebas-lab'] = 'mahasiswa/ajukan_bebas_lab';
     //unduh layanan
     $route['mahasiswa/layanan-fakultas/(:any)/unduh'] = 'layanan/layanan_fakultas_form_unduh';
+    $route['mahasiswa/unduh-bebas-lab'] = 'layanan/layanan_fakultas_bebas_lab';
+
+    //tendik
+    $route['tendik/bebas-lab/pengajuan'] = 'tendik/bebas_lab';
+    $route['tendik/bebas-lab/pengajuan/aksi'] = 'tendik/bebas_lab_aksi';
+
+    //kalab
+    $route['dosen/bebas-lab/pengajuan'] = 'dosen/bebas_lab';
+    $route['dosen/bebas-lab/pengajuan/approve'] = 'dosen/bebas_lab_approve';
+    $route['dosen/bebas-lab/pengajuan/simpan'] = 'dosen/bebas_lab_simpan';
+
+    //wd1 kemahasiswaan
+    $route['dosen/wd-layanan-akademik/pengajuan'] = 'dosen/wd_layanan_akademik';
+    $route['dosen/wd-layanan-akademik/pengajuan/approve'] = 'dosen/wd_layanan_akademik_approve';
+    $route['dosen/wd-layanan-akademik/pengajuan/simpan'] = 'dosen/wd_layanan_akademik_simpan';
+
+    
 
 $route['beranda'] = 'admin';
 $route['admin'] = 'welcome';

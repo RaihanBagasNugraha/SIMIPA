@@ -9,7 +9,7 @@
                                     </div>
                                     <?php
                                     $data_dosen = $this->user_model->get_dosen_data($this->session->userdata('userId'));
-
+                                    $seg = $this->uri->segment(2);
                                     switch($data_dosen->jurusan)
                                     {
                                         case "0":
@@ -214,7 +214,7 @@
                                                                 </button>
                                                             </a>
                                                             
-                                                            <!-- <a href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir/detail/ganti-pbb?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-2 btn btn-warning btn-sm btn-block">Ganti Pembimbing/<br>Pembahas -->
+                                                            <!-- <a href="<?php echo site_url("dosen/$seg/rekap/tugas-akhir/detail/ganti-pbb?id=".$this->encrypt->encode($row->id_pengajuan)) ?>" class="btn-wide mb-2 btn btn-warning btn-sm btn-block">Ganti Pembimbing/<br>Pembahas -->
                                                         <?php } ?>
                                                 </td>
                                             </tr>

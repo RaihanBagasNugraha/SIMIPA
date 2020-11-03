@@ -44,7 +44,7 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo site_url('mahasiswa/layanan-fakultas/akademik') ?>" <?php if($this->uri->segment(2) == "layanan-fakultas" && $this->uri->segment(3) == "akademik") echo 'class="mm-active"' ?> >
+                                            <a href="<?php echo site_url('mahasiswa/layanan-fakultas/akademik') ?>" <?php if($this->uri->segment(2) == "layanan-fakultas" && $this->uri->segment(3) == "akademik" && $this->uri->segment(4) != "bebas-lab") echo 'class="mm-active"' ?> >
                                                 <i class="metismenu-icon">
                                                 </i>Akademik
                                             </a>
@@ -59,6 +59,12 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                             <a href="<?php echo site_url('mahasiswa/layanan-fakultas/kemahasiswaan') ?>" <?php if($this->uri->segment(2) == "layanan-fakultas" && $this->uri->segment(3) == "kemahasiswaan") echo 'class="mm-active"' ?> >
                                                 <i class="metismenu-icon">
                                                 </i>Kemahasiswaan
+                                            </a>
+                                        </li>
+                                        <li>
+                                        <a href="<?php echo site_url('mahasiswa/layanan-fakultas/akademik/bebas-lab') ?>" <?php if($this->uri->segment(2) == "layanan-fakultas" && $this->uri->segment(4) == "bebas-lab") echo 'class="mm-active"' ?> >
+                                                <i class="metismenu-icon">
+                                                </i>Bebas Laboratorium
                                             </a>
                                         </li>
                                     </ul>
