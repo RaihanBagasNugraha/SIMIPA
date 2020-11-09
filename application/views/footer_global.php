@@ -2349,6 +2349,38 @@ $(document).ready(function() {
     </div>
 </div>
 
+<!-- Del Lampiran bebas lab -->
+<div class="modal fade" id="delBerkaslay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Berkas Lampiran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"><?php $jenis = $this->uri->segment(3); $id = $this->input->get('id');?>
+                <form id="deleteberkaslay" method="post" action="<?php echo site_url("mahasiswa/layanan-fakultas/$jenis/hapus-berkas?id=$id") ?>">
+                    <input type="hidden" name="id_berkas" id="berkasID2" value="">
+                    <input type="hidden" name="id_layanan" id="IDBebas2" value="">
+                    <input type="hidden" name="file_berkas" id="berkasFile2" value="">
+                </form>
+                <p>Apakah Anda yakin akan menghapus <span id="berkasNama2" class="text-danger"> ?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="deleteberkaslay" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya, hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php } ?>
 
@@ -2518,3 +2550,75 @@ $(document).ready(function() {
 </div>
 
 <?php } ?>
+
+<?php if($this->uri->segment(2) == 'verifikasi-berkas-fakultas') { ?>
+
+<!-- verif surat -->
+<div class="modal fade" id="verifikasisurat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <?php $jenis = $this->uri->segment(3); ?>
+                <form id="verifsurat" method="post" action="<?php echo site_url("tendik/verifikasi-berkas-fakultas-simpan/$jenis") ?>">
+                    <input type="hidden" name="id_layanan" id="IDSurat" value="">
+                
+                    <label >Nomor Surat</label>
+                    <input type="text" name="no_surat" placeholder="Nomor Surat Bila ada. cth: XXXX/UN26.17/DT/2020" class="form-control" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="verifsurat" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+<?php if($this->uri->segment(2) == 'verifikasi-berkas-masuk-fakultas') { ?>
+<!-- verif surat -->
+<div class="modal fade" id="verifikasimasuk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <?php $jenis = $this->uri->segment(3); ?>
+                <form id="verifmasuk" method="post" action="<?php echo site_url("tendik/verifikasi-berkas-masuk-fakultas-simpan/$jenis") ?>">
+                    <input type="hidden" name="id_pengajuan" id="IDMasuk" value="">                
+                    <label >Verifikasi Berkas Masuk ?</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="verifmasuk" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<?php } ?>
+

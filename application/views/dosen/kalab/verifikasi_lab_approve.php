@@ -33,6 +33,7 @@
                                 <form method="post" action="<?php echo site_url('dosen/bebas-lab/pengajuan/simpan') ?>" >
                                     <input value="<?php echo $form->id_meta ?>" type = "hidden" required name="id_meta" >
                                     <input value="<?php echo $form->id_bebas_lab ?>" type = "hidden" required name="id_bebas_lab" >
+                                    <input value="<?php echo $form->id_layanan_fakultas_mahasiswa ?>" type = "hidden" required name="id_layanan" >
 
                                     <!-- lab -->
                                     <div class="position-relative row form-group">

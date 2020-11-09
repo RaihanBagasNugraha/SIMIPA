@@ -7,8 +7,16 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
+                                    <?php 
+                                        $jenis = $this->uri->segment(3);
+                                        if($jenis == "akademik"){
+                                            $layanan = "Akademik";
+                                        }elseif($jenis == "umum-keuangan"){$layanan = "Umum dan Keuangan";}
+                                        elseif($jenis == "kemahasiswaan"){$layanan = "Kemahasiswaan";}
+                                        else{$layanan= "";}
                                     
-                                    <div>Pengajuan Bebas Lab
+                                    ?>
+                                    <div>Verifikasi Pengajuan Layanan <?php echo $layanan ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
@@ -33,10 +41,10 @@
                                         <thead>
                                         <tr>
                                             <th style="width: 5%;">#</th>
-                                            <th style="width: 13%;">Waktu Pengajuan</th>
+                                            <th style="width: 13%;">Waktu</th>
                                             <th style="width: 25%;">Npm<br>Nama</th>
                                             <th style="width: 12%;">Jurusan</th>
-                                            <th style="width: 25%;">Lampiran</th>
+                                            <th style="width: 25%;">Form</th>
                                             <th style="width: 20%;">Aksi</th>
                                         </tr>
                                         </thead>
@@ -49,60 +57,46 @@
                                         else
                                         {
                                             $n = 0;
-                                            $jml = count($form);
                                             foreach($form as $row) {
-                                              
+                                            // $data_layanan = $this->layanan_model->get_form_mhs_id($row->id_layanan_fakultas_mahasiswa);
                                         ?>
                                         <tr>
                                             <td class="align-top">
                                                 <?php echo ++$n; ?>
                                             </td>
-
                                             <td class="align-top">
                                                 <?php 
-                                                    $waktu = explode('-',substr($row->updated_at,0,10));
+
+                                                    $waktu = explode('-',substr($row->created_at,0,10));
                                                     echo $waktu[2]."-".$waktu[1]."-".$waktu[0];
                                                     echo "<br>";
-                                                    echo substr($row->updated_at,10);
+                                                    echo substr($row->created_at,10);
                                                  ?>
                                             </td>
-
-                                    
                                             <td class="align-top">
-                                               <?php 
+                                                <?php 
                                                    echo $row->npm;
                                                    echo "<br>";
                                                    echo $this->user_model->get_mahasiswa_name($row->npm);
                                                ?>
                                             </td>
-
                                             <td class="align-top">
                                                <?php 
                                                    echo $this->user_model->get_jurusan_nama($row->npm);
                                                ?>
                                             </td>
-
                                             <td class="align-top">
-                                                <?php 
-                                                   $lampiran = $this->layanan_model->get_lampiran_bebas_lab($row->id_bebas_lab); 
-                                                   if(empty($lampiran)) {
-                                                       echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
-                                                   } else {
-                                                      
-                                                       foreach($lampiran as $rw) {
-                                                           echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
-                                                       }
-       
-                                                       echo "</ul>";
-                                                   }
-                                                ?>
+                                              <?php 
+                                                echo "<li><a href='".site_url('/mahasiswa/layanan-fakultas/'.$jenis.'/unduh?id='.$row->id.'&layanan='.$row->id_layanan_fakultas)."'>".$this->layanan_model->get_layanan_fakultas_by_id($row->id_layanan_fakultas)->nama."</a></li>";
+                                              ?>
                                             </td>
-
                                             <td class="align-top">
-                                                    <a href="<?php echo site_url("dosen/wd-layanan-akademik/pengajuan/approve?id=".$this->encrypt->encode($row->id_bebas_lab)) ?>" class="btn-wide mb-2 btn btn-primary btn-sm">Verifikasi</a>
+                                                <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="verifikasi">
+                                                    <button style="width: 80px;" type="button" class="mb-2 btn btn-primary btn-sm"  data-toggle="modal" data-target="#verifikasisurat">
+                                                        Verifikasi
+                                                    </button>
+                                                </a>
                                             </td>
-
-                                          
                                         </tr>
                                         <?php
                                             }
@@ -186,11 +180,9 @@ $(document).ready(function() {
 <script>
     $(".verifikasi").click(function () {
         var id = $(this).attr('data-id');
-        $("#IDverif").val( id );
-    });    
-    $(".tolak").click(function () {
-        var id = $(this).attr('data-id');
-        $("#IDtolak").val( id );
-    });                               
+        var mhs = $(this).attr('data-mhs');
+        $("#IDSurat").val( id );
+        $("#IDLayanan").val( mhs );
+    });                                
      
 </script>

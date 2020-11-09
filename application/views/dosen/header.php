@@ -10,9 +10,15 @@ $tb_koor = $this->user_model->tugas_dosen_koor($this->session->userdata('userId'
 $tb_koor_kp = $this->user_model->tugas_dosen_koor_kp($this->session->userdata('userId'));
 
 $tugas = $this->user_model->tugas_tambahan_get($this->session->userdata('userId'));
-foreach($tugas as $row){
-    $tb[] = $row->tugas;
+if(empty($tugas)){
+    $tb=array();
 }
+else{
+    foreach($tugas as $row){
+        $tb[] = $row->tugas;
+    }
+}
+
 
 ?>
 <ul class="vertical-nav-menu">
@@ -32,7 +38,24 @@ foreach($tugas as $row){
                                 <li class="app-sidebar__heading">Menu</li>
                                 
                                 
-                                    <li <?php if($this->uri->segment(2) == "pkl" && $this->uri->segment(4) != "koordinator") echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "approval") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-angle-down-circle"></i>
+                                        Approve Layanan Fakultas
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/approval/pembimbing-akademik") ?>"  <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "pembimbing-akademik") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Pembimbing Akademik
+                                            </a>
+                                        </li>
+                                       
+                                    </ul>
+                                </li>
+
+                                <li <?php if($this->uri->segment(2) == "pkl" && $this->uri->segment(4) != "koordinator") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note2"></i>
                                         <?php 
@@ -276,6 +299,22 @@ foreach($tugas as $row){
                                 <!-- Menu Kajur/Sekjur -->
 
                                 <li class="app-sidebar__heading">Ketua Jurusan</li>
+                                <li <?php if($this->uri->segment(2) == "approval") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-angle-down-circle"></i>
+                                        Approve Layanan Fakultas
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/approval/ketua-jurusan") ?>"  <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "ketua-jurusan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Ketua Jurusan
+                                            </a>
+                                        </li>
+                                      
+                                    </ul>
+                                </li>
                                 <li <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) != "bidang-nilai" && $this->uri->segment(3) != "kaprodi" && $this->uri->segment(3) != "komposisi-nilai" && $this->uri->segment(3) != "pkl"  && $this->uri->segment(3) != "rekap-pkl" && $this->uri->segment(3) != "rekap" ) echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-pen"></i>
@@ -627,7 +666,7 @@ foreach($tugas as $row){
                                 <!--        <li>-->
                                 <!--            <a href="<?php echo site_url("dosen/kaprodi/rekap/tugas-akhir") ?>" <?php if($this->uri->segment(2) == "kaprodi" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>-->
                                 <!--                <i class="metismenu-icon">-->
-                                <!--                 </i>Tugas Akhir
+                                <!--                 </i>Tugas Akhir -->
                                 <!--            </a>-->
                                 <!--        </li>-->
                                 <!--        <li>-->
@@ -730,8 +769,22 @@ foreach($tugas as $row){
 
                                 <?php if(in_array(1,$tb)){ ?>
                                 <!-- Menu Dekan -->
-
                                 <li class="app-sidebar__heading">Dekan</li>
+                                <li <?php if($this->uri->segment(2) == "approval") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-angle-down-circle"></i>
+                                        Approve Layanan Fakultas
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/approval/dekan") ?>"  <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "dekan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Dekan
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                                 <li >
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-monitor"></i>
@@ -790,8 +843,8 @@ foreach($tugas as $row){
                                 <?php if(in_array(2,$tb)){ ?>
                                 <!-- WD 1 -->
 
-                                <li class="app-sidebar__heading">Wakil Dekan II</li>
-                                <li <?php if($this->uri->segment(2) == "wd-layanan-akademik") echo 'class="mm-active"' ?>>
+                                <li class="app-sidebar__heading">Wakil Dekan I</li>
+                                <li <?php if($this->uri->segment(2) == "approval") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                     <?php 
                                         $lay_aka_form = count($this->layanan_model->get_bebas_lab_wd1());
@@ -804,7 +857,7 @@ foreach($tugas as $row){
                                     </a>
                                     <ul>
                                         <li>
-                                        <a href="<?php echo site_url("dosen/wd-layanan-akademik/pengajuan") ?>" <?php if($this->uri->segment(2) == "wd-layanan-akademik" && $this->uri->segment(3) == "pengajuan") echo 'class="mm-active"' ?>>
+                                        <a href="<?php echo site_url("dosen/approval/wd1") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "wd1") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Form Akademik <span class="badge badge-danger"><?php echo $lay_aka_form > 0 ? $lay_aka_form : "" ?></span>
                                             </a>

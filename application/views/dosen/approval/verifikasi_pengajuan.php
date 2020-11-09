@@ -8,7 +8,7 @@
                                         </i>
                                     </div>
                                     
-                                    <div>Pengajuan Bebas Lab
+                                    <div>Approval Pengajuan Layanan Fakultas Mahasiswa
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
@@ -24,6 +24,7 @@
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
+                        $seg = $this->uri->segment(3);
                         ?>
                             
                          <div class="main-card mb-3 card">
@@ -35,7 +36,6 @@
                                             <th style="width: 5%;">#</th>
                                             <th style="width: 13%;">Waktu Pengajuan</th>
                                             <th style="width: 25%;">Npm<br>Nama</th>
-                                            <th style="width: 12%;">Jurusan</th>
                                             <th style="width: 25%;">Lampiran</th>
                                             <th style="width: 20%;">Aksi</th>
                                         </tr>
@@ -51,7 +51,6 @@
                                             $n = 0;
                                             $jml = count($form);
                                             foreach($form as $row) {
-                                              
                                         ?>
                                         <tr>
                                             <td class="align-top">
@@ -71,20 +70,17 @@
                                             <td class="align-top">
                                                <?php 
                                                    echo $row->npm;
+                                                   
                                                    echo "<br>";
                                                    echo $this->user_model->get_mahasiswa_name($row->npm);
                                                ?>
                                             </td>
 
                                             <td class="align-top">
-                                               <?php 
-                                                   echo $this->user_model->get_jurusan_nama($row->npm);
-                                               ?>
-                                            </td>
-
-                                            <td class="align-top">
                                                 <?php 
-                                                   $lampiran = $this->layanan_model->get_lampiran_bebas_lab($row->id_bebas_lab); 
+                                                   echo "<li><a href='".site_url('/mahasiswa/layanan-fakultas/'.$seg.'/unduh?id='.$row->id.'&layanan='.$row->id_layanan_fakultas)."'>".$this->layanan_model->get_layanan_fakultas_by_id($row->id_layanan_fakultas)->nama."</a></li>";
+                                                   echo "<br>";
+                                                   $lampiran = $this->layanan_model->get_lampiran_layanan_list($row->id); 
                                                    if(empty($lampiran)) {
                                                        echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
                                                    } else {
@@ -99,7 +95,7 @@
                                             </td>
 
                                             <td class="align-top">
-                                                    <a href="<?php echo site_url("dosen/wd-layanan-akademik/pengajuan/approve?id=".$this->encrypt->encode($row->id_bebas_lab)) ?>" class="btn-wide mb-2 btn btn-primary btn-sm">Verifikasi</a>
+                                            <a href="<?php echo site_url("dosen/approval/$seg/approve?id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-2 btn btn-primary btn-sm">Setujui</a>
                                             </td>
 
                                           

@@ -4298,6 +4298,7 @@ class Dosen extends CI_Controller {
 		$id_meta = $data['id_meta'];
 		$id_bebas = $data['id_bebas_lab'];
 		$ttd = $data['ttd'];
+		$id_layanan = $data['id_layanan'];
 
 		//update status dan ttd
 		$kalab = array(
@@ -4309,8 +4310,13 @@ class Dosen extends CI_Controller {
 		//cek
 		$cek = $this->layanan_model->cek_bebas_lab_status($id_bebas);
 		if(empty($cek)){
-			$status = 1;
+			$status = 0;
 			$this->layanan_model->update_bebas_lab_status($id_bebas,$status);
+
+			//layanan fakultas status > 1 & add tingkat
+			$tingkat = 2; // id approve wd 1
+			$this->layanan_model->update_status_layanan($id_layanan,$status);
+			$this->layanan_model->update_tingkat_layanan($id_layanan,$tingkat);
 		}
 
 		redirect(site_url("/dosen/bebas-lab/pengajuan"));
@@ -4320,12 +4326,12 @@ class Dosen extends CI_Controller {
 	function wd_layanan_akademik()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['form'] = $this->layanan_model->get_bebas_lab_wd1();
+		$data['form'] = $this->layanan_model->get_approval_wd1_fakultas($this->session->userdata('userId'));
 
 		$this->load->view('header_global', $header);
 		$this->load->view('dosen/header');
 
-		$this->load->view('dosen/wd1/verifikasi_lab',$data);
+		$this->load->view('dosen/approval/verifikasi_pengajuan',$data);
 		
 		$this->load->view('footer_global');
 	}
@@ -4353,10 +4359,137 @@ class Dosen extends CI_Controller {
 		// print_r($data);
 		$id = $data['id_bebas_lab'];
 		$ttd = $data['ttd'];
+		$id_fak_mhs = $data['id_fak_mhs'];
 
 		//update bebas lab
 		$this->layanan_model->approve_bebas_lab_wd($id,$ttd);
+
+		//get fak mhs
+		$fak_mhs = $this->layanan_model->get_form_mhs_id($id_fak_mhs);
+		//input surat
+		//1 = akademik, 2 = umum, 3 = kemahasiswaan
+		$surat = array(
+			"layanan" => 1,
+			"id_layanan_fakultas" => $fak_mhs->id_layanan_fakultas,
+			"id_layanan_fakultas_mahasiswa" => $id_fak_mhs,
+		);
+		$this->layanan_model->input_surat_fakultas($surat);
 		redirect(site_url("/dosen/wd-layanan-akademik/pengajuan"));
+	}
+
+	function layanan_fak_mhs()
+	{
+		$seg = $this->uri->segment(3);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		if($seg == "pembimbing-akademik"){ // pembimbing-15
+			$data['form'] = $this->layanan_model->get_approval_pa_fakultas($this->session->userdata('userId'));
+		}elseif($seg == "ketua-jurusan"){ // kajur-10
+			$data['form'] = $this->layanan_model->get_approval_kajur_fakultas($this->session->userdata('userId'));
+		}elseif($seg == "dekan"){ // dekan-1
+			$data['form'] = $this->layanan_model->get_approval_dekan_fakultas($this->session->userdata('userId'));
+		}elseif($seg == "wd1"){ //wd1
+			$data['form'] = $this->layanan_model->get_approval_wd1_fakultas($this->session->userdata('userId'));
+		}
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/approval/verifikasi_pengajuan',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function layanan_fak_mhs_approve()
+	{
+		$seg = $this->uri->segment(3);
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		switch($seg){
+			case "pembimbing-akademik":
+			$id_approver = 15;
+			break;
+			case "ketua-jurusan":
+			$id_approver = 10;
+			break;
+			case "dekan":
+			$id_approver = 1;
+			break;
+			case "wd1":
+			$id_approver = 2;
+			break;
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['form'] = $this->layanan_model->get_form_mhs_id($id);
+		$data['id_approver'] = $id_approver;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/approval/verifikasi_approve',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function layanan_fak_mhs_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$seg = $this->uri->segment(3);
+		$id_lay = $data['id_lay_fak'];
+		$ttd = $data['ttd'];
+		$approver = $data['id_approver'];
+		$jenis = $data['jenis'];
+		$approval = array(
+			"id_layanan_mahasiswa" => $id_lay,
+			"approver_id" => $approver ,
+			"insert_by" => $this->session->userdata('userId'),
+			"ttd" => $ttd
+		);
+		if($approver > 4){
+			$this->layanan_model->insert_approval_layanan($approval);
+		}
+		else{
+			//update
+			$data_update=array(
+				"insert_by"=>$this->session->userdata('userId'),
+				"ttd" => $ttd
+			);
+			$this->layanan_model->update_approval_layanan($id_lay,$approver,$data_update);
+		}
+		
+		//hapus tingkat
+		$tingkat = $this->layanan_model->get_form_mhs_id($id_lay)->tingkat;
+		if (strpos($tingkat, '#') !== false) {
+			$approver2 = $approver."#";
+		}else{
+			$approver2 = $approver;
+		}	
+		$new_tingkat = str_replace("$approver2","",$tingkat);		
+
+		$this->layanan_model->update_tingkat_layanan($id_lay,$new_tingkat);
+
+		//ubah status menjadi 1 dan input surat
+		$cek_tingkat = $this->layanan_model->get_form_mhs_id($id_lay);
+		if($cek_tingkat->tingkat == "" || $cek_tingkat->tingkat == null){
+			$status = 1;
+			$this->layanan_model->update_status_layanan($id_lay,$status);
+		}
+
+		//if bebas laboratorium
+		if($cek_tingkat->id_layanan_fakultas == 2){
+			//id bebas lab
+			$id_lab = $this->layanan_model->get_id_bebas_lab($id_lay)->id_bebas_lab;
+
+			//update bebas lab
+			$this->layanan_model->approve_bebas_lab_wd($id_lab,$ttd);	
+		}
+
+		redirect(site_url("/dosen/approval/$seg"));		
+
 	}
 
 }

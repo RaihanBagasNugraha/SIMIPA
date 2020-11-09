@@ -44,6 +44,12 @@ class Layanan_model extends CI_Model
 		return $result->result();
     }
 
+    function get_form_mhs_id($id)
+    {
+        $result = $this->db->query("SELECT * FROM `layanan_fakultas_mahasiswa` WHERE id = $id");
+		return $result->row();
+    }
+
     function get_form_mhs2($npm,$bagian)
     {
         $result = $this->db->query("SELECT layanan_fakultas_mahasiswa.* FROM layanan_fakultas_mahasiswa, layanan_fakultas WHERE layanan_fakultas_mahasiswa.npm = $npm AND layanan_fakultas_mahasiswa.id_layanan_fakultas = layanan_fakultas.id_layanan_fakultas AND layanan_fakultas.bagian LIKE '$bagian' order by layanan_fakultas_mahasiswa.created_at desc ");
@@ -303,6 +309,162 @@ class Layanan_model extends CI_Model
         $this->db->where('id_bebas_lab', $where);
 	    $this->db->update('bebas_lab', array('status' => 2,'ttd_dekan'=>$ttd));
     }
+
+    function approve_bebas_lab_fakultas($where,$update)
+    {
+        $this->db->where('id_bebas_lab', $where);
+	    $this->db->update('bebas_lab', array('status' => 3,'updated_at'=>$update));
+    }
+
+    function input_surat_fakultas($data)
+    {
+        $this->db->insert('surat_layanan_fakultas', $data);
+    }
+
+    function get_surat_fakultas_by_layanan($no)
+    {
+        $result = $this->db->query("SELECT * FROM `surat_layanan_fakultas` WHERE layanan = $no AND status = 0");
+		return $result->result();
+    }
+
+    function update_surat_fakultas($where,$data)
+	{
+        $this->db->where('id', $where);
+	    $this->db->update('surat_layanan_fakultas', $data);
+    }
+
+    function get_no_surat_fakultas($id_fak_mhs)
+    {
+        $result = $this->db->query("SELECT * FROM `surat_layanan_fakultas` WHERE id_layanan_fakultas_mahasiswa = $id_fak_mhs")->row();
+		return $result;
+    }
+
+    function get_layanan_approver()
+    {
+        $result = $this->db->query("SELECT * FROM layanan_fakultas_approver");
+		return $result->result();
+    }
+
+    function insert_approver($where,$data)
+    {
+        $this->db->where('id_layanan_fakultas', $where);
+	    $this->db->update('layanan_fakultas',array('approver' => $data));
+    }
+
+    function insert_approver_mhs($where,$data)
+    {
+        $this->db->where('id', $where);
+	    $this->db->update('layanan_fakultas_mahasiswa',array('tingkat' => $data));
+    }
+
+    function get_layanan_fakultas_by_id($id)
+    {
+        $result = $this->db->query("SELECT * FROM `layanan_fakultas` WHERE id_layanan_fakultas = $id");
+		return $result->row();
+    }
+
+    //mahasiswa
+    function get_lampiran_layanan($id)
+    {
+        $result = $this->db->query("SELECT *,a.id as id_brk FROM layanan_fakultas_lampiran a, layanan_fakultas_mahasiswa b WHERE b.id = $id AND b.id = a.id_layanan_fakultas_mahasiswa");
+		return $result->result();
+    }
+
+    function insert_lampiran_layanan($data)
+    {
+        $this->db->insert('layanan_fakultas_lampiran', $data);
+    }
+
+    function delete_lampiran_layanan($data)
+	{
+		$this->db->delete('layanan_fakultas_lampiran', $data);
+    }
+
+    function get_lampiran_layanan_list($idlay)
+    {
+        $this->db->select('a.*, b.nama');
+		$this->db->from('layanan_fakultas_lampiran a');
+		$this->db->join('jenis_berkas_lampiran b', 'a.jenis_berkas = b.id_jenis');
+		$this->db->join('layanan_fakultas_mahasiswa c', 'a.id_layanan_fakultas_mahasiswa = c.id');
+		$this->db->where(array('c.id' => $idlay));
+		$query = $this->db->get();
+		
+		return $query->result();
+    }
+
+    //layanan pa (kode 15)
+    function get_approval_pa_fakultas($id_user)
+    {
+        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, tbl_users_mahasiswa c WHERE a.tingkat LIKE '15%' AND c.dosen_pa = $id_user AND a.npm = c.npm AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 15) order by a.updated_at");
+		return $result->result();
+    }
+
+    //layanan kajur (kode 10)
+    function get_approval_kajur_fakultas($id_user)
+    {
+        $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a, tbl_users_mahasiswa b, tbl_users_dosen c WHERE a.tingkat LIKE '10%' AND c.id_user = $id_user AND c.jurusan = b.jurusan AND a.npm = b.npm AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 10) order by a.updated_at");
+		return $result->result();
+    }
+
+    //layanan dekan (kode 1)
+    function get_approval_dekan_fakultas($id_user)
+    {
+        $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a WHERE a.tingkat LIKE '1%' AND a.id IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 1 AND ttd is null) order by a.updated_at");
+		return $result->result();
+    }
+
+    //layanan wd 1 (kode 2)
+    function get_approval_wd1_fakultas($id_user)
+    {
+        $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a WHERE a.tingkat LIKE '2%' AND a.id IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 2 AND ttd is null) order by a.updated_at");
+		return $result->result();
+    }
+
+
+    //layanan tendik berkas masuk
+    function get_approval_cek_tendik($bidang)
+    {
+        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE (a.tingkat LIKE '1%' OR a.tingkat LIKE '2%' OR a.tingkat LIKE '3%' OR a.tingkat LIKE '4%') AND a.status = 0 AND b.id_layanan_fakultas = a.id_layanan_fakultas AND b.bagian LIKE '$bidang' AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE (approver_id LIKE '1' OR approver_id LIKE '2' OR approver_id LIKE '3' OR approver_id LIKE '4')) order by a.updated_at");
+		return $result->result();
+    }
+
+    //layanan tendik berkas keluar
+    function get_approval_keluar_tendik($bidang)
+    {
+        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE a.status = 1 AND b.bagian = '$bidang' AND a.id_layanan_fakultas = b.id_layanan_fakultas order by a.updated_at");
+		return $result->result();   
+    }
+
+    function insert_approval_layanan($data)
+    {
+        $this->db->insert('layanan_fakultas_approval', $data);
+    }
+
+    function update_approval_layanan($id_lay,$approver,$data)
+	{
+        $this->db->where('id_layanan_mahasiswa', $id_lay);
+        $this->db->where('approver_id', $approver);
+	    $this->db->update('layanan_fakultas_approval', $data);
+    }
+
+    function update_tingkat_layanan($where,$tingkat)
+	{
+        $this->db->where('id', $where);
+	    $this->db->update('layanan_fakultas_mahasiswa', array('tingkat' => $tingkat));
+    }
+
+    function update_status_layanan($where,$status)
+	{
+        $this->db->where('id', $where);
+	    $this->db->update('layanan_fakultas_mahasiswa', array('status' => $status));
+    }
+
+    function get_id_bebas_lab($id_layanan)
+    {
+        $result = $this->db->query("SELECT * FROM `bebas_lab` WHERE id_layanan_fakultas_mahasiswa = $id_layanan");
+		return $result->row();   
+    }
+    
 
 }
 ?>

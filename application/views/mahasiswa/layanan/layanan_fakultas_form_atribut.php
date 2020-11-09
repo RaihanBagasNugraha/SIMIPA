@@ -40,7 +40,8 @@
                                             <div class="col-sm-9">
                                                 <input type="text" class = "form-control" name = "layanan" required value="<?php echo $layanan->nama ?>" readonly />
                                                 <input type="hidden" class = "form-control" name = "id_layanan"  value="<?php echo $layanan->id_layanan_fakultas ?>" /> 
-                                                <input type="hidden" class = "form-control" name = "jenis"  value="<?php echo $jns ?>" />                                         
+                                                <input type="hidden" class = "form-control" name = "jenis"  value="<?php echo $jns ?>" />      
+                                                <input type="hidden" class = "form-control" name = "approver"  value="<?php echo $layanan->approver ?>" />                                    
                                             </div>
                                         </div>
 

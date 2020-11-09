@@ -6,7 +6,7 @@
                                         <i class="pe-7s-file icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Approval Bebas Laboratorium
+                                    <div>Approval Pengajuan Layanan Fakultas Mahasiswa
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
@@ -23,16 +23,18 @@
 
                                 echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                             }
+                            $seg = $this->uri->segment(3);
                         ?>
 
                         <div class="row">
                         <div class="col-md-12">
                          <div class="main-card mb-3 card">
-                                <div class="card-header">Bebas Laboratorium</div>
+                                <div class="card-header"></div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url('dosen/wd-layanan-akademik/pengajuan/simpan') ?>" >
-                                    <input value="<?php echo $form->id_bebas_lab ?>" type = "hidden" required name="id_bebas_lab" >
-                                    <input value="<?php echo $form->id_layanan_fakultas_mahasiswa ?>" type = "hidden" required name="id_fak_mhs" >
+                                <form method="post" action="<?php echo site_url("dosen/approval/$seg/save") ?>" >
+                                    <input value="<?php echo $form->id ?>" type = "hidden" required name="id_lay_fak" >
+                                    <input value="<?php echo $id_approver ?>" type = "hidden" required name="id_approver" >
+                                    <input value="<?php echo $this->layanan_model->get_layanan_fakultas_by_id($form->id_layanan_fakultas)->bagian ?>" type = "hidden" required name="jenis" >
 
                                     <!-- NPM -->
                                     <div class="position-relative row form-group">

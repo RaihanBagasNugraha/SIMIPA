@@ -66,12 +66,60 @@ foreach($tugas as $row){
                                 <!-- Menu Admin Fakultas -->
                                 
                                 <li class="app-sidebar__heading">Admin Fakultas</li>
-                                <li <?php if($this->uri->segment(2) == "") echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "verifikasi-berkas-masuk-fakultas") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note2"></i>
-                                        Verifikasi Berkas
-                                        
+                                        Verifikasi Berkas Masuk
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("tendik/verifikasi-berkas-masuk-fakultas/akademik") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-masuk-fakultas" && $this->uri->segment(3) == "akademik") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Akademik
+                                            </a>
+                                        </li> 
+                                        <li>
+                                            <a href="<?php echo site_url("tendik/verifikasi-berkas-masuk-fakultas/umum-keuangan") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-masuk-fakultas" && $this->uri->segment(3) == "umum-keuangan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Umum dan Keuangan
+                                            </a>
+                                        </li> 
+                                        <li>
+                                            <a href="<?php echo site_url("tendik/verifikasi-berkas-masuk-fakultas/kemahasiswaan") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-masuk-fakultas" && $this->uri->segment(3) == "kemahasiswaan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Kemahasiswaan
+                                            </a>
+                                        </li> 
+                                    </ul>
+                                    
+                                </li>
+                                <li <?php if($this->uri->segment(2) == "verifikasi-berkas-fakultas") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Verifikasi Berkas Keluar
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("tendik/verifikasi-berkas-fakultas/akademik") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-fakultas" && $this->uri->segment(3) == "akademik") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Akademik
+                                            </a>
+                                        </li> 
+                                        <li>
+                                            <a href="<?php echo site_url("tendik/verifikasi-berkas-fakultas/umum-keuangan") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-fakultas" && $this->uri->segment(3) == "umum-keuangan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Umum dan Keuangan
+                                            </a>
+                                        </li> 
+                                        <li>
+                                            <a href="<?php echo site_url("tendik/verifikasi-berkas-fakultas/kemahasiswaan") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-fakultas" && $this->uri->segment(3) == "kemahasiswaan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Kemahasiswaan
+                                            </a>
+                                        </li> 
+                                    </ul>
                                     
                                 </li>
                                 <li <?php if($this->uri->segment(2) == "atribut-form") echo 'class="mm-active"' ?>>

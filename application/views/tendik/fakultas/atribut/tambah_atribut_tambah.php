@@ -57,6 +57,28 @@
                                            
                                         </div>
 
+
+                                        <div class="position-relative row form-group">
+                                            <label for="prodi" class="col-sm-3 col-form-label">Tanda Tangan &emsp;<label class="btn btn-primary" id='tambah_ttd'>+</label> </label>
+                                        </div>
+
+                                        <div id="ttd" style="display:none">
+                                            <div class="position-relative row form-group">
+                                                <label for="prodi" class="col-sm-12 col-form-label"><b>Isi tanda tangan untuk form, sesuai dengan nomor urutan tanda tangan yang dibutuhkan pertama (tingkat paling bawah) hingga akhir (tingkat atas).</b></label>
+                                                <?php 
+                                                    $list_tugas = $this->layanan_model->get_layanan_approver();
+                                                    $n=0;
+                                                    foreach($list_tugas as $row){
+                                                ?>
+                                                    <span class="col-sm-6 col-form-label"><?php  echo "<b><span style='color:red'>".++$n.".</span></b> ".$row->nama ?></span>
+                                                <?php } ?>
+                                                <label for="prodi" class="col-sm-12 col-form-label">Contoh : form membutuhkan tanda tangan pembimbing akademik kemudian wakil dekan 1 maka tulis dengan nomor : <b><span style='color:red'>15#1</span></b></label>
+                                                <label for="prodi" class="col-sm-6 col-form-label"><input type="text" class = "form-control" name = "ttd" value="" placeholder = "cth: 15#1"/></label>
+                                            </div>
+                                        </div>
+
+
+
                                             <div class="position-relative row form-group">
                                                 <div class="col-sm-9 offset-sm-3">
                                                 <button id="preview" value="<?php if($this->input->get('aksi') == "ubah") echo "tambah"; ?>" type="submit" class="btn-shadow btn btn-info">
@@ -176,6 +198,11 @@ $(document).ready(function(){
             }
         });    
     });  
+
+    $( "#tambah_ttd" ).click(function() {
+        jQuery("#ttd").show();
+    });
+
 });
 </script>
 

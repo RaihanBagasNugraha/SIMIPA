@@ -406,6 +406,10 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
     $route['mahasiswa/layanan-fakultas/(:any)/form'] = 'mahasiswa/layanan_fakultas_form';
     $route['mahasiswa/layanan-fakultas/(:any)/form-layanan'] = 'mahasiswa/layanan_fakultas_form_layanan';
     $route['mahasiswa/layanan-fakultas/(:any)/form-simpan'] = 'mahasiswa/layanan_fakultas_form_simpan';
+    $route['mahasiswa/layanan-fakultas/(:any)/ajukan'] = 'mahasiswa/layanan_fakultas_ajukan';
+    $route['mahasiswa/layanan-fakultas/(:any)/unggah'] = 'mahasiswa/layanan_fakultas_unggah';
+    $route['mahasiswa/layanan-fakultas/(:any)/hapus-berkas'] = 'mahasiswa/layanan_fakultas_hapus_berkas';
+    $route['mahasiswa/layanan-fakultas/(:any)/simpan'] = 'mahasiswa/layanan_fakultas_simpan';
 
     $route['mahasiswa/layanan-fakultas/akademik/bebas-lab'] = 'mahasiswa/layanan_bebas_lab';
     $route['mahasiswa/layanan-fakultas/akademik/bebas-lab/tambah'] = 'mahasiswa/layanan_bebas_lab_tambah';
@@ -416,6 +420,14 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
     $route['mahasiswa/hapus-lab'] = 'mahasiswa/hapus_lab';
     $route['mahasiswa/simpan-data-lab'] = 'mahasiswa/simpan_data_lab';
     $route['mahasiswa/ajukan-bebas-lab'] = 'mahasiswa/ajukan_bebas_lab';
+    $route['mahasiswa/layanan-fakultas/akademik/bebas-ruang-baca'] = 'mahasiswa/layanan_bebas_ruang_baca';
+
+
+    //dosen
+    $route['dosen/approval/(:any)'] = 'dosen/layanan_fak_mhs';
+    $route['dosen/approval/(:any)/approve'] = 'dosen/layanan_fak_mhs_approve';
+    $route['dosen/approval/(:any)/save'] = 'dosen/layanan_fak_mhs_save';
+
     //unduh layanan
     $route['mahasiswa/layanan-fakultas/(:any)/unduh'] = 'layanan/layanan_fakultas_form_unduh';
     $route['mahasiswa/unduh-bebas-lab'] = 'layanan/layanan_fakultas_bebas_lab';
@@ -423,6 +435,11 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
     //tendik
     $route['tendik/bebas-lab/pengajuan'] = 'tendik/bebas_lab';
     $route['tendik/bebas-lab/pengajuan/aksi'] = 'tendik/bebas_lab_aksi';
+    $route['tendik/verifikasi-berkas-fakultas/(:any)'] = 'tendik/verifikasi_fakultas';
+    $route['tendik/verifikasi-berkas-fakultas-simpan/(:any)'] = 'tendik/verifikasi_fakultas_simpan';
+    $route['tendik/verifikasi-berkas-masuk-fakultas/(:any)'] = 'tendik/verifikasi_masuk_fakultas';
+    $route['tendik/verifikasi-berkas-masuk-fakultas-simpan/(:any)'] = 'tendik/verifikasi_masuk_fakultas_simpan';
+
 
     //kalab
     $route['dosen/bebas-lab/pengajuan'] = 'dosen/bebas_lab';

@@ -59,7 +59,7 @@
                                             <th style="width: 5%;">#</th>
                                             <th style="width: 30%;">Nama Laboratorium</th>
                                             <th style="width: 20%;">Status</th>
-                                            <th style="width: 15%;">Waktu<br>Pengajuan/Approval</th>
+                                            <th style="width: 15%;">Waktu<br>Approval</th>
                                             <th style="width: 30%;">Aksi</th>
                                             <!-- <th style="width: 15%;">Keterangan</th> -->
                                         </tr>
@@ -102,11 +102,17 @@
                                                     elseif($row->status_lab == '1'){
                                                         echo "<span style='color:white' class='btn-wide mb-2 btn btn-primary btn-sm btn-block'>Menunggu Approval Kepala Lab.</span>";
                                                     }
-                                                    elseif($row->status_lab == '2' && $row->status_bebas != '2'){
+                                                    elseif($row->status_lab == '2' && $row->status_bebas == '0'){
+                                                        echo "<span style='color:white' class='btn-wide mb-2 btn btn-success btn-sm btn-block'>Approval Kepala Lab.</span>";
+                                                    }
+                                                    elseif($row->status_lab == '2' && $row->status_bebas == '1'){
                                                         echo "<span style='color:white' class='btn-wide mb-2 btn btn-success btn-sm btn-block'>Menunggu Approval Wakil Dekan</span>";
                                                     }
                                                     elseif($row->status_lab == '2' && $row->status_bebas == '2'){
-                                                        echo "<span style='color:white' class='btn-wide mb-2 btn btn-info btn-sm btn-block'>Approval Wakil Dekan</span>";
+                                                        echo "<span style='color:white' class='btn-wide mb-2 btn btn-danger btn-sm btn-block'>Menunggu Verifikasi Staf Fakultas</span>";
+                                                    }
+                                                    elseif($row->status_lab == '2' && $row->status_bebas == '3'){
+                                                        echo "<span style='color:white' class='btn-wide mb-2 btn btn-info btn-sm btn-block'>Diverifikasi</span>";
                                                     }
                                                     elseif($row->status_lab == '3'){
                                                         echo "<span style='color:white' class='btn-wide mb-2 btn btn-danger btn-sm btn-block'>Tolak</span>";

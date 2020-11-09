@@ -8460,7 +8460,15 @@ class Layanan extends CI_Controller {
         $pa = $this->user_model->get_dosen_pa_by_npm($lab->npm);
         $kajur = $this->user_model->get_kajur_by_npm($lab->npm);
         $jurusan = $this->ta_model->get_jurusan($lab->npm);
-        $status = $this->get_prodi_from_npm($lab->npm);     
+        $status = $this->get_prodi_from_npm($lab->npm);    
+        //get nomor surat
+        $srt = $this->layanan_model->get_no_surat_fakultas($lab->id_layanan_fakultas_mahasiswa); 
+        if(empty($srt)){
+            $no_surat = "-";
+        }
+        else{
+            $no_surat = $srt->nomor_surat;
+        }
         $tahun = date("Y");
 
         $pdf = new FPDF('P','mm',array(210,330));
@@ -8473,7 +8481,7 @@ class Layanan extends CI_Controller {
         $pdf->SetFont('Times','BU',14);
         $pdf->Cell(170, $spasi, "FORMULIR BEBAS LABORATORIUM",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(170, $spasi, "Nomor: ............/UN26.17/DT/".$tahun,0,1,'C');
+        $pdf->Cell(170, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(3);
         $pdf->MultiCell(170, $spasi,'Dengan ini Dekan FMIPA Universitas Lampung menerangkan bahwa:', 0, 'L');
         $pdf->Ln(1);
@@ -8528,7 +8536,7 @@ class Layanan extends CI_Controller {
             }
             
 
-            $pdf->Row(array("Kepala ".str_replace("Laboratorium","Lab.",$labs[$n]->nama_lab)."\n".$pdf->Image($ttd[$n],$pdf->GetX()+20, $pdf->GetY(),40,0,'PNG')."\n\n".$kpl_nama[$n]."\nNIP. ".$kpl_nip[$n], "Kepala ".str_replace("Laboratorium","Lab.",$labs[$n+1]->nama_lab)."\n".$pdf->Image($ttd[$n+1],$pdf->GetX()+100, $pdf->GetY(),40,0,'PNG')."\n\n".$kpl_nama[$n+1]."\nNIP. ".$kpl_nip[$n+1]));
+            $pdf->Row(array("Kepala ".str_replace("Laboratorium","Lab.",$labs[$n]->nama_lab)."\n".$pdf->Image($ttd[$n],$pdf->GetX()+20, $pdf->GetY(),30,0,'PNG')."\n\n".$kpl_nama[$n]."\nNIP. ".$kpl_nip[$n], "Kepala ".str_replace("Laboratorium","Lab.",$labs[$n+1]->nama_lab)."\n".$pdf->Image($ttd[$n+1],$pdf->GetX()+100, $pdf->GetY(),30,0,'PNG')."\n\n".$kpl_nama[$n+1]."\nNIP. ".$kpl_nip[$n+1]));
         }
 
         $wd2 = $this->user_model->get_wd_akademik();
@@ -8543,16 +8551,21 @@ class Layanan extends CI_Controller {
 
         if($lab->ttd_dekan == null || $lab->ttd_dekan == ''){
             $ttd_dekan = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=";
+            $date_dekan = "..................";
         }
         else{
             $ttd_dekan = $lab->ttd_dekan;
+            $date_dekan = $this->convert_date($lab->updated_at);
         }
-
+        //cap fakultas
+        if($lab->status == 3){
+            $pdf->Image('assets/images/stamp.png',95,$pdf->GetY()+10,30);
+        }
         $pdf->Ln(3);
         $y_now = $pdf->GetY();
         $pdf->SetFont('Times','',12);
         $pdf->SetX(100);
-        $pdf->MultiCell(80, $spasi, "Bandar Lampung, ".$this->convert_date($lab->updated_at)."\na.n. Dekan,\nWakil Dekan Bid. Akademik dan Kerjasama\n\n".$pdf->Image("$ttd_dekan",$pdf->GetX(), $pdf->GetY()+6,40,0,'PNG')."\n\n".$wd2_name."\nNIP. ".$wd2_nip, 0, 'L');
+        $pdf->MultiCell(80, $spasi, "Bandar Lampung, ".$date_dekan."\na.n. Dekan,\nWakil Dekan Bid. Akademik dan Kerjasama\n\n".$pdf->Image("$ttd_dekan",$pdf->GetX(), $pdf->GetY()+6,30,0,'PNG')."\n\n".$wd2_name."\nNIP. ".$wd2_nip, 0, 'L');
 
         $pdf->SetFont('Times','',10);
         $pdf->SetY($y_now);

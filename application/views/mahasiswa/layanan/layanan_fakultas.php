@@ -107,17 +107,42 @@
                                             </td>
 
                                             <td class="align-top">
-                                               Status
+                                               <?php 
+                                                if($row->status == 0){
+                                                    echo "Menunggu";
+                                                }elseif($row->status == 1){
+                                                    echo "Fakultas";
+                                                }elseif($row->status == 2){
+                                                    echo "Selesai";
+                                                }
+                                               
+                                               ?>
                                             </td>
 
                                             <td class="align-top">
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/unduh?id=".$row->id."&layanan=".$row->id_layanan_fakultas) ?>"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                            <?php 
+                                            if(($row->tingkat == null || $row->tingkat == "") && $row->status < 1){
+                                                //bebas lab
+                                            if($row->id_layanan_fakultas == 2 ){
+
+                                            ?>
+                                            <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/akademik/bebas-lab")  ?> " class="btn-wide mb-2 btn btn-primary btn-sm">Ajukan</a>
+                                            <?php
+                                                }else{
+                                            ?>
+
+                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/ajukan?id=".$this->encrypt->encode($row->id))  ?> " class="btn-wide mb-2 btn btn-primary btn-sm">Ajukan</a>
                                                 &emsp;
                                                 <a data-toggle = "modal" data-id="<?php echo $row->id ?>" data-jns="<?php echo $jns ?>" class="passingID" >
                                                     <span type="button" class="btn mb-2 btn-danger btn-sm "  data-toggle="modal" data-target="#delFormMhs">
                                                         <i class="fa fa-trash" aria-hidden="true"></i> 
                                                     </span>
                                                 </a>
+                                            <?php }
+                                            }else{ ?>
+                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/unduh?id=".$row->id."&layanan=".$row->id_layanan_fakultas) ?>"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                               
+                                            <?php }?>
                                             </td>
                                         </tr>
                                         <?php
