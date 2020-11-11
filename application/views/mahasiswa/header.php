@@ -67,12 +67,6 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                                 </i>Bebas Laboratorium
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="<?php echo site_url('mahasiswa/layanan-fakultas/akademik/bebas-ruang-baca') ?>" <?php if($this->uri->segment(2) == "layanan-fakultas" && $this->uri->segment(4) == "bebas-ruang-baca") echo 'class="mm-active"' ?> >
-                                                <i class="metismenu-icon">
-                                                </i>Bebas Ruang Baca
-                                            </a>
-                                        </li>
                                     </ul>
                                 </li>
 

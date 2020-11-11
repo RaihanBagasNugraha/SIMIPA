@@ -80,5 +80,11 @@ class Parameter_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+	function get_lab_by_nama($nama)
+	{
+		$result = $this->db->query("SELECT * FROM `laboratorium` WHERE nama_lab LIKE '%$nama%'");
+		return $result->row();
+	}
 	
 }

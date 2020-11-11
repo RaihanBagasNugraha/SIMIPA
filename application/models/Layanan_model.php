@@ -402,8 +402,15 @@ class Layanan_model extends CI_Model
     //layanan kajur (kode 10)
     function get_approval_kajur_fakultas($id_user)
     {
-        $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a, tbl_users_mahasiswa b, tbl_users_dosen c WHERE a.tingkat LIKE '10%' AND c.id_user = $id_user AND c.jurusan = b.jurusan AND a.npm = b.npm AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 10) order by a.updated_at");
+        $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a, tbl_users_mahasiswa b, tbl_users_dosen c WHERE a.tingkat LIKE '10%' AND c.id_user = $id_user AND c.jurusan = b.jurusan AND a.npm = b.npm AND b.npm NOT LIKE '__3%' AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 10) order by a.updated_at");
 		return $result->result();
+    }
+
+    //layanan kaprodi s3 (kode 10)
+    function get_approval_kaprodi3_fakultas($id_user)
+    {
+        $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a, tbl_users_mahasiswa b, tbl_users_dosen c WHERE a.tingkat LIKE '10%' AND c.id_user = $id_user AND c.jurusan = b.jurusan AND a.npm = b.npm AND b.npm LIKE '__3%' AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 10) order by a.updated_at");
+        return $result->result();
     }
 
     //layanan dekan (kode 1)
@@ -420,11 +427,39 @@ class Layanan_model extends CI_Model
 		return $result->result();
     }
 
+     //layanan kasubbag akademik (kode 6)
+     function get_approval_kasubag_akademik_fakultas($id_user)
+     {
+         $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a WHERE a.tingkat LIKE '6%' AND a.id IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 6 AND ttd is null) order by a.updated_at");
+         return $result->result();
+     }
+
+    //layanan ruang baca (kode 13)
+    function get_approval_perpustakaan_fakultas($id_user)
+    {
+        $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a WHERE a.tingkat LIKE '13%' AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 13) order by a.updated_at");
+		return $result->result();
+    }
+
+     //layanan pb utama (kode 16)
+    function get_approval_pbb_fakultas($id_user)
+    {
+        $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a, tbl_users_mahasiswa c, tugas_akhir b, tbl_users_dosen d WHERE a.tingkat LIKE '16%' AND d.id_user = $id_user AND d.id_user = b.pembimbing1 AND b.npm = c.npm AND c.npm = a.npm AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 16) order by a.updated_at");
+        return $result->result();
+    }
+
+    //layanan kalab (kode 17)
+    function get_approval_kalab_fakultas($id_user)
+    {
+        $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a, layanan_fakultas_mahasiswa_meta b, layanan_fakultas_atribut c, laboratorium d, tbl_users_tugas e WHERE a.tingkat LIKE '17%' AND a.id_layanan_fakultas = c.id_layanan AND c.nama LIKE '%lab%' AND c.id_atribut = b.meta_key AND a.id = b.id_layanan_fak_mhs AND d.nama_lab LIKE CONCAT('%',b.meta_value,'%') AND e.id_user = $id_user AND e.tugas = 15 AND e.jurusan_unit = d.id_lab");
+        return $result->result();
+    }
+
 
     //layanan tendik berkas masuk
     function get_approval_cek_tendik($bidang)
     {
-        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE (a.tingkat LIKE '1%' OR a.tingkat LIKE '2%' OR a.tingkat LIKE '3%' OR a.tingkat LIKE '4%') AND a.status = 0 AND b.id_layanan_fakultas = a.id_layanan_fakultas AND b.bagian LIKE '$bidang' AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE (approver_id LIKE '1' OR approver_id LIKE '2' OR approver_id LIKE '3' OR approver_id LIKE '4')) order by a.updated_at");
+        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE (a.tingkat LIKE '1%' OR a.tingkat LIKE '2%' OR a.tingkat LIKE '3%' OR a.tingkat LIKE '4%' OR a.tingkat LIKE '5%' OR a.tingkat LIKE '6%' OR a.tingkat LIKE '7%' OR a.tingkat LIKE '8%' OR a.tingkat LIKE '9%') AND a.status = 0 AND b.id_layanan_fakultas = a.id_layanan_fakultas AND b.bagian LIKE '$bidang' AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE (approver_id LIKE '1' OR approver_id LIKE '2' OR approver_id LIKE '3' OR approver_id LIKE '4' OR approver_id LIKE '5' OR approver_id LIKE '6' OR approver_id LIKE '7' OR approver_id LIKE '8' OR approver_id LIKE '9')) order by a.updated_at");
 		return $result->result();
     }
 
@@ -465,6 +500,24 @@ class Layanan_model extends CI_Model
 		return $result->row();   
     }
     
+    function get_approval_layanan($id_layanan)
+    {
+        $result = $this->db->query("SELECT * FROM `layanan_fakultas_approval` WHERE id_layanan_mahasiswa = $id_layanan ORDER BY id_approval");
+		return $result->result();
+    }
+
+    function get_approver_by_id($id_approver)
+    {
+        $result = $this->db->query("SELECT * FROM `layanan_fakultas_approver` WHERE id_nomor = $id_approver");
+		return $result->row();
+    }
+
+    function get_approver_by_id_approver($id_layanan, $id_approver)
+    {
+        $result = $this->db->query("SELECT * FROM `layanan_fakultas_approval` WHERE id_layanan_mahasiswa = $id_layanan AND approver_id = $id_approver");
+		return $result->row();
+    }
+
 
 }
 ?>

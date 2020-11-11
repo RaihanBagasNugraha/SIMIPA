@@ -1579,12 +1579,19 @@ class Mahasiswa extends CI_Controller {
 		$npm = $this->session->userdata('username');
 		$ttd = $data['ttd'];
 		$approver = $data['approver'];
+		$id_layanan = $data['id_layanan'];
 		$data_layanan = array(
 			"npm" => $npm,
-			"id_layanan_fakultas" => $data['id_layanan'],
+			"id_layanan_fakultas" => $id_layanan,
 			"ttd" => $ttd,
 			"tingkat" => null
 		);
+
+		//input nama lab
+		// if($id_layanan == 39){
+		// 	//get id lab
+		// 	$data_layanan['keterangan'] = "";
+		// }
 		//input layanan fak mhs
 		$insert_id = $this->layanan_model->insert_layanan_fak_mhs($data_layanan);
 

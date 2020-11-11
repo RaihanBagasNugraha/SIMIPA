@@ -16,27 +16,33 @@ class Layanan extends CI_Controller {
 
     function convert_date($input)
     {
-        $date = explode("-", substr($input,0,10));
-        $d = (int) $date[2];
-        $m = "";
-        $y = $date[0];
-        switch($date[1])
-        {
-            case '01': $m = "Januari"; break;
-            case '02': $m = "Februari"; break;
-            case '03': $m = "Maret"; break;
-            case '04': $m = "April"; break;
-            case '05': $m = "Mei"; break;
-            case '06': $m = "Juni"; break;
-            case '07': $m = "Juli"; break;
-            case '08': $m = "Agustus"; break;
-            case '09': $m = "September"; break;
-            case '10': $m = "Oktober"; break;
-            case '11': $m = "November"; break;
-            case '12': $m = "Desember"; break;
+        if($input != null || $input != ""){
+            $date = explode("-", substr($input,0,10));
+            $d = (int) $date[2];
+            $m = "";
+            $y = $date[0];
+            switch($date[1])
+            {
+                case '01': $m = "Januari"; break;
+                case '02': $m = "Februari"; break;
+                case '03': $m = "Maret"; break;
+                case '04': $m = "April"; break;
+                case '05': $m = "Mei"; break;
+                case '06': $m = "Juni"; break;
+                case '07': $m = "Juli"; break;
+                case '08': $m = "Agustus"; break;
+                case '09': $m = "September"; break;
+                case '10': $m = "Oktober"; break;
+                case '11': $m = "November"; break;
+                case '12': $m = "Desember"; break;
+            }
+            
+            return $d." ".$m." ".$y;
         }
-        
-        return $d." ".$m." ".$y;
+        else{
+            $date_null = "....................";
+            return $date_null;
+        }
     }
 
     function penyebut($nilai) {
@@ -181,6 +187,41 @@ class Layanan extends CI_Controller {
         return $result;
     }
     
+    function get_approver_data($id_layanan,$id_approver)
+    {
+        $approver = $this->layanan_model->get_approver_by_id_approver($id_layanan,$id_approver); 
+        $blank = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=";
+        if(empty($approver)){
+            $ttd = $blank;
+            $nama = "";
+            $nip = "";
+            $created = "";
+            $updated = "";
+            // $pkt = $this->user_model->get_pangkat_gol_by_id(5);
+            $pangkat =  "";
+        }else{
+            $appr = $this->user_model->get_dosen_data($approver->insert_by);
+            // $pkt = $this->user_model->get_pangkat_gol_by_id($appr->pangkat_gol);
+            $ttd = $approver->ttd;
+            $nama = $appr->gelar_depan." ".$appr->name.", ".$appr->gelar_belakang;
+            $nip = $appr->nip_nik;
+            $created = $approver->created_at;
+            $updated = $approver->updated_at;
+            // $pangkat = $pkt->pangkat."/".$pkt->golongan." ".$pkt->ruang;
+        }
+
+        $result = array(
+            'ttd' => $ttd,
+            'nama' => $nama,
+            'nip' => $nip,
+            'updated' => $updated,
+            'created' => $created,
+            // 'pangkat' => $pangkat
+        );
+        
+        return $result;
+    }
+
     function layanan_fakultas_form_unduh()
 	{
 		$id = $this->input->get('id');
@@ -195,145 +236,191 @@ class Layanan extends CI_Controller {
             case "1":
             //alih studi
             $this->form_1($data,$meta);
+            break;
             case "2":
             //Form Bebas Laboratorium  --> Menu baru
             $this->form_2($data,$meta);
+            break;
             case "3":
             //Form Bukti penyerahan TA
             $this->form_3($data,$meta);
+            break;
             case "4":
             //Form Hapus Mata Kuliah
             $this->form_4($data,$meta);
+            break;
             case "5":
             //Form Wisuda
             $this->form_5($data,$meta);
+            break;
             case "6":
             //Form Cuti
             $this->form_6($data,$meta);
+            break;
             case "7":
             //Form perpanjangan masa studi
             $this->form_7($data,$meta);
+            break;
             case "8":
             //Form perpanjangan masa studi d3
             $this->form_8();
+            break;
             case "9":
             //Form studi terbimbing
             $this->form_9($data,$meta);
+            break;
             case "10":
             //Form ttd dekan
             $this->form_10($data,$meta);
+            break;
             case "11":
             //Form ttd khs
             $this->form_11($data,$meta);
+            break;
             case "12":
             //Form ttd krs
             $this->form_12($data,$meta);
+            break;
             case "13":
             //Form ttd transkrip
             $this->form_13($data,$meta);
+            break;
             case "46":
             //Form akreditasi
             $this->form_46($data,$meta);
+            break;
             case "14":
             //Form bebas ruang baca
             $this->form_14($data,$meta);
+            break;
             case "15":
             //Form bebas sanksi akademik
             $this->form_15($data,$meta);
+            break;
             case "16":
             //Form ket lulus
             $this->form_16($data,$meta);
+            break;
             case "17":
             //Form toefl
             $this->form_17($data,$meta);
+            break;
             case "18":
             //Form pengunduran diri
             $this->form_18($data,$meta);
+            break;
             case "19":
             //Form pengganti ijazah
             $this->form_19($data,$meta);
+            break;
             case "20":
             //Form pengganti transkrip
             $this->form_20($data,$meta);
+            break;
             case "21":
             //Form Tanda Terima Pembayaran Legalisir Ijasah
             $this->form_21($data,$meta);
+            break;
             case "22":
             //Form Tanda Terima Pembayaran Legalisir Transkrip
             $this->form_22($data,$meta);
+            break;
             case "23":
             //Form Tanda Terima transkrip matahari
             $this->form_23($data,$meta);
+            break;
 
             //kemahasiswaan
             case "24":
             //Form kehilangan ktm
             $this->form_24($data,$meta);
+            break;
             case "25":
             //Form legalisir sk bidikmisi
             $this->form_25($data,$meta);
+            break;
             case "26":
             //Form Beasiswa Lengkap
             $this->form_26($data,$meta);
+            break;
             case "27":
             //Form aktif kuliah non asn
             $this->form_27($data,$meta);
+            break;
             case "28":
             //Form aktif kuliah asn
             $this->form_28($data,$meta);
+            break;
             case "29":
             //Form kehilangan bukti ukt
             $this->form_29($data,$meta);
+            break;
             case "30":
             //Form belum memiliki ktm
             $this->form_30($data,$meta);
+            break;
             case "31":
             //Form membuat ktm
             $this->form_31($data,$meta);
+            break;
             case "32":
             //Form tugas kelompok --> menu baru
             $this->form_32($data,$meta);
+            break;
             case "33":
             //Form tugas individu --> menu baru
             $this->form_33($data,$meta);
+            break;
             case "34":
             //Form perubahan nama no rek
             $this->form_34($data,$meta);
+            break;
             case "35":
             //Form Kuisioner Alumni --> menu baru
             $this->form_35($data,$meta);
+            break;
             case "36":
             //Form tidak menerima beasiswa
             $this->form_36($data,$meta);
+            break;
             case "37":
             //Form legalisir ktm
             $this->form_37($data,$meta);
+            break;
 
             //umum dan keuangan
             case "38":
             //Form peminjaman gedung dan alat
             $this->form_38($data,$meta);
+            break;
             case "39":
             //Surat Izin Pelaksanaan Penelitian di Luar Jam Kerja
             $this->form_39($data,$meta);
+            break;
             case "40":
             //Form Izin Pelaksanaan Penelitian di Luar Jam Kerja
             $this->form_40($data,$meta);
+            break;
             case "41":
             //Form keringanan spp
             $this->form_41($data,$meta);
+            break;
             case "42":
             //Form keterlambatan spp
             $this->form_42($data,$meta);
+            break;
             case "43":
             //Form pembebasan spp
             $this->form_43($data,$meta);
+            break;
             case "44":
             //Form verifikasi layanan cap fakultas
             $this->form_44($data,$meta);
+            break;
             case "45":
             //Form wawancara
             $this->form_45($data,$meta);
+            break;
         }
         
     }
@@ -367,7 +454,25 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
-       
+
+        //ttd
+        //PA - 15
+        $app_pa = $this->get_approver_data($data->id,15);
+        //kajur - 10
+        $app_kajur = $this->get_approver_data($data->id,10);
+        //dekan - 1
+        $app_dekan = $this->get_approver_data($data->id,1);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
+
         $count = count($meta);
 
         $numPage = '/PM/MIPA/I/22';
@@ -375,19 +480,19 @@ class Layanan extends CI_Controller {
         $kode = 0;
         $type = '';
         $mhs = $this->user_model->get_mahasiswa_data_npm($data->npm);
-        $pa = $this->user_model->get_dosen_pa_by_npm($data->npm);
-        $kajur = $this->user_model->get_kajur_by_npm($data->npm);
+        // $pa = $this->user_model->get_dosen_pa_by_npm($data->npm);
+        // $kajur = $this->user_model->get_kajur_by_npm($data->npm);
         $jurusan = $this->ta_model->get_jurusan($data->npm);
         $status = $this->get_prodi_from_npm($data->npm);       
         
-        if(empty($kajur)){
-            $kajur_name = "";
-            $kajur_nip = "";
-        }
-        else{
-            $kajur_name = $kajur->gelar_depan." ".$kajur->name.", ".$kajur->gelar_belakang;
-            $kajur_nip = $kajur->nip_nik;
-        }
+        // if(empty($kajur)){
+        //     $kajur_name = "";
+        //     $kajur_nip = "";
+        // }
+        // else{
+        //     $kajur_name = $kajur->gelar_depan." ".$kajur->name.", ".$kajur->gelar_belakang;
+        //     $kajur_nip = $kajur->nip_nik;
+        // }
 
         $pdf = new FPDF('P','mm',array(210,330));
         //$pdf->setting_page_footer($numPage, $qrKode, $kode);
@@ -457,13 +562,17 @@ class Layanan extends CI_Controller {
         $pdf->Cell(60, $spasi, "Ketua Jurusan ".$jurusan.",");
         $pdf->Cell(30, $spasi, "");
         $pdf->Cell(60, $spasi, "Pembimbing Akademik,",0,1);
+
+        $pdf->Cell(60, $spasi,$pdf->Image($app_kajur['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+        $pdf->Cell(30, $spasi, "");
+        $pdf->Cell(60, $spasi,$pdf->Image($app_pa['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
-        $pdf->Cell(60, $spasi, $kajur_name);
+        $pdf->Cell(60, $spasi, $app_kajur['nama']);
         $pdf->Cell(30, $spasi, "");
-        $pdf->Cell(60, $spasi, $pa->gelar_depan." ".$pa->name.", ".$pa->gelar_belakang,0,1);
-        $pdf->Cell(60, $spasi, "NIP. ".$kajur_nip);
+        $pdf->Cell(60, $spasi, $app_pa['nama'],0,1);
+        $pdf->Cell(60, $spasi, "NIP. ".$app_kajur['nip']);
         $pdf->Cell(30, $spasi, "");
-        $pdf->Cell(60, $spasi, "NIP. ".$pa->nip_nik,0,1);
+        $pdf->Cell(60, $spasi, "NIP. ".$app_pa['nip'],0,1);
 
         //surat tidak melanggar tata tertib
         $tahun = date("Y");
@@ -472,7 +581,7 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN TIDAK MELANGGAR TATA TERTIB",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/DT/".$tahun,0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Dengan ini Dekan FMIPA Universitas Lampung menerangkan bahwa:', 0, 'L');
         $pdf->Ln(2);
@@ -513,35 +622,28 @@ class Layanan extends CI_Controller {
         $pdf->SetX(112);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_dekan['updated']),0,1);
         $pdf->SetX(112);
 
-        $dekan = $this->user_model->get_dekan();
+        // $dekan = $this->user_model->get_dekan();
         $pdf->Cell(28, $spasi,'Dekan,',0,1);
+        $pdf->SetX(112);
+        $pdf->Image($cap,95,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_dekan['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(112);
-        if(!empty($dekan))
-        {
-            $pdf->Cell(68, $spasi, $dekan->gelar_depan." ".$dekan->name.", ".$dekan->gelar_belakang,0,1);
-            $pdf->SetFont('Times','',12);
-            $pdf->SetX(112);
-            $pdf->Cell(68, $spasi, "NIP. ".$dekan->nip_nik,0,1);
-        }
-        else{
-            $pdf->Cell(68, $spasi, "",0,1);
-            $pdf->SetFont('Times','',12);
-            $pdf->SetX(112);
-            $pdf->Cell(68, $spasi, "NIP. ",0,1);
-        }
-       
+        $pdf->Cell(68, $spasi, $app_dekan['nama'],0,1);
+        $pdf->SetFont('Times','',12);
+        $pdf->SetX(112);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_dekan['nip'],0,1);
 
         $pdf->AddPage('P');
         $pdf->SetFont('Times','BU',14);
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN BERKELAKUAN BAIK",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/DT/".$tahun,0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Dengan ini Dekan FMIPA Universitas Lampung menerangkan bahwa:', 0, 'L');
         $pdf->Ln(2);
@@ -580,32 +682,27 @@ class Layanan extends CI_Controller {
         $pdf->SetX(112);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_dekan['updated']),0,1);
         $pdf->SetX(112);
         $pdf->Cell(28, $spasi,'Dekan,',0,1);
+        $pdf->SetX(112);
+        $pdf->Image($cap,95,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_dekan['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(112);
-        if(!empty($dekan))
-        {
-            $pdf->Cell(68, $spasi, $dekan->gelar_depan." ".$dekan->name.", ".$dekan->gelar_belakang,0,1);
-            $pdf->SetFont('Times','',12);
-            $pdf->SetX(112);
-            $pdf->Cell(68, $spasi, "NIP. ".$dekan->nip_nik,0,1);
-        }
-        else{
-            $pdf->Cell(68, $spasi, "",0,1);
-            $pdf->SetFont('Times','',12);
-            $pdf->SetX(112);
-            $pdf->Cell(68, $spasi, "NIP. ",0,1);
-        }
+        $pdf->Cell(68, $spasi, $app_dekan['nama'],0,1);
+        $pdf->SetFont('Times','',12);
+        $pdf->SetX(112);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_dekan['nip'],0,1);
+        
 
         $pdf->AddPage('P');
         $pdf->SetFont('Times','BU',14);
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN TIDAK DIPUTUS STUDIKAN",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/DT/".$tahun,0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Dengan ini Dekan FMIPA Universitas Lampung menerangkan bahwa:', 0, 'L');
         $pdf->Ln(2);
@@ -644,26 +741,20 @@ class Layanan extends CI_Controller {
         $pdf->SetX(112);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_dekan['updated']),0,1);
         $pdf->SetX(112);
         $pdf->Cell(28, $spasi,'Dekan,',0,1);
+        $pdf->SetX(112);
+        $pdf->Image($cap,95,$pdf->GetY(),30);        
+        $pdf->Cell(60, $spasi,$pdf->Image($app_dekan['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(112);
-        if(!empty($dekan))
-        {
-            $pdf->Cell(68, $spasi, $dekan->gelar_depan." ".$dekan->name.", ".$dekan->gelar_belakang,0,1);
-            $pdf->SetFont('Times','',12);
-            $pdf->SetX(112);
-            $pdf->Cell(68, $spasi, "NIP. ".$dekan->nip_nik,0,1);
-        }
-        else{
-            $pdf->Cell(68, $spasi, "",0,1);
-            $pdf->SetFont('Times','',12);
-            $pdf->SetX(112);
-            $pdf->Cell(68, $spasi, "NIP. ",0,1);
-        }
-
+        $pdf->Cell(68, $spasi, $app_dekan['nama'],0,1);
+        $pdf->SetFont('Times','',12);
+        $pdf->SetX(112);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_dekan['nip'],0,1);
+     
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
         // Title
@@ -1080,6 +1171,25 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //PA - 15
+        $app_pa = $this->get_approver_data($data->id,15);
+        //kajur - 10
+        $app_kajur = $this->get_approver_data($data->id,10);
+        //wd 1- 2
+        $app_wd = $this->get_approver_data($data->id,2);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
+        
        
         $count = count($meta);
   
@@ -1160,12 +1270,12 @@ class Layanan extends CI_Controller {
         $pdf->Cell(90, $spasi,'Menyetujui,',0,1);
         $pdf->Cell(85, $spasi,'Pembimbing Akademik,');
         $pdf->Cell(60, $spasi,'Pemohon,',0,1);
-        $pdf->Cell(85, $spasi,'');
+        $pdf->Cell(85, $spasi,$pdf->Image($app_pa['ttd'],$pdf->GetX(), $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Cell(60, $spasi,$pdf->Image("$data->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
-        $pdf->Cell(85, $spasi,$pa->gelar_depan." ".$pa->name.", ".$pa->gelar_belakang);
+        $pdf->Cell(85, $spasi,$app_pa['nama']);
         $pdf->Cell(60, $spasi, $mhs->name,0,1);
-        $pdf->Cell(85, $spasi, "NIP. ".$pa->nip_nik);
+        $pdf->Cell(85, $spasi, "NIP. ".$app_pa['nip']);
         $pdf->Cell(60, $spasi, "NPM. ".$mhs->npm,0,1);
         $pdf->Ln(5);
 
@@ -1173,27 +1283,26 @@ class Layanan extends CI_Controller {
         $pdf->Cell(60, $spasi, "Menyetujui,",0,1);
 
         if($status['strata'] == 'S3'){
-            //kaprodi doktor
-            $kaprodi_dok = $this->layanan_model->get_kaprodi_doktor();
-            if(empty($kaprodi_dok)){
-                $kpr_nama = "";
-                $kpr_nip = "";
-            }
-            else{
-                $kpr_nama = $kaprodi_dok->gelar_depan." ".$kaprodi_dok->name.", ".$kaprodi_dok->gelar_belakang;
-                $kpr_nip = $kaprodi_dok->nip_nik;
-            }
+            // //kaprodi doktor
+            // $kaprodi_dok = $this->layanan_model->get_kaprodi_doktor();
+            // if(empty($kaprodi_dok)){
+            //     $kpr_nama = "";
+            //     $kpr_nip = "";
+            // }
+            // else{
+            //     $kpr_nama = $kaprodi_dok->gelar_depan." ".$kaprodi_dok->name.", ".$kaprodi_dok->gelar_belakang;
+            //     $kpr_nip = $kaprodi_dok->nip_nik;
+            // }
             $pdf->Cell(60, $spasi, "Ketua Program Doktor FMIPA,",0,1);
-            $pdf->Ln(20);
-            $pdf->Cell(60, $spasi, $kpr_nama, 0,1);
-            $pdf->Cell(60, $spasi, "NIP. ".$kpr_nip,0,1);
         }
         else {
             $pdf->Cell(60, $spasi, "Ketua Jurusan ".$jurusan.",",0,1);
-            $pdf->Ln(20);
-            $pdf->Cell(60, $spasi, $kajur->gelar_depan." ".$kajur->name.", ".$kajur->gelar_belakang, 0,1);
-            $pdf->Cell(60, $spasi, "NIP. ".$kajur->nip_nik,0,1);
         }
+            $pdf->Cell(85, $spasi,$pdf->Image($app_kajur['ttd'],$pdf->GetX(), $pdf->GetY()-3,40,0,'PNG'), 0, 0, 'L');
+            $pdf->Ln(20);
+            $pdf->Cell(60, $spasi, $app_kajur['nama'], 0,1);
+            $pdf->Cell(60, $spasi, "NIP. ".$app_kajur['nip'],0,1);
+        
 
         $pdf->SetY($y_box);
         $pdf->SetX(100);
@@ -1249,33 +1358,33 @@ class Layanan extends CI_Controller {
             $pdf->Row(array('4',"Transkrip nilai yang sudah disahkan Wakil Dekan I (lingkari MK yang akan dihapus)",'1 lbr',''));
             $pdf->Row(array('5',"Surat permohonan penghapusan Mata Kuliah yang disetujui Kajur dan Dosen PA",'1 lbr',''));
 
-            $pdf->SetLeftMargin(30);
-            $pdf->Ln(10);
-            $pdf->SetFont('Times','BU',14);
-            $pdf->Cell(150, $spasi, "TANDA TERIMA PESANAN",0,1,'C');
-            $pdf->SetFont('Times','',12);
-            $pdf->Ln(5);
-            $pdf->Cell(45, $spasi,'Nama Lengkap', 0, 0, 'L');
-            $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-            $pdf->Cell(100, $spasi,$mhs->name, 0, 1, 'L');
-            $pdf->Cell(45, $spasi,'NPM', 0, 0, 'L');
-            $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-            $pdf->Cell(100, $spasi, $mhs->npm, 0, 1, 'L');
-            $pdf->Cell(45, $spasi,'Jurusan/Program Studi', 0, 0, 'L');
-            $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-            $pdf->Cell(100, $spasi, $status['jurusan'].'/'.$status['prodi'], 0, 1, 'L');
-            $pdf->Ln(2);
-            $pdf->SetWidths(array(10,70,30,40));
-            $pdf->SetAligns(array('C','C','C','C'));
-            $pdf->SetBoldFont(array('B','B','B','B'));
-            $pdf->SetSpacing($spasi);
-            $pdf->Row(array("NO", "JENIS DOKUMEN", "JUMLAH", "KETERANGAN"));
-            $pdf->SetBoldFont(array());
-            $pdf->SetAligns(array('C','L','C'));
-            $pdf->Row(array("1.", "Transkrip Matahari", "5 Lembar", ""));
-            $pdf->Ln(5);
-            $pdf->SetX(110);
-            $pdf->MultiCell(80, $spasi, "Bandar Lampung, ...........................\nPetugas Yang Menerima,\n\n\n\n\n.............................................\nNIP. ....................................", 0, 'L');
+            // $pdf->SetLeftMargin(30);
+            // $pdf->Ln(10);
+            // $pdf->SetFont('Times','BU',14);
+            // $pdf->Cell(150, $spasi, "TANDA TERIMA PESANAN",0,1,'C');
+            // $pdf->SetFont('Times','',12);
+            // $pdf->Ln(5);
+            // $pdf->Cell(45, $spasi,'Nama Lengkap', 0, 0, 'L');
+            // $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+            // $pdf->Cell(100, $spasi,$mhs->name, 0, 1, 'L');
+            // $pdf->Cell(45, $spasi,'NPM', 0, 0, 'L');
+            // $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+            // $pdf->Cell(100, $spasi, $mhs->npm, 0, 1, 'L');
+            // $pdf->Cell(45, $spasi,'Jurusan/Program Studi', 0, 0, 'L');
+            // $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+            // $pdf->Cell(100, $spasi, $status['jurusan'].'/'.$status['prodi'], 0, 1, 'L');
+            // $pdf->Ln(2);
+            // $pdf->SetWidths(array(10,70,30,40));
+            // $pdf->SetAligns(array('C','C','C','C'));
+            // $pdf->SetBoldFont(array('B','B','B','B'));
+            // $pdf->SetSpacing($spasi);
+            // $pdf->Row(array("NO", "JENIS DOKUMEN", "JUMLAH", "KETERANGAN"));
+            // $pdf->SetBoldFont(array());
+            // $pdf->SetAligns(array('C','L','C'));
+            // $pdf->Row(array("1.", "Transkrip Matahari", "5 Lembar", ""));
+            // $pdf->Ln(5);
+            // $pdf->SetX(110);
+            // $pdf->MultiCell(80, $spasi, "Bandar Lampung, ...........................\nPetugas Yang Menerima,\n\n\n\n\n.............................................\nNIP. ....................................", 0, 'L');
 
 
         $pdf->Output('I','form_hapus_matkul.pdf');
@@ -1378,10 +1487,10 @@ class Layanan extends CI_Controller {
         $pdf->Row(array('4',"Kartu Tanda Mahasiswa (KTM)",'Asli',''));
         $pdf->Row(array('5',"Foto copy Kartu Tanda Penduduk (e-KTP)",'1 lembar',''));
         $pdf->Row(array('6',"Foto copy ijazah terakhir",'1 lembar',''));
-        $pdf->Row(array('7',"7.     Bukti pembayaran UKT asli, dari Semester I s.d terakhir",'1 set',''));
+        $pdf->Row(array('7',"Bukti pembayaran UKT asli, dari Semester I s.d terakhir",'1 set',''));
         $pdf->Row(array('8',"Nilai  EPT yang telah dilegalisir Pusat Bahasa Unila, dengan ketentuan :\n a.  Berlaku 1 tahun sejak dikeluarkan sertifikat  s.d. pelaksanaan wisuda;\n b. Nilai/skor minimal  450.
         ",'1 lembar',''));
-        $pdf->Row(array('9',"9.     Surat Keterangan Bebas Pinjaman dari Perpustakaan Unila",'Asli',''));
+        $pdf->Row(array('9',"Surat Keterangan Bebas Pinjaman dari Perpustakaan Unila",'Asli',''));
         $pdf->Row(array('10',"Surat Bukti Penyerahan Disertasi/Tesis/Skripsi/Tugas Akhir dari Perpustakaan Unila ",'Asli',''));
         $pdf->Row(array('11',"Judul Disertasi/Tesis/Skripsi/Tugas Akhir yang disetujui dan ditandatangani oleh Komisi Pembimbing dan Ketua Jurusan/Kaprodi",'1 lembar',''));
         $pdf->Row(array('12',"Fotocopy halaman Pengesahan Disertasi/Tesis/Skripsi/ Tugas Akhir",'1 lembar',''));
@@ -3072,6 +3181,20 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //dekan - 1
+        $app_dekan = $this->get_approver_data($data->id,1);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
@@ -3093,7 +3216,7 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17.01/DT/20..",0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
 
         $pdf->MultiCell(150, $spasi,'Yang bertandatangan di bawah ini, Dekan Fakultas Matematika dan Ilmu Pengetahuan Alam, Universitas Lampung menerangkan bahwa Program Studi Kimia (S-1) Jurusan Kimia FMIPA Unila :', 0, 'J');
@@ -3129,23 +3252,26 @@ class Layanan extends CI_Controller {
         $pdf->MultiCell(150, $spasi,'Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.', 0, 'J');
         $pdf->Ln(10);
         $pdf->SetX(110);
-        $pdf->MultiCell(80, $spasi, "Bandar Lampung, ...........................\nDekan,", 0, 'L');
+        $pdf->MultiCell(80, $spasi, "Bandar Lampung, ".$this->convert_date($app_dekan['updated'])."\nDekan,", 0, 'L');
+        $pdf->SetX(110);
+        $pdf->Image($cap,95,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_dekan['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(110);
-        $dekan = $this->layanan_model->get_tugas_tambahan_user('Dekan');
-        if(empty($dekan)){
-            $dekan_name = "";
-            $dekan_nip = "";
-        }
-        else{
-            $dekan_name = $dekan->gelar_depan." ".$dekan->name.", ".$dekan->gelar_belakang;
-            $dekan_nip = $dekan->nip_nik;
-        }
-        $pdf->MultiCell(80, $spasi, $dekan_name, 0, 'L');
+        // $dekan = $this->layanan_model->get_tugas_tambahan_user('Dekan');
+        // if(empty($dekan)){
+        //     $dekan_name = "";
+        //     $dekan_nip = "";
+        // }
+        // else{
+        //     $dekan_name = $dekan->gelar_depan." ".$dekan->name.", ".$dekan->gelar_belakang;
+        //     $dekan_nip = $dekan->nip_nik;
+        // }
+        $pdf->MultiCell(80, $spasi,$app_dekan['nama'], 0, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->SetX(110);
-        $pdf->MultiCell(80, $spasi, "NIP. ".$dekan_nip, 0, 'L');
+        $pdf->MultiCell(80, $spasi, "NIP. ".$app_dekan['nip'], 0, 'L');
     
         $pdf->Output('I','form_akreditasi.pdf');
     }
@@ -3177,6 +3303,22 @@ class Layanan extends CI_Controller {
                 $attr[$n] = $metas->meta_value;
                 $n++;
             }
+        }
+
+        //ttd
+        //petugas - 13
+        $app_petugas = $this->get_approver_data($data->id,13);
+        //kasubag akademik - 6
+        $app_kasubag = $this->get_approver_data($data->id,6);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
         }
        
         $count = count($meta);
@@ -3231,43 +3373,47 @@ class Layanan extends CI_Controller {
         $pdf->MultiCell(150, $spasi,'Demikian surat keterangan ini dibuat dengan sebenarnya untuk dapat dipergunakan sebagaimana mestinya.', 0, 'J');
         $pdf->Ln(10);
         $pdf->SetX(110);
-        $pdf->Cell(70, $spasi,'Bandar Lampung, ...............................',0,1);
+        $pdf->Cell(70, $spasi,'Bandar Lampung, '.$this->convert_date($app_kasubag['updated']),0,1);
         $pdf->Cell(60, $spasi,'Mengetahui,',0,1);
         $pdf->Cell(60, $spasi, "a.n. Kabag Tata Usaha",0,1);
         $pdf->Cell(60, $spasi, "Kasubbag. Akademik,",0);
         $pdf->Cell(20, $spasi, "",0);
         $pdf->Cell(70, $spasi, "Petugas Ruang Baca,",0,1);
+        $pdf->Image($cap,$pdf->GetX()-3,$pdf->GetY(),30);   
+        $pdf->Cell(80, $spasi,$pdf->Image($app_kasubag['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+        $pdf->Cell(60, $spasi,$pdf->Image($app_petugas['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
+       
 
-        $kasubag = $this->layanan_model->get_tugas_tambahan_user('Kepala Sub Bagian Akademik');
-        $petugas = $this->layanan_model->get_tugas_tambahan_user('Petugas Perpustakaan');
+        // $kasubag = $this->layanan_model->get_tugas_tambahan_user('Kepala Sub Bagian Akademik');
+        // $petugas = $this->layanan_model->get_tugas_tambahan_user('Petugas Perpustakaan');
 
-        if(empty($kasubag)){
-            $kasubag_nama = "";
-            $kasubag_nip = "";
-        }
-        else{
-            $kasubag_nama = $kasubag->gelar_depan." ".$kasubag->name.", ".$kasubag->gelar_belakang;
-            $kasubag_nip = $kasubag->nip_nik;
-        }
-        if(empty($petugas)){
-            $petugas_nama = "";
-            $petugas_nip = "";
-        }
-        else{
-            $petugas_nama = $petugas->gelar_depan." ".$petugas->name.", ".$petugas->gelar_belakang;
-            $petugas_nip = $petugas->nip_nik;
-        }
+        // if(empty($kasubag)){
+        //     $kasubag_nama = "";
+        //     $kasubag_nip = "";
+        // }
+        // else{
+        //     $kasubag_nama = $kasubag->gelar_depan." ".$kasubag->name.", ".$kasubag->gelar_belakang;
+        //     $kasubag_nip = $kasubag->nip_nik;
+        // }
+        // if(empty($petugas)){
+        //     $petugas_nama = "";
+        //     $petugas_nip = "";
+        // }
+        // else{
+        //     $petugas_nama = $petugas->gelar_depan." ".$petugas->name.", ".$petugas->gelar_belakang;
+        //     $petugas_nip = $petugas->nip_nik;
+        // }
 
         $pdf->SetFont('Times','B',12);
-        $pdf->Cell(80, $spasi, $kasubag_nama);
+        $pdf->Cell(80, $spasi, $app_kasubag['nama']);
         //$pdf->Cell(80, $spasi, 'Sugiharto',0,1);
-        $pdf->Cell(70, $spasi, $petugas_nama,0,1);
+        $pdf->Cell(70, $spasi, $app_petugas['nama'],0,1);
 
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(80, $spasi, "NIP. ".$kasubag_nip);
+        $pdf->Cell(80, $spasi, "NIP. ".$app_kasubag['nip']);
         //$pdf->Cell(80, $spasi, "NIP. 196903172008101001",0,1);
-        $pdf->Cell(70, $spasi, "NIP. ".$petugas_nip,0,1);
+        $pdf->Cell(70, $spasi, "NIP. ".$app_petugas['nip'],0,1);
 
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
@@ -3338,6 +3484,21 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+         //ttd
+        //dekan - 1
+        $app_dekan = $this->get_approver_data($data->id,1);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
+       
        
         $count = count($meta);
 
@@ -3361,7 +3522,7 @@ class Layanan extends CI_Controller {
         $pdf->SetFont('Times','BU',16);
         $pdf->Cell(150, $spasi, "BEBAS SANKSI AKADEMIK",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/DT/".date("Y"),0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Dekan Fakultas Matematika dan Ilmu Pengetahuan Alam Universitas Lampung menerangkan bahwa:', 0, 'J');
         $pdf->Ln(2);
@@ -3404,27 +3565,30 @@ class Layanan extends CI_Controller {
         $pdf->SetX(112);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_dekan['updated']),0,1);
 
-        $dekan = $this->layanan_model->get_tugas_tambahan_user('Dekan');
-        if(empty($dekan)){
-            $dekan_name = "";
-            $dekan_nip = "";
-        }
-        else{
-            $dekan_name = $dekan->gelar_depan." ".$dekan->name.", ".$dekan->gelar_belakang;
-            $dekan_nip = $dekan->nip_nik;
-        }
+        // $dekan = $this->layanan_model->get_tugas_tambahan_user('Dekan');
+        // if(empty($dekan)){
+        //     $dekan_name = "";
+        //     $dekan_nip = "";
+        // }
+        // else{
+        //     $dekan_name = $dekan->gelar_depan." ".$dekan->name.", ".$dekan->gelar_belakang;
+        //     $dekan_nip = $dekan->nip_nik;
+        // }
 
         $pdf->SetX(112);
         $pdf->Cell(28, $spasi,'Dekan,',0,1);
+        $pdf->SetX(112);
+        $pdf->Image($cap,95,$pdf->GetY(),30); 
+        $pdf->Cell(60, $spasi,$pdf->Image($app_dekan['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(112);
-        $pdf->Cell(68, $spasi, $dekan_name,0,1);
+        $pdf->Cell(68, $spasi,$app_dekan['nama'],0,1);
         $pdf->SetFont('Times','',12);
         $pdf->SetX(112);
-        $pdf->Cell(68, $spasi, "NIP. ".$dekan_nip,0,1);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_dekan['nip'],0,1);
 
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
@@ -3496,6 +3660,20 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //dekan - 1
+        $app_dekan = $this->get_approver_data($data->id,1);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
@@ -3517,7 +3695,7 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN LULUS",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/DT/".date("Y"),0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Dekan Fakultas Matematika dan Ilmu Pengetahuan Alam Universitas Lampung menerangkan bahwa:', 0, 'J');
         $pdf->Ln(2);
@@ -3571,25 +3749,28 @@ class Layanan extends CI_Controller {
         $pdf->SetX(112);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_dekan['updated']),0,1);
         $pdf->SetX(112);
-        $dekan = $this->layanan_model->get_tugas_tambahan_user('Dekan');
-        if(empty($dekan)){
-            $dekan_name = "";
-            $dekan_nip = "";
-        }
-        else{
-            $dekan_name = $dekan->gelar_depan." ".$dekan->name.", ".$dekan->gelar_belakang;
-            $dekan_nip = $dekan->nip_nik;
-        }
+        // $dekan = $this->layanan_model->get_tugas_tambahan_user('Dekan');
+        // if(empty($dekan)){
+        //     $dekan_name = "";
+        //     $dekan_nip = "";
+        // }
+        // else{
+        //     $dekan_name = $dekan->gelar_depan." ".$dekan->name.", ".$dekan->gelar_belakang;
+        //     $dekan_nip = $dekan->nip_nik;
+        // }
         $pdf->Cell(28, $spasi,'Dekan,',0,1);
+        $pdf->SetX(112);
+        $pdf->Image($cap,95,$pdf->GetY(),30); 
+        $pdf->Cell(60, $spasi,$pdf->Image($app_dekan['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(112);
-        $pdf->Cell(68, $spasi, $dekan_name,0,1);
+        $pdf->Cell(68, $spasi, $app_dekan['nama'],0,1);
         $pdf->SetFont('Times','',12);
         $pdf->SetX(112);
-        $pdf->Cell(68, $spasi, "NIP. ".$dekan_nip,0,1);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_dekan['nip'],0,1);
 
         $pdf->SetY($y_foto);
         $w_img = 30;
@@ -3738,6 +3919,20 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //kasubbag aka - 6
+        $app_kasubag = $this->get_approver_data($data->id,6);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
@@ -3759,7 +3954,7 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN TEST TOEFL",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17.01/DT/".date("Y"),0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Yang bertanda tangan di bawah ini Kepala Bagian Tata Usaha Fakultas Matematika dan Ilmu Pengetahuan Alam Universitas Lampung menerangkan bahwa:', 0, 'L');
         $pdf->Ln(2);
@@ -3790,25 +3985,27 @@ class Layanan extends CI_Controller {
         $pdf->MultiCell(150, $spasi,'Demikian surat keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.', 0, 'J');
         $pdf->Ln(10);
         $pdf->SetX(110);
-        $pdf->MultiCell(80, $spasi, "Bandar Lampung, ...........................\na.n. Kabag. Tata Usaha,\nKasubbag Akademik,", 0, 'L');
+        $pdf->MultiCell(80, $spasi, "Bandar Lampung, ".$this->convert_date($app_kasubag['updated'])."\na.n. Kabag. Tata Usaha,\nKasubbag Akademik,", 0, 'L');
+        $pdf->SetX(110);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_kasubag['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(110);
 
-        $pts = $this->layanan_model->get_tugas_tambahan_user('Kepala Sub Bagian Akademik');
-        if(empty($pts)){
-            $pts_name = "";
-            $pts_nip = "";
-        }
-        else{
-            $pts_name = $pts->gelar_depan." ".$pts->name.", ".$pts->gelar_belakang;
-            $pts_nip = $pts->nip_nik;
-        }
+        // $pts = $this->layanan_model->get_tugas_tambahan_user('Kepala Sub Bagian Akademik');
+        // if(empty($pts)){
+        //     $pts_name = "";
+        //     $pts_nip = "";
+        // }
+        // else{
+        //     $pts_name = $pts->gelar_depan." ".$pts->name.", ".$pts->gelar_belakang;
+        //     $pts_nip = $pts->nip_nik;
+        // }
 
-        $pdf->MultiCell(80, $spasi,$pts_name, 0, 'L');
+        $pdf->MultiCell(80, $spasi,$app_kasubag['nama'], 0, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->SetX(110);
-        $pdf->MultiCell(80, $spasi, "NIP. ".$pts_nip, 0, 'L');
+        $pdf->MultiCell(80, $spasi, "NIP. ".$app_kasubag['nip'], 0, 'L');
 
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
@@ -4795,6 +4992,20 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //wd3 - 4
+        $app_wd = $this->get_approver_data($data->id,4);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
@@ -4815,39 +5026,39 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/KM/20".date("Y"),0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
 
-        $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
-        if(empty($wd3)){
-            $wd3_name = "";
-            $wd3_nip = "";
-            $wd3_pangkat = "";
-        }
-        else{
-            $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
-            $wd3_nip = $wd3->nip_nik;
-            if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
-                $wd3_pangkat = "";
-            }
-            else{
-                $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
-                $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
-            }
+        // $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
+        // if(empty($wd3)){
+        //     $wd3_name = "";
+        //     $wd3_nip = "";
+        //     $wd3_pangkat = "";
+        // }
+        // else{
+        //     $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
+        //     $wd3_nip = $wd3->nip_nik;
+        //     if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
+        //         $wd3_pangkat = "";
+        //     }
+        //     else{
+        //         $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
+        //         $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
+        //     }
             
-        }
+        // }
 
         $pdf->MultiCell(150, $spasi,'Yang bertanda tangan dibawah ini:', 0, 'L');
         $pdf->Ln(2);
         $pdf->Cell(45, $spasi,'Nama', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_name, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nama'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'NIP', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_nip, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nip'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Pangkat/Golongan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_pangkat, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['pangkat'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Jabatan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
         $pdf->Cell(100, $spasi, 'Wakil Dekan Bidang Kemahasiswaan dan Alumni', 0, 1, 'L');
@@ -4889,18 +5100,21 @@ class Layanan extends CI_Controller {
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_wd['updated']),0,1);
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'a.n. Dekan,',0,1);
         $pdf->SetX(92);
         $pdf->Cell(88, $spasi,'Wakil Dekan Bidang Kemahasiswaan dan Alumni,',0,1);
+        $pdf->SetX(92);
+        $pdf->Image($cap,95,$pdf->GetY(),30); 
+        $pdf->Cell(60, $spasi,$pdf->Image($app_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, $wd3_name,0,1);
+        $pdf->Cell(68, $spasi, $app_wd['nama'],0,1);
         $pdf->SetFont('Times','',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, "NIP. ".$wd3_nip,0,1);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_wd['nip'],0,1);
 
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
@@ -5507,6 +5721,20 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+         //ttd
+        //wd3 - 4
+        $app_wd = $this->get_approver_data($data->id,4);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
@@ -5528,7 +5756,7 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN MASIH KULIAH",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/KM/".date("Y"),0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Yang bertanda tangan dibawah ini:', 0, 'L');
         $pdf->Ln(2);
@@ -5536,31 +5764,31 @@ class Layanan extends CI_Controller {
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
 
         $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
-        if(empty($wd3)){
-            $wd3_name = "";
-            $wd3_nip = "";
-            $wd3_pangkat = "";
-        }
-        else{
-            $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
-            $wd3_nip = $wd3->nip_nik;
-            if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
-                $wd3_pangkat = "";
-            }
-            else{
-                $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
-                $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
-            }
+        // if(empty($wd3)){
+        //     $wd3_name = "";
+        //     $wd3_nip = "";
+        //     $wd3_pangkat = "";
+        // }
+        // else{
+        //     $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
+        //     $wd3_nip = $wd3->nip_nik;
+        //     if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
+        //         $wd3_pangkat = "";
+        //     }
+        //     else{
+        //         $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
+        //         $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
+        //     }
             
-        }
+        // }
 
-        $pdf->Cell(100, $spasi,$wd3_name, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nama'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'NIP', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_nip, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nip'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Pangkat/Golongan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_pangkat, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['pangkat'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Jabatan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
         $pdf->Cell(100, $spasi, 'Wakil Dekan Bidang Kemahasiswaan dan Alumni', 0, 1, 'L');
@@ -5605,18 +5833,21 @@ class Layanan extends CI_Controller {
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_wd['updated']),0,1);
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'a.n. Dekan,',0,1);
         $pdf->SetX(92);
         $pdf->Cell(88, $spasi,'Wakil Dekan Bidang Kemahasiswaan dan Alumni,',0,1);
+        $pdf->SetX(92);
+        $pdf->Image($cap,95,$pdf->GetY(),30); 
+        $pdf->Cell(60, $spasi,$pdf->Image($app_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, $wd3_name,0,1);
+        $pdf->Cell(68, $spasi, $app_wd['nama'],0,1);
         $pdf->SetFont('Times','',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, "NIP. ".$wd3_nip,0,1);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_wd['nip'],0,1);
 
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
@@ -5684,6 +5915,19 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+        //ttd
+        //wd3 - 4
+        $app_wd = $this->get_approver_data($data->id,4);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
@@ -5705,38 +5949,38 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN MASIH KULIAH",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/KM/".date("Y"),0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Yang bertanda tangan dibawah ini:', 0, 'L');
         $pdf->Ln(2);
 
-        $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
-        if(empty($wd3)){
-            $wd3_name = "";
-            $wd3_nip = "";
-            $wd3_pangkat = "";
-        }
-        else{
-            $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
-            $wd3_nip = $wd3->nip_nik;
-            if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
-                $wd3_pangkat = "";
-            }
-            else{
-                $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
-                $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
-            }
+        // $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
+        // if(empty($wd3)){
+        //     $wd3_name = "";
+        //     $wd3_nip = "";
+        //     $wd3_pangkat = "";
+        // }
+        // else{
+        //     $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
+        //     $wd3_nip = $wd3->nip_nik;
+        //     if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
+        //         $wd3_pangkat = "";
+        //     }
+        //     else{
+        //         $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
+        //         $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
+        //     }
             
-        }
+        // }
         $pdf->Cell(45, $spasi,'Nama', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_name, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nama'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'NIP', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_nip, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nip'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Pangkat/Golongan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_pangkat, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['pangkat'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Jabatan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
         $pdf->Cell(100, $spasi, 'Wakil Dekan Bidang Kemahasiswaan dan Alumni', 0, 1, 'L');
@@ -5794,18 +6038,21 @@ class Layanan extends CI_Controller {
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_wd['updated']),0,1);
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'a.n. Dekan,',0,1);
         $pdf->SetX(92);
         $pdf->Cell(88, $spasi,'Wakil Dekan Bidang Kemahasiswaan dan Alumni,',0,1);
+        $pdf->SetX(92);
+        $pdf->Image($cap,95,$pdf->GetY(),30); 
+        $pdf->Cell(60, $spasi,$pdf->Image($app_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, $wd3_name,0,1);
+        $pdf->Cell(68, $spasi, $app_wd['nama'],0,1);
         $pdf->SetFont('Times','',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, "NIP. ".$wd3_nip,0,1);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_wd['nama'],0,1);
 
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
@@ -5873,6 +6120,20 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //wd3 - 4
+        $app_wd = $this->get_approver_data($data->id,4);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
@@ -5894,38 +6155,38 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/KM/".date("Y"),0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Yang bertanda tangan dibawah ini:', 0, 'L');
         $pdf->Ln(2);
 
-        $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
-        if(empty($wd3)){
-            $wd3_name = "";
-            $wd3_nip = "";
-            $wd3_pangkat = "";
-        }
-        else{
-            $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
-            $wd3_nip = $wd3->nip_nik;
-            if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
-                $wd3_pangkat = "";
-            }
-            else{
-                $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
-                $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
-            }
+        // $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
+        // if(empty($wd3)){
+        //     $wd3_name = "";
+        //     $wd3_nip = "";
+        //     $wd3_pangkat = "";
+        // }
+        // else{
+        //     $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
+        //     $wd3_nip = $wd3->nip_nik;
+        //     if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
+        //         $wd3_pangkat = "";
+        //     }
+        //     else{
+        //         $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
+        //         $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
+        //     }
             
-        }
+        // }
         $pdf->Cell(45, $spasi,'Nama', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_name, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nama'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'NIP', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_nip, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nip'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Pangkat/Golongan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_pangkat, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['pangkat'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Jabatan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
         $pdf->Cell(100, $spasi, 'Wakil Dekan Bidang Kemahasiswaan dan Alumni', 0, 1, 'L');
@@ -5970,18 +6231,21 @@ class Layanan extends CI_Controller {
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_wd['updated']),0,1);
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'a.n. Dekan,',0,1);
         $pdf->SetX(92);
         $pdf->Cell(88, $spasi,'Wakil Dekan Bidang Kemahasiswaan dan Alumni,',0,1);
+        $pdf->SetX(92);
+        $pdf->Image($cap,95,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, $wd3_name,0,1);
+        $pdf->Cell(68, $spasi, $app_wd['nama'],0,1);
         $pdf->SetFont('Times','',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, "NIP. ".$wd3_nip,0,1);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_wd['nip'],0,1);
 
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
@@ -6048,6 +6312,20 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //wd3 - 4
+        $app_wd = $this->get_approver_data($data->id,4);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
@@ -6069,36 +6347,36 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/KM/".date("Y"),0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
 
-        $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
-        if(empty($wd3)){
-            $wd3_name = "";
-            $wd3_nip = "";
-            $wd3_pangkat = "";
-        }
-        else{
-            $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
-            $wd3_nip = $wd3->nip_nik;
-            if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
-                $wd3_pangkat = "";
-            }
-            else{
-                $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
-                $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
-            }
+        // $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
+        // if(empty($wd3)){
+        //     $wd3_name = "";
+        //     $wd3_nip = "";
+        //     $wd3_pangkat = "";
+        // }
+        // else{
+        //     $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
+        //     $wd3_nip = $wd3->nip_nik;
+        //     if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
+        //         $wd3_pangkat = "";
+        //     }
+        //     else{
+        //         $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
+        //         $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
+        //     }
             
-        }
+        // }
         $pdf->Cell(45, $spasi,'Nama', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_name, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nama'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'NIP', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_nip, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nip'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Pangkat/Golongan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_pangkat, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['pangkat'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Jabatan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
         $pdf->Cell(100, $spasi, 'Wakil Dekan Bidang Kemahasiswaan dan Alumni', 0, 1, 'L');
@@ -6143,18 +6421,21 @@ class Layanan extends CI_Controller {
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_wd['updated']),0,1);
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'a.n. Dekan,',0,1);
         $pdf->SetX(92);
         $pdf->Cell(88, $spasi,'Wakil Dekan Bidang Kemahasiswaan dan Alumni,',0,1);
+        $pdf->SetX(92);
+        $pdf->Image($cap,95,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, $wd3_name,0,1);
+        $pdf->Cell(68, $spasi, $app_wd['nama'],0,1);
         $pdf->SetFont('Times','',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, "NIP. ".$wd3_nip,0,1);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_wd['nip'],0,1);
 
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
@@ -6194,8 +6475,8 @@ class Layanan extends CI_Controller {
         // Isi
         $pdf->SetAligns(array('C','L'));
         $pdf->SetSpacing(5);
-        $pdf->Row(array('1',"Surat Keterangan Belum Memiliki KTM yang telah di download di website.\n(3 lembar)",'','','','','',''));
-        $pdf->Row(array('2',"Bukti Pembayaran UKT terakhir.\n(3 lembar)",'','','','','',''));
+        $pdf->Row(array('1',"Surat Keterangan Belum Memiliki KTM yang telah di download di website.\n(3 lembar)",'',''));
+        $pdf->Row(array('2',"Bukti Pembayaran UKT terakhir.\n(3 lembar)",'',''));
 
         $pdf->Output('I','form_belum_memiliki_ktm.pdf');   
     }
@@ -6221,6 +6502,21 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //wd3 - 4
+        $app_wd = $this->get_approver_data($data->id,4);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
+       
        
         $count = count($meta);
         $numPage = '/PM/MIPA/III/23';
@@ -6240,37 +6536,37 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/KM/".date("Y"),0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Yang bertanda tangan dibawah ini:', 0, 'L');
         $pdf->Ln(2);
-        $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
-        if(empty($wd3)){
-            $wd3_name = "";
-            $wd3_nip = "";
-            $wd3_pangkat = "";
-        }
-        else{
-            $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
-            $wd3_nip = $wd3->nip_nik;
-            if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
-                $wd3_pangkat = "";
-            }
-            else{
-                $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
-                $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
-            }
+        // $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
+        // if(empty($wd3)){
+        //     $wd3_name = "";
+        //     $wd3_nip = "";
+        //     $wd3_pangkat = "";
+        // }
+        // else{
+        //     $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
+        //     $wd3_nip = $wd3->nip_nik;
+        //     if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
+        //         $wd3_pangkat = "";
+        //     }
+        //     else{
+        //         $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
+        //         $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
+        //     }
             
-        }
+        // }
         $pdf->Cell(45, $spasi,'Nama', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_name, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nama'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'NIP', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_nip, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nip'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Pangkat/Golongan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_pangkat, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['pangkat'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Jabatan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
         $pdf->Cell(100, $spasi, 'Wakil Dekan Bidang Kemahasiswaan dan Alumni', 0, 1, 'L');
@@ -6311,18 +6607,21 @@ class Layanan extends CI_Controller {
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_wd['updated']),0,1);
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'a.n. Dekan,',0,1);
         $pdf->SetX(92);
         $pdf->Cell(88, $spasi,'Wakil Dekan Bidang Kemahasiswaan dan Alumni,',0,1);
+        $pdf->SetX(92);
+        $pdf->Image($cap,95,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, $wd3_name,0,1);
+        $pdf->Cell(68, $spasi, $app_wd['nama'],0,1);
         $pdf->SetFont('Times','',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, "NIP. ".$wd3_nip,0,1);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_wd['nip'],0,1);
 
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
@@ -6399,6 +6698,20 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //wd3 - 4
+        $app_wd = $this->get_approver_data($data->id,4);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
         $numPage = '/PM/MIPA/III/...';
@@ -6418,37 +6731,37 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->Cell(150, $spasi, "SURAT KETERANGAN",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/KM/".date("Y"),0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Yang bertanda tangan dibawah ini:', 0, 'L');
         $pdf->Ln(2);
-        $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
-        if(empty($wd3)){
-            $wd3_name = "";
-            $wd3_nip = "";
-            $wd3_pangkat = "";
-        }
-        else{
-            $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
-            $wd3_nip = $wd3->nip_nik;
-            if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
-                $wd3_pangkat = "";
-            }
-            else{
-                $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
-                $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
-            }
+        // $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
+        // if(empty($wd3)){
+        //     $wd3_name = "";
+        //     $wd3_nip = "";
+        //     $wd3_pangkat = "";
+        // }
+        // else{
+        //     $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
+        //     $wd3_nip = $wd3->nip_nik;
+        //     if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
+        //         $wd3_pangkat = "";
+        //     }
+        //     else{
+        //         $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
+        //         $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
+        //     }
             
-        }
+        // }
         $pdf->Cell(45, $spasi,'Nama', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_name, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nama'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'NIP', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_nip, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nip'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Pangkat/Golongan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_pangkat, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['pangkat'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Jabatan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
         $pdf->Cell(100, $spasi, 'Wakil Dekan Bidang Kemahasiswaan dan Alumni', 0, 1, 'L');
@@ -6477,18 +6790,21 @@ class Layanan extends CI_Controller {
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_wd['updated']),0,1);
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'a.n. Dekan,',0,1);
         $pdf->SetX(92);
         $pdf->Cell(88, $spasi,'Wakil Dekan Bidang Kemahasiswaan dan Alumni,',0,1);
+        $pdf->SetX(92);
+        $pdf->Image($cap,95,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, $wd3_name,0,1);
+        $pdf->Cell(68, $spasi, $app_wd['nama'],0,1);
         $pdf->SetFont('Times','',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, "NIP. ".$wd3_nip,0,1);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_wd['nip'],0,1);
 
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
@@ -6561,6 +6877,20 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //wd3 - 4
+        $app_wd = $this->get_approver_data($data->id,4);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
         $numPage = '/PM/MIPA/III/23';
@@ -6584,37 +6914,37 @@ class Layanan extends CI_Controller {
         $pdf->SetFont('Times','BU',16);
         $pdf->Cell(150, $spasi+1, "TIDAK SEDANG MENGAJUKAN BEASISWA",0,1,'C');
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(150, $spasi, "Nomor: ............/UN26.17/KM/".date("Y"),0,1,'C');
+        $pdf->Cell(150, $spasi, "Nomor: ".$no_surat,0,1,'C');
         $pdf->Ln(10);
         $pdf->MultiCell(150, $spasi,'Yang bertanda tangan dibawah ini:', 0, 'L');
         $pdf->Ln(2);
-        $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
-        if(empty($wd3)){
-            $wd3_name = "";
-            $wd3_nip = "";
-            $wd3_pangkat = "";
-        }
-        else{
-            $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
-            $wd3_nip = $wd3->nip_nik;
-            if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
-                $wd3_pangkat = "";
-            }
-            else{
-                $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
-                $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
-            }
+        // $wd3 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Kemahasiswaan');
+        // if(empty($wd3)){
+        //     $wd3_name = "";
+        //     $wd3_nip = "";
+        //     $wd3_pangkat = "";
+        // }
+        // else{
+        //     $wd3_name = $wd3->gelar_depan." ".$wd3->name.", ".$wd3->gelar_belakang;
+        //     $wd3_nip = $wd3->nip_nik;
+        //     if($wd3->pangkat_gol == NULL || $wd3->pangkat_gol == "" ){
+        //         $wd3_pangkat = "";
+        //     }
+        //     else{
+        //         $wd3_pkt = $this->user_model->get_pangkat_gol_by_id($wd3->pangkat_gol);
+        //         $wd3_pangkat = $wd3_pkt->pangkat."/".$wd3_pkt->golongan." ".$wd3_pkt->ruang;
+        //     }
             
-        }
+        // }
         $pdf->Cell(45, $spasi,'Nama', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_name, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nama'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'NIP', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_nip, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['nip'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Pangkat/Golongan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
-        $pdf->Cell(100, $spasi,$wd3_pangkat, 0, 1, 'L');
+        $pdf->Cell(100, $spasi,$app_wd['pangkat'], 0, 1, 'L');
         $pdf->Cell(45, $spasi,'Jabatan', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
         $pdf->Cell(100, $spasi, 'Wakil Dekan Bidang Kemahasiswaan dan Alumni', 0, 1, 'L');
@@ -6658,7 +6988,7 @@ class Layanan extends CI_Controller {
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'Pada tanggal');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($app_wd['updated']),0,1);
         $pdf->SetX(92);
         $pdf->Cell(28, $spasi,'a.n. Dekan,',0,1);
         $pdf->SetX(92);
@@ -6666,10 +6996,10 @@ class Layanan extends CI_Controller {
         $pdf->Ln(20);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, $wd3_name,0,1);
+        $pdf->Cell(68, $spasi, $app_wd['nama'],0,1);
         $pdf->SetFont('Times','',12);
         $pdf->SetX(92);
-        $pdf->Cell(68, $spasi, "NIP. ".$wd3_nip,0,1);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_wd['nip'],0,1);
 
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
@@ -6935,7 +7265,7 @@ class Layanan extends CI_Controller {
         $pdf->Row(array('1',"Foto Copy Kartu Mahasiswa",'1 lbr.',''));
         $pdf->Row(array('2',"Surat Permohonan Peminjaman",'1 lbr.',''));
 
-        $pdf->Output('I','form_legalisir_ktm.pdf');
+        $pdf->Output('I','form_peminjaman.pdf');
     }
 
     function form_39($data,$meta)
@@ -6964,11 +7294,31 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+         //ttd
+        //pa - 15
+        $app_pa = $this->get_approver_data($data->id,15);
+        //pbb skripsi - 16
+        $app_pb = $this->get_approver_data($data->id,16);
+        //kalab - 17
+        $app_kalab = $this->get_approver_data($data->id,17);
+        //kajur - 10
+        $app_kajur = $this->get_approver_data($data->id,10);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
         $numPage = '/PM/MIPA/II.B/11';
-        $nomor ='    /UN26.17/KU/'.date("Y");
+        $nomor = $no_surat;
         $spasi = 4.5;
         $spasi2 = 6;
         $kode = 0;
@@ -7135,16 +7485,23 @@ class Layanan extends CI_Controller {
         $pdf->SetWidths(array(10,45,48,37,30));
         $pdf->SetAligns(array('C','C','C','C','C'));
         $pdf->SetSpacing(5);
+        $y = $pdf->GetY();
         $pdf->Row(array("NO", "Jabatan", "Nama", "NIP", "Tanda Tangan"));
         $pdf->SetBoldFont(array());
         $pdf->SetAligns(array('L','L','L','L','L','L','L','L'));
-        $pdf->Row(array('1.','Pembimbing Utama',$pb_name, $pb_nip." "," "));
+        
+        $pdf->Row(array('1.','Pembimbing Utama',$app_pb['nama'], $app_pb['nip']."\n\n",$pdf->Image($app_pb['ttd'],$pdf->GetX()+145,$pdf->GetY(),20,0,'PNG')));
+        $pdf->Row(array('2.','Kepala Lab. '.$attr[0],$app_kalab['nama'],$app_kalab['nip']." ",$pdf->Image($app_kalab['ttd'],$pdf->GetX()+145,$pdf->GetY(),20,0,'PNG')));
 
-        $pdf->Row(array('2.','Kepala Lab. '.$attr[0],$kalab_name,$kalab_nip." "," "));
+        $pdf->Row(array('3.','Pembimbing Akademik',$app_pa['nama'], $app_pa['nip']." ",$pdf->Image($app_pa['ttd'],$pdf->GetX()+145,$pdf->GetY(),20,0,'PNG')));
 
-        $pdf->Row(array('3.','Pembimbing Akademik',$pa->gelar_depan." ".$pa->name.", ".$pa->gelar_belakang, $pa->nip_nik." "," "));
+        $pdf->Row(array('4.','Ketua Jurusan '.$jurusan,$app_kajur['nama'],$app_kajur['nip']." "," "));
 
-        $pdf->Row(array('4.','Ketua Jurusan '.$jurusan,$kajur_name,$kajur_nip." "," "));
+        $pdf->SetY($y);
+        // $pdf->Cell(60, $spasi,$pdf->Image($app_pb['ttd'],160, $y,30,0,'PNG'), 0, 0, 'L');
+        // $pdf->Cell(60, $spasi,$pdf->Image($app_kalab['ttd'],165, $y+10,30,0,'PNG'), 0, 0, 'L');
+        // $pdf->Cell(60, $spasi,$pdf->Image($app_pa['ttd'],160, $y+20,20,0,'PNG'), 0, 0, 'L');
+        // $pdf->Cell(60, $spasi,$pdf->Image($app_kajur['ttd'],165, $y+30,30,0,'PNG'), 0, 0, 'L');
 
         $pdf->SetLeftMargin(30);
         $pdf->Ln(5);
@@ -7215,11 +7572,25 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //wd2 - 3
+        $app_wd = $this->get_approver_data($data->id,3);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
         $numPage = '/PM/MIPA/II/05';
-        $nomor ='    /UN26.17/KU/'.date("Y");
+        $nomor = $no_surat;
 
         $spasi = 6;
         $kode = 0;
@@ -7330,38 +7701,41 @@ class Layanan extends CI_Controller {
         $pdf->SetX(115);
         $pdf->Cell(35, $spasi,'Bandar Lampung');
         $pdf->Cell(5, $spasi,':');
-        $pdf->Cell(35, $spasi,'...............................',0,1);
+        $pdf->Cell(35, $spasi,$this->convert_date($apps_wd['updated']),0,1);
         $pdf->SetX(115);
         $pdf->Cell(28, $spasi,'a.n. Dekan,',0,1);
         $pdf->SetX(115);
         $pdf->Cell(88, $spasi,'Wakil Dekan Bidang Umum dan Keuangan,',0,1);
+        $pdf->SetX(115);
+        $pdf->Image($cap,95,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($apps_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(15);
         $pdf->SetFont('Times','B',12);
         $pdf->SetX(115);
 
-        $wd2 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Umum dan Keuangan');
-        if(empty($wd2)){
-            $wd2_name = "";
-            $wd2_nip = "";
-            $wd2_pangkat = "";
-        }
-        else{
-            $wd2_name = $wd2->gelar_depan." ".$wd2->name.", ".$wd2->gelar_belakang;
-            $wd2_nip = $wd2->nip_nik;
-            if($wd2->pangkat_gol == NULL || $wd2->pangkat_gol == "" ){
-                $wd2_pangkat = "";
-            }
-            else{
-                $wd2_pkt = $this->user_model->get_pangkat_gol_by_id($wd2->pangkat_gol);
-                $wd2_pangkat = $wd2_pkt->pangkat."/".$wd2_pkt->golongan." ".$wd2_pkt->ruang;
-            }
+        // $wd2 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Umum dan Keuangan');
+        // if(empty($wd2)){
+        //     $wd2_name = "";
+        //     $wd2_nip = "";
+        //     $wd2_pangkat = "";
+        // }
+        // else{
+        //     $wd2_name = $wd2->gelar_depan." ".$wd2->name.", ".$wd2->gelar_belakang;
+        //     $wd2_nip = $wd2->nip_nik;
+        //     if($wd2->pangkat_gol == NULL || $wd2->pangkat_gol == "" ){
+        //         $wd2_pangkat = "";
+        //     }
+        //     else{
+        //         $wd2_pkt = $this->user_model->get_pangkat_gol_by_id($wd2->pangkat_gol);
+        //         $wd2_pangkat = $wd2_pkt->pangkat."/".$wd2_pkt->golongan." ".$wd2_pkt->ruang;
+        //     }
             
-        }
+        // }
 
-        $pdf->Cell(68, $spasi,$wd2_name,0,1,'L');
+        $pdf->Cell(68, $spasi,$apps_wd['nama'],0,1,'L');
         $pdf->SetFont('Times','',12);
         $pdf->SetX(115);
-        $pdf->Cell(68, $spasi, "NIP. ".$wd2_nip);
+        $pdf->Cell(68, $spasi, "NIP. ".$apps_wd['nip']);
         $pdf->Ln(5);
         $pdf->Cell(50,$spasi,'Tembusan',0,1,'L');
         $pdf->Cell(5,$spasi,'1. ',0,0,'L');
@@ -7448,11 +7822,25 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //wd2 - 3
+        $app_wd = $this->get_approver_data($data->id,3);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
         $numPage = '/PM/MIPA/II.B/11';
-        $nomor ='    /UN26.17/KU/'.date("Y");
+        $nomor =$no_surat;
 
         $spasi = 6;
         $kode = 0;
@@ -7570,7 +7958,7 @@ class Layanan extends CI_Controller {
         $pdf->Cell(3, $spasi, ':');
         $pdf->Cell(50, $spasi, $nomor,0, 0, 'L');
         $pdf->SetX(130);
-        $pdf->MultiCell(70, $spasi, 'Bandar Lampung, ..........................', 0, 'L');
+        $pdf->MultiCell(70, $spasi, 'Bandar Lampung, '.$this->convert_date($app_wd['updated']), 0, 'L');
         $pdf->Cell(17, $spasi, 'Lampiran');
         $pdf->Cell(3, $spasi, ':');
         $pdf->Cell(5, $spasi, "1 (satu) berkas",0, 1, 'L');
@@ -7623,35 +8011,38 @@ class Layanan extends CI_Controller {
         $pdf->MultiCell(150,$spasi,'Atas perhatian dan bantuan Bapak/Ibu, saya ucapkan terima kasih.',0,'J');
         $pdf->Ln(2);
 
-        $wd2 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Umum dan Keuangan');
-        if(empty($wd2)){
-            $wd2_name = "";
-            $wd2_nip = "";
-            $wd2_pangkat = "";
-        }
-        else{
-            $wd2_name = $wd2->gelar_depan." ".$wd2->name.", ".$wd2->gelar_belakang;
-            $wd2_nip = $wd2->nip_nik;
-            if($wd2->pangkat_gol == NULL || $wd2->pangkat_gol == "" ){
-                $wd2_pangkat = "";
-            }
-            else{
-                $wd2_pkt = $this->user_model->get_pangkat_gol_by_id($wd2->pangkat_gol);
-                $wd2_pangkat = $wd2_pkt->pangkat."/".$wd2_pkt->golongan." ".$wd2_pkt->ruang;
-            }
+        // $wd2 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Umum dan Keuangan');
+        // if(empty($wd2)){
+        //     $wd2_name = "";
+        //     $wd2_nip = "";
+        //     $wd2_pangkat = "";
+        // }
+        // else{
+        //     $wd2_name = $wd2->gelar_depan." ".$wd2->name.", ".$wd2->gelar_belakang;
+        //     $wd2_nip = $wd2->nip_nik;
+        //     if($wd2->pangkat_gol == NULL || $wd2->pangkat_gol == "" ){
+        //         $wd2_pangkat = "";
+        //     }
+        //     else{
+        //         $wd2_pkt = $this->user_model->get_pangkat_gol_by_id($wd2->pangkat_gol);
+        //         $wd2_pangkat = $wd2_pkt->pangkat."/".$wd2_pkt->golongan." ".$wd2_pkt->ruang;
+        //     }
             
-        }
+        // }
 
         $pdf->SetX(120);
         $pdf->Cell(35, $spasi,'a.n. Dekan ,',0,1);
         $pdf->SetX(120);
         $pdf->Cell(35, $spasi,'Wakil Dekan Bidang Umum dan Keuangan,',0,1);
+        $pdf->SetX(120);
+        $pdf->Image($cap,95,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetX(120);
-        $pdf->Cell(105, $spasi, $wd2_name,0,1,'L');
+        $pdf->Cell(105, $spasi, $app_wd['nama'],0,1,'L');
 
         $pdf->SetX(120);
-        $pdf->Cell(105, $spasi, "NIP. ".$wd2_nip);
+        $pdf->Cell(105, $spasi, "NIP. ".$app_wd['nip']);
         $pdf->Ln();
         $pdf->Cell(50,$spasi,'Tembusan',0,1,'L');
         $pdf->Cell(5,$spasi,'1. ',0,0,'L');
@@ -7731,11 +8122,25 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+        //ttd
+        //kabag - 5
+        $app_kabag = $this->get_approver_data($data->id,5);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
         $numPage = '/PM/MIPA/II.B/10';
-        $nomor ='    /UN26.17/KU/'.date("Y");
+        $nomor =$no_surat;
 
         $spasi = 6;
         $kode = 0;
@@ -7757,7 +8162,7 @@ class Layanan extends CI_Controller {
         $pdf->Cell(3, $spasi, ':');
         $pdf->Cell(50, $spasi, $nomor,0, 0, 'L');
         $pdf->SetX(130);
-        $pdf->MultiCell(70, $spasi, 'Bandar Lampung, ..........................', 0, 'L');
+        $pdf->MultiCell(70, $spasi, 'Bandar Lampung, '.$this->convert_date($app_kabag['updated']), 0, 'L');
         $pdf->Cell(17, $spasi, 'Lampiran');
         $pdf->Cell(3, $spasi, ':');
         $pdf->Cell(5, $spasi, "1 (satu) berkas",0, 1, 'L');
@@ -7800,33 +8205,36 @@ class Layanan extends CI_Controller {
         $pdf->Ln(5);
         $pdf->MultiCell(150,$spasi,'Demikian atas perhatian dan kerjasama yang baik kami ucapkan terima kasih.',0,'J');
         
-        $tu = $this->layanan_model->get_tugas_tambahan_user('Kepala Bagian Tata Usaha');
-        if(empty($tu)){
-            $tu_name = "";
-            $tu_nip = "";
-            $tu_pangkat = "";
-        }
-        else{
-            $tu_name = $tu->gelar_depan." ".$tu->name.", ".$tu->gelar_belakang;
-            $tu_nip = $tu->nip_nik;
-            if($tu->pangkat_gol == NULL || $tu->pangkat_gol == "" ){
-                $tu_pangkat = "";
-            }
-            else{
-                $tu_pkt = $this->user_model->get_pangkat_gol_by_id($tu->pangkat_gol);
-                $tu_pangkat = $tu_pkt->pangkat."/".$tu_pkt->golongan." ".$tu_pkt->ruang;
-            }
+        // $tu = $this->layanan_model->get_tugas_tambahan_user('Kepala Bagian Tata Usaha');
+        // if(empty($tu)){
+        //     $tu_name = "";
+        //     $tu_nip = "";
+        //     $tu_pangkat = "";
+        // }
+        // else{
+        //     $tu_name = $tu->gelar_depan." ".$tu->name.", ".$tu->gelar_belakang;
+        //     $tu_nip = $tu->nip_nik;
+        //     if($tu->pangkat_gol == NULL || $tu->pangkat_gol == "" ){
+        //         $tu_pangkat = "";
+        //     }
+        //     else{
+        //         $tu_pkt = $this->user_model->get_pangkat_gol_by_id($tu->pangkat_gol);
+        //         $tu_pangkat = $tu_pkt->pangkat."/".$tu_pkt->golongan." ".$tu_pkt->ruang;
+        //     }
             
-        }
+        // }
         
         $pdf->Ln(10);
         $pdf->SetX(130);
         $pdf->Cell(35, $spasi,'Kabag. Tata Usaha,',0,1);
+        $pdf->SetX(130);
+        $pdf->Image($cap,95,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_kabag['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetX(130);
-        $pdf->Cell(105, $spasi, $tu_name,0,1,'L');
+        $pdf->Cell(105, $spasi, $app_kabag['nama'],0,1,'L');
         $pdf->SetX(130);
-        $pdf->Cell(105, $spasi, "NIP. ".$tu_nip);
+        $pdf->Cell(105, $spasi, "NIP. ".$app_kabag['nip']);
 
         $pdf->Ln(40);
         $pdf->Cell(50,$spasi,'Tembusan',0,1,'L');
@@ -7904,11 +8312,25 @@ class Layanan extends CI_Controller {
                 $n++;
             }
         }
+
+         //ttd
+        //wd2 - 3
+        $app_wd = $this->get_approver_data($data->id,3);
+
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
        
         $count = count($meta);
 
         $numPage = '/PM/MIPA/II.B/12';
-        $nomor ='    /UN26.17/KU/'.date("Y");
+        $nomor =$no_surat;
 
         $spasi = 6;
         $kode = 0;
@@ -8027,7 +8449,7 @@ class Layanan extends CI_Controller {
         $pdf->Cell(3, $spasi, ':');
         $pdf->Cell(50, $spasi, $nomor,0, 0, 'L');
         $pdf->SetX(125);
-        $pdf->MultiCell(70, $spasi, 'Bandar Lampung, ..........................', 0, 'L');
+        $pdf->MultiCell(70, $spasi, 'Bandar Lampung, '.$this->convert_date($app_wd['updated']), 0, 'L');
         $pdf->Cell(17, $spasi, 'Lampiran');
         $pdf->Cell(3, $spasi, ':');
         $pdf->Cell(5, $spasi, "1 (satu) berkas",0, 1, 'L');
@@ -8083,32 +8505,35 @@ class Layanan extends CI_Controller {
         $pdf->MultiCell(150,$spasi,'Atas perhatian dan bantuan Bapak, saya ucapkan terima kasih.',0,'J');
         $pdf->Ln(5);
         $pdf->SetX(100);
-        $wd2 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Umum dan Keuangan');
-        if(empty($wd2)){
-            $wd2_name = "";
-            $wd2_nip = "";
-            $wd2_pangkat = "";
-        }
-        else{
-            $wd2_name = $wd2->gelar_depan." ".$wd2->name.", ".$wd2->gelar_belakang;
-            $wd2_nip = $wd2->nip_nik;
-            if($wd2->pangkat_gol == NULL || $wd2->pangkat_gol == "" ){
-                $wd2_pangkat = "";
-            }
-            else{
-                $wd2_pkt = $this->user_model->get_pangkat_gol_by_id($wd2->pangkat_gol);
-                $wd2_pangkat = $wd2_pkt->pangkat."/".$wd2_pkt->golongan." ".$wd2_pkt->ruang;
-            }
+        // $wd2 = $this->layanan_model->get_tugas_tambahan_user('Wakil Dekan Bidang Umum dan Keuangan');
+        // if(empty($wd2)){
+        //     $wd2_name = "";
+        //     $wd2_nip = "";
+        //     $wd2_pangkat = "";
+        // }
+        // else{
+        //     $wd2_name = $wd2->gelar_depan." ".$wd2->name.", ".$wd2->gelar_belakang;
+        //     $wd2_nip = $wd2->nip_nik;
+        //     if($wd2->pangkat_gol == NULL || $wd2->pangkat_gol == "" ){
+        //         $wd2_pangkat = "";
+        //     }
+        //     else{
+        //         $wd2_pkt = $this->user_model->get_pangkat_gol_by_id($wd2->pangkat_gol);
+        //         $wd2_pangkat = $wd2_pkt->pangkat."/".$wd2_pkt->golongan." ".$wd2_pkt->ruang;
+        //     }
             
-        }
+        // }
         $pdf->Cell(35, $spasi,'a.n. Dekan,',0,1);
         $pdf->SetX(100);
         $pdf->Cell(35, $spasi,'Wakil Dekan Bidang Umum dan Keuangan,',0,1);
+        $pdf->SetX(100);
+        $pdf->Image($cap,95,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetX(100);
-        $pdf->Cell(105, $spasi, $wd2_name,0,1,'L');
+        $pdf->Cell(105, $spasi, $app_wd['nama'],0,1,'L');
         $pdf->SetX(100);
-        $pdf->Cell(105, $spasi, "NIP. ".$wd2_nip);
+        $pdf->Cell(105, $spasi, "NIP. ".$app_wd['nip']);
         $pdf->Ln(5);
         $pdf->Cell(50,$spasi,'Tembusan',0,1,'L');
         $pdf->Cell(5,$spasi,'1. ',0,0,'L');

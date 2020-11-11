@@ -4388,9 +4388,20 @@ class Dosen extends CI_Controller {
 			$data['form'] = $this->layanan_model->get_approval_kajur_fakultas($this->session->userdata('userId'));
 		}elseif($seg == "dekan"){ // dekan-1
 			$data['form'] = $this->layanan_model->get_approval_dekan_fakultas($this->session->userdata('userId'));
-		}elseif($seg == "wd1"){ //wd1
+		}elseif($seg == "wd1"){ //wd1 - 2
 			$data['form'] = $this->layanan_model->get_approval_wd1_fakultas($this->session->userdata('userId'));
+		}elseif($seg == "perpustakaan"){ //petugas ruang baca - 13
+			$data['form'] = $this->layanan_model->get_approval_perpustakaan_fakultas($this->session->userdata('userId'));
+		}elseif($seg == "kasubbag-akademik"){ //kasubbag akademik - 6
+			$data['form'] = $this->layanan_model->get_approval_kasubag_akademik_fakultas($this->session->userdata('userId'));
+		}elseif($seg == "kaprodi-s3"){ //kaprodi s3 - 10
+			$data['form'] = $this->layanan_model->get_approval_kaprodi3_fakultas($this->session->userdata('userId'));
+		}elseif($seg == "kalab"){ //kalab - 17
+			$data['form'] = $this->layanan_model->get_approval_kalab_fakultas($this->session->userdata('userId'));
+		}elseif($seg == "pembimbing-ta"){ //kalab - 16
+			$data['form'] = $this->layanan_model->get_approval_pbb_fakultas($this->session->userdata('userId'));
 		}
+		
 		
 		$this->load->view('header_global', $header);
 		$this->load->view('dosen/header');
@@ -4418,6 +4429,21 @@ class Dosen extends CI_Controller {
 			break;
 			case "wd1":
 			$id_approver = 2;
+			break;
+			case "perpustakaan":
+			$id_approver = 13;
+			break;
+			case "kasubbag-akademik":
+			$id_approver = 6;
+			break;
+			case "kaprodi-s3":
+			$id_approver = 10;
+			break;
+			case "kalab":
+			$id_approver = 17;
+			break;
+			case "pembimbing-ta":
+			$id_approver = 16;
 			break;
 		}
 
@@ -4449,7 +4475,7 @@ class Dosen extends CI_Controller {
 			"insert_by" => $this->session->userdata('userId'),
 			"ttd" => $ttd
 		);
-		if($approver > 4){
+		if($approver > 9){
 			$this->layanan_model->insert_approval_layanan($approval);
 		}
 		else{
@@ -4472,11 +4498,13 @@ class Dosen extends CI_Controller {
 
 		$this->layanan_model->update_tingkat_layanan($id_lay,$new_tingkat);
 
-		//ubah status menjadi 1 dan input surat
+		//ubah status menjadi 1
 		$cek_tingkat = $this->layanan_model->get_form_mhs_id($id_lay);
-		if($cek_tingkat->tingkat == "" || $cek_tingkat->tingkat == null){
-			$status = 1;
-			$this->layanan_model->update_status_layanan($id_lay,$status);
+		if($tingkat < 9){
+			if($cek_tingkat->tingkat == "" || $cek_tingkat->tingkat == null){
+				$status = 1;
+				$this->layanan_model->update_status_layanan($id_lay,$status);
+			}
 		}
 
 		//if bebas laboratorium
@@ -4486,6 +4514,13 @@ class Dosen extends CI_Controller {
 
 			//update bebas lab
 			$this->layanan_model->approve_bebas_lab_wd($id_lab,$ttd);	
+		}
+		//if surat izin pelaksanaan penelitian
+		if($cek_tingkat->id_layanan_fakultas == 39){
+			if($cek_tingkat->tingkat == "" || $cek_tingkat->tingkat == null){
+				$status = 2;
+				$this->layanan_model->update_status_layanan($id_lay,$status);
+			}
 		}
 
 		redirect(site_url("/dosen/approval/$seg"));		
