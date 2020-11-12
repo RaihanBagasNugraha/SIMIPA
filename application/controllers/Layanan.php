@@ -197,17 +197,38 @@ class Layanan extends CI_Controller {
             $nip = "";
             $created = "";
             $updated = "";
-            // $pkt = $this->user_model->get_pangkat_gol_by_id(5);
+            $pkt = "";
             $pangkat =  "";
-        }else{
-            $appr = $this->user_model->get_dosen_data($approver->insert_by);
-            // $pkt = $this->user_model->get_pangkat_gol_by_id($appr->pangkat_gol);
+        }
+        elseif($approver->insert_by == null || $approver->insert_by == '' ){
+            $ttd = $blank;
+            $nama = "";
+            $nip = "";
+            $created = "";
+            $updated = "";
+            $pkt = "";
+            $pangkat =  "";
+        }
+        else{
+            $role = $this->user_model->get_role_id($approver->insert_by);
+            if($role == 2){
+                $appr = $this->user_model->get_dosen_data($approver->insert_by);
+            }elseif($role == 4){
+                $appr = $this->user_model->get_tendik_data($approver->insert_by);
+            }
+           
+            if($appr->pangkat_gol == null || $appr->pangkat_gol == "" ){
+                $pangkat = "";
+            }else{
+                $pkt = $this->user_model->get_pangkat_gol_by_id($appr->pangkat_gol);
+                $pangkat = $pkt->pangkat."/".$pkt->golongan." ".$pkt->ruang;
+            }
+            
             $ttd = $approver->ttd;
             $nama = $appr->gelar_depan." ".$appr->name.", ".$appr->gelar_belakang;
             $nip = $appr->nip_nik;
             $created = $approver->created_at;
             $updated = $approver->updated_at;
-            // $pangkat = $pkt->pangkat."/".$pkt->golongan." ".$pkt->ruang;
         }
 
         $result = array(

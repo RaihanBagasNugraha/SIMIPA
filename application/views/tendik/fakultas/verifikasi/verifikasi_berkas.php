@@ -16,7 +16,7 @@
                                         else{$layanan= "";}
                                     
                                     ?>
-                                    <div>Verifikasi Pengajuan Layanan <?php echo $layanan ?>
+                                    <div>Verifikasi Pengajuan Keluar Layanan <?php echo $layanan ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>

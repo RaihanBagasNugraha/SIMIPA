@@ -401,6 +401,7 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
 
 // layanan fakultas
     //mahasiswa
+    $route['mahasiswa/layanan-lacak'] = 'mahasiswa/layanan_fakultas_lacak';
     $route['mahasiswa/layanan-fakultas/(:any)'] = 'mahasiswa/layanan_fakultas';
     $route['mahasiswa/layanan-fakultas/(:any)/delete'] = 'mahasiswa/layanan_fakultas_delete';
     $route['mahasiswa/layanan-fakultas/(:any)/form'] = 'mahasiswa/layanan_fakultas_form';
@@ -427,6 +428,11 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
     $route['dosen/approval/(:any)'] = 'dosen/layanan_fak_mhs';
     $route['dosen/approval/(:any)/approve'] = 'dosen/layanan_fak_mhs_approve';
     $route['dosen/approval/(:any)/save'] = 'dosen/layanan_fak_mhs_save';
+
+    //tendik layanan
+    $route['tendik/approval/(:any)'] = 'tendik/layanan_fak_mhs';
+    $route['tendik/approval/(:any)/approve'] = 'tendik/layanan_fak_mhs_approve';
+    $route['tendik/approval/(:any)/save'] = 'tendik/layanan_fak_mhs_save';
 
     //unduh layanan
     $route['mahasiswa/layanan-fakultas/(:any)/unduh'] = 'layanan/layanan_fakultas_form_unduh';

@@ -2359,11 +2359,17 @@ $(document).ready(function() {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body"><?php $jenis = $this->uri->segment(3); $id = $this->input->get('id');?>
+            <div class="modal-body">
+            <?php 
+            $jenis = $this->uri->segment(3); 
+            $id = $this->input->get('id');
+            $aksi = $this->input->get('aksi');
+            ?>
                 <form id="deleteberkaslay" method="post" action="<?php echo site_url("mahasiswa/layanan-fakultas/$jenis/hapus-berkas?id=$id") ?>">
                     <input type="hidden" name="id_berkas" id="berkasID2" value="">
                     <input type="hidden" name="id_layanan" id="IDBebas2" value="">
                     <input type="hidden" name="file_berkas" id="berkasFile2" value="">
+                    <input type="hidden" name="aksi" value="<?php echo $aksi ?>"> 
                 </form>
                 <p>Apakah Anda yakin akan menghapus <span id="berkasNama2" class="text-danger"> ?</p>
                 
@@ -2602,6 +2608,7 @@ $(document).ready(function() {
             <?php $jenis = $this->uri->segment(3); ?>
                 <form id="verifmasuk" method="post" action="<?php echo site_url("tendik/verifikasi-berkas-masuk-fakultas-simpan/$jenis") ?>">
                     <input type="hidden" name="id_pengajuan" id="IDMasuk" value="">                
+                    <input type="hidden" name="aksi" id="aksi" value="setuju">                
                     <label >Verifikasi Berkas Masuk ?</label>
                 </form>
             </div>
@@ -2611,6 +2618,39 @@ $(document).ready(function() {
                                                 <i class="fas fa-times fa-w-20"></i>
                                             </span>Batal</button>
                 <button type="submit" form="verifmasuk" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- tolak verif surat -->
+<div class="modal fade" id="tolakmasuk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <?php $jenis = $this->uri->segment(3); ?>
+                <form id="tolak-verif-masuk" method="post" action="<?php echo site_url("tendik/verifikasi-berkas-masuk-fakultas-simpan/$jenis") ?>">
+                    <input type="hidden" name="id_pengajuan" id="IDtolak" value="">         
+                    <input type="hidden" name="aksi" id="aksi" value="tolak">                
+                    <label>Tolak Berkas Masuk ?</label>
+                    <textarea name="keterangan" cols="70" rows="3" placeholder="Keterangan Tolak"></textarea>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="tolak-verif-masuk" class="btn btn-primary">
                     <span class="btn-icon-wrapper pr-2 opacity-7">
                                                 <i class="fas fa-check fa-w-20"></i>
                                             </span>Ya</button>

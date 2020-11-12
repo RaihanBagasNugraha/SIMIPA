@@ -200,13 +200,20 @@ class User_model extends CI_Model
 
 	function get_dosen_data($id)
 	{
-		$result = $this->db->query('SELECT * FROM tbl_users_dosen, tbl_users WHERE tbl_users_dosen.id_user ='.$id.' ANd tbl_users.userId = tbl_users_dosen.id_user');
+		$result = $this->db->query('SELECT * FROM tbl_users_dosen, tbl_users WHERE tbl_users_dosen.id_user ='.$id.' AND tbl_users.userId = tbl_users_dosen.id_user');
 		return $result->row();
 	}
 
 	function get_mahasiswa_data($id)
 	{
-		$result = $this->db->query("SELECT * FROM tbl_users_mahasiswa, tbl_users WHERE tbl_users_mahasiswa.id_user = $id ANd tbl_users.userId = tbl_users_mahasiswa.id_user");
+		$result = $this->db->query("SELECT * FROM tbl_users_mahasiswa, tbl_users WHERE tbl_users_mahasiswa.id_user = $id AND tbl_users.userId = tbl_users_mahasiswa.id_user");
+		return $result->row();
+	}
+
+	
+	function get_tendik_data($id)
+	{
+		$result = $this->db->query('SELECT * FROM tbl_users_tendik, tbl_users WHERE tbl_users_tendik.id_user ='.$id.' AND tbl_users.userId = tbl_users_tendik.id_user');
 		return $result->row();
 	}
 
@@ -554,6 +561,12 @@ class User_model extends CI_Model
 	{
 		$result = $this->db->query("SELECT * FROM `fungsional` WHERE id_fungsional = $id");
 		return $result->row();
+	}
+
+	function get_role_id($id_user)
+	{
+		$result = $this->db->query("SELECT roleId FROM `tbl_users` WHERE userId = $id_user");
+		return $result->row()->roleId;
 	}
 
 	/* ------------------------------------

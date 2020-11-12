@@ -30,7 +30,7 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                     </a>
                                 </li>
                                 <li class="app-sidebar__heading">Menu</li>
-                                <li <?php if($this->uri->segment(2) == "layanan-fakultas") echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "layanan-fakultas" || $this->uri->segment(2) == "layanan-lacak") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-display2"></i>
                                         Layanan Fakultas
@@ -38,7 +38,7 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="#" >
+                                            <a href="<?php echo site_url('mahasiswa/layanan-lacak') ?>" <?php if($this->uri->segment(2) == "layanan-lacak") echo 'class="mm-active"' ?>  >
                                                 <i class="metismenu-icon">
                                                 </i>Lacak
                                             </a>

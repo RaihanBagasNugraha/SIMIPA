@@ -208,18 +208,18 @@ else{
                                 <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(2) == "dekan")) echo 'class="mm-active"' ?>>
                                     <a href="#">
                                     <?php 
-                                        
+                                         $lf_dekan = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),1));
                                     
                                     ?>
                                         <i class="metismenu-icon pe-7s-angle-down-circle"></i>
-                                        Layanan Fakultas
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_dekan > 0 ? $lf_dekan : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
                                             <a href="<?php echo site_url("dosen/approval/dekan") ?>"  <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "dekan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Form Pegajuan Layanan
+                                                </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_dekan > 0 ? $lf_dekan : "" ?></span>
                                             </a>
                                         </li>
                                     </ul>
@@ -279,108 +279,109 @@ else{
                                 </li>
                                 <?php } ?>
 
-                                <?php if(in_array(17,$tb)){ ?>
-                                <!-- Menu Koordinator -->
+                                <?php if(in_array(2,$tb)){ ?>
+                                <!-- WD 1 -->
 
-                                <li class="app-sidebar__heading">Koordinator Tugas Akhir</li>
-                                <li <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
+                                <li class="app-sidebar__heading">Wakil Dekan I</li>
+                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "wd1")) echo 'class="mm-active"' ?>>
                                     <a href="#">
-                                        <i class="metismenu-icon pe-7s-pen"></i>
-                                        <?php 
-                                            $ta_koor = count($this->ta_model->get_approval_ta_koordinator($this->session->userdata('userId')));
-                                            $smr_koor = count($this->ta_model->get_approval_seminar_koordinator($this->session->userdata('userId')));
-                                            $nilai_smr_koor = count($this->ta_model->get_approval_nilai_seminar_koordinator($this->session->userdata('userId')));    
+                                    <?php 
+                                        $lf_wd1 = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),2));
 
-                                            if($biodata->jurusan == "5"){
-                                                $validasi = $ta_koor + $smr_koor + $nilai_smr_koor;
-                                            }
-                                            else{
-                                                $validasi = 0;
-                                            }
-                                        
-                                        ?>
-                                        Validasi <span class="badge badge-danger"><?php echo $validasi > 0 ? $validasi : "" ?></span>
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_wd1 > 0 ? $lf_wd1 : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="<?php echo site_url("dosen/tugas-akhir/tema/koordinator") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "tema" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
+                                        <a href="<?php echo site_url("dosen/approval/wd1") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "wd1") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Tema <span class="badge badge-danger"><?php echo $ta_koor > 0 ? $ta_koor: "" ?></span>
+                                                </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_wd1 > 0 ? $lf_wd1 : "" ?></span>
                                             </a>
                                         </li>
+
+                                    </ul>
+                                </li>
+                                <?php } ?>
+
+                                <?php if(in_array(3,$tb)){ ?>
+                                <!-- WD 2 -->
+
+                                <li class="app-sidebar__heading">Wakil Dekan II</li>
+                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "wd2")) echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                    <?php 
+                                        $lf_wd2 = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),3));
+
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_wd2 > 0 ? $lf_wd2 : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
                                         <li>
-                                            <a href="<?php echo site_url("dosen/tugas-akhir/seminar/koordinator") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "seminar" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
+                                        <a href="<?php echo site_url("dosen/approval/wd2") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "wd2") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_koor > 0 ? $smr_koor : "" ?></span>
+                                                </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_wd2 > 0 ? $lf_wd2 : "" ?></span>
                                             </a>
                                         </li>
+
+                                    </ul>
+                                </li>
+                                <?php } ?>
+
+                                <?php if(in_array(4,$tb)){ ?>
+                                <!-- WD 3 -->
+
+                                <li class="app-sidebar__heading">Wakil Dekan III</li>
+                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "wd3")) echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                    <?php 
+                                        $lf_wd3 = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),4));
+
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_wd3 > 0 ? $lf_wd3 : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
                                         <li>
-                                            <a href="<?php echo site_url("dosen/tugas-akhir/nilai-seminar/koordinator") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "nilai-seminar" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
+                                        <a href="<?php echo site_url("dosen/approval/wd3") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "wd3") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Nilai Seminar/Sidang <span class="badge badge-danger"><?php echo $nilai_smr_koor > 0 ? $nilai_smr_koor : "" ?></span>
+                                                </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_wd3 > 0 ? $lf_wd3 : "" ?></span>
                                             </a>
                                         </li>
-                                       
+
                                     </ul>
                                 </li>
 
                                 <li >
                                     <a href="#">
-                                        <i class="metismenu-icon pe-7s-graph1"></i>
-                                        Kemajuan Tugas Akhir
-                                        
-                                    </a>
-                                    
-                                </li>
-
-                                <li <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap") echo 'class="mm-active"' ?>>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-copy-file"></i>
-                                        <!-- <?php 
-                                            $rekap = count($this->ta_model->get_ta_rekap($this->session->userdata('userId')));
-                                        ?> -->
-                                        Rekap 
-                                        <!-- <span class="badge badge-danger"><?php echo $jml?></span> -->
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Lmbg Kemahasiswaan
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
-                                        <!-- <li>
+                                        <li>
                                             <a href="#">
                                                 <i class="metismenu-icon">
-                                                </i>KP/PKL
-                                            </a>
-                                        </li> -->
-                                        <li>
-                                            <a href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>
-                                                <i class="metismenu-icon">
-                                                 </i>Tugas Akhir <!--<span class="badge badge-danger"><?php echo $rekap > 0 ? $rekap : "" ?></span> -->
+                                                </i>Asese
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo site_url("dosen/koordinator/rekap/seminar") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "seminar") echo 'class="mm-active"' ?>>
+                                            <a href="#">
                                                 <i class="metismenu-icon">
-                                                </i>Seminar
+                                                </i>Pemantauan Progja
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo site_url("dosen/koordinator/rekap/mahasiswa-ta") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "mahasiswa-ta") echo 'class="mm-active"' ?>>
+                                            <a href="#">
                                                 <i class="metismenu-icon">
-                                                </i>Mahasiswa Tugas Akhir
+                                                </i>Rekap Progja
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="<?php echo site_url("dosen/koordinator/rekap/bimbingan-dosen") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "bimbingan-dosen") echo 'class="mm-active"' ?>>
-                                                <i class="metismenu-icon">
-                                                </i>Bimbingan Dosen
-                                            </a>
-                                        </li>
-                                        <!-- <li>
-                                            <a href="<?php echo site_url("dosen/koordinator/rekap/ganti-ta-pbb") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "ganti-ta-pbb") echo 'class="mm-active"' ?>>
-                                                <i class="metismenu-icon">
-                                                </i>Ganti Tema/Pembimbing
-                                            </a>
-                                        </li> -->
+                                        
                                        
                                     </ul>
                                 </li>
@@ -390,17 +391,20 @@ else{
                                 <!-- Menu Kajur/Sekjur -->
 
                                 <li class="app-sidebar__heading">Ketua Jurusan</li>
-                                <li <?php if($this->uri->segment(2) == "approval") echo 'class="mm-active"' ?>>
+                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "ketua-jurusan")) echo 'class="mm-active"' ?>>
                                     <a href="#">
+                                        <?php 
+                                            $lf_kajur = count($this->layanan_model->get_approval_kajur_fakultas($this->session->userdata('userId')));
+                                        ?>
                                         <i class="metismenu-icon pe-7s-angle-down-circle"></i>
-                                        Approve Layanan Fakultas
+                                        Approve Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_kajur > 0 ? $lf_kajur : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
                                             <a href="<?php echo site_url("dosen/approval/ketua-jurusan") ?>"  <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "ketua-jurusan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Ketua Jurusan
+                                                </i>Ketua Jurusan <span class="badge badge-danger"><?php echo $lf_kajur > 0 ? $lf_kajur : "" ?></span>
                                             </a>
                                         </li>
                                       
@@ -448,8 +452,6 @@ else{
                                        
                                     </ul>
                                 </li>
-
-                                
 
                                 <li <?php if(($this->uri->segment(3) == "bidang-nilai" || $this->uri->segment(3) == "komposisi-nilai") && $this->uri->segment(2) == "struktural" ) echo 'class="mm-active"' ?>>
                                     <a href="#">
@@ -542,8 +544,6 @@ else{
                                        
                                     </ul>
                                 </li>
-
-                                
 
                                 <li>
                                     <a href="#">
@@ -654,6 +654,32 @@ else{
                                 </li>
                                 <?php } ?>
 
+                                <?php if(in_array(13,$tb)){ ?>
+                                <!-- menu sekjur -->
+
+                                <li class="app-sidebar__heading">Sekretaris Jurusan</li>
+                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "sekjur")) echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                    <?php 
+                                        $lf_sekjur = count($this->layanan_model->get_approval_sekjur_fakultas($this->session->userdata('userId')));
+
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_sekjur > 0 ? $lf_sekjur : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                        <a href="<?php echo site_url("dosen/approval/sekjur") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "sekjur") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_sekjur > 0 ? $lf_sekjur : "" ?></span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <?php } ?>
+
                                 <?php if(in_array(14,$tb)){ ?>
                                 <!-- Menu Kaprodi -->
 
@@ -759,6 +785,28 @@ else{
                                     </ul>
                                 </li>
                                 <?php } ?>
+
+                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "kaprodi")) echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                    <?php 
+                                        $lf_kaprodi = count($this->layanan_model->get_approval_sekjur_fakultas($this->session->userdata('userId')));
+
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_kaprodi > 0 ? $lf_kaprodi : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                        <a href="<?php echo site_url("dosen/approval/kaprodi") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "kaprodi") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_kaprodi > 0 ? $lf_kaprodi : "" ?></span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+
                                 <!--<li <?php if($this->uri->segment(2) == "kaprodi" && $this->uri->segment(3) == "rekap") echo 'class="mm-active"' ?>>-->
                                 <!--    <a href="#">-->
                                 <!--        <i class="metismenu-icon pe-7s-copy-file"></i>-->
@@ -809,6 +857,115 @@ else{
                                        
                                 <!--    </ul>-->
                                 <!--</li>-->
+                                <?php } ?>
+
+
+
+                                <?php if(in_array(17,$tb)){ ?>
+                                <!-- Menu Koordinator -->
+
+                                <li class="app-sidebar__heading">Koordinator Tugas Akhir</li>
+                                <li <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-pen"></i>
+                                        <?php 
+                                            $ta_koor = count($this->ta_model->get_approval_ta_koordinator($this->session->userdata('userId')));
+                                            $smr_koor = count($this->ta_model->get_approval_seminar_koordinator($this->session->userdata('userId')));
+                                            $nilai_smr_koor = count($this->ta_model->get_approval_nilai_seminar_koordinator($this->session->userdata('userId')));    
+
+                                            if($biodata->jurusan == "5"){
+                                                $validasi = $ta_koor + $smr_koor + $nilai_smr_koor;
+                                            }
+                                            else{
+                                                $validasi = 0;
+                                            }
+                                        
+                                        ?>
+                                        Validasi <span class="badge badge-danger"><?php echo $validasi > 0 ? $validasi : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/tugas-akhir/tema/koordinator") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "tema" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Tema <span class="badge badge-danger"><?php echo $ta_koor > 0 ? $ta_koor: "" ?></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/tugas-akhir/seminar/koordinator") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "seminar" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_koor > 0 ? $smr_koor : "" ?></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/tugas-akhir/nilai-seminar/koordinator") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "nilai-seminar" && $this->uri->segment(4) == "koordinator") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Nilai Seminar/Sidang <span class="badge badge-danger"><?php echo $nilai_smr_koor > 0 ? $nilai_smr_koor : "" ?></span>
+                                            </a>
+                                        </li>
+                                       
+                                    </ul>
+                                </li>
+
+                                <li >
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-graph1"></i>
+                                        Kemajuan Tugas Akhir
+                                        
+                                    </a>
+                                    
+                                </li>
+
+                                <li <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-copy-file"></i>
+                                        <!-- <?php 
+                                            $rekap = count($this->ta_model->get_ta_rekap($this->session->userdata('userId')));
+                                        ?> -->
+                                        Rekap 
+                                        <!-- <span class="badge badge-danger"><?php echo $jml?></span> -->
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <!-- <li>
+                                            <a href="#">
+                                                <i class="metismenu-icon">
+                                                </i>KP/PKL
+                                            </a>
+                                        </li> -->
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/koordinator/rekap/tugas-akhir") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "tugas-akhir") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                 </i>Tugas Akhir <!--<span class="badge badge-danger"><?php echo $rekap > 0 ? $rekap : "" ?></span> -->
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/koordinator/rekap/seminar") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "seminar") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Seminar
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/koordinator/rekap/mahasiswa-ta") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "mahasiswa-ta") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Mahasiswa Tugas Akhir
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/koordinator/rekap/bimbingan-dosen") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "bimbingan-dosen") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Bimbingan Dosen
+                                            </a>
+                                        </li>
+                                        <!-- <li>
+                                            <a href="<?php echo site_url("dosen/koordinator/rekap/ganti-ta-pbb") ?>" <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap" && $this->uri->segment(4) == "ganti-ta-pbb") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Ganti Tema/Pembimbing
+                                            </a>
+                                        </li> -->
+                                       
+                                    </ul>
+                                </li>
                                 <?php } ?>
 
                                 <?php if(in_array(19,$tb)){ ?>
@@ -880,96 +1037,6 @@ else{
                                
                                 <?php } ?>
 
-                              
-
-                                <?php if(in_array(2,$tb)){ ?>
-                                <!-- WD 1 -->
-
-                                <li class="app-sidebar__heading">Wakil Dekan I</li>
-                                <li <?php if($this->uri->segment(2) == "approval") echo 'class="mm-active"' ?>>
-                                    <a href="#">
-                                    <?php 
-                                        $lay_aka_form = count($this->layanan_model->get_bebas_lab_wd1());
-
-                                        $lay_aka = $lay_aka_form;
-                                    ?>
-                                        <i class="metismenu-icon pe-7s-notebook"></i>
-                                        Layanan Akademik <span class="badge badge-danger"><?php echo $lay_aka > 0 ? $lay_aka : "" ?></span>
-                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                        <a href="<?php echo site_url("dosen/approval/wd1") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "wd1") echo 'class="mm-active"' ?>>
-                                                <i class="metismenu-icon">
-                                                </i>Form Akademik <span class="badge badge-danger"><?php echo $lay_aka_form > 0 ? $lay_aka_form : "" ?></span>
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-
-                                    
-                                <?php } ?>
-
-                                <?php if(in_array(4,$tb)){ ?>
-                                <!-- WD 3 -->
-
-                                <li class="app-sidebar__heading">Wakil Dekan III</li>
-                                <li >
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-notebook"></i>
-                                        Lmbg Kemahasiswaan
-                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="#" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "tema") echo 'class="mm-active"' ?>>
-                                                <i class="metismenu-icon">
-                                                </i>Asese
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="metismenu-icon">
-                                                </i>Pemantauan Progja
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="metismenu-icon">
-                                                </i>Rekap Progja
-                                            </a>
-                                        </li>
-                                        
-                                       
-                                    </ul>
-                                </li>
-                                <?php } ?>
-
-                                <?php if(in_array(6,$tb)){ ?>
-                                <!-- kasubag akademik -->
-
-                                <li class="app-sidebar__heading">Kasubbag Akademik</li>
-                                <li <?php if($this->uri->segment(2) == "approval") echo 'class="mm-active"' ?>>
-                                    <a href="#">
-                                    <?php 
-                                     
-                                    ?>
-                                        <i class="metismenu-icon pe-7s-notebook"></i>
-                                        Layanan Akademik 
-                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                        <a href="<?php echo site_url("dosen/approval/kasubbag-akademik") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "kasubbag-akademik") echo 'class="mm-active"' ?>>
-                                                <i class="metismenu-icon">
-                                                </i>Form Akademik
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <?php } ?>
                                 <?php if(in_array(15,$tb)){ ?>
                                 <!-- kepala laboratorium -->
 
@@ -999,17 +1066,17 @@ else{
                                 <li <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "kalab") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                     <?php 
-                                     
+                                        $lf_lab = count($this->layanan_model->get_approval_kalab_fakultas($this->session->userdata('userId')));
                                     ?>
                                         <i class="metismenu-icon pe-7s-notebook"></i>
-                                        Layanan Fakultas
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_lab > 0 ? $lf_lab : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
                                         <a href="<?php echo site_url("dosen/approval/kalab") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "kalab") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Form Pengajuan Layanan
+                                                </i>Form Pengajuan Layanan  <span class="badge badge-danger"><?php echo $lf_lab > 0 ? $lf_lab : "" ?></span>
                                             </a>
                                         </li>
 
@@ -1017,33 +1084,7 @@ else{
                                 </li>
                                 <?php } ?>
 
-                                <?php if(in_array(20,$tb)){ ?>
-                                <!-- petugas ruang baca -->
-
-                                <li class="app-sidebar__heading">Petugas Perpustakaan</li>
-                                <li <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "perpustakaan") echo 'class="mm-active"' ?>>
-                                    <a href="#">
-                                    <?php 
-                                     
-                                    ?>
-                                        <i class="metismenu-icon pe-7s-notebook"></i>
-                                        Layanan Akademik 
-                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                        <a href="<?php echo site_url("dosen/approval/perpustakaan") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "perpustakaan") echo 'class="mm-active"' ?>>
-                                                <i class="metismenu-icon">
-                                                </i>Pengajuan Bebas Ruang Baca
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-
-                                    
-                                <?php } ?>
-
+                    
 
                                 <div class="divider"></div>
                                 <li>

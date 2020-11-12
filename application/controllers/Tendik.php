@@ -947,19 +947,179 @@ class Tendik extends CI_Controller {
 	function verifikasi_masuk_fakultas_simpan()
 	{
 		$id = $this->input->post('id_pengajuan');
+		$aksi = $this->input->post('aksi');
+		$ket = $this->input->post('keterangan');
+		// $data = $this->input->post();
 		// echo "<pre>";
 		// print_r($data);
 		$jenis = $this->uri->segment(3);
-		$tingkat = $this->layanan_model->get_form_mhs_id($id)->tingkat;
-		$tkt = explode("#",$tingkat);
-		foreach($tkt as $rw){
-			$data = array(
-				"id_layanan_mahasiswa" => $id,
-				"approver_id" => $rw
+		if($aksi == "tolak"){
+			//status = 3
+			$data_tolak = array(
+				"status" => 3,
+				"keterangan" => $ket
 			);
-			$this->layanan_model->insert_approval_layanan($data);
+			$this->layanan_model->update_layanan_fak_mhs($id,$data_tolak);
+		}else{
+			$tingkat = $this->layanan_model->get_form_mhs_id($id)->tingkat;
+			$tkt = explode("#",$tingkat);
+			foreach($tkt as $rw){
+				$data = array(
+					"id_layanan_mahasiswa" => $id,
+					"approver_id" => $rw
+				);
+				$this->layanan_model->insert_approval_layanan($data);
+			}
 		}
 		redirect(site_url("/tendik/verifikasi-berkas-masuk-fakultas/$jenis"));		
+	}
+
+	function layanan_fak_mhs()
+	{
+		$seg = $this->uri->segment(3);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		switch($seg){
+			case "kabag": //5
+			$data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),5);
+			break;
+			case "kasubag-akademik": //6
+			$data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),6);
+			break;
+			case "kasubag-umum": //7
+			$data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),7);
+			break;
+			case "kasubag-kepegawaian": //8
+			$data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),8);
+			break;
+			case "kasubag-kemahasiswaan": //9
+			$data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),9);
+			break;
+			case "perpustakaan": //13
+			$data['form'] = $this->layanan_model->get_approval_perpustakaan_fakultas($this->session->userdata('userId'));
+			break;
+			case "petugas-akademik": //14
+			$data['form'] = $this->layanan_model->get_approval_pt_akademik_fakultas($this->session->userdata('userId'));
+			break;
+		}
+
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('dosen/approval/verifikasi_pengajuan',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function layanan_fak_mhs_approve()
+	{
+		$seg = $this->uri->segment(3);
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		switch($seg){
+			case "kabag":
+			$id_approver = 5;
+			break;
+			case "kasubag-akademik":
+			$id_approver = 6;
+			break;
+			case "kasubag-umum":
+			$id_approver = 7;
+			break;
+			case "kasubag-kepegawaian":
+			$id_approver = 8;
+			break;
+			case "kasubag-kemahasiswaan":
+			$id_approver = 9;
+			break;
+			case "perpustakaan":
+			$id_approver = 13;
+			break;
+			case "pt-akademik":
+			$id_approver = 14;
+			break;
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['form'] = $this->layanan_model->get_form_mhs_id($id);
+		$data['id_approver'] = $id_approver;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('tendik/header');
+
+		$this->load->view('dosen/approval/verifikasi_approve',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function layanan_fak_mhs_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$seg = $this->uri->segment(3);
+		$id_lay = $data['id_lay_fak'];
+		$ttd = $data['ttd'];
+		$approver = $data['id_approver'];
+		$jenis = $data['jenis'];
+		$approval = array(
+			"id_layanan_mahasiswa" => $id_lay,
+			"approver_id" => $approver ,
+			"insert_by" => $this->session->userdata('userId'),
+			"ttd" => $ttd
+		);
+		if($approver > 9){
+			$this->layanan_model->insert_approval_layanan($approval);
+		}
+		else{
+			//update
+			$data_update=array(
+				"insert_by"=>$this->session->userdata('userId'),
+				"ttd" => $ttd
+			);
+			$this->layanan_model->update_approval_layanan($id_lay,$approver,$data_update);
+		}
+		
+		//hapus tingkat
+		$tingkat = $this->layanan_model->get_form_mhs_id($id_lay)->tingkat;
+		if (strpos($tingkat, '#') !== false) {
+			$approver2 = $approver."#";
+		}else{
+			$approver2 = $approver;
+		}	
+		$new_tingkat = str_replace("$approver2","",$tingkat);		
+
+		$this->layanan_model->update_tingkat_layanan($id_lay,$new_tingkat);
+
+		//ubah status menjadi 1
+		$cek_tingkat = $this->layanan_model->get_form_mhs_id($id_lay);
+		if($tingkat < 9){
+			if($cek_tingkat->tingkat == "" || $cek_tingkat->tingkat == null){
+				$status = 1;
+				$this->layanan_model->update_status_layanan($id_lay,$status);
+			}
+		}
+
+		//if bebas laboratorium
+		if($cek_tingkat->id_layanan_fakultas == 2){
+			//id bebas lab
+			$id_lab = $this->layanan_model->get_id_bebas_lab($id_lay)->id_bebas_lab;
+
+			//update bebas lab
+			$this->layanan_model->approve_bebas_lab_wd($id_lab,$ttd);	
+		}
+		//if surat izin pelaksanaan penelitian
+		if($cek_tingkat->id_layanan_fakultas == 39){
+			if($cek_tingkat->tingkat == "" || $cek_tingkat->tingkat == null){
+				$status = 2;
+				$this->layanan_model->update_status_layanan($id_lay,$status);
+			}
+		}
+
+		redirect(site_url("/tendik/approval/$seg"));		
+
 	}
 
 }

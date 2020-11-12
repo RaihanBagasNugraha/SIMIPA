@@ -7,10 +7,11 @@
                                         <i class="pe-7s-file icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Kelola Berkas Lampiran Form Layanan
+                                    <?php $aksi = $this->input->get('aksi');?>
+                                    <div><b><?php echo $aksi == "perbaiki" ? "Perbaiki" : "Kelola" ?> Berkas Lampiran Form Layanan</b>
                                         <div class="page-title-subheading">Jangan lupa untuk mengunggah berkas pendukung.
                                         </div>
-                                        <div class="page-title-subheading">Klik Simpan untuk mengajukan form layanan
+                                        <div class="page-title-subheading">Klik Simpan untuk <?php echo $aksi == "perbaiki" ? "mengajukan perbaikan" : "mengajukan" ?> form layanan melalui sistem.
                                         </div>
                                     </div>
                                 </div>
@@ -93,6 +94,14 @@
                                 </div>
                             </div>
                             <form method="post" action="<?php echo site_url("mahasiswa/layanan-fakultas/$jenis/simpan") ?>" >
+                            <?php 
+                                if($aksi == "perbaiki"){
+                                    $aksi_form = "perbaiki";
+                                }else{
+                                    $aksi_form = "ajukan";
+                                }
+                            ?>
+                            <input type="hidden" name="aksi" value="<?php echo $aksi_form ?>"> 
                             <input type="hidden" name="id_lay" value="<?php echo $this->input->get('id') ?>">                 
                                     <button type="submit" class="btn-shadow btn btn-success">
                                         <span class="btn-icon-wrapper pr-2 opacity-7">
@@ -110,6 +119,15 @@
                                     <div class="card-body">
   
                                         <form method="post" action="<?php echo site_url("mahasiswa/layanan-fakultas/$jenis/unggah") ?>" enctype="multipart/form-data" >
+                                        <?php 
+                                            if($aksi == "perbaiki"){
+                                                $aksi_form = "perbaiki";
+                                            }else{
+                                                $aksi_form = "ajukan";
+                                            }
+                                        ?>
+                                        <input type="hidden" name="aksi" value="<?php echo $aksi_form ?>"> 
+                                        
                                         <div class="position-relative row form-group">
                                             <div class="col-sm-12">
                                                 <input name="nama_berkas" class="form-control" type="text" placeholder="Nama Berkas">

@@ -7,36 +7,12 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <?php 
-                                        $jns = $this->uri->segment(3);
-                                        switch($jns){
-                                            case "akademik":
-                                            $layanan = "Akademik";
-                                            break;
-                                            case "kemahasiswaan":
-                                            $layanan = "Kemahasiswaan";
-                                            break;
-                                            case "umum-keuangan":
-                                            $layanan = "Umum dan Keuangan";
-                                            break;
-                                        }
-                                    ?>
-                                    <div>Form Layanan <?php echo $layanan; ?>
+                                  
+                                    <div>Lacak Form Layanan
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
                                 </div>
-                               
-                                <div class="page-title-actions">
-                                    <a href="<?php echo site_url("mahasiswa/layanan-fakultas/$jns/form") ?>" class="btn-shadow btn btn-success">
-                                            <span class="btn-icon-wrapper pr-2 opacity-7">
-                                                <i class="fas fa-file fa-w-20"></i>
-                                            </span>
-                                            Tambah Form
-                                    </a>
-                                </div>
-                                
-                                
                             </div>
                         </div> <!-- app-page-title -->
                         <?php
@@ -57,11 +33,12 @@
                                         <thead>
                                         <tr>
                                             <th style="width: 5%;">#</th>
-                                            <th style="width: 25%;">Nama Form</th>
+                                            <th style="width: 20%;">Nama Form</th>
+                                            <th style="width: 10%;">Jenis</th>
                                             <th style="width: 10%;">Waktu</th>
                                             <th style="width: 25%;">Keterangan</th>
-                                            <th style="width: 20%;">Status</th>
-                                            <th style="width: 15%;">Aksi</th>
+                                            <th style="width: 15%;">Status</th>
+                                            <th style="width: 15%;">Lacak</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -73,8 +50,9 @@
                                         else
                                         {
                                             $n = 0;
+                                            $form_selesai = array(3,5,6,7,8,10,11,12,13,18,19,20,21,22,23,25,26,32,33,35,37,38,44,45);
                                             foreach($form as $row) {
-                                              
+                                              if(!in_array($row->id_layanan_fakultas,$form_selesai)){
                                         ?>
                                         <tr>
                                             <td class="align-top">
@@ -83,6 +61,10 @@
 
                                             <td class="align-top">
                                                 <?php echo $this->layanan_model->select_layanan_by_id($row->id_layanan_fakultas)->nama; ?>
+                                            </td>
+
+                                            <td class="align-top">
+                                                <?php echo "<b>$row->bagian</b>"; ?>
                                             </td>
 
                                             <td class="align-top">
@@ -113,11 +95,12 @@
                                                 if(in_array($row->id_layanan_fakultas,$form_selesai)){
                                                     echo "<span style='color:white;background-color:#5cb85c' class='btn-sm'>Selesai</span>";
                                                 }else{
-                                                    if($row->status == 0 && ($row->tingkat == null || $row->tingkat == "")){
+                                                    if($row->status == 0 && ($row->tingkat == null || $row->tingkat == "") ){
                                                         echo "<span style='color:white;background-color:#d9534f' class='btn-sm'>Belum Diajukan</span>";
                                                     }elseif($row->status == 0 && ($row->tingkat != null || $row->tingkat != "") ){
                                                         echo "<span style='color:white;background-color:#f0ad4e' class='btn-sm'>Menunggu</span>";
-                                                    }elseif($row->status == 1){
+                                                    }
+                                                    elseif($row->status == 1){
                                                         echo "<span style='color:white;background-color:#0275d8' class='btn-sm'>Verifikasi</span>";
                                                     }elseif($row->status == 2){
                                                         echo "<span style='color:white;background-color:#5cb85c' class='btn-sm'>Selesai</span>";
@@ -126,21 +109,7 @@
                                                     }
                                                     echo "<br>";
 
-                                                    if($row->status != 3){
-                                                        // if(!empty($approval)){
-                                                        //     foreach($approval as $app){
-                                                        //         // echo "<ul>";
-                                                        //         echo "<li><b>Approval ".$this->layanan_model->get_approver_by_id($app->approver_id)->nama." : </b></li>";
-                                                        //         // echo "<br>";
-                                                        //         if($app->approver_id > 9){
-                                                        //             echo substr($app->created_at,0,10);
-                                                        //         }else{
-                                                        //             echo substr($app->updated_at,0,10);
-                                                        //         }
-                                                        //         echo "<br>";
-                                                        //     }
-                                                        // }
-                                                    }elseif($row->status == 3){
+                                                   if($row->status == 3){
                                                         echo "<br>";
                                                         echo "<b><i><span style='color:red'>$row->keterangan<span></i></b>";
                                                     }
@@ -150,63 +119,40 @@
                                             </td>
 
                                             <td class="align-top">
-                                            <?php 
-                                            if(($row->tingkat == null || $row->tingkat == "") && $row->status < 1){
-                                                //bebas lab
-                                                if($row->id_layanan_fakultas == 2 ){
+                                                <?php 
+                                                if($row->status != 3){
+                                                    if(!empty($approval)){
+                                                        foreach($approval as $app){
+                                                            // echo "<ul>";
+                                                            echo "<li><b>Approval ".$this->layanan_model->get_approver_by_id($app->approver_id)->nama." : </b></li>";
+                                                            // echo "<br>";
+                                                            if($app->approver_id > 9){
+                                                                echo substr($app->created_at,0,10);
+                                                            }else{
+                                                                echo substr($app->updated_at,0,10);
+                                                            }
+                                                            echo "<br><br>";
+                                                        }
 
-                                            ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/akademik/bebas-lab")  ?> " class="btn-wide mb-2 btn btn-primary btn-sm">Ajukan</a>
-                                                <!-- <a data-toggle = "modal" data-id="<?php echo $row->id ?>" data-jns="<?php echo $jns ?>" class="passingID" >
-                                                    <span type="button" class="btn mb-2 btn-danger btn-sm "  data-toggle="modal" data-target="#delFormMhs">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i> 
-                                                    </span>
-                                                </a> -->
-                                            <?php
+                                                        if($row->tingkat == null || $row->tingkat != ""){
+                                                            $tkt = explode("#",$row->tingkat);
+                                                            if(!empty($tkt)){
+                                                                foreach($tkt as $rw){
+                                                                    echo "<b>Menunggu :</b>";
+                                                                    echo "<li>".$this->layanan_model->get_approver_by_id($rw)->nama."</li>";
+                                                                }
+                                                            }             
+                                                        }
                                                 }
-                                                //form hardcopy
-                                                elseif(in_array($row->id_layanan_fakultas,$form_selesai)){
-                                            ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/unduh?id=".$row->id."&layanan=".$row->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
-                                            <?php
+                                                }else{
+                                                    echo "<br>";
+                                                    echo "<b><i><span style='color:red'>$row->keterangan<span></i></b>";
                                                 }
-                                                else{
-                                            ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/ajukan?id=".$this->encrypt->encode($row->id))  ?> " class="btn-wide mb-2 btn btn-primary btn-sm"><i class="fa fa-upload" aria-hidden="true"></i></a>
-                                                <!-- &emsp; -->
-                                                <a data-toggle = "modal" data-id="<?php echo $row->id ?>" data-jns="<?php echo $jns ?>" class="passingID" >
-                                                    <span type="button" class="btn-wide btn mb-2 btn-danger btn-sm "  data-toggle="modal" data-target="#delFormMhs">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i> 
-                                                    </span>
-                                                </a>
-                                            <?php }
-                                            }
-                                            //ditolak
-                                            elseif($row->status == 3){
-
-                                            ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/unduh?id=".$row->id."&layanan=".$row->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/ajukan?id=".$this->encrypt->encode($row->id)."&aksi=perbaiki")  ?> " class="btn-wide mb-2 btn btn-primary btn-sm"><i class="fa fa-wrench" aria-hidden="true"></i></a>
-                                                <!-- &emsp; -->
-                                                <a data-toggle = "modal" data-id="<?php echo $row->id ?>" data-jns="<?php echo $jns ?>" class="passingID" >
-                                                    <span type="button" class="btn-wide btn mb-2 btn-danger btn-sm "  data-toggle="modal" data-target="#delFormMhs">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i> 
-                                                    </span>
-                                                </a>
-                                            <?php
-                                            }
-                                            else{ 
-                                                if($row->id_layanan_fakultas == 2 ){
-                                            ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/akademik/bebas-lab")  ?> " class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
-                                            <?php }else{ ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/unduh?id=".$row->id."&layanan=".$row->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
-                                            <?php
-                                                }
-                                            }?>
+                                                ?>
                                             </td>
                                         </tr>
                                         <?php
+                                              }else{}
                                             }
                                         }
                                         ?>

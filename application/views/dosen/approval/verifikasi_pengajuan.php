@@ -25,6 +25,12 @@
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
                         $seg = $this->uri->segment(3);
+                        $role = $this->user_model->get_role_id($this->session->userdata('userId'));
+                        if($role == 2){
+                            $ctrl = "dosen";
+                        }elseif($role == 4){
+                            $ctrl = "tendik";
+                        }
                         ?>
                             
                          <div class="main-card mb-3 card">
@@ -95,7 +101,7 @@
                                             </td>
 
                                             <td class="align-top">
-                                            <a href="<?php echo site_url("dosen/approval/$seg/approve?id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-2 btn btn-primary btn-sm">Setujui</a>
+                                            <a href="<?php echo site_url("$ctrl/approval/$seg/approve?id=".$this->encrypt->encode($row->id)) ?>" class="btn-wide mb-2 btn btn-primary btn-sm">Setujui</a>
                                             </td>
 
                                           

@@ -4382,26 +4382,60 @@ class Dosen extends CI_Controller {
 		$seg = $this->uri->segment(3);
 
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		if($seg == "pembimbing-akademik"){ // pembimbing-15
-			$data['form'] = $this->layanan_model->get_approval_pa_fakultas($this->session->userdata('userId'));
-		}elseif($seg == "ketua-jurusan"){ // kajur-10
+
+		switch($seg){
+			case "dekan": //1
+			$data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),1);
+			break;
+			case "wd1": //2
+			$data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),2);
+			break;
+			case "wd2": // 3
+			$data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),3);
+			break;
+			case "wd3": //4
+			$data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),4);
+			break;
+			// case "kabag": //5
+			// $data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),5);
+			// break;
+			// case "kasubag-akademik": //6
+			// $data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),6);
+			// break;
+			// case "kasubag-umum": //7
+			// $data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),7);
+			// break;
+			// case "kasubag-kepegawaian": //8
+			// $data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),8);
+			// break;
+			// case "kasubag-kemahasiswaan": //9
+			// $data['form'] = $this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),9);
+			// break;
+			case "ketua-jurusan": //10
 			$data['form'] = $this->layanan_model->get_approval_kajur_fakultas($this->session->userdata('userId'));
-		}elseif($seg == "dekan"){ // dekan-1
-			$data['form'] = $this->layanan_model->get_approval_dekan_fakultas($this->session->userdata('userId'));
-		}elseif($seg == "wd1"){ //wd1 - 2
-			$data['form'] = $this->layanan_model->get_approval_wd1_fakultas($this->session->userdata('userId'));
-		}elseif($seg == "perpustakaan"){ //petugas ruang baca - 13
-			$data['form'] = $this->layanan_model->get_approval_perpustakaan_fakultas($this->session->userdata('userId'));
-		}elseif($seg == "kasubbag-akademik"){ //kasubbag akademik - 6
-			$data['form'] = $this->layanan_model->get_approval_kasubag_akademik_fakultas($this->session->userdata('userId'));
-		}elseif($seg == "kaprodi-s3"){ //kaprodi s3 - 10
+			break;
+			case "kaprodi-s3": //10
 			$data['form'] = $this->layanan_model->get_approval_kaprodi3_fakultas($this->session->userdata('userId'));
-		}elseif($seg == "kalab"){ //kalab - 17
-			$data['form'] = $this->layanan_model->get_approval_kalab_fakultas($this->session->userdata('userId'));
-		}elseif($seg == "pembimbing-ta"){ //kalab - 16
+			break;
+			case "sekjur": //11
+			$data['form'] = $this->layanan_model->get_approval_sekjur_fakultas($this->session->userdata('userId'));
+			break;
+			case "kaprodi": //12
+			$data['form'] = $this->layanan_model->get_approval_kaprodi_fakultas($this->session->userdata('userId'));
+			break;
+			// case "perpustakaan": //13
+			// $data['form'] = $this->layanan_model->get_approval_perpustakaan_fakultas($this->session->userdata('userId'));
+			// break;
+			case "pembimbing-akademik": // 15
+			$data['form'] = $this->layanan_model->get_approval_pa_fakultas($this->session->userdata('userId'));
+			break;
+			case "pembimbing-ta": // 16
 			$data['form'] = $this->layanan_model->get_approval_pbb_fakultas($this->session->userdata('userId'));
+			break;
+			case "kalab": // 17
+			$data['form'] = $this->layanan_model->get_approval_kalab_fakultas($this->session->userdata('userId'));
+			break;
 		}
-		
 		
 		$this->load->view('header_global', $header);
 		$this->load->view('dosen/header');
@@ -4418,33 +4452,58 @@ class Dosen extends CI_Controller {
 		$id = $this->encrypt->decode($id);
 
 		switch($seg){
-			case "pembimbing-akademik":
-			$id_approver = 15;
-			break;
-			case "ketua-jurusan":
-			$id_approver = 10;
-			break;
 			case "dekan":
 			$id_approver = 1;
 			break;
 			case "wd1":
 			$id_approver = 2;
 			break;
-			case "perpustakaan":
-			$id_approver = 13;
+			case "wd2":
+			$id_approver = 3;
 			break;
-			case "kasubbag-akademik":
-			$id_approver = 6;
+			case "wd3":
+			$id_approver = 4;
+			break;
+			// case "kabag":
+			// $id_approver = 5;
+			// break;
+			// case "kasubag-akademik":
+			// $id_approver = 6;
+			// break;
+			// case "kasubag-umum":
+			// $id_approver = 7;
+			// break;
+			// case "kasubag-kepegawaian":
+			// $id_approver = 8;
+			// break;
+			// case "kasubag-kemahasiswaan":
+			// $id_approver = 9;
+			// break;
+			case "ketua-jurusan":
+			$id_approver = 10;
 			break;
 			case "kaprodi-s3":
 			$id_approver = 10;
 			break;
-			case "kalab":
-			$id_approver = 17;
+			case "sekjur":
+			$id_approver = 11;
+			break;
+			case "kaprodi":
+			$id_approver = 12;
+			break;
+			// case "perpustakaan":
+			// $id_approver = 13;
+			// break;
+			case "pembimbing-akademik":
+			$id_approver = 15;
 			break;
 			case "pembimbing-ta":
 			$id_approver = 16;
 			break;
+			case "kalab":
+			$id_approver = 17;
+			break;
+			
 		}
 
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();

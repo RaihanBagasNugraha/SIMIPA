@@ -1621,7 +1621,9 @@ class Mahasiswa extends CI_Controller {
 		$jns= $data['jenis'];
 
 		//delete
-		$this->layanan_model->delete_layanan_mhs($id);
+		$this->layanan_model->delete_berkas_layanan($id);
+		$this->layanan_model->delete_layanan_mhs($id);		
+
 		redirect(site_url("mahasiswa/layanan-fakultas/$jns"));
 	}
 
@@ -1851,6 +1853,7 @@ class Mahasiswa extends CI_Controller {
 
 	function layanan_bebas_ruang_baca()
 	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		$data['lampiran'] = $this->layanan_model->get_berkas_lab($this->session->userdata('username'));
 
 		$this->load->view('header_global', $header);
@@ -1882,6 +1885,7 @@ class Mahasiswa extends CI_Controller {
 	{
 		// print_r($_POST);
 		// print_r($_FILES);
+		$aksi = $this->input->post('aksi');
 		$jenis = $this->uri->segment(3);
 		$file1 = file_get_contents($_FILES['file']['tmp_name']);
 		$file1 = substr($file1,0,4);
@@ -1906,14 +1910,26 @@ class Mahasiswa extends CI_Controller {
 				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
 
 				$this->layanan_model->insert_lampiran_layanan($data);
-				redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=".$this->input->post('id_lay')."&status=sukses"));
+				if($aksi == "perbaiki"){
+					redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=".$this->input->post('id_lay')."&aksi=".$aksi."&status=sukses"));
+				}else{
+					redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=".$this->input->post('id_lay')."&status=sukses"));
+				}
 			}
 			else{
-				redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=".$this->input->post('id_lay')."&status=gagal"));
+				if($aksi == "perbaiki" ){
+					redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=".$this->input->post('id_lay')."&aksi=".$aksi."&status=gagal"));
+				}else{
+					redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=".$this->input->post('id_lay')."&status=gagal"));
+				}
 			}
 		}
 		else{
-			redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=".$this->input->post('id_lay')."&status=gagal"));
+			if($aksi == "perbaiki"){
+				redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=".$this->input->post('id_lay')."&aksi=".$aksi."&status=gagal"));
+			}else{
+				redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=".$this->input->post('id_lay')."&status=gagal"));
+			}
 		}
 	}
 
@@ -1927,11 +1943,17 @@ class Mahasiswa extends CI_Controller {
 		$id_layanan = $this->input->post('id_layanan');
 		$file = $this->input->post('file_berkas');
 		$id_get = $this->input->get('id');
+		$aksi = $this->input->post('aksi');
+
 		$jenis = $this->uri->segment(3); 
 		$data = array("id" => $id);
 		$this->layanan_model->delete_lampiran_layanan($data);
 		unlink($file);
-		redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=$id_get"));
+		if($aksi == "perbaiki"){
+			redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=$id_get&aksi=$aksi"));
+		}else{
+			redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=$id_get"));
+		}
 	}
 
 	function layanan_fakultas_simpan()
@@ -1940,12 +1962,36 @@ class Mahasiswa extends CI_Controller {
 		// echo "<pre>";
 		// print_r($data);
 		$id = $this->encrypt->decode($this->input->post('id_lay'));
-		//input approver
-		$data = $this->layanan_model->get_form_mhs_id($id);
-		$layanan = $this->layanan_model->get_layanan_fakultas_by_id($data->id_layanan_fakultas);
-		$this->layanan_model->insert_approver_mhs($id,$layanan->approver);
+		$aksi = $this->input->post('aksi');
 		$seg = $this->uri->segment(3);
+		if($aksi == "perbaiki"){
+			$data_tolak = array(
+				"status" => 0,
+				"keterangan" => null
+			);
+			$this->layanan_model->update_layanan_fak_mhs($id,$data_tolak);
+		}else{
+			//input approver
+			$data = $this->layanan_model->get_form_mhs_id($id);
+			$layanan = $this->layanan_model->get_layanan_fakultas_by_id($data->id_layanan_fakultas);
+			$this->layanan_model->insert_approver_mhs($id,$layanan->approver);
+		}
 		redirect(site_url("mahasiswa/layanan-fakultas/$seg"));
+	}
+
+	function layanan_fakultas_lacak()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		
+		//get form
+		$data['form'] = $this->layanan_model->get_layanan_lacak($this->session->userdata('username'));
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/layanan/layanan_lacak',$data);
+
+        $this->load->view('footer_global');
 	}
 
 }

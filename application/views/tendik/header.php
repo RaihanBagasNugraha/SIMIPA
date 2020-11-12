@@ -26,38 +26,133 @@ foreach($tugas as $row){
                                         Biodata
                                     </a>
                                 </li>
-                                <?php if(in_array(5,$tb)){ ?>
-                                <!-- Menu Kabag TU Fakultas -->
-                                <li class="app-sidebar__heading">Kabag Tata Usaha</li>
-                                
-                                
 
-                                <li <?php if($this->uri->segment(2) == "layanan-fakultas") echo 'class="mm-active"' ?>>
+                                <?php if(in_array(5,$tb)){ ?>
+                                <!-- kabag tu -->
+
+                                <li class="app-sidebar__heading">Kabag Tata Usaha</li>
+                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "kabag")) echo 'class="mm-active"' ?>>
                                     <a href="#">
-                                        <i class="metismenu-icon pe-7s-display2"></i>
-                                        Rekap Layanan Fakultas
+                                    <?php 
+                                        $lf_kabag = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),5));
+
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_kabag > 0 ? $lf_kabag : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
-                                       
                                         <li>
-                                            <a href="#">
+                                        <a href="<?php echo site_url("tendik/approval/kabag") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "kabag") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Akademik
+                                                </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_kabag > 0 ? $lf_kabag : "" ?></span>
                                             </a>
                                         </li>
+
+                                    </ul>
+                                </li>
+                                <?php } ?>
+
+                                <?php if(in_array(6,$tb)){ ?>
+                                <!-- kasubag akademik -->
+
+                                <li class="app-sidebar__heading">Kasubbag Akademik</li>
+                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "kasubag-akademik")) echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                    <?php 
+                                        $lf_kasubag1 = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),6));
+
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_kasubag1 > 0 ? $lf_kasubag1 : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
                                         <li>
-                                            <a href="#">
+                                        <a href="<?php echo site_url("tendik/approval/kasubag-akademik") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "kasubag-akademik") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Umum & Keuangan
+                                                </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_kasubag1 > 0 ? $lf_kasubag1 : "" ?></span>
                                             </a>
                                         </li>
+
+                                    </ul>
+                                </li>
+                                <?php } ?>
+
+                                <?php if(in_array(7,$tb)){ ?>
+                                <!-- kasubag umum -->
+
+                                <li class="app-sidebar__heading">Kasubbag Umum</li>
+                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "kasubag-umum")) echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                    <?php 
+                                        $lf_kasubag2 = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),7));
+
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_kasubag2 > 0 ? $lf_kasubag2 : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
                                         <li>
-                                            <a href="#">
+                                        <a href="<?php echo site_url("tendik/approval/kasubag-umum") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "kasubag-umum") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Kemahasiswaan
+                                                </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_kasubag2 > 0 ? $lf_kasubag2 : "" ?></span>
                                             </a>
                                         </li>
+
+                                    </ul>
+                                </li>
+                                <?php } ?>
+
+                                <?php if(in_array(8,$tb)){ ?>
+                                <!-- kasubag kepegawaian -->
+
+                                <li class="app-sidebar__heading">Kasubbag Kepegawaian</li>
+                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "kasubag-kepegawaian")) echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                    <?php 
+                                        $lf_kasubag3 = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),8));
+
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_kasubag3 > 0 ? $lf_kasubag3 : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                        <a href="<?php echo site_url("tendik/approval/kasubag-kepegawaian") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "kasubag-kepegawaian") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_kasubag3 > 0 ? $lf_kasubag3 : "" ?></span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <?php } ?>
+
+                                <?php if(in_array(9,$tb)){ ?>
+                                <!-- kasubag kemahasiswaan -->
+
+                                <li class="app-sidebar__heading">Kasubbag Kemahasiswaan</li>
+                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "kasubag-kemahasiswaan")) echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                    <?php 
+                                        $lf_kasubag4 = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),9));
+
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_kasubag4 > 0 ? $lf_kasubag4 : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                        <a href="<?php echo site_url("tendik/approval/kasubag-kemahasiswaan") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "kasubag-kemahasiswaan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_kasubag4 > 0 ? $lf_kasubag4 : "" ?></span>
+                                            </a>
+                                        </li>
+
                                     </ul>
                                 </li>
                                 <?php } ?>
@@ -68,27 +163,34 @@ foreach($tugas as $row){
                                 <li class="app-sidebar__heading">Admin Fakultas</li>
                                 <li <?php if($this->uri->segment(2) == "verifikasi-berkas-masuk-fakultas") echo 'class="mm-active"' ?>>
                                     <a href="#">
+                                        <?php 
+                                            $vbm_aka = count($this->layanan_model->get_approval_cek_tendik('Akademik'));
+                                            $vbm_umum = count($this->layanan_model->get_approval_cek_tendik('Umum dan Keuangan'));
+                                            $vbm_kms = count($this->layanan_model->get_approval_cek_tendik('Kemahasiswaan'));
+
+                                            $vbm = $vbm_aka + $vbm_umum + $vbm_kms;
+                                        ?>
                                         <i class="metismenu-icon pe-7s-note2"></i>
-                                        Verifikasi Berkas Masuk
+                                        Verifikasi Berkas Masuk <span class="badge badge-danger"><?php echo $vbm > 0 ? $vbm : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
                                             <a href="<?php echo site_url("tendik/verifikasi-berkas-masuk-fakultas/akademik") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-masuk-fakultas" && $this->uri->segment(3) == "akademik") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon pe-7s-note2"></i>
-                                                Akademik
+                                                Akademik <span class="badge badge-danger"><?php echo $vbm_aka > 0 ? $vbm_aka : "" ?></span>
                                             </a>
                                         </li> 
                                         <li>
                                             <a href="<?php echo site_url("tendik/verifikasi-berkas-masuk-fakultas/umum-keuangan") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-masuk-fakultas" && $this->uri->segment(3) == "umum-keuangan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon pe-7s-note2"></i>
-                                                Umum dan Keuangan
+                                                Umum dan Keuangan <span class="badge badge-danger"><?php echo $vbm_umum > 0 ? $vbm_umum : "" ?></span>
                                             </a>
                                         </li> 
                                         <li>
                                             <a href="<?php echo site_url("tendik/verifikasi-berkas-masuk-fakultas/kemahasiswaan") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-masuk-fakultas" && $this->uri->segment(3) == "kemahasiswaan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon pe-7s-note2"></i>
-                                                Kemahasiswaan
+                                                Kemahasiswaan <span class="badge badge-danger"><?php echo $vbm_kms > 0 ? $vbm_kms : "" ?></span>
                                             </a>
                                         </li> 
                                     </ul>
@@ -96,27 +198,34 @@ foreach($tugas as $row){
                                 </li>
                                 <li <?php if($this->uri->segment(2) == "verifikasi-berkas-fakultas") echo 'class="mm-active"' ?>>
                                     <a href="#">
+                                        <?php 
+                                            $vbk_aka = count($this->layanan_model->get_approval_keluar_tendik('Akademik'));
+                                            $vbk_umum = count($this->layanan_model->get_approval_keluar_tendik('Umum dan Keuangan'));
+                                            $vbk_kms = count($this->layanan_model->get_approval_keluar_tendik('Kemahasiswaan'));
+
+                                            $vbk = $vbk_aka + $vbk_umum + $vbk_kms;
+                                        ?>
                                         <i class="metismenu-icon pe-7s-note2"></i>
-                                        Verifikasi Berkas Keluar
+                                        Verifikasi Berkas Keluar <span class="badge badge-danger"><?php echo $vbk > 0 ? $vbk : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
                                             <a href="<?php echo site_url("tendik/verifikasi-berkas-fakultas/akademik") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-fakultas" && $this->uri->segment(3) == "akademik") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon pe-7s-note2"></i>
-                                                Akademik
+                                                Akademik <span class="badge badge-danger"><?php echo $vbk_aka > 0 ? $vbk_aka : "" ?></span>
                                             </a>
                                         </li> 
                                         <li>
                                             <a href="<?php echo site_url("tendik/verifikasi-berkas-fakultas/umum-keuangan") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-fakultas" && $this->uri->segment(3) == "umum-keuangan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon pe-7s-note2"></i>
-                                                Umum dan Keuangan
+                                                Umum dan Keuangan <span class="badge badge-danger"><?php echo $vbk_umum > 0 ? $vbk_umum : "" ?></span>
                                             </a>
                                         </li> 
                                         <li>
                                             <a href="<?php echo site_url("tendik/verifikasi-berkas-fakultas/kemahasiswaan") ?>" <?php if($this->uri->segment(2) == "verifikasi-berkas-fakultas" && $this->uri->segment(3) == "kemahasiswaan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon pe-7s-note2"></i>
-                                                Kemahasiswaan
+                                                Kemahasiswaan <span class="badge badge-danger"><?php echo $vbk_kms > 0 ? $vbk_kms : "" ?></span>
                                             </a>
                                         </li> 
                                     </ul>
@@ -226,18 +335,57 @@ foreach($tugas as $row){
                                 <?php } ?>
 
                                 <?php if(in_array(20,$tb)){ ?>
-                                <!-- Menu Staf Ruang Baca -->
-                                
-                                <li class="app-sidebar__heading">Staf Ruang Baca</li>
-                                <li <?php if($this->uri->segment(2) == "") echo 'class="mm-active"' ?>>
+                                <!-- petugas ruang baca -->
+
+                                <li class="app-sidebar__heading">Petugas Perpustakaan</li>
+                                <li <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "perpustakaan") echo 'class="mm-active"' ?>>
                                     <a href="#">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
-                                        Verifikasi Bebas Ruang Baca
-                                        
+                                    <?php 
+                                        $lf_perpus = count($this->layanan_model->get_approval_perpustakaan_fakultas($this->session->userdata('userId')));
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Akademik <span class="badge badge-danger"><?php echo $lf_perpus > 0 ? $lf_perpus : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
-                                    
+                                    <ul>
+                                        <li>
+                                        <a href="<?php echo site_url("tendik/approval/perpustakaan") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "perpustakaan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Pengajuan Bebas Ruang Baca <span class="badge badge-danger"><?php echo $lf_perpus > 0 ? $lf_perpus : "" ?></span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
                                 </li>
                                 <?php } ?>
+
+                                <?php if(in_array(21,$tb)){ ?>
+                                <!-- petugas akademik -->
+
+                                <li class="app-sidebar__heading">Petugas Akademik</li>
+                                <li <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "petugas-akademik") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                    <?php 
+                                        $lf_pt_aka = count($this->layanan_model->get_approval_pt_akademik_fakultas($this->session->userdata('userId')));
+                                    ?>
+                                        <i class="metismenu-icon pe-7s-notebook"></i>
+                                        Layanan Akademik <span class="badge badge-danger"><?php echo $lf_pt_aka > 0 ? $lf_pt_aka : "" ?></span>
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                        <a href="<?php echo site_url("tendik/approval/petugas-akademik") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "petugas-akademik") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Pengajuan Bebas Ruang Baca <span class="badge badge-danger"><?php echo $lf_pt_aka > 0 ? $lf_pt_aka : "" ?></span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+
+                                    
+                                <?php } ?>
+
                                
                                 <div class="divider"></div>
                                 <li>

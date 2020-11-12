@@ -24,6 +24,12 @@
                                 echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                             }
                             $seg = $this->uri->segment(3);
+                            $role = $this->user_model->get_role_id($this->session->userdata('userId'));
+                            if($role == 2){
+                                $ctrl = "dosen";
+                            }elseif($role == 4){
+                                $ctrl = "tendik";
+                            }
                         ?>
 
                         <div class="row">
@@ -31,7 +37,7 @@
                          <div class="main-card mb-3 card">
                                 <div class="card-header"></div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo site_url("dosen/approval/$seg/save") ?>" >
+                                <form method="post" action="<?php echo site_url("$ctrl/approval/$seg/save") ?>" >
                                     <input value="<?php echo $form->id ?>" type = "hidden" required name="id_lay_fak" >
                                     <input value="<?php echo $id_approver ?>" type = "hidden" required name="id_approver" >
                                     <input value="<?php echo $this->layanan_model->get_layanan_fakultas_by_id($form->id_layanan_fakultas)->bagian ?>" type = "hidden" required name="jenis" >

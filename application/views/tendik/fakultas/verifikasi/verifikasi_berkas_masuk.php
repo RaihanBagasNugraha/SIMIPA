@@ -7,8 +7,16 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
+                                    <?php 
+                                        $jenis = $this->uri->segment(3);
+                                        if($jenis == "akademik"){
+                                            $layanan = "Akademik";
+                                        }elseif($jenis == "umum-keuangan"){$layanan = "Umum dan Keuangan";}
+                                        elseif($jenis == "kemahasiswaan"){$layanan = "Kemahasiswaan";}
+                                        else{$layanan= "";}
                                     
-                                    <div>Pengajuan Bebas Lab
+                                    ?>
+                                    <div>Verifikasi Pengajuan Masuk Layanan <?php echo $layanan ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
@@ -106,6 +114,11 @@
                                                         Verifikasi
                                                     </button>
                                                 </a>
+                                                <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="tolak">
+                                                    <button style="width: 80px;" type="button" class="mb-2 btn btn-danger btn-sm"  data-toggle="modal" data-target="#tolakmasuk">
+                                                        Tolak
+                                                    </button>
+                                                </a>
                                             </td>
 
                                           
@@ -194,9 +207,9 @@ $(document).ready(function() {
         var id = $(this).attr('data-id');
         $("#IDMasuk").val( id );
     });    
-    // $(".tolak").click(function () {
-    //     var id = $(this).attr('data-id');
-    //     $("#IDtolak").val( id );
-    // });                               
+    $(".tolak").click(function () {
+        var id = $(this).attr('data-id');
+        $("#IDtolak").val( id );
+    });                               
      
 </script>
