@@ -33,7 +33,7 @@
                                     }
                                     
                                     ?>
-                                    <div>Rekap Seminar Jurusan <?php echo $jur_dosen; ?>
+                                    <div>Monitor Seminar/Sidang Jurusan <?php echo $jur_dosen; ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>

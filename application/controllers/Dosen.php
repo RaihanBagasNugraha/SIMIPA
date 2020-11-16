@@ -4582,6 +4582,15 @@ class Dosen extends CI_Controller {
 			}
 		}
 
+		//if form hapus matkul
+		if($cek_tingkat->id_layanan_fakultas == 4 && $approver == 2){
+			$catatan = $data['catatan'];
+			$catatan = array(
+				"keterangan" => $catatan
+			);
+			$this->layanan_model->update_layanan_fak_mhs($id_lay,$catatan);
+		}
+
 		redirect(site_url("/dosen/approval/$seg"));		
 
 	}

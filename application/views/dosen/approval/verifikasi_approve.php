@@ -41,6 +41,7 @@
                                     <input value="<?php echo $form->id ?>" type = "hidden" required name="id_lay_fak" >
                                     <input value="<?php echo $id_approver ?>" type = "hidden" required name="id_approver" >
                                     <input value="<?php echo $this->layanan_model->get_layanan_fakultas_by_id($form->id_layanan_fakultas)->bagian ?>" type = "hidden" required name="jenis" >
+                                    <input value="<?php echo $form->id_layanan_fakultas ?>" type = "hidden" required name="id_layanan" >
 
                                     <!-- NPM -->
                                     <div class="position-relative row form-group">
@@ -69,6 +70,17 @@
                                                 <input value="<?php echo $waktu[2]."-".$waktu[1]."-".$waktu[0]." / ".substr($form->updated_at,10)  ?>" name="waktu" class="form-control" readonly >
                                             </div>
                                     </div>
+
+                                    <?php if($form->id_layanan_fakultas == 4){?>
+                                    <!-- Catatan -->
+                                    <div class="position-relative row form-group">
+                                            <label class="col-sm-3 col-form-label"><b>Catatan Form Hapus Mata Kuliah</b></label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" placeholder="Catatan (Bila Ada)" name="catatan" value=""></textarea>
+                                            </div>
+                                    </div>
+
+                                    <?php } ?>
 
                                     <!-- TTD -->
                                     <div class="position-relative row form-group"><label for="ttd" class="col-sm-3 col-form-label"><b>Tanda Tangan Digital</b></label>

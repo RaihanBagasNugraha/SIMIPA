@@ -9,7 +9,7 @@
                                     </div>
                                     
                                     <div>Form Layanan <?php echo $layanan->bagian ?>
-                                        <div class="page-title-subheading">Pilih Form Layanan
+                                        <div class="page-title-subheading">Data Form Layanan
                                         </div>
                                     </div>
                                 </div>
@@ -98,7 +98,19 @@
                                                 }
                                             }    
                                         }
-                                       
+                                        //surat tugas individu
+                                        if($layanan->id_layanan_fakultas == 32 || $layanan->id_layanan_fakultas == 33){
+                                         ?>
+                                            <div class="position-relative row form-group">
+                                                <label for="prodi" class="col-sm-3 col-form-label"><label class="btn btn-primary" id='tambah_mhs'>Tambah Mahasiswa&emsp;<i class="fa fa-plus" aria-hidden="true"></i></label></label>
+                                            </div>
+
+                                            <div id="container">
+                                               
+                                            </div>
+                                            
+                                        <?php 
+                                        echo "<br>";}
                                         } else{ 
                                         ?>
                                         <div class="position-relative row form-group">
@@ -242,9 +254,6 @@ $(document).ready(function(){
 
 </script>
 
-<script>
-</script>
-
 <script src="<?php echo site_url("assets/scripts/signature_pad.js") ?>"></script>
 <script>
 var canvas = document.getElementById('signature-pad');
@@ -290,5 +299,37 @@ document.getElementById('undo').addEventListener('click', function () {
 });
 
 </script>
+
+<script>
+$(document).ready(function(){
+    var wrapper = $("#container");
+
+    var i = 1;
+    $('#tambah_mhs').click(function(){
+        $(wrapper).append("<div class='position-relative row form-group field'><div class='col-sm-3'><input value='' type = 'text' placeholder ='Nama' name='nama[]' class='form-control'></div><div class='col-lg-3'><input value='' type = 'text' placeholder ='NPM' name='npm[]' class='form-control'></div><div class='col-lg-3'><select required name='jurusan[]' class = 'form-control'><option value = ''>-- Pilih Jurusan --</option><option value='Doktor MIPA' >Doktor MIPA</option><option value='Kimia' >Kimia</option><option value='Biologi' >Biologi</option><option value='Matematika' >Matematika</option><option value='Fisika' >Fisika</option><option value='Ilmu Komputer' >Ilmu Komputer</option></select></div><div class='col-lg-3'><input value='' type = 'text' placeholder ='Alamat' name='alamat[]' class='form-control'></div></div>");
+        i++;   
+        $(".select_option").on('change', function() {
+            var id = $(this).attr('id');
+            var id_split = id.split("_");
+            // console.log('id = '+id);
+            if(this.value == 'option')
+            {
+                jQuery("#opsir_"+id_split[1]).show();
+                jQuery("#opsih_"+id_split[1]).show();
+            }
+            else{
+                jQuery("#opsir_"+id_split[1]).hide();
+                jQuery("#opsih_"+id_split[1]).hide();
+            }
+        });    
+    });  
+
+    $( "#tambah_ttd" ).click(function() {
+        jQuery("#ttd").show();
+    });
+
+});
+</script>
+
 
                         

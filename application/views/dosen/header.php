@@ -251,7 +251,7 @@ else{
                                 <li >
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-copy-file"></i>
-                                        Rekap
+                                        Monitor
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
@@ -397,14 +397,14 @@ else{
                                             $lf_kajur = count($this->layanan_model->get_approval_kajur_fakultas($this->session->userdata('userId')));
                                         ?>
                                         <i class="metismenu-icon pe-7s-angle-down-circle"></i>
-                                        Approve Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_kajur > 0 ? $lf_kajur : "" ?></span>
+                                        Layanan Fakultas <span class="badge badge-danger"><?php echo $lf_kajur > 0 ? $lf_kajur : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
                                             <a href="<?php echo site_url("dosen/approval/ketua-jurusan") ?>"  <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "ketua-jurusan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Ketua Jurusan <span class="badge badge-danger"><?php echo $lf_kajur > 0 ? $lf_kajur : "" ?></span>
+                                                </i>Form Pengajuan Layanan <span class="badge badge-danger"><?php echo $lf_kajur > 0 ? $lf_kajur : "" ?></span>
                                             </a>
                                         </li>
                                       
@@ -575,7 +575,7 @@ else{
                                         <!-- <?php 
                                             $rekap = count($this->ta_model->get_ta_rekap($this->session->userdata('userId')));
                                         ?> -->
-                                        Rekap Tugas Akhir
+                                        Monitor Tugas Akhir
                                         <!-- <span class="badge badge-danger"><?php echo $jml?></span> -->
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
@@ -922,7 +922,7 @@ else{
                                         <!-- <?php 
                                             $rekap = count($this->ta_model->get_ta_rekap($this->session->userdata('userId')));
                                         ?> -->
-                                        Rekap 
+                                        Monitor
                                         <!-- <span class="badge badge-danger"><?php echo $jml?></span> -->
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>

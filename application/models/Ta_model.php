@@ -161,7 +161,7 @@ class Ta_model extends CI_Model
 
 	function get_approval_ta_kaprodi($id)
 	{
-		$query = $this->db->query("SELECT * FROM tugas_akhir JOIN tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user =$id AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tugas_akhir.status = 3 AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tugas_akhir.jenis != 'Skripsi' ");
+		$query = $this->db->query("SELECT * FROM tugas_akhir JOIN tbl_users_mahasiswa, tbl_users_tugas WHERE tbl_users_tugas.id_user = $id AND tbl_users_tugas.tugas = 14 AND tbl_users_mahasiswa.prodi = tbl_users_tugas.prodi AND tugas_akhir.status = 3 AND tugas_akhir.npm = tbl_users_mahasiswa.npm AND tugas_akhir.jenis != 'Skripsi'");
 	
 		return $query->result();
 	}

@@ -67,6 +67,7 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                                 </i>Bebas Laboratorium
                                             </a>
                                         </li>
+                                        
                                     </ul>
                                 </li>
 
@@ -139,7 +140,7 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                 </li>
                                 
                                 <li>
-                                    <a href="<?php echo site_url('unggah-nilai') ?>" <?php if($this->uri->segment(1) == "unggah-nilai") echo 'class="mm-active"' ?> >
+                                    <a href="<?php echo site_url('mahasiswa/prestasi') ?>" <?php if($this->uri->segment(2) == "prestasi") echo 'class="mm-active"' ?> >
                                         <i class="metismenu-icon pe-7s-star"></i>
                                         Prestasi
                                     </a>

@@ -40,7 +40,7 @@
                                     $id_user = $this->session->userdata('userId');
                                     ?>
 
-                                    <div>Rekap Mahasiswa Bimbingan Dosen Jurusan <?php echo $jur_dosen; ?>
+                                    <div>Monitor Mahasiswa Bimbingan Dosen Jurusan <?php echo $jur_dosen; ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>

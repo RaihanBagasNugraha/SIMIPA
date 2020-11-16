@@ -33,7 +33,7 @@
                                     }
                                     
                                     ?>
-                                    <div>Rekap Kelulusan Mahasiswa <?php echo strtoupper($strata); ?> Jurusan <?php echo $jur_dosen; ?>
+                                    <div>Monitor Kelulusan Mahasiswa <?php echo strtoupper($strata); ?> Jurusan <?php echo $jur_dosen; ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>

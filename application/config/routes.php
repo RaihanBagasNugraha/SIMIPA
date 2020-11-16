@@ -457,7 +457,10 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
     $route['dosen/wd-layanan-akademik/pengajuan/approve'] = 'dosen/wd_layanan_akademik_approve';
     $route['dosen/wd-layanan-akademik/pengajuan/simpan'] = 'dosen/wd_layanan_akademik_simpan';
 
-    
+//Prestasi
+    //mahasiswa
+    $route['mahasiswa/prestasi'] = 'mahasiswa/prestasi';
+
 
 $route['beranda'] = 'admin';
 $route['admin'] = 'welcome';

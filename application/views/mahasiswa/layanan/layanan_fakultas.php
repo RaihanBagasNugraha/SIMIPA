@@ -48,6 +48,8 @@
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
+                        // echo "<pre>";
+                        // echo json_encode($form);
                         ?>
                         
                          <div class="main-card mb-3 card">
@@ -74,7 +76,7 @@
                                         {
                                             $n = 0;
                                             foreach($form as $row) {
-                                              
+                                                if(($row->status == 0 && ($row->tingkat == null || $row->tingkat == "")) || $row->status > 1 ){
                                         ?>
                                         <tr>
                                             <td class="align-top">
@@ -142,7 +144,7 @@
                                                         // }
                                                     }elseif($row->status == 3){
                                                         echo "<br>";
-                                                        echo "<b><i><span style='color:red'>$row->keterangan<span></i></b>";
+                                                        echo "<b><i><span style='color:red'>Catatan : ".$row->keterangan."<span></i></b>";
                                                     }
                                                 }
                                                
@@ -208,6 +210,7 @@
                                         </tr>
                                         <?php
                                             }
+                                          }
                                         }
                                         ?>
                                         

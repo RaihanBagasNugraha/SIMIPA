@@ -39,7 +39,7 @@
                                     $id_user = $this->session->userdata('userId');
                                     ?>
 
-                                    <div>Rekap Seminar/Sidang Jurusan <?php echo $jur_dosen; ?>
+                                    <div>Monitor Seminar/Sidang Jurusan <?php echo $jur_dosen; ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>

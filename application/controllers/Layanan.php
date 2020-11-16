@@ -389,7 +389,7 @@ class Layanan extends CI_Controller {
             $this->form_32($data,$meta);
             break;
             case "33":
-            //Form tugas individu --> menu baru
+            //Form tugas individu
             $this->form_33($data,$meta);
             break;
             case "34":
@@ -1328,7 +1328,7 @@ class Layanan extends CI_Controller {
         $pdf->SetY($y_box);
         $pdf->SetX(100);
         $pdf->SetFont('Times','',10);
-        $pdf->MultiCell(80, $spasi,"Catatan Wk. Dekan Bid. Akademik dan Kerjasama:\n\n\n\n\n\n\n\n", 1, 'L');
+        $pdf->MultiCell(80, $spasi,"Catatan Wk. Dekan Bid. Akademik dan Kerjasama:\n".$data->keterangan."\n\n\n\n\n\n\n", 1, 'L');
         $pdf->Ln(10);
         $pdf->SetFont('Times','I',10);
         $pdf->MultiCell(150, $spasi-1.5,"Lampiran Surat Permohonan dengan:", 0, 'L');
@@ -6688,14 +6688,267 @@ class Layanan extends CI_Controller {
         $pdf->Output('I','form_ket_membuat_ktm.pdf');
     }
 
-    function form_32()
+    function form_32($data,$meta)
     {
-        //ke menu prestasi
+       /*Edit by   :1617051107
+        date        :31/01/2020 */
+        /*Edit by   :1617051088
+        date        :13/11/2020 */
+
+        $cek_atr = $this->layanan_model->select_layanan_atribut_by_id($data->id_layanan_fakultas);
+        $n=0;
+        if(empty($cek_atr)){
+            for($m=0;$m<=99;$m++){
+                $attr[$m] = "";
+            }
+        }
+        else{
+            foreach($meta as $metas)
+            {
+                $attr[$n] = $metas->meta_value;
+                $n++;
+            }
+        }
+
+        //ttd
+        //wd3 - 4
+        $app_wd = $this->get_approver_data($data->id,4);
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
+
+        //mhs tugas
+        $mhs_tugas = $this->layanan_model->get_layanan_fak_tugas_by_lay($data->id);
+       
+        $m=0;
+        foreach($mhs_tugas as $mhst){
+            $anggota_nama[$m] = $mhst->nama;
+            $anggota_npm[$m] = $mhst->npm;
+            $anggota_jurusan[$m] = $mhst->jurusan;
+            $anggota_alamat[$m] = $mhst->alamat;
+            $m++;
+        }
+
+        $count = count($meta);
+        $numPage = '/PM/MIPA/III/...';
+        $kode = 0;
+        $type = '';
+        $spasi= 6;
+        $mhs = $this->user_model->get_mahasiswa_data_npm($data->npm);
+        $status = $this->get_prodi_from_npm($data->npm);     
+        $jurusan = $this->ta_model->get_jurusan($data->npm);
+
+        $pdf = new FPDF('P','mm',array(210,330));
+        $pdf->setting_page_footer($numPage, $kode, $type);
+
+        $pdf->SetLeftMargin(20);
+        $pdf->SetTopMargin(20);
+        $pdf->AddPage();
+        $pdf->SetFont('Times','BU',16);
+        $pdf->Ln(5);
+        $pdf->Cell(170, $spasi, "SURAT TUGAS",0,1,'C');
+        $pdf->SetFont('Times','',12);
+        $pdf->Cell(170, $spasi, "Nomor: ".$no_surat,0,1,'C');
+        $pdf->Ln(10);
+        $pdf->MultiCell(170, $spasi,'Dekan Fakultas Matematika dan Ilmu Pengetahuan Alam Universitas Lampung menugaskan kepada mahasiswa yang namanya tersebut di bawah ini:', 0, 'J');
+        $pdf->Ln(2);
+        // SubHeader
+        $pdf->SetWidths(array(10,40,25,31,64));
+        $pdf->SubHeaderNoBack(array('NO', 'NAMA', 'NPM', 'JURUSAN', 'ALAMAT'));
+
+         // Isi
+         $pdf->SetSpacing($spasi);
+         $pdf->SetAligns(array('C','L','C','L'));
+         $pdf->SetFont('Times','',11);
+         $almt = $this->wilayah_model->get_desa_by_id($mhs->kelurahan_desa);
+         $pdf->Row(array("1", $mhs->name, $mhs->npm, $status['jurusan'], $mhs->jalan." Kelurahan ".$almt->desa." Kecamatan ".$almt->kecamatan." ".$almt->kabupaten." Provinsi ".$almt->provinsi." ".$mhs->kode_pos));
+         $num = 0;
+         $num2 = 2;
+         foreach($mhs_tugas as $mhst2){
+             $pdf->Row(array($num2,$anggota_nama[$num], $anggota_npm[$num], $anggota_jurusan[$num], $anggota_alamat[$num] ));
+             $num++;
+             $num2++;
+         }
+
+        $pdf->SetFont('Times','I');
+        $pdf->MultiCell(170, $spasi,'NB: Nama pertama yang dicantumkan sebagai Ketua Tim/Kelompok', 0, 'J');
+        $pdf->Ln(2);
+        $pdf->SetFont('Times','',12);
+
+        $pdf->MultiCell(170, $spasi,'Untuk melaksanakan kegiatan '.$attr[0].' yang akan dilaksanakan pada:', 0, 'J');
+        $pdf->Ln(2);
+        $pdf->Cell(25, $spasi,'Tanggal', 0, 0, 'L');
+        $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+        $pdf->Cell(100, $spasi, $this->convert_date($attr[1]).' s/d '.$this->convert_date($attr[2]), 0, 1, 'L');
+        $pdf->Cell(25, $spasi,'Tempat', 0, 0, 'L');
+        $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+        $pdf->Cell(100, $spasi, $attr[3], 0, 1, 'L');
+        $pdf->Ln(2);
+        $pdf->MultiCell(170, $spasi,'Kepada yang bersangkutan harus melaporkan hasil kegiatan kepada Wakil Dekan FMIPA Unila Bidang kemahasiswaan dan Alumni selambat-lambatnya 15 hari setelah kegiatan dilaksanakan.', 0, 'J');
+        $pdf->Ln(2);
+        $pdf->MultiCell(170, $spasi,'Demikian surat tugas ini dibuat untuk dilaksanakan sebagai mana mestinya.', 0, 'J');
+        $pdf->Ln(10);
+        $pdf->SetX(92);
+
+        $pdf->Cell(28, $spasi,'Dikeluarkan di');
+        $pdf->Cell(5, $spasi,':');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(35, $spasi,'Bandar Lampung',0,1);
+        $pdf->SetFont('Times','',12);
+        $pdf->SetX(92);
+        $pdf->Cell(28, $spasi,'Pada tanggal');
+        $pdf->Cell(5, $spasi,':');
+        $pdf->Cell(35, $spasi,$this->convert_date($app_wd['updated']),0,1);
+        $pdf->SetX(92);
+        $pdf->Cell(28, $spasi,'a.n. Dekan,',0,1);
+        $pdf->SetX(92);
+        $pdf->Cell(88, $spasi,'Wakil Dekan Bidang Kemahasiswaan dan Alumni,',0,1);
+        $pdf->SetX(92);
+        $pdf->Image($cap,$pdf->GetX()-5,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+        $pdf->Ln(20);
+        $pdf->SetFont('Times','B',12);
+        $pdf->SetX(92);
+        $pdf->Cell(68, $spasi, $app_wd['nama'],0,1);
+        $pdf->SetFont('Times','',12);
+        $pdf->SetX(92);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_wd['nip'],0,1);
+
+
+        $pdf->Output('I','form_tugas_kelompok.pdf');
+
     }
 
-    function form_33()
+    function form_33($data,$meta)
     {
-        //ke menu prestasi
+        /*Edit by   :1617051107
+        date        :31/01/2020 */
+        /*Edit by   :1617051088
+        date        :13/11/2020 */
+
+        $cek_atr = $this->layanan_model->select_layanan_atribut_by_id($data->id_layanan_fakultas);
+        $n=0;
+        if(empty($cek_atr)){
+            for($m=0;$m<=99;$m++){
+                $attr[$m] = "";
+            }
+        }
+        else{
+            foreach($meta as $metas)
+            {
+                $attr[$n] = $metas->meta_value;
+                $n++;
+            }
+        }
+
+        //ttd
+        //wd3 - 4
+        $app_wd = $this->get_approver_data($data->id,4);
+        //no surat
+        $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
+        if(!empty($surat)){
+            $no_surat = $surat->nomor_surat;
+            $cap = "assets/images/stamp.png";
+        }else{
+            $no_surat = "";
+            $cap = "assets/images/blank.png";
+        }
+
+        //mhs tugas
+        $mhs_tugas = $this->layanan_model->get_layanan_fak_tugas_by_lay($data->id);
+       
+        $m=0;
+        foreach($mhs_tugas as $mhst){
+            $anggota_nama[$m] = $mhst->nama;
+            $anggota_npm[$m] = $mhst->npm;
+            $anggota_jurusan[$m] = $mhst->jurusan;
+            $anggota_alamat[$m] = $mhst->alamat;
+            $m++;
+        }
+
+        $count = count($meta);
+        $numPage = '/PM/MIPA/III/...';
+        $kode = 0;
+        $type = '';
+        $spasi= 6;
+        $mhs = $this->user_model->get_mahasiswa_data_npm($data->npm);
+        $status = $this->get_prodi_from_npm($data->npm);     
+        $jurusan = $this->ta_model->get_jurusan($data->npm);
+
+        $pdf = new FPDF('P','mm',array(210,330));
+        $pdf->setting_page_footer($numPage, $kode, $type);
+        $pdf->SetLeftMargin(20);
+        $pdf->SetTopMargin(20);
+        $pdf->AddPage();
+
+        $pdf->SetFont('Times','BU',16);
+        $pdf->Ln(5);
+        $pdf->Cell(170, $spasi, "SURAT TUGAS",0,1,'C');
+        $pdf->SetFont('Times','',12);
+        $pdf->Cell(170, $spasi, "Nomor: ".$no_surat,0,1,'C');
+        $pdf->Ln(10);
+        $pdf->MultiCell(170, $spasi,'Dekan Fakultas Matematika dan Ilmu Pengetahuan Alam Universitas Lampung menugaskan kepada mahasiswa yang namanya tersebut di bawah ini:', 0, 'J');
+        $pdf->Ln(2);
+
+        // SubHeader
+        $pdf->SetWidths(array(10,40,25,31,64));
+        $pdf->SubHeaderNoBack(array('NO', 'NAMA', 'NPM', 'JURUSAN', 'ALAMAT'));
+
+        // Isi
+        $pdf->SetSpacing($spasi);
+        $pdf->SetAligns(array('C','L','C','L'));
+        $pdf->SetFont('Times','',11);
+        $almt = $this->wilayah_model->get_desa_by_id($mhs->kelurahan_desa);
+        $pdf->Row(array("1", $mhs->name, $mhs->npm, $status['jurusan'], $mhs->jalan." Kelurahan ".$almt->desa." Kecamatan ".$almt->kecamatan." ".$almt->kabupaten." Provinsi ".$almt->provinsi." ".$mhs->kode_pos));
+        $num = 0;
+        $num2 = 2;
+        foreach($mhs_tugas as $mhst2){
+            $pdf->Row(array($num2,$anggota_nama[$num], $anggota_npm[$num], $anggota_jurusan[$num], $anggota_alamat[$num] ));
+            $num++;
+            $num2++;
+        }
+
+        $pdf->Ln(2);
+        $pdf->SetFont('Times','',12);
+        $pdf->MultiCell(170, $spasi,'Untuk melaksanakan kegiatan '.$attr[0].' yang akan dilaksanakan pada tanggal '.$this->convert_date($attr[1]).' s/d '.$this->convert_date($attr[2]).' di '.$attr[3].'.', 0, 'J');
+        $pdf->Ln(2);
+        $pdf->MultiCell(170, $spasi,'Kepada yang bersangkutan harus melaporkan hasil kegiatan kepada Wakil Dekan FMIPA Unila Bidang kemahasiswaan dan Alumni selambat-lambatnya 15 hari setelah kegiatan dilaksanakan.', 0, 'J');
+        $pdf->Ln(2);
+        $pdf->MultiCell(170, $spasi,'Demikian surat tugas ini dibuat untuk dilaksanakan sebagai mana mestinya.', 0, 'J');
+        $pdf->Ln(10);
+        $pdf->SetX(92);
+        $pdf->Cell(28, $spasi,'Dikeluarkan di');
+        $pdf->Cell(5, $spasi,':');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(35, $spasi,'Bandar Lampung',0,1);
+        $pdf->SetFont('Times','',12);
+        $pdf->SetX(92);
+        $pdf->Cell(28, $spasi,'Pada tanggal');
+        $pdf->Cell(5, $spasi,':');
+        $pdf->Cell(35, $spasi,$this->convert_date($app_wd['updated']),0,1);
+        $pdf->SetX(92);
+        $pdf->Cell(28, $spasi,'a.n. Dekan,',0,1);
+        $pdf->SetX(92);
+        $pdf->Cell(88, $spasi,'Wakil Dekan Bidang Kemahasiswaan dan Alumni,',0,1);
+        $pdf->SetX(92);
+        $pdf->Image($cap,$pdf->GetX()-5,$pdf->GetY(),30);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_wd['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
+        $pdf->Ln(20);
+        $pdf->SetFont('Times','B',12);
+        $pdf->SetX(92);
+        $pdf->Cell(68, $spasi, $app_wd['nama'],0,1);
+        $pdf->SetFont('Times','',12);
+        $pdf->SetX(92);
+        $pdf->Cell(68, $spasi, "NIP. ".$app_wd['nip'],0,1);
+
+
+        $pdf->Output('I','form_tugas_individu.pdf');
     }
 
     function form_34($data,$meta)

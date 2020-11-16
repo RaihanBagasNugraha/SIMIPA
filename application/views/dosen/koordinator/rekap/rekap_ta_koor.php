@@ -40,7 +40,7 @@
                                     // echo $seg;
                                     ?>
 
-                                    <div>Rekap Tema Penelitian Jurusan <?php echo $jur_dosen; ?>
+                                    <div>Monitor Tema Penelitian Jurusan <?php echo $jur_dosen; ?>
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>

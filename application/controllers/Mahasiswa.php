@@ -1558,6 +1558,9 @@ class Mahasiswa extends CI_Controller {
 		if($this->input->post('layanan') == 2){
 			redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab"));
 		}
+		// elseif($this->input->post('layanan') == 32 || $this->input->post('layanan') == 33){
+		// 	redirect(site_url("mahasiswa/prestasi"));
+		// }
 		else{
 			$this->load->view('header_global', $header);
 			$this->load->view('mahasiswa/header');
@@ -1608,6 +1611,22 @@ class Mahasiswa extends CI_Controller {
 			$this->layanan_model->insert_layanan_fak_mhs_meta($data_atr);
 		}
 
+		if($id_layanan == 32 || $id_layanan == 33){
+			$mhs_nama = $data['nama'];
+			$n = 0;
+			foreach($mhs_nama as $mhs){
+				$data_tugas = array(
+					"id_layanan_fakultas_mahasiswa" => $insert_id,
+					"nama" => $mhs_nama[$n],
+					"npm" => $data['npm'][$n],
+					"jurusan" => $data['jurusan'][$n],
+					"alamat" => $data['alamat'][$n] 
+				);
+				//input layanan_fakultas_tugas
+				$this->layanan_model->insert_layanan_fak_tugas($data_tugas);
+				$n++;
+			}
+		}
 
 		redirect(site_url("mahasiswa/layanan-fakultas/$jns"));
 	}
@@ -1976,7 +1995,7 @@ class Mahasiswa extends CI_Controller {
 			$layanan = $this->layanan_model->get_layanan_fakultas_by_id($data->id_layanan_fakultas);
 			$this->layanan_model->insert_approver_mhs($id,$layanan->approver);
 		}
-		redirect(site_url("mahasiswa/layanan-fakultas/$seg"));
+		redirect(site_url("mahasiswa/layanan-lacak"));
 	}
 
 	function layanan_fakultas_lacak()
@@ -1990,6 +2009,18 @@ class Mahasiswa extends CI_Controller {
 		$this->load->view('mahasiswa/header');
 
 		$this->load->view('mahasiswa/layanan/layanan_lacak',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function prestasi()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/prestasi/prestasi');
 
         $this->load->view('footer_global');
 	}

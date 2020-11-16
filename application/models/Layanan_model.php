@@ -52,7 +52,7 @@ class Layanan_model extends CI_Model
 
     function get_form_mhs2($npm,$bagian)
     {
-        $result = $this->db->query("SELECT layanan_fakultas_mahasiswa.* FROM layanan_fakultas_mahasiswa, layanan_fakultas WHERE layanan_fakultas_mahasiswa.npm = $npm AND layanan_fakultas_mahasiswa.id_layanan_fakultas = layanan_fakultas.id_layanan_fakultas AND layanan_fakultas.bagian LIKE '$bagian' order by layanan_fakultas_mahasiswa.created_at");
+        $result = $this->db->query("SELECT layanan_fakultas_mahasiswa.* FROM layanan_fakultas_mahasiswa, layanan_fakultas WHERE layanan_fakultas_mahasiswa.npm = $npm AND layanan_fakultas_mahasiswa.id_layanan_fakultas = layanan_fakultas.id_layanan_fakultas AND layanan_fakultas.bagian LIKE '$bagian' ORDER BY `layanan_fakultas_mahasiswa`.`id` DESC");
 		return $result->result();
     }
 
@@ -542,7 +542,20 @@ class Layanan_model extends CI_Model
 
     function get_layanan_lacak($npm)
     {
-        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE a.npm = $npm AND a.status != 2 AND a.id_layanan_fakultas = b.id_layanan_fakultas ORDER BY a.created_at,b.bagian,a.status");
+        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE a.npm = $npm AND ((a.status = 0 AND (a.tingkat IS NOT null AND a.tingkat != '' )) OR a.status = 1 ) AND a.id_layanan_fakultas = b.id_layanan_fakultas ORDER BY a.created_at asc,b.bagian,a.status");
+		return $result->result();
+    }
+
+    function insert_layanan_fak_tugas($data)
+	{
+		$this->db->trans_start();
+		$this->db->insert('layanan_fakultas_tugas', $data);
+		$this->db->trans_complete();	
+    }
+    
+    function get_layanan_fak_tugas_by_lay($id_layanan)
+    {
+        $result = $this->db->query("SELECT * FROM `layanan_fakultas_tugas` WHERE id_layanan_fakultas_mahasiswa = $id_layanan");
 		return $result->result();
     }
 
