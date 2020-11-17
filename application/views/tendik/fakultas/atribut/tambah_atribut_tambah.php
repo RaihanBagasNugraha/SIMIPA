@@ -50,7 +50,7 @@
                                         </div>
 
                                         <div class="position-relative row form-group">
-                                            <label for="prodi" class="col-sm-3 col-form-label">Attribut &emsp;<label class="btn btn-primary" id='tambah_attr'>+</label> </label>
+                                            <label for="prodi" class="col-sm-3 col-form-label">Attribut &emsp;<label class="btn btn-primary" id='tambah_attr'><i class="fa fa-plus" aria-hidden="true"></i></label> </label>
                                         </div>
 
                                         <div id="container">
@@ -59,7 +59,7 @@
 
 
                                         <div class="position-relative row form-group">
-                                            <label for="prodi" class="col-sm-3 col-form-label">Tanda Tangan &emsp;<label class="btn btn-primary" id='tambah_ttd'>+</label> </label>
+                                            <label for="prodi" class="col-sm-3 col-form-label">Tanda Tangan &emsp;<label class="btn btn-primary" id='tambah_ttd'><i class="fa fa-plus" aria-hidden="true"></i></label> </label>
                                         </div>
 
                                         <div id="ttd" style="display:none">

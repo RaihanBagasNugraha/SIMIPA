@@ -2658,7 +2658,78 @@ $(document).ready(function() {
         </div>
     </div>
 </div>
+<?php } ?>
 
+<?php if($this->uri->segment(2) == 'prestasi') { ?>
+
+<div class="modal fade" id="delFormMhs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="del-form" method="post" action="<?php echo site_url("mahasiswa/prestasi/surat-tugas-form/delete") ?>">
+                    <input type="hidden" name="id_layanan" id="ID" value="">
+                    <input type="hidden" name="jenis" id="Jns" value="">
+                    <label class="col-form-label" >Hapus Form Layanan ?</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="del-form" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Del Lampiran bebas lab -->
+<div class="modal fade" id="delBerkaslay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Berkas Lampiran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <?php 
+            $jenis = $this->uri->segment(3); 
+            $id = $this->input->get('id');
+            $aksi = $this->input->get('aksi');
+            ?>
+                <form id="deleteberkaslay" method="post" action="<?php echo site_url("mahasiswa/prestasi/surat-tugas-form/hapus-berkas?id=$id") ?>">
+                    <input type="hidden" name="id_berkas" id="berkasID2" value="">
+                    <input type="hidden" name="id_layanan" id="IDBebas2" value="">
+                    <input type="hidden" name="file_berkas" id="berkasFile2" value="">
+                    <input type="hidden" name="aksi" value="<?php echo $aksi ?>"> 
+                </form>
+                <p>Apakah Anda yakin akan menghapus <span id="berkasNama2" class="text-danger"> ?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="deleteberkaslay" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya, hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php } ?>
 

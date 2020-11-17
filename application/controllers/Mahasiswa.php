@@ -1558,9 +1558,9 @@ class Mahasiswa extends CI_Controller {
 		if($this->input->post('layanan') == 2){
 			redirect(site_url("mahasiswa/layanan-fakultas/akademik/bebas-lab"));
 		}
-		// elseif($this->input->post('layanan') == 32 || $this->input->post('layanan') == 33){
-		// 	redirect(site_url("mahasiswa/prestasi"));
-		// }
+		elseif($this->input->post('layanan') == 32 || $this->input->post('layanan') == 33){
+			redirect(site_url("mahasiswa/prestasi"));
+		}
 		else{
 			$this->load->view('header_global', $header);
 			$this->load->view('mahasiswa/header');
@@ -2016,13 +2016,394 @@ class Mahasiswa extends CI_Controller {
 	function prestasi()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['prestasi'] = $this->layanan_model->get_prestasi_by_npm($this->session->userdata('username'));
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/prestasi/prestasi',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function prestasi_form()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		
 		$this->load->view('header_global', $header);
 		$this->load->view('mahasiswa/header');
 
-		$this->load->view('mahasiswa/prestasi/prestasi');
+		$this->load->view('mahasiswa/prestasi/tambah_prestasi');
 
         $this->load->view('footer_global');
 	}
+
+	function prestasi_surat_tugas()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		
+		// $data['layanan'] = $this->layanan_model->select_layanan_by_id($this->input->post('layanan'));
+		// $data['atribut'] = $this->layanan_model->select_layanan_atribut_by_id($this->input->post('layanan'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/prestasi/surat_tugas');
+
+        $this->load->view('footer_global');
+	}
+
+	function prestasi_surat_tugas_form()
+	{
+		$tugas = $this->input->post('jenis');
+		if($tugas == 'Individu'){
+			$id_layanan = 33;
+		}elseif($tugas == 'Kelompok'){
+			$id_layanan = 32;
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['layanan'] = $this->layanan_model->select_layanan_by_id($id_layanan);
+		$data['atribut'] = $this->layanan_model->select_layanan_atribut_by_id($id_layanan);
+		$data['surat'] = $tugas;
+		$data['id_layanan'] = $id_layanan;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+		$this->load->view('mahasiswa/prestasi/surat_tugas_form',$data);
+		$this->load->view('footer_global');
+	}
+
+	function prestasi_surat_tugas_form_simpan()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$jns = $data['jenis'];
+		$npm = $this->session->userdata('username');
+		$ttd = null;
+		// $approver = $data['approver'];
+		$id_layanan = $data['id_layanan'];
+		$data_layanan = array(
+			"npm" => $npm,
+			"id_layanan_fakultas" => $id_layanan,
+			"ttd" => $ttd,
+			"tingkat" => null
+		);
+
+		$insert_id = $this->layanan_model->insert_layanan_fak_mhs($data_layanan);
+
+		$atribut_id = $data['id_attribut'];
+		foreach($atribut_id as $atr)
+		{
+			$meta_val = $data[$atr];
+			$data_atr = array(
+				"id_layanan_fak_mhs" => $insert_id,
+				"meta_key" => $atr,
+				"meta_value" => $meta_val,
+			);
+			//input layanan_fakultas_mahasiswa_meta
+			$this->layanan_model->insert_layanan_fak_mhs_meta($data_atr);
+		}
+
+		if($id_layanan == 32 || $id_layanan == 33){
+			$mhs_nama = $data['nama'];
+			$n = 0;
+			foreach($mhs_nama as $mhs){
+				$data_tugas = array(
+					"id_layanan_fakultas_mahasiswa" => $insert_id,
+					"nama" => $mhs_nama[$n],
+					"npm" => $data['npm'][$n],
+					"jurusan" => $data['jurusan'][$n],
+					"alamat" => $data['alamat'][$n] 
+				);
+				//input layanan_fakultas_tugas
+				$this->layanan_model->insert_layanan_fak_tugas($data_tugas);
+				$n++;
+			}
+		}
+
+		if($id_layanan == 32){
+			$kategori = "Tim";
+		}elseif($id_layanan == 33){
+			$kategori = "Individu";
+		}
+		//insert prestasi
+		$prestasi = array(
+			"npm" => $this->session->userdata('username'),
+			// "kegiatan" => 
+			"kategori" => $kategori,
+			"insert_by" => $this->session->userdata('userId'),
+			"id_layanan" => $insert_id
+		);
+		
+		$insert_id2 = $this->layanan_model->insert_prestasi($prestasi);
+
+		//input anggota
+		if($id_layanan == 32){
+			$i = 0;
+			//ketua yg mengisi
+			// $anggota1 = array(
+			// 	"id_prestasi" => $insert_id2,
+			// 	"anggota_npm" => $data['npm'][$i]
+			// );
+			// $this->layanan_model->insert_prestasi_anggota($anggota1);
+			foreach($mhs_nama as $mhs){
+				$anggota = array(
+					"id_prestasi" => $insert_id2,
+					"anggota_npm" => $data['npm'][$i]
+				);
+				$this->layanan_model->insert_prestasi_anggota($anggota);
+				$i++;
+			}
+			
+		}
+		redirect(site_url("mahasiswa/prestasi"));
+	}
+
+	function prestasi_surat_tugas_form_ajukan()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		// echo $id;
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['lampiran'] = $this->layanan_model->get_lampiran_layanan($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+		$this->load->view('mahasiswa/prestasi/surat_tugas_ajukan',$data);
+		$this->load->view('footer_global');
+	}
+
+	function prestasi_surat_tugas_form_unggah()
+	{
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$aksi = $this->input->post('aksi');
+		$jenis = $this->uri->segment(3);
+		$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+
+		$id = $this->encrypt->decode($this->input->post('id_lay'));
+		$data = array(
+			'id_layanan_fakultas_mahasiswa' => $id,
+			'nama_berkas' => $this->input->post('nama_berkas'),
+			'jenis_berkas' => $this->input->post('jenis_berkas'),
+		);
+
+		if(!empty($_FILES)) {
+			if($file1 == '%PDF' && $size <= 2100000){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
+				$folderPath = "assets/uploads/berkas-layanan/layanan";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+				$data['file'] = $folderPath.$fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				$this->layanan_model->insert_lampiran_layanan($data);
+				if($aksi == "perbaiki"){
+					redirect(site_url("mahasiswa/prestasi/surat-tugas-form/ajukan?id=".$this->input->post('id_lay')."&aksi=".$aksi."&status=sukses"));
+				}else{
+					redirect(site_url("mahasiswa/prestasi/surat-tugas-form/ajukan?id=".$this->input->post('id_lay')."&status=sukses"));
+				}
+			}
+			else{
+				if($aksi == "perbaiki" ){
+					redirect(site_url("mahasiswa/prestasi/surat-tugas-form/ajukan?id=".$this->input->post('id_lay')."&aksi=".$aksi."&status=gagal"));
+				}else{
+					redirect(site_url("mahasiswa/prestasi/surat-tugas-form/ajukan?id=".$this->input->post('id_lay')."&status=gagal"));
+				}
+			}
+		}
+		else{
+			if($aksi == "perbaiki"){
+				redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=".$this->input->post('id_lay')."&aksi=".$aksi."&status=gagal"));
+			}else{
+				redirect(site_url("mahasiswa/layanan-fakultas/$jenis/ajukan?id=".$this->input->post('id_lay')."&status=gagal"));
+			}
+		}
+		
+	}
+
+	function prestasi_form_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+
+		$prestasi = array(
+			"npm" => $this->session->userdata('username'),
+			"jenis" => $data['jenis'],
+			"tingkat" => $data['tingkat'],
+			"tahun" => $data['tahun'],
+			"kegiatan" => $data['kegiatan'],
+			"penyelenggara" => $data['penyelenggara'],
+			"capaian" => $data['capaian'],
+			"kategori" => $data['kategori'],
+			"insert_by" => $this->session->userdata('userId'),   
+		);
+		
+		if(!empty($_FILES)) {
+			if($file1 == '%PDF' && $size <= 2100000){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$str = $this->session->userdata('username').date('H:i');
+				$hash_name = md5($str);
+				$fileNewName = $hash_name;
+				$folderPath = "assets/uploads/berkas-sertifikat/";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+				$prestasi['sertifikat'] = $folderPath.$fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				$insert_id = $this->layanan_model->insert_prestasi($prestasi);
+
+				//input anggota
+				if($data['kategori'] == "Tim"){
+					$i = 0;
+					foreach($data['anggota'] as $anggota){
+						$anggota = array(
+							"id_prestasi" => $insert_id,
+							"anggota_npm" => $data['anggota'][$i]
+						);
+						$this->layanan_model->insert_prestasi_anggota($anggota);
+						$i++;
+					}
+				}
+				redirect(site_url("mahasiswa/prestasi"));
+			}
+			else{
+				redirect(site_url("mahasiswa/prestasi/form-prestasi?status=gagal"));
+			}
+		}
+		else{
+			redirect(site_url("mahasiswa/prestasi/form-prestasi?status=gagal"));
+		}	
+	}
+
+	function prestasi_surat_tugas_hapus_berkas()
+	{
+		$id = $this->input->post('id_berkas');
+		$id_layanan = $this->input->post('id_layanan');
+		$file = $this->input->post('file_berkas');
+		$id_get = $this->input->get('id');
+		$aksi = $this->input->post('aksi');
+
+		$jenis = $this->uri->segment(3); 
+		$data = array("id" => $id);
+		$this->layanan_model->delete_lampiran_layanan($data);
+		unlink($file);
+		if($aksi == "perbaiki"){
+			redirect(site_url("mahasiswa/prestasi/surat-tugas-form/ajukan?id=$id_get&aksi=$aksi"));
+		}else{
+			redirect(site_url("mahasiswa/prestasi/surat-tugas-form/ajukan?id=$id_get"));
+		}
+	}
+
+	function prestasi_surat_tugas_simpan()
+	{
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $this->encrypt->decode($this->input->post('id_lay'));
+		$aksi = $this->input->post('aksi');
+		$seg = $this->uri->segment(3);
+		if($aksi == "perbaiki"){
+			$data_tolak = array(
+				"status" => 0,
+				"keterangan" => null
+			);
+			$this->layanan_model->update_layanan_fak_mhs($id,$data_tolak);
+		}else{
+			//input approver
+			$data = $this->layanan_model->get_form_mhs_id($id);
+			$layanan = $this->layanan_model->get_layanan_fakultas_by_id($data->id_layanan_fakultas);
+			$this->layanan_model->insert_approver_mhs($id,$layanan->approver);
+		}
+		redirect(site_url("mahasiswa/prestasi"));
+	}
+
+	function prestasi_surat_tugas_delete()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $data['id_layanan'];
+
+		//delete
+		$this->layanan_model->delete_berkas_layanan($id);
+		$this->layanan_model->delete_layanan_mhs($id);		
+		//delete prestasi
+		$this->layanan_model->delete_prestasi_by_layanan($id);
+
+		redirect(site_url("mahasiswa/prestasi"));
+	}
+
+	function prestasi_surat_tugas_sertifikat()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/prestasi/surat_tugas_sertifikat');
+
+        $this->load->view('footer_global');
+	}
+
+	function prestasi_surat_tugas_sertifikat_unggah()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+		$id = $this->encrypt->decode($data['id']);
+
+		$prestasi = array(
+			"jenis" => $data['jenis'],
+			"tingkat" => $data['tingkat'],
+			"tahun" => $data['tahun'],
+			"kegiatan" => $data['kegiatan'],
+			"penyelenggara" => $data['penyelenggara'],
+			"capaian" => $data['capaian']
+		);
+		
+		if(!empty($_FILES)) {
+			if($file1 == '%PDF' && $size <= 2100000){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$str = $this->session->userdata('username').date('H:i');
+				$hash_name = md5($str);
+				$fileNewName = $hash_name;
+				$folderPath = "assets/uploads/berkas-sertifikat/";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+				$prestasi['sertifikat'] = $folderPath.$fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				//update prestasi
+				$this->layanan_model->update_prestasi($id,$prestasi);		
+				redirect(site_url("mahasiswa/prestasi"));
+			}
+			else{
+				redirect(site_url("mahasiswa/prestasi/form-prestasi?status=gagal&aksi=unggah&id=".$data['id']));
+			}
+		}
+		else{
+			redirect(site_url("mahasiswa/prestasi/form-prestasi?status=gagal&aksi=unggah&id=".$data['id']));
+		}	
+	}
+	
 
 }

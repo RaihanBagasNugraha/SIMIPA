@@ -464,7 +464,7 @@ class Layanan_model extends CI_Model
     //layanan tendik berkas masuk
     function get_approval_cek_tendik($bidang)
     {
-        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE (a.tingkat LIKE '1%' OR a.tingkat LIKE '2%' OR a.tingkat LIKE '3%' OR a.tingkat LIKE '4%' OR a.tingkat LIKE '5%' OR a.tingkat LIKE '6%' OR a.tingkat LIKE '7%' OR a.tingkat LIKE '8%' OR a.tingkat LIKE '9%') AND a.status = 0 AND b.id_layanan_fakultas = a.id_layanan_fakultas AND b.bagian LIKE '$bidang' AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE (approver_id LIKE '1' OR approver_id LIKE '2' OR approver_id LIKE '3' OR approver_id LIKE '4' OR approver_id LIKE '5' OR approver_id LIKE '6' OR approver_id LIKE '7' OR approver_id LIKE '8' OR approver_id LIKE '9')) order by a.updated_at");
+        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE (a.tingkat LIKE '1' OR a.tingkat LIKE '2' OR a.tingkat LIKE '3' OR a.tingkat LIKE '4' OR a.tingkat LIKE '5' OR a.tingkat LIKE '6' OR a.tingkat LIKE '7' OR a.tingkat LIKE '8' OR a.tingkat LIKE '9') AND a.status = 0 AND b.id_layanan_fakultas = a.id_layanan_fakultas AND b.bagian LIKE '$bidang' AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE (approver_id LIKE '1' OR approver_id LIKE '2' OR approver_id LIKE '3' OR approver_id LIKE '4' OR approver_id LIKE '5' OR approver_id LIKE '6' OR approver_id LIKE '7' OR approver_id LIKE '8' OR approver_id LIKE '9')) order by a.updated_at");
 		return $result->result();
     }
 
@@ -557,6 +557,43 @@ class Layanan_model extends CI_Model
     {
         $result = $this->db->query("SELECT * FROM `layanan_fakultas_tugas` WHERE id_layanan_fakultas_mahasiswa = $id_layanan");
 		return $result->result();
+    }
+
+    function insert_prestasi($data)
+    {
+        $this->db->insert('prestasi', $data);	
+        $insert_id = $this->db->insert_id();
+		return $insert_id;
+    }
+
+    function insert_prestasi_anggota($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('prestasi_anggota', $data);
+		$this->db->trans_complete();
+    }
+
+    function get_prestasi_by_npm($npm)
+    {
+        $result = $this->db->query("(SELECT * FROM prestasi WHERE npm = $npm) UNION (SELECT prestasi.* FROM prestasi, prestasi_anggota WHERE prestasi_anggota.anggota_npm = $npm AND prestasi_anggota.id_prestasi = prestasi.id_prestasi)");
+		return $result->result();
+    }
+
+    function get_prestasi_anggota_by_id($id_prestasi)
+    {
+        $result = $this->db->query("SELECT * FROM `prestasi_anggota` WHERE id_prestasi = $id_prestasi");
+		return $result->result();
+    }
+
+    function delete_prestasi_by_layanan($id_layanan)
+	{
+        $this->db->delete('prestasi', array('id_layanan' => $id_layanan));
+    }
+
+    function update_prestasi($where,$data)
+    {
+        $this->db->where('id_prestasi', $where);
+	    $this->db->update('prestasi', $data);
     }
 
 }

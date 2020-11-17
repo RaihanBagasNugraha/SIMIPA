@@ -15,14 +15,20 @@
                                 </div>
                                
                                 <div class="page-title-actions">
-                                    <a href="<?php echo site_url("mahasiswa/prestasi/form") ?>" class="btn-shadow btn btn-success">
+                                    <a href="<?php echo site_url("mahasiswa/prestasi/surat-tugas") ?>" class="btn-shadow btn btn-success">
                                             <span class="btn-icon-wrapper pr-2 opacity-7">
-                                                <i class="fas fa-file fa-w-20"></i>
+                                                <i class="fa fa-briefcase"></i>
                                             </span>
-                                            Tambah Form
+                                            Tambah Surat Tugas
                                     </a>
-                                </div>
-                                
+
+                                    <a href="<?php echo site_url("mahasiswa/prestasi/form-prestasi") ?>" class="btn-shadow btn btn-success">
+                                            <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fa fa-star"></i>
+                                            </span>
+                                            Tambah Data Prestasi
+                                    </a>
+                                </div>                                
                                 
                             </div>
                         </div> <!-- app-page-title -->
@@ -35,6 +41,7 @@
 
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
+                       
                         ?>
                         
                          <div class="main-card mb-3 card">
@@ -44,11 +51,10 @@
                                         <thead>
                                         <tr>
                                             <th style="width: 5%;">#</th>
-                                            <th style="width: 25%;">Nama Form</th>
-                                            <th style="width: 10%;">Waktu</th>
+                                            <th style="width: 25%;">Anggota</th>
                                             <th style="width: 25%;">Keterangan</th>
-                                            <th style="width: 20%;">Status</th>
-                                            <th style="width: 15%;">Aksi</th>
+                                            <th style="width: 20%;">Surat Tugas</th>
+                                            <th style="width: 10%;">Sertifikat</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -60,138 +66,162 @@
                                         else
                                         {
                                             $n = 0;
-                                            foreach($form as $row) {
+                                            foreach($prestasi as $row) {
                                               
                                         ?>
                                         <tr>
                                             <td class="align-top">
-                                                <?php echo ++$n; ?>
-                                            </td>
-
-                                            <td class="align-top">
-                                                <?php echo $this->layanan_model->select_layanan_by_id($row->id_layanan_fakultas)->nama; ?>
+                                                <?php echo ++$n ?>
                                             </td>
 
                                             <td class="align-top">
                                                 <?php 
-                                                    $wkt = explode("-",substr($row->created_at,0,10));
-                                                    $waktu = $wkt[2]."-".$wkt[1]."-".$wkt[0];
-                                                    echo $waktu; 
-                                                ?>
-                                            </td>
+                                                    if($row->kategori == "Tim"){
+                                                        $mhs1 = $this->user_model->get_mahasiswa_data_npm($row->npm);
+                                                        echo "<li>".$row->npm."-".$mhs1->name."</li>";
 
-                                            <td class="align-top">
-                                                <?php 
-                                                $keterangan = $this->layanan_model->get_keterangan_form($row->id);
-                                                $m = 1;
-                                                if(!empty($keterangan)){
-                                                    foreach($keterangan as $ket){
-                                                        echo "<b>$m. $ket->nama : </b>$ket->meta_value<br>";
-                                                        $m++;
+                                                        $anggota = $this->layanan_model->get_prestasi_anggota_by_id($row->id_prestasi);
+                                                        foreach($anggota as $agt){
+                                                            $mhs = $this->user_model->get_mahasiswa_data_npm($agt->anggota_npm);
+                                                            if(!empty($mhs)){
+                                                                echo "<li>".$agt->anggota_npm."-".$mhs->name."</li>";
+                                                            }else{
+                                                                echo "<li>".$agt->anggota_npm."</li>";
+                                                            }
+                                                        }
+                                                    }else{
+                                                        $mhs2 = $this->user_model->get_mahasiswa_data_npm($row->npm);
+                                                        if(!empty($mhs2)){
+                                                            echo "<li>".$row->npm."-".$mhs2->name."</li>";
+                                                        }
+                                                        
                                                     }
-                                                }else{ echo "-"; }
+                                                    
                                                 ?>
+                                            </td>
+
+                                            <td class="align-top">
+                                                <?php 
+                                                if($row->id_layanan != 0){
+                                                    $keterangan = $this->layanan_model->get_keterangan_form($row->id_layanan);
+                                                    
+                                                    if(!empty($keterangan)){
+                                                        foreach($keterangan as $ket){
+                                                            echo "<b>$ket->nama : </b>$ket->meta_value<br>";
+                                                        }
+                                                    }
+                                                    if($row->sertifikat != null){
+                                                        echo "<b>Jenis : </b>".$row->jenis."<br>";
+                                                        echo "<b>Kegiatan : </b>".$row->kegiatan."<br>"; 
+                                                        echo "<b>Tahun : </b>".$row->tahun."<br>";
+                                                        echo "<b>Penyelenggara : </b>".$row->penyelenggara."<br>"; 
+                                                        echo "<b>Tingkat : </b>".$row->tingkat."<br>"; 
+                                                        echo "<b>Kategori : </b>".$row->kategori."<br>"; 
+                                                        echo "<b>Capaian : </b>".$row->capaian."<br>";
+                                                    }
+                                                }else{
+                                                    echo "<b>Jenis : </b>".$row->jenis."<br>";
+                                                    echo "<b>Kegiatan : </b>".$row->kegiatan."<br>"; 
+                                                    echo "<b>Tahun : </b>".$row->tahun."<br>";
+                                                    echo "<b>Penyelenggara : </b>".$row->penyelenggara."<br>"; 
+                                                    echo "<b>Tingkat : </b>".$row->tingkat."<br>"; 
+                                                    echo "<b>Kategori : </b>".$row->kategori."<br>"; 
+                                                    echo "<b>Capaian : </b>".$row->capaian."<br>";
+                                                }
+                                                 ?>
                                             </td>
 
                                             <td class="align-top">
                                                <?php 
-                                                $approval = $this->layanan_model->get_approval_layanan($row->id);
-                                                $form_selesai = array(3,5,6,7,8,10,11,12,13,18,19,20,21,22,23,25,26,32,33,35,37,38,44,45);
-                                                if(in_array($row->id_layanan_fakultas,$form_selesai)){
-                                                    echo "<span style='color:white;background-color:#5cb85c' class='btn-sm'>Selesai</span>";
-                                                }else{
-                                                    if($row->status == 0 && ($row->tingkat == null || $row->tingkat == "")){
-                                                        echo "<span style='color:white;background-color:#d9534f' class='btn-sm'>Belum Diajukan</span>";
-                                                    }elseif($row->status == 0 && ($row->tingkat != null || $row->tingkat != "") ){
-                                                        echo "<span style='color:white;background-color:#f0ad4e' class='btn-sm'>Menunggu</span>";
-                                                    }elseif($row->status == 1){
-                                                        echo "<span style='color:white;background-color:#0275d8' class='btn-sm'>Verifikasi</span>";
-                                                    }elseif($row->status == 2){
-                                                        echo "<span style='color:white;background-color:#5cb85c' class='btn-sm'>Selesai</span>";
-                                                    }elseif($row->status == 3){
-                                                        echo "<span style='color:white;background-color:#d9534f' class='btn-sm'>Ditolak</span>";
-                                                    }
-                                                    echo "<br>";
+                                                    if($row->id_layanan != 0){
+                                                        $layanan = $this->layanan_model->get_form_mhs_id($row->id_layanan);
+                                                    if(!empty($layanan)){
+                                                        if($layanan->status == 0 && ($layanan->tingkat == null || $layanan->tingkat == "")){
+                                                            echo "<span style='color:white;background-color:#d9534f' class='btn-sm'>Belum Diajukan</span>";
+                                                        }elseif($layanan->status == 0 && ($layanan->tingkat != null || $layanan->tingkat != "") ){
+                                                            echo "<span style='color:white;background-color:#f0ad4e' class='btn-sm'>Menunggu</span>";
+                                                        }elseif($layanan->status == 1){
+                                                            echo "<span style='color:white;background-color:#0275d8' class='btn-sm'>Verifikasi</span>";
+                                                        }elseif($layanan->status == 2){
+                                                            echo "<span style='color:white;background-color:#5cb85c' class='btn-sm'>Selesai</span>";
+                                                        }elseif($layanan->status == 3){
+                                                            echo "<span style='color:white;background-color:#d9534f' class='btn-sm'>Ditolak</span>";
+                                                            echo "<br>";
+                                                            echo "<b><i><span style='color:red'>Catatan : ".$layanan->keterangan."<span></i></b>";
+                                                        }
+                                                        echo "<br><br>";
+                                                        if($layanan->status != 3){
+                                                            $approval = $this->layanan_model->get_approval_layanan($layanan->id);
+                                                            if(!empty($approval)){
+                                                                foreach($approval as $app){
+                                                                    // echo "<ul>";
+                                                                    echo "<li><b>".$this->layanan_model->get_approver_by_id($app->approver_id)->nama." : </b></li>";
+                                                                    // echo "<br>";
+                                                                    if($app->approver_id > 9){
+                                                                        echo substr($app->created_at,0,10);
+                                                                    }else{
+                                                                        if($app->updated_at == ""||$app->updated_at == null){
+                                                                            echo "<span style='color:red'>Menunggu</span>";
+                                                                        }else{
+                                                                            echo substr($app->updated_at,0,10);
+                                                                        }
+                                                                        echo "<br><br>";
+                                                                    }
+                                                                    
+                                                                }
+                                                            }
+                                                        }
 
-                                                    if($row->status != 3){
-                                                        // if(!empty($approval)){
-                                                        //     foreach($approval as $app){
-                                                        //         // echo "<ul>";
-                                                        //         echo "<li><b>Approval ".$this->layanan_model->get_approver_by_id($app->approver_id)->nama." : </b></li>";
-                                                        //         // echo "<br>";
-                                                        //         if($app->approver_id > 9){
-                                                        //             echo substr($app->created_at,0,10);
-                                                        //         }else{
-                                                        //             echo substr($app->updated_at,0,10);
-                                                        //         }
-                                                        //         echo "<br>";
-                                                        //     }
-                                                        // }
-                                                    }elseif($row->status == 3){
-                                                        echo "<br>";
-                                                        echo "<b><i><span style='color:red'>Catatan : ".$row->keterangan."<span></i></b>";
+                                                        
+                                                        if(($layanan->tingkat == null || $layanan->tingkat == "") && $layanan->status < 1){
+                                                ?>
+                                                    <a href="<?php echo site_url("/mahasiswa/prestasi/surat-tugas-form/ajukan?id=".$this->encrypt->encode($row->id_layanan))  ?> " class="btn-wide mb-2 btn btn-primary btn-sm"><i class="fa fa-upload" aria-hidden="true"></i></a>
+                                                    <!-- &emsp; -->
+                                                    <a data-toggle = "modal" data-id="<?php echo $row->id_layanan ?>" class="passingID" >
+                                                        <span type="button" class="btn-wide btn mb-2 btn-danger btn-sm "  data-toggle="modal" data-target="#delFormMhs">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i> 
+                                                        </span>
+                                                    </a>
+                                                <?php
+                                                    }//ditolak
+                                                    elseif($layanan->status == 3){
+                                                ?>
+                                                        <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/kemahasiswaan/unduh?id=".$layanan->id."&layanan=".$layanan->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                                        <a href="<?php echo site_url("/mahasiswa/prestasi/surat-tugas-form/ajukan?id=".$this->encrypt->encode($layanan->id)."&aksi=perbaiki")  ?> " class="btn-wide mb-2 btn btn-primary btn-sm"><i class="fa fa-wrench" aria-hidden="true"></i></a>
+                                                        <!-- &emsp; -->
+                                                        <a data-toggle = "modal" data-id="<?php echo $layanan->id ?>"  class="passingID" >
+                                                            <span type="button" class="btn-wide btn mb-2 btn-danger btn-sm "  data-toggle="modal" data-target="#delFormMhs">
+                                                                <i class="fa fa-trash" aria-hidden="true"></i> 
+                                                            </span>
+                                                        </a>
+                                                <?php
+                                                    }else{ ?>
+                                                        <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/kemahasiswaan/unduh?id=".$layanan->id."&layanan=".$layanan->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                                <?php 
+                                                    }
+                                                    }else{
+                                                        echo "-";
                                                     }
                                                 }
-                                               
                                                ?>
                                             </td>
 
                                             <td class="align-top">
-                                            <?php 
-                                            if(($row->tingkat == null || $row->tingkat == "") && $row->status < 1){
-                                                //bebas lab
-                                                if($row->id_layanan_fakultas == 2 ){
-
-                                            ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/akademik/bebas-lab")  ?> " class="btn-wide mb-2 btn btn-primary btn-sm">Ajukan</a>
-                                                <!-- <a data-toggle = "modal" data-id="<?php echo $row->id ?>" data-jns="<?php echo $jns ?>" class="passingID" >
-                                                    <span type="button" class="btn mb-2 btn-danger btn-sm "  data-toggle="modal" data-target="#delFormMhs">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i> 
-                                                    </span>
-                                                </a> -->
-                                            <?php
-                                                }
-                                                //form hardcopy
-                                                elseif(in_array($row->id_layanan_fakultas,$form_selesai)){
-                                            ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/unduh?id=".$row->id."&layanan=".$row->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
-                                            <?php
-                                                }
-                                                else{
-                                            ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/ajukan?id=".$this->encrypt->encode($row->id))  ?> " class="btn-wide mb-2 btn btn-primary btn-sm"><i class="fa fa-upload" aria-hidden="true"></i></a>
-                                                <!-- &emsp; -->
-                                                <a data-toggle = "modal" data-id="<?php echo $row->id ?>" data-jns="<?php echo $jns ?>" class="passingID" >
-                                                    <span type="button" class="btn-wide btn mb-2 btn-danger btn-sm "  data-toggle="modal" data-target="#delFormMhs">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i> 
-                                                    </span>
-                                                </a>
-                                            <?php }
-                                            }
-                                            //ditolak
-                                            elseif($row->status == 3){
-
-                                            ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/unduh?id=".$row->id."&layanan=".$row->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/ajukan?id=".$this->encrypt->encode($row->id)."&aksi=perbaiki")  ?> " class="btn-wide mb-2 btn btn-primary btn-sm"><i class="fa fa-wrench" aria-hidden="true"></i></a>
-                                                <!-- &emsp; -->
-                                                <a data-toggle = "modal" data-id="<?php echo $row->id ?>" data-jns="<?php echo $jns ?>" class="passingID" >
-                                                    <span type="button" class="btn-wide btn mb-2 btn-danger btn-sm "  data-toggle="modal" data-target="#delFormMhs">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i> 
-                                                    </span>
-                                                </a>
-                                            <?php
-                                            }
-                                            else{ 
-                                                if($row->id_layanan_fakultas == 2 ){
-                                            ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/akademik/bebas-lab")  ?> " class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
-                                            <?php }else{ ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/$jns/unduh?id=".$row->id."&layanan=".$row->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
-                                            <?php
-                                                }
-                                            }?>
+                                                <?php if($row->id_layanan == 0){ ?>
+                                                    <a href="<?php echo base_url($row->sertifikat) ?>" download class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                                <?php }else{
+                                                     if($layanan->status == 2 && $row->sertifikat == null){
+                                                ?>
+                                                    <a href="<?php echo site_url("/mahasiswa/prestasi/form-prestasi?aksi=unggah&id=".$this->encrypt->encode($row->id_prestasi))  ?> " class="btn-wide mb-2 btn btn-danger btn-sm">Unggah Sertifikat <br><i class="fa fa-upload" aria-hidden="true"></i></a>
+                                                <?php 
+                                                    }else{ ?>
+                                                    <a href="<?php echo base_url($row->sertifikat) ?>" download class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                                <?php
+                                                    }
+                                                } ?>
                                             </td>
+
+
                                         </tr>
                                         <?php
                                             }

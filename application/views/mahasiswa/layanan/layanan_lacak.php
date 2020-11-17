@@ -50,7 +50,7 @@
                                         else
                                         {
                                             $n = 0;
-                                            $form_selesai = array(3,5,6,7,8,10,11,12,13,18,19,20,21,22,23,25,26,32,33,35,37,38,44,45);
+                                            $form_selesai = array(3,5,6,7,8,10,11,12,13,18,19,20,21,22,23,25,26,35,37,38,44,45);
                                             foreach($form as $row) {
                                               if(!in_array($row->id_layanan_fakultas,$form_selesai)){
                                                 // if(($row->status == 0 && ($row->tingkat != null || $row->tingkat != "")) || $row->status == 1 ){

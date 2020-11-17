@@ -78,7 +78,7 @@
                                             <th>Angkatan</th>
                                             <th>Jenis</th>
                                             <th>Disetujui</th>
-                                            <th>Ditolak/Ganti Tema</th>
+                                            <th>Ditolak</th>
                                             <th>Total</th>
                                            
                                         </tr>

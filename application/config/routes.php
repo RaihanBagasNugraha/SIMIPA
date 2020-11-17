@@ -460,6 +460,18 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
 //Prestasi
     //mahasiswa
     $route['mahasiswa/prestasi'] = 'mahasiswa/prestasi';
+    $route['mahasiswa/prestasi/form-prestasi'] = 'mahasiswa/prestasi_form';
+    $route['mahasiswa/prestasi/form-prestasi-save'] = 'mahasiswa/prestasi_form_save';
+    $route['mahasiswa/prestasi/surat-tugas'] = 'mahasiswa/prestasi_surat_tugas';
+    $route['mahasiswa/prestasi/surat-tugas-form'] = 'mahasiswa/prestasi_surat_tugas_form';
+    $route['mahasiswa/prestasi/surat-tugas/simpan'] = 'mahasiswa/prestasi_surat_tugas_form_simpan';
+    $route['mahasiswa/prestasi/surat-tugas-form/ajukan'] = 'mahasiswa/prestasi_surat_tugas_form_ajukan';
+    $route['mahasiswa/prestasi/surat-tugas-form/unggah'] = 'mahasiswa/prestasi_surat_tugas_form_unggah';
+    $route['mahasiswa/prestasi/surat-tugas-form/hapus-berkas'] = 'mahasiswa/prestasi_surat_tugas_hapus_berkas';
+    $route['mahasiswa/prestasi/surat-tugas-form/simpan'] = 'mahasiswa/prestasi_surat_tugas_simpan';
+    $route['mahasiswa/prestasi/surat-tugas-form/delete'] = 'mahasiswa/prestasi_surat_tugas_delete';
+    $route['mahasiswa/prestasi/surat-tugas-sertifikat'] = 'mahasiswa/prestasi_surat_tugas_sertifikat';
+    $route['mahasiswa/prestasi/form-prestasi-edit'] = 'mahasiswa/prestasi_surat_tugas_sertifikat_unggah';
 
 
 $route['beranda'] = 'admin';
