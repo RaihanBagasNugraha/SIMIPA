@@ -115,12 +115,12 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                                 </i>Tema
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="<?php echo site_url("mahasiswa/tugas-akhir/bimbingan") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "bimbingan") echo 'class="mm-active"' ?>>
+                                        <!-- <li>
+                                            <a href="<?php //echo site_url("mahasiswa/tugas-akhir/bimbingan") ?>" <?php //if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "bimbingan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Bimbingan
                                             </a>
-                                        </li>
+                                        </li> -->
                                         <?php if($biodata->jurusan == "5" && $biodata->prodi == "11" ){ ?>
                                         <li>
                                         <a href="<?php echo site_url("mahasiswa/tugas-akhir/verifikasi-ta") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "verifikasi-ta") echo 'class="mm-active"' ?>>
@@ -146,7 +146,7 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('unggah-nilai') ?>" <?php if($this->uri->segment(1) == "unggah-nilai") echo 'class="mm-active"' ?> >
+                                    <a href="<?php echo site_url('mahasiswa/beasiswa') ?>" <?php if($this->uri->segment(2) == "beasiswa") echo 'class="mm-active"' ?> >
                                         <i class="metismenu-icon pe-7s-cash"></i>
                                         Beasiswa
                                     </a>

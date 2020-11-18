@@ -67,7 +67,7 @@
                                         {
                                             $n = 0;
                                             foreach($prestasi as $row) {
-                                              
+                                            $mahasiswa = $this->layanan_model->get_prestasi_anggota_by_id_npm($row->id_prestasi,$this->session->userdata('username'));
                                         ?>
                                         <tr>
                                             <td class="align-top">
@@ -76,11 +76,8 @@
 
                                             <td class="align-top">
                                                 <?php 
-                                                    if($row->kategori == "Tim"){
-                                                        $mhs1 = $this->user_model->get_mahasiswa_data_npm($row->npm);
-                                                        echo "<li>".$row->npm."-".$mhs1->name."</li>";
-
-                                                        $anggota = $this->layanan_model->get_prestasi_anggota_by_id($row->id_prestasi);
+                                                    $anggota = $this->layanan_model->get_prestasi_anggota_by_id($row->id_prestasi);
+                                                    if(!empty($anggota)){
                                                         foreach($anggota as $agt){
                                                             $mhs = $this->user_model->get_mahasiswa_data_npm($agt->anggota_npm);
                                                             if(!empty($mhs)){
@@ -90,13 +87,18 @@
                                                             }
                                                         }
                                                     }else{
-                                                        $mhs2 = $this->user_model->get_mahasiswa_data_npm($row->npm);
-                                                        if(!empty($mhs2)){
-                                                            echo "<li>".$row->npm."-".$mhs2->name."</li>";
+                                                        $anggota_surat = $this->layanan_model->get_surat_tugas_anggota($row->id_layanan);
+                                                        echo "<li>".$anggota_surat[0]->ketua."-".$this->user_model->get_mahasiswa_data_npm($anggota_surat[0]->ketua)->name."</li>";
+                                                        foreach($anggota_surat as $ags){
+                                                            $mhs2 = $this->user_model->get_mahasiswa_data_npm($ags->npm);
+                                                            if(!empty($mhs2)){
+                                                                echo "<li>".$ags->npm."-".$mhs2->name."</li>";
+                                                            }else{
+                                                                echo "<li>".$ags->npm."</li>";
+                                                            }
                                                         }
-                                                        
                                                     }
-                                                    
+                                                        
                                                 ?>
                                             </td>
 
@@ -110,14 +112,14 @@
                                                             echo "<b>$ket->nama : </b>$ket->meta_value<br>";
                                                         }
                                                     }
-                                                    if($row->sertifikat != null){
+                                                    if($mahasiswa->sertifikat != null){
                                                         echo "<b>Jenis : </b>".$row->jenis."<br>";
                                                         echo "<b>Kegiatan : </b>".$row->kegiatan."<br>"; 
                                                         echo "<b>Tahun : </b>".$row->tahun."<br>";
                                                         echo "<b>Penyelenggara : </b>".$row->penyelenggara."<br>"; 
                                                         echo "<b>Tingkat : </b>".$row->tingkat."<br>"; 
                                                         echo "<b>Kategori : </b>".$row->kategori."<br>"; 
-                                                        echo "<b>Capaian : </b>".$row->capaian."<br>";
+                                                        echo "<b>Capaian : </b>".$mahasiswa->capaian."<br>";
                                                     }
                                                 }else{
                                                     echo "<b>Jenis : </b>".$row->jenis."<br>";
@@ -126,7 +128,7 @@
                                                     echo "<b>Penyelenggara : </b>".$row->penyelenggara."<br>"; 
                                                     echo "<b>Tingkat : </b>".$row->tingkat."<br>"; 
                                                     echo "<b>Kategori : </b>".$row->kategori."<br>"; 
-                                                    echo "<b>Capaian : </b>".$row->capaian."<br>";
+                                                    echo "<b>Capaian : </b>".$mahasiswa->capaian."<br>";
                                                 }
                                                  ?>
                                             </td>
@@ -155,7 +157,7 @@
                                                             if(!empty($approval)){
                                                                 foreach($approval as $app){
                                                                     // echo "<ul>";
-                                                                    echo "<li><b>".$this->layanan_model->get_approver_by_id($app->approver_id)->nama." : </b></li>";
+                                                                    echo "<li><b>Disetujui ".$this->layanan_model->get_approver_by_id($app->approver_id)->nama." : </b></li>";
                                                                     // echo "<br>";
                                                                     if($app->approver_id > 9){
                                                                         echo substr($app->created_at,0,10);
@@ -199,25 +201,31 @@
                                                         <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/kemahasiswaan/unduh?id=".$layanan->id."&layanan=".$layanan->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                 <?php 
                                                     }
-                                                    }else{
-                                                        echo "-";
                                                     }
+                                                }else{
+                                                    echo "-";
                                                 }
                                                ?>
                                             </td>
 
                                             <td class="align-top">
+
+
+                                            </td>
+                                            <td class="align-top">
                                                 <?php if($row->id_layanan == 0){ ?>
-                                                    <a href="<?php echo base_url($row->sertifikat) ?>" download class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                                    <a href="<?php echo base_url($mahasiswa->sertifikat) ?>" download class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                 <?php }else{
-                                                     if($layanan->status == 2 && $row->sertifikat == null){
+                                                     if($layanan->status == 2 && $mahasiswa->sertifikat == null){
                                                 ?>
-                                                    <a href="<?php echo site_url("/mahasiswa/prestasi/form-prestasi?aksi=unggah&id=".$this->encrypt->encode($row->id_prestasi))  ?> " class="btn-wide mb-2 btn btn-danger btn-sm">Unggah Sertifikat <br><i class="fa fa-upload" aria-hidden="true"></i></a>
+                                                    <a href="<?php echo site_url("/mahasiswa/prestasi/form-prestasi?aksi=unggah&id=".$this->encrypt->encode($row->id_prestasi))  ?> " class="btn-wide mb-2 btn btn-danger btn-sm">Sertifikat <br><i class="fa fa-upload" aria-hidden="true"></i></a>
                                                 <?php 
+                                                   }elseif($layanan->status != 2 && $mahasiswa->sertifikat == null){
+                                                       echo "-";
                                                     }else{ ?>
-                                                    <a href="<?php echo base_url($row->sertifikat) ?>" download class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                                    <a href="<?php echo base_url($mahasiswa->sertifikat) ?>" download class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                 <?php
-                                                    }
+                                                   }
                                                 } ?>
                                             </td>
 

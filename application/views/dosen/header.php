@@ -356,6 +356,22 @@ else{
                                     </ul>
                                 </li>
 
+                                <li <?php if($this->uri->segment(2) == "prestasi") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-star"></i>
+                                        Prestasi
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                        <a href="<?php echo site_url("dosen/prestasi") ?>" <?php if($this->uri->segment(2) == "prestasi") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Prestasi
+                                            </a>
+                                        </li>                                       
+                                    </ul>
+                                </li>
+
                                 <li >
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-notebook"></i>

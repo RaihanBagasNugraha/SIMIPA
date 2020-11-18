@@ -573,9 +573,9 @@ class Layanan_model extends CI_Model
 		$this->db->trans_complete();
     }
 
-    function get_prestasi_by_npm($npm)
+    function get_prestasi_by_npm($npm,$iduser)
     {
-        $result = $this->db->query("(SELECT * FROM prestasi WHERE npm = $npm) UNION (SELECT prestasi.* FROM prestasi, prestasi_anggota WHERE prestasi_anggota.anggota_npm = $npm AND prestasi_anggota.id_prestasi = prestasi.id_prestasi)");
+        $result = $this->db->query("(SELECT a.* FROM prestasi a, prestasi_anggota b WHERE b.anggota_npm = $npm and a.id_prestasi = b.id_prestasi order by a.id_prestasi) UNION (SELECT * FROM prestasi WHERE insert_by = $iduser)");
 		return $result->result();
     }
 
@@ -583,6 +583,18 @@ class Layanan_model extends CI_Model
     {
         $result = $this->db->query("SELECT * FROM `prestasi_anggota` WHERE id_prestasi = $id_prestasi");
 		return $result->result();
+    }
+
+    function get_prestasi_anggota_by_id_npm($id_prestasi,$npm)
+    {
+        $result = $this->db->query("SELECT * FROM `prestasi_anggota` WHERE id_prestasi = $id_prestasi AND anggota_npm = $npm");
+		return $result->row();
+    }
+
+    function get_prestasi_by_id($id)
+    {
+        $result = $this->db->query("SELECT * FROM `prestasi` WHERE id_prestasi = $id");
+		return $result->row();
     }
 
     function delete_prestasi_by_layanan($id_layanan)
@@ -595,6 +607,45 @@ class Layanan_model extends CI_Model
         $this->db->where('id_prestasi', $where);
 	    $this->db->update('prestasi', $data);
     }
+
+    function get_surat_tugas_anggota($id_layanan)
+    {
+        $result = $this->db->query("SELECT b.npm as ketua, a.* FROM layanan_fakultas_tugas a, layanan_fakultas_mahasiswa b WHERE a.id_layanan_fakultas_mahasiswa = b.id and b.id = $id_layanan");
+		return $result->result();
+    }
+
+    function update_prestasi_anggota_tim($data,$id_prestasi)
+    {
+        $this->db->where('id_prestasi', $id_prestasi);
+	    $this->db->update('prestasi_anggota', $data);
+    }
+
+    function update_prestasi_anggota_individu($data,$id_prestasi,$npm)
+    {
+        $this->db->where('id_prestasi', $id_prestasi);
+        $this->db->where('anggota_npm', $npm);
+	    $this->db->update('prestasi_anggota', $data);
+    }
+
+    //wd3 prestasi
+    function get_tahun_prestasi_wd()
+    {
+        $result = $this->db->query("SELECT DISTINCT(tahun) FROM `prestasi` WHERE tahun != ''");
+		return $result->result();
+    }
+
+    function get_jumlah_prestasi_jurusan($jurusan,$jenis,$tahun)
+    {
+        $result = $this->db->query("SELECT  count(DISTINCT(a.id_prestasi)) as jml FROM prestasi_anggota a, prestasi b WHERE mid(a.anggota_npm,6,1) = $jurusan AND a.id_prestasi = b.id_prestasi AND b.jenis = '$jenis' AND b.tahun = $tahun AND a.sertifikat is NOT null");
+		return $result->row()->jml;
+    }
+
+    function get_prestasi_detail($tahun,$jenis,$jurusan)
+    {
+        $result = $this->db->query("SELECT DISTINCT(b.id_prestasi) FROM prestasi_anggota a, prestasi b WHERE mid(a.anggota_npm,6,1) = $jurusan AND a.id_prestasi = b.id_prestasi AND b.jenis LIKE '%$jenis%' AND b.tahun = $tahun");
+		return $result->result();
+    }
+    
 
 }
 ?>

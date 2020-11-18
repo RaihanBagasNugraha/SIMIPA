@@ -452,10 +452,14 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
     $route['dosen/bebas-lab/pengajuan/approve'] = 'dosen/bebas_lab_approve';
     $route['dosen/bebas-lab/pengajuan/simpan'] = 'dosen/bebas_lab_simpan';
 
-    //wd1 kemahasiswaan
+    //wd1 akademik
     $route['dosen/wd-layanan-akademik/pengajuan'] = 'dosen/wd_layanan_akademik';
     $route['dosen/wd-layanan-akademik/pengajuan/approve'] = 'dosen/wd_layanan_akademik_approve';
     $route['dosen/wd-layanan-akademik/pengajuan/simpan'] = 'dosen/wd_layanan_akademik_simpan';
+
+     //wd3 kemahasiswaan
+    $route['dosen/prestasi'] = 'dosen/prestasi';
+    $route['dosen/prestasi/(:any)'] = 'dosen/prestasi_detail';
 
 //Prestasi
     //mahasiswa
@@ -472,6 +476,10 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
     $route['mahasiswa/prestasi/surat-tugas-form/delete'] = 'mahasiswa/prestasi_surat_tugas_delete';
     $route['mahasiswa/prestasi/surat-tugas-sertifikat'] = 'mahasiswa/prestasi_surat_tugas_sertifikat';
     $route['mahasiswa/prestasi/form-prestasi-edit'] = 'mahasiswa/prestasi_surat_tugas_sertifikat_unggah';
+
+//Beasiswa
+    //mahasiswa
+    $route['mahasiswa/beasiswa'] = 'mahasiswa/beasiswa';
 
 
 $route['beranda'] = 'admin';

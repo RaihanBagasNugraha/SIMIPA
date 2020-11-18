@@ -2013,10 +2013,12 @@ class Mahasiswa extends CI_Controller {
         $this->load->view('footer_global');
 	}
 
+	//prestasi
+
 	function prestasi()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['prestasi'] = $this->layanan_model->get_prestasi_by_npm($this->session->userdata('username'));
+		$data['prestasi'] = $this->layanan_model->get_prestasi_by_npm($this->session->userdata('username'),$this->session->userdata('userId'));
 		$this->load->view('header_global', $header);
 		$this->load->view('mahasiswa/header');
 
@@ -2107,15 +2109,15 @@ class Mahasiswa extends CI_Controller {
 		}
 
 		if($id_layanan == 32 || $id_layanan == 33){
-			$mhs_nama = $data['nama'];
+			$mhs_npm = $data['npm'];
 			$n = 0;
-			foreach($mhs_nama as $mhs){
+			foreach($mhs_npm as $mhs){
 				$data_tugas = array(
 					"id_layanan_fakultas_mahasiswa" => $insert_id,
-					"nama" => $mhs_nama[$n],
-					"npm" => $data['npm'][$n],
-					"jurusan" => $data['jurusan'][$n],
-					"alamat" => $data['alamat'][$n] 
+					"nama" => null,
+					"npm" => $mhs_npm[$n],
+					"jurusan" => null,
+					"alamat" => null 
 				);
 				//input layanan_fakultas_tugas
 				$this->layanan_model->insert_layanan_fak_tugas($data_tugas);
@@ -2130,7 +2132,7 @@ class Mahasiswa extends CI_Controller {
 		}
 		//insert prestasi
 		$prestasi = array(
-			"npm" => $this->session->userdata('username'),
+			// "npm" => $this->session->userdata('username'),
 			// "kegiatan" => 
 			"kategori" => $kategori,
 			"insert_by" => $this->session->userdata('userId'),
@@ -2140,7 +2142,7 @@ class Mahasiswa extends CI_Controller {
 		$insert_id2 = $this->layanan_model->insert_prestasi($prestasi);
 
 		//input anggota
-		if($id_layanan == 32){
+		// if($id_layanan == 32){
 			$i = 0;
 			//ketua yg mengisi
 			// $anggota1 = array(
@@ -2148,7 +2150,7 @@ class Mahasiswa extends CI_Controller {
 			// 	"anggota_npm" => $data['npm'][$i]
 			// );
 			// $this->layanan_model->insert_prestasi_anggota($anggota1);
-			foreach($mhs_nama as $mhs){
+			foreach($mhs_npm as $mhs){
 				$anggota = array(
 					"id_prestasi" => $insert_id2,
 					"anggota_npm" => $data['npm'][$i]
@@ -2157,7 +2159,7 @@ class Mahasiswa extends CI_Controller {
 				$i++;
 			}
 			
-		}
+		// }
 		redirect(site_url("mahasiswa/prestasi"));
 	}
 
@@ -2241,13 +2243,11 @@ class Mahasiswa extends CI_Controller {
 		$size = $_FILES['file']['size'];
 
 		$prestasi = array(
-			"npm" => $this->session->userdata('username'),
 			"jenis" => $data['jenis'],
 			"tingkat" => $data['tingkat'],
 			"tahun" => $data['tahun'],
 			"kegiatan" => $data['kegiatan'],
 			"penyelenggara" => $data['penyelenggara'],
-			"capaian" => $data['capaian'],
 			"kategori" => $data['kategori'],
 			"insert_by" => $this->session->userdata('userId'),   
 		);
@@ -2256,29 +2256,31 @@ class Mahasiswa extends CI_Controller {
 			if($file1 == '%PDF' && $size <= 2100000){
 				$file = $_FILES['file']['tmp_name']; 
 				$sourceProperties = getimagesize($file);
-				$str = $this->session->userdata('username').date('H:i');
+				$str = $this->session->userdata('username').date('H:i:s');
 				$hash_name = md5($str);
 				$fileNewName = $hash_name;
 				$folderPath = "assets/uploads/berkas-sertifikat/";
 				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
-				$prestasi['sertifikat'] = $folderPath.$fileNewName. ".". $ext;
+				$sertifikat = $folderPath.$fileNewName. ".". $ext;
 				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
 
 				$insert_id = $this->layanan_model->insert_prestasi($prestasi);
 
 				//input anggota
-				if($data['kategori'] == "Tim"){
+				// if($data['kategori'] == "Tim"){
 					$i = 0;
 					foreach($data['anggota'] as $anggota){
 						$anggota = array(
 							"id_prestasi" => $insert_id,
-							"anggota_npm" => $data['anggota'][$i]
+							"anggota_npm" => $data['anggota'][$i],
+							"capaian" => $data['capaian'],
+							"sertifikat" => $sertifikat
 						);
 						$this->layanan_model->insert_prestasi_anggota($anggota);
 						$i++;
 					}
-				}
+				// }
 				redirect(site_url("mahasiswa/prestasi"));
 			}
 			else{
@@ -2370,30 +2372,40 @@ class Mahasiswa extends CI_Controller {
 		$size = $_FILES['file']['size'];
 		$id = $this->encrypt->decode($data['id']);
 
+		$kategori = $this->layanan_model->get_prestasi_by_id($id)->kategori;
+
 		$prestasi = array(
 			"jenis" => $data['jenis'],
 			"tingkat" => $data['tingkat'],
 			"tahun" => $data['tahun'],
 			"kegiatan" => $data['kegiatan'],
-			"penyelenggara" => $data['penyelenggara'],
-			"capaian" => $data['capaian']
+			"penyelenggara" => $data['penyelenggara']
 		);
+		$anggota['capaian'] = $data['capaian'];
 		
 		if(!empty($_FILES)) {
 			if($file1 == '%PDF' && $size <= 2100000){
 				$file = $_FILES['file']['tmp_name']; 
 				$sourceProperties = getimagesize($file);
-				$str = $this->session->userdata('username').date('H:i');
+				$str = $this->session->userdata('username').date('H:i:s');
 				$hash_name = md5($str);
 				$fileNewName = $hash_name;
 				$folderPath = "assets/uploads/berkas-sertifikat/";
 				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
-				$prestasi['sertifikat'] = $folderPath.$fileNewName. ".". $ext;
+				$anggota['sertifikat'] = $folderPath.$fileNewName. ".". $ext;
 				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
 
 				//update prestasi
 				$this->layanan_model->update_prestasi($id,$prestasi);		
+
+				//update sertifikat
+				if($kategori == "Individu"){
+					$this->layanan_model->update_prestasi_anggota_individu($anggota,$id,$this->session->userdata('username'));
+				}elseif($kategori = "Tim"){
+					$this->layanan_model->update_prestasi_anggota_tim($anggota,$id);
+				}
+
 				redirect(site_url("mahasiswa/prestasi"));
 			}
 			else{
@@ -2404,6 +2416,17 @@ class Mahasiswa extends CI_Controller {
 			redirect(site_url("mahasiswa/prestasi/form-prestasi?status=gagal&aksi=unggah&id=".$data['id']));
 		}	
 	}
+
+	//Beasiswa
+	function beasiswa()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+		$this->load->view('mahasiswa/beasiswa/beasiswa');
+        $this->load->view('footer_global');
+	}
+
 	
 
 }

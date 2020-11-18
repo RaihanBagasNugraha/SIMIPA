@@ -125,7 +125,7 @@
                                                     if(!empty($approval)){
                                                         foreach($approval as $app){
                                                             // echo "<ul>";
-                                                            echo "<li><b>Approval ".$this->layanan_model->get_approver_by_id($app->approver_id)->nama." : </b></li>";
+                                                            echo "<li><b>Disetujui ".$this->layanan_model->get_approver_by_id($app->approver_id)->nama." : </b></li>";
                                                             // echo "<br>";
                                                             if($app->approver_id > 9){
                                                                 echo substr($app->created_at,0,10);

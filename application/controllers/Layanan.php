@@ -6728,10 +6728,26 @@ class Layanan extends CI_Controller {
        
         $m=0;
         foreach($mhs_tugas as $mhst){
-            $anggota_nama[$m] = $mhst->nama;
-            $anggota_npm[$m] = $mhst->npm;
-            $anggota_jurusan[$m] = $mhst->jurusan;
-            $anggota_alamat[$m] = $mhst->alamat;
+            // $anggota_nama[$m] = $mhst->nama;
+            // $anggota_jurusan[$m] = $mhst->jurusan;
+            // $anggota_alamat[$m] = $mhst->alamat;
+            // $anggota_npm[$m] = $mhst->npm;
+
+            $anggota_data[$m] = $this->user_model->get_mahasiswa_data_npm($mhst->npm);
+            if(!empty($anggota_data[$m])){
+                $anggota_nama[$m] = $anggota_data[$m]->name;
+                $anggota_jurusan[$m] = $this->user_model->get_jurusan_id($anggota_data[$m]->jurusan)->nama;
+                $anggota_npm[$m] = $mhst->npm;
+                $agt_alamat[$m] = $this->wilayah_model->get_desa_by_id($anggota_data[$m]->kelurahan_desa); 
+                $anggota_alamat[$m] = $anggota_data[$m]->jalan." Kelurahan ".$agt_alamat[$m]->desa." Kecamatan ".$agt_alamat[$m]->kecamatan." ".$agt_alamat[$m]->kabupaten." Provinsi ".$agt_alamat[$m]->provinsi." ".$anggota_data[$m]->kode_pos;
+            }
+            else{
+                $anggota_nama[$m] = "";
+                $anggota_jurusan[$m] = "";
+                $anggota_npm[$m] = $mhst->npm;
+                $anggota_alamat[$m] = "";
+            }
+           
             $m++;
         }
 
@@ -6865,10 +6881,26 @@ class Layanan extends CI_Controller {
        
         $m=0;
         foreach($mhs_tugas as $mhst){
-            $anggota_nama[$m] = $mhst->nama;
-            $anggota_npm[$m] = $mhst->npm;
-            $anggota_jurusan[$m] = $mhst->jurusan;
-            $anggota_alamat[$m] = $mhst->alamat;
+            // $anggota_nama[$m] = $mhst->nama;
+            // $anggota_jurusan[$m] = $mhst->jurusan;
+            // $anggota_alamat[$m] = $mhst->alamat;
+            // $anggota_npm[$m] = $mhst->npm;
+
+            $anggota_data[$m] = $this->user_model->get_mahasiswa_data_npm($mhst->npm);
+            if(!empty($anggota_data[$m])){
+                $anggota_nama[$m] = $anggota_data[$m]->name;
+                $anggota_jurusan[$m] = $this->user_model->get_jurusan_id($anggota_data[$m]->jurusan)->nama;
+                $anggota_npm[$m] = $mhst->npm;
+                $agt_alamat[$m] = $this->wilayah_model->get_desa_by_id($anggota_data[$m]->kelurahan_desa); 
+                $anggota_alamat[$m] = $anggota_data[$m]->jalan." Kelurahan ".$agt_alamat[$m]->desa." Kecamatan ".$agt_alamat[$m]->kecamatan." ".$agt_alamat[$m]->kabupaten." Provinsi ".$agt_alamat[$m]->provinsi." ".$anggota_data[$m]->kode_pos;
+            }
+            else{
+                $anggota_nama[$m] = "";
+                $anggota_jurusan[$m] = "";
+                $anggota_npm[$m] = $mhst->npm;
+                $anggota_alamat[$m] = "";
+            }
+           
             $m++;
         }
 

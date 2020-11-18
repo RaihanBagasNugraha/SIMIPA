@@ -4595,4 +4595,39 @@ class Dosen extends CI_Controller {
 
 	}
 
+	//wd3 prestasi
+	function prestasi()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['tahun'] = $this->layanan_model->get_tahun_prestasi_wd();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd3/prestasi',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function prestasi_detail()
+	{
+		$seg = $this->uri->segment(3);
+		if($seg == "akademik"){
+			$seg = "Akademik";
+		}elseif($seg == "non-akademik"){
+			$seg = "Non Akademik";
+		}
+		$tahun = $this->input->get('tahun');
+		$jurusan = $this->input->get('jurusan');
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['id_prestasi'] = $this->layanan_model->get_prestasi_detail($tahun,$seg,$jurusan);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd3/prestasi_detail',$data);
+		
+		$this->load->view('footer_global');
+	}
+
 }

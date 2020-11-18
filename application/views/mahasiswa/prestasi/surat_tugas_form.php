@@ -105,12 +105,26 @@
 
                                         <?php } ?>
                                   
-                                    <div class="position-relative row form-group">
+                                    <!-- <div class="position-relative row form-group">
                                         <label for="prodi" class="col-sm-3 col-form-label"><label class="btn btn-primary" id='tambah_mhs'>Tambah Mahasiswa&emsp;<i class="fa fa-plus" aria-hidden="true"></i></label></label>
                                         </div>
 
-                                        <div id="container">
+                                        <div id="container2">
                                                
+                                    </div> -->
+
+                                    <div class="position-relative row form-group" id="ketua">
+                                        <label for="prodi" class="col-sm-3 col-form-label"><b>Ketua/Anggota 1</b></label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="npm[]" value="<?php echo $this->session->userdata('username') ?>" readonly placeholder="NPM" />
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="btn btn-primary" id='tambah_mhs'>Tambah Anggota</label> 
+                                        </div>
+                                    </div>
+
+                                    <div id="container">
+
                                     </div>
 
                                     <div class="position-relative row form-group">
@@ -260,22 +274,31 @@ document.getElementById('undo').addEventListener('click', function () {
 
 <script>
  $(document).ready(function(){
-    $('#kategori').on('change', function() {
-        if (this.value == 'Tim'){
-            jQuery("#ketua").show();
-        }else {
-            jQuery("#ketua").hide();
-            jQuery('.field').remove();
-        }
-    });
+    // $('#kategori').on('change', function() {
+    //     if (this.value == 'Tim'){
+    //         jQuery("#ketua").show();
+    //     }else {
+    //         jQuery("#ketua").hide();
+    //         jQuery('.field').remove();
+    //     }
+    // });
+
+    // var wrapper = $("#container");
+    // var i = 1;
+    // $('#tambah_mhs').click(function(){
+    //     $(wrapper).append("<div class='position-relative row form-group field'><div class='col-sm-3'><input value='' type = 'text' placeholder ='Nama' name='nama[]' class='form-control'></div><div class='col-lg-3'><input value='' type = 'text' placeholder ='NPM' name='npm[]' class='form-control'></div><div class='col-lg-3'><select required name='jurusan[]' class = 'form-control'><option value = ''>-- Pilih Jurusan --</option><option value='Doktor MIPA' >Doktor MIPA</option><option value='Kimia' >Kimia</option><option value='Biologi' >Biologi</option><option value='Matematika' >Matematika</option><option value='Fisika' >Fisika</option><option value='Ilmu Komputer' >Ilmu Komputer</option></select></div><div class='col-lg-3'><input value='' type = 'text' placeholder ='Alamat' name='alamat[]' class='form-control'></div></div>");
+    //     i++;   
+        
+    // });     
 
     var wrapper = $("#container");
-    var i = 1;
+    var i = 2;
     $('#tambah_mhs').click(function(){
-        $(wrapper).append("<div class='position-relative row form-group field'><div class='col-sm-3'><input value='' type = 'text' placeholder ='Nama' name='nama[]' class='form-control'></div><div class='col-lg-3'><input value='' type = 'text' placeholder ='NPM' name='npm[]' class='form-control'></div><div class='col-lg-3'><select required name='jurusan[]' class = 'form-control'><option value = ''>-- Pilih Jurusan --</option><option value='Doktor MIPA' >Doktor MIPA</option><option value='Kimia' >Kimia</option><option value='Biologi' >Biologi</option><option value='Matematika' >Matematika</option><option value='Fisika' >Fisika</option><option value='Ilmu Komputer' >Ilmu Komputer</option></select></div><div class='col-lg-3'><input value='' type = 'text' placeholder ='Alamat' name='alamat[]' class='form-control'></div></div>");
+        $(wrapper).append("<div class='position-relative row form-group field'><div class='col-sm-3'>Anggota "+i+"</div><div class='col-lg-3'><input type='text' class='form-control' name='npm[]' value='' placeholder='NPM "+i+"' /></div></div>");
         i++;   
         
-    });     
+    });  
+
 }); 
 
 </script>

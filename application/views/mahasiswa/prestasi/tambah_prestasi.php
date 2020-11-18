@@ -45,22 +45,40 @@
                                         if($aksi == 'unggah'){
                                             $id = $this->input->get('id');
                                             echo "<input type='hidden' name='id' value='$id' />";
+                                            $prestasi = $this->layanan_model->get_prestasi_by_id($this->encrypt->decode($id));
                                         }
                                     ?>
                                     <div class="position-relative row form-group">
                                         <label for="prodi" class="col-sm-3 col-form-label">Jenis Kegiatan</label>
                                         <div class="col-sm-3">
+                                        <?php if($aksi == 'unggah') { ?>
+                                            <select name="jenis" required class=" form-control">
+                                                <option value="">-- Pilih Jenis Kegiatan --</option>
+                                                <option value="Akademik" <?php echo $prestasi->jenis == "Akademik" ? "selected" : ""?> >Akademik</option>
+                                                <option value="Non Akademik" <?php echo $prestasi->jenis == "Non Akademik" ? "selected" : ""?>>Non Akademik</option>
+                                            </select>
+                                        <?php } else{?>
                                             <select name="jenis" required class=" form-control">
                                                 <option value="">-- Pilih Jenis Kegiatan --</option>
                                                 <option value="Akademik">Akademik</option>
                                                 <option value="Non Akademik">Non Akademik</option>
                                             </select>
+                                        <?php } ?>
                                         </div>
                                     </div>
 
                                     <div class="position-relative row form-group">
                                         <label for="prodi" class="col-sm-3 col-form-label">Tingkat</label>
                                         <div class="col-sm-6">
+                                        <?php if($aksi == 'unggah') { ?>
+                                            <select name="tingkat" required class=" form-control">
+                                                <option value="">-- Pilih Tingkat Kegiatan --</option>
+                                                <option value="Lokal"  <?php echo $prestasi->tingkat == "Lokal" ? "selected" : ""?>>Lokal (Universitas Lampung)</option>
+                                                <option value="Wilayah"  <?php echo $prestasi->tingkat == "Wilayah" ? "selected" : ""?>>Wilayah (Kota/Kabupaten, Provinsi, Regional)</option>
+                                                <option value="Nasional"  <?php echo $prestasi->tingkat == "Nasional" ? "selected" : ""?>>Nasional</option>
+                                                <option value="Internasional"  <?php echo $prestasi->tingkat == "Internasional" ? "selected" : ""?>>Internasional</option>
+                                            </select>
+                                        <?php } else {?>
                                             <select name="tingkat" required class=" form-control">
                                                 <option value="">-- Pilih Tingkat Kegiatan --</option>
                                                 <option value="Lokal">Lokal (Universitas Lampung)</option>
@@ -68,27 +86,40 @@
                                                 <option value="Nasional">Nasional</option>
                                                 <option value="Internasional">Internasional</option>
                                             </select>
+                                        <?php } ?>
                                         </div>
                                     </div>
 
                                     <div class="position-relative row form-group">
                                         <label for="prodi" class="col-sm-3 col-form-label">Tahun</label>
                                         <div class="col-sm-3">
+                                        <?php if($aksi == 'unggah') { ?>
+                                            <input type="text" required class="form-control" name="tahun" value="<?php echo $prestasi->tahun ?>" placeholder="cth: 2020" />
+                                        <?php } else {?>
                                             <input type="text" required class="form-control" name="tahun" value="" placeholder="cth: 2020" />
+                                        <?php } ?>
                                         </div>
                                     </div>
 
                                     <div class="position-relative row form-group">
                                         <label for="prodi" class="col-sm-3 col-form-label">Nama Kegiatan</label>
                                         <div class="col-sm-9">
+                                        <?php if($aksi == 'unggah') { ?>
+                                            <input type="text" required class="form-control" name="kegiatan" value="<?php echo $prestasi->kegiatan ?>" placeholder="cth: Gemastik" />
+                                        <?php } else {?>
                                             <input type="text" required class="form-control" name="kegiatan" value="" placeholder="cth: Gemastik" />
+                                        <?php }?>
                                         </div>
                                     </div>
 
                                     <div class="position-relative row form-group">
                                         <label for="prodi" class="col-sm-3 col-form-label">Penyelenggara</label>
                                         <div class="col-sm-9">
+                                        <?php if($aksi == 'unggah') { ?>
+                                            <input type="text" required class="form-control" name="penyelenggara" value="<?php echo $prestasi->penyelenggara ?>" placeholder="cth: Kementerian" />
+                                        <?php } else {?>
                                             <input type="text" required class="form-control" name="penyelenggara" value="" placeholder="cth: Kementerian" />
+                                        <?php }?>
                                         </div>
                                     </div>
 
@@ -120,10 +151,11 @@
                                         </div>
                                     </div>
                                     <?php } ?>
+                                    
                                     <div class="position-relative row form-group" id="ketua" style="display:none">
                                         <label for="prodi" class="col-sm-3 col-form-label"><b>Ketua</b></label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="ketua" value="<?php echo $this->session->userdata('username') ?>" readonly placeholder="NPM" />
+                                            <input type="text" class="form-control" name="anggota[]" value="<?php echo $this->session->userdata('username') ?>" readonly placeholder="NPM" />
                                         </div>
                                         <div class="col-sm-3">
                                             <label class="btn btn-primary" id='tambah_mhs'>Tambah Anggota</label> 
