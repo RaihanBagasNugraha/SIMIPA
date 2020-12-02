@@ -837,7 +837,7 @@ class Pdfta extends CI_Controller {
 
         $tgl_acc = $this->ta_model->get_tgl_acc($ta->id_pengajuan);
 
-        if($ta->status != 7 && $ta->status != 9){
+        if($ta->status < 7 ){
             $kajur_approve= $this->ta_model->get_ttd_approval($ta->id_pengajuan,'Ketua Jurusan');
             $kajur_data = $this->user_model->get_dosen_data($kajur_approve->id_user);
         }
@@ -963,7 +963,7 @@ class Pdfta extends CI_Controller {
             }
             $pdf->Ln(5);
 
-            if($ta->status != 7 && $ta->status != 9){
+            if($ta->status < 7){
                 $pdf->Cell(90, $spasi,$pdf->Image("$kajur_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
             }
             else{
@@ -973,7 +973,7 @@ class Pdfta extends CI_Controller {
             $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
             $pdf->Ln(20);
 
-            if($ta->status != 7 && $ta->status != 9){
+            if($ta->status < 7){
                 $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
                 $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);

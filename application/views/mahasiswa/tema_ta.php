@@ -225,8 +225,8 @@
                                             }
 
                                             if($row->status == '8') {
-                                                echo '<i>Acc Ketua Jurusan<br><br></i>';
-                                                echo '<i>Menunggu Acc Pembimbing & Pembahas</i>';
+                                                echo '<i>Acc Pembimbing & Pembahas<br><br></i>';
+                                                echo '<i>Menunggu Acc Ketua Jurusan</i>';
                                             }
 
                                             if($row->status == '5') {

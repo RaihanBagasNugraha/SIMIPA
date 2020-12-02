@@ -154,7 +154,7 @@ class Ta_model extends CI_Model
 
 	function get_approval_ta_kajur($id)
 	{
-		$query = $this->db->query('SELECT * FROM tugas_akhir JOIN tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user ='.$id.' AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tugas_akhir.status = 7 AND tugas_akhir.npm = tbl_users_mahasiswa.npm');
+		$query = $this->db->query('SELECT * FROM tugas_akhir JOIN tbl_users_mahasiswa, tbl_users_dosen WHERE tbl_users_dosen.id_user ='.$id.' AND tbl_users_mahasiswa.jurusan = tbl_users_dosen.jurusan AND tugas_akhir.status = 8 AND tugas_akhir.npm = tbl_users_mahasiswa.npm');
 	
 		return $query->result();
 	}
@@ -249,7 +249,7 @@ class Ta_model extends CI_Model
 		}
 		elseif($status == 'kajur'){
 			$this->db->where('id_pengajuan', $where);
-			$this->db->update($this->table, array('status' => '8'));
+			$this->db->update($this->table, array('status' => '4'));
 
 			$data_approval = [
 				'id_pengajuan' => $where,
@@ -284,7 +284,7 @@ class Ta_model extends CI_Model
 
 			if($check == 1){
 				$this->db->where('id_pengajuan', $where);
-				$this->db->update('tugas_akhir', array('status' => '4'));
+				$this->db->update('tugas_akhir', array('status' => '8'));
 			}
 		}
 
@@ -297,7 +297,7 @@ class Ta_model extends CI_Model
 
 			if($check == 1){
 				$this->db->where('id_pengajuan', $where);
-				$this->db->update('tugas_akhir', array('status' => '4'));
+				$this->db->update('tugas_akhir', array('status' => '8'));
 			}
 		}
 
@@ -310,7 +310,7 @@ class Ta_model extends CI_Model
 
 			if($check == 1){
 				$this->db->where('id_pengajuan', $where);
-				$this->db->update('tugas_akhir', array('status' => '4'));
+				$this->db->update('tugas_akhir', array('status' => '8'));
 			}
 		}
 
@@ -323,7 +323,7 @@ class Ta_model extends CI_Model
 
 			if($check == 1){
 				$this->db->where('id_pengajuan', $where);
-				$this->db->update('tugas_akhir', array('status' => '4'));
+				$this->db->update('tugas_akhir', array('status' => '8'));
 			}
 		}
 
@@ -336,7 +336,7 @@ class Ta_model extends CI_Model
 
 			if($check == 1){
 				$this->db->where('id_pengajuan', $where);
-				$this->db->update('tugas_akhir', array('status' => '4'));
+				$this->db->update('tugas_akhir', array('status' => '8'));
 			}
 		}
 
@@ -349,7 +349,7 @@ class Ta_model extends CI_Model
 
 			if($check == 1){
 				$this->db->where('id_pengajuan', $where);
-				$this->db->update('tugas_akhir', array('status' => '4'));
+				$this->db->update('tugas_akhir', array('status' => '8'));
 			}
 		}
 	}
@@ -366,7 +366,7 @@ class Ta_model extends CI_Model
 
 		if($check == 1){
 			$this->db->where('id_pengajuan', $where);
-			$this->db->update('tugas_akhir', array('status' => '4'));
+			$this->db->update('tugas_akhir', array('status' => '8'));
 		}
 
 		if($token != NULL){
@@ -669,7 +669,7 @@ class Ta_model extends CI_Model
 
 	function get_approval_ta_list($id)
 	{
-		$query = $this->db->query('SELECT tugas_akhir.*, tugas_akhir_approval.status_slug FROM tugas_akhir, tugas_akhir_approval WHERE tugas_akhir.id_pengajuan = tugas_akhir_approval.id_pengajuan AND tugas_akhir_approval.id_user ='.$id.' AND tugas_akhir_approval.ttd LIKE "" AND tugas_akhir.status = 8');
+		$query = $this->db->query('SELECT tugas_akhir.*, tugas_akhir_approval.status_slug FROM tugas_akhir, tugas_akhir_approval WHERE tugas_akhir.id_pengajuan = tugas_akhir_approval.id_pengajuan AND tugas_akhir_approval.id_user ='.$id.' AND tugas_akhir_approval.ttd LIKE "" AND tugas_akhir.status = 7');
 		return $query->result();
 	}
 
