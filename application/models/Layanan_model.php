@@ -757,13 +757,13 @@ class Layanan_model extends CI_Model
 
     function jml_pendaftar_beasiswa($id)
     {
-        $result = $this->db->query("SELECT COUNT(*) as jml FROM `beasiswa_mahasiswa` WHERE id_beasiswa = $id AND (status = 2 OR status = 4)");
+        $result = $this->db->query("SELECT COUNT(*) as jml FROM `beasiswa_mahasiswa` WHERE id_beasiswa = $id AND (status = 2)");
 		return $result->row()->jml;
     }
 
     function get_pendaftar_beasiswa($id)
     {
-        $result = $this->db->query("SELECT* FROM `beasiswa_mahasiswa` WHERE id_beasiswa = $id AND (status = 2 OR status = 4)");
+        $result = $this->db->query("SELECT * FROM `beasiswa_mahasiswa` WHERE id_beasiswa = $id AND (status = 2)");
 		return $result->result();
     }
 
@@ -781,10 +781,65 @@ class Layanan_model extends CI_Model
 
     function get_mhs_beasiswa_jurusan($jurusan,$bea)
     {
-        $result = $this->db->query("SELECT * FROM `beasiswa_mahasiswa` WHERE MID(npm,6,1) = $jurusan AND (status >= 1) AND id_beasiswa = $bea");
+        $result = $this->db->query("SELECT * FROM `beasiswa_mahasiswa` WHERE MID(npm,6,1) = $jurusan AND (status = 4) AND id_beasiswa = $bea");
 		return $result->result();
     }
 
+    function get_mhs_beasiswa_jurusan_tolak($jurusan,$bea)
+    {
+        $result = $this->db->query("SELECT * FROM `beasiswa_mahasiswa` WHERE MID(npm,6,1) = $jurusan AND (status = 3) AND id_beasiswa = $bea");
+		return $result->result();
+    }
+
+    //lembaga kemahasiswaan
+    function insert_lk($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('lembaga_kemahasiswaan', $data);
+		$this->db->trans_complete();   
+    }
+
+    function update_lk($id,$data)
+    {
+        $this->db->where('id_lk', $id);
+	    $this->db->update('lembaga_kemahasiswaan', $data);
+    }
+
+    function hapus_lk($id)
+    {
+        $this->db->delete('lembaga_kemahasiswaan', $id);   
+    }
+
+    function get_lk_by_id($id)
+    {
+        $result = $this->db->query("SELECT * FROM lembaga_kemahasiswaan WHERE id_lk = $id");
+		return $result->row();
+    }
+
+    function get_periode_lk($id)
+    {
+        $result = $this->db->query("SELECT DISTINCT(periode) FROM `tbl_users_tugas_mahasiswa` WHERE id_lk = $id");
+		return $result->result();
+    }
+
+    function get_jabatan_lk($id,$periode,$jabatan)
+    {
+        $result = $this->db->query("SELECT * FROM `tbl_users_tugas_mahasiswa` WHERE periode = '$periode' AND id_lk = $id AND jabatan = $jabatan");
+		return $result->row();
+    }
+
+    function get_lk_by_periode_lk2($periode,$lk)
+    {
+        $result = $this->db->query("SELECT * FROM `tbl_users_tugas_mahasiswa` WHERE periode = '$periode' AND id_lk = $lk");
+		return $result->row();
+    }
+
+    function verif_lk($periode,$id,$data)
+    {
+        $this->db->where('periode', $periode);
+        $this->db->where('id_lk', $id);
+	    $this->db->update('tbl_users_tugas_mahasiswa', $data);
+    }
     
 }
 ?>

@@ -156,7 +156,7 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                 <?php if(!empty($lk)) {  ?>
                                 <li class="app-sidebar__heading">Lembaga Kemahasiswaan</li>
                                 <li>
-                                    <a href="#" <?php if($this->uri->segment(1) == "unggah-nilai") echo 'class="mm-active"' ?> >
+                                    <a href="<?php echo site_url('mahasiswa/struktur-organisasi') ?>" <?php if($this->uri->segment(2) == "struktur-organisasi") echo 'class="mm-active"' ?> >
                                         <i class="metismenu-icon pe-7s-network"></i>
                                         Struktur Organisasi
                                     </a>

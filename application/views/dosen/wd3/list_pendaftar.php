@@ -82,7 +82,7 @@
                                             </td>
                                             <td class="align-top">
                                                 <?php 
-                                                    echo "<li><a href='".site_url('/mahasiswa/layanan-fakultas/kemahasiswaan/unduh?id='.$row->id_layanan_fakultas_mahasiswa.'&layanan=26')."'>Form Beasiswa Lengkap</a></li>";
+                                                    // echo "<li><a href='".site_url('/mahasiswa/layanan-fakultas/kemahasiswaan/unduh?id='.$row->id_layanan_fakultas_mahasiswa.'&layanan=26')."'>Form Beasiswa Lengkap</a></li>";
                                                      $lampiran = $this->layanan_model->get_lampiran_layanan_list($row->id_layanan_fakultas_mahasiswa); 
                                                      if(empty($lampiran)) {
                                                          echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";

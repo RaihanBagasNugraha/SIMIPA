@@ -114,7 +114,7 @@
                                                 $no = 0; 
                                                 foreach($beasiswa as $row){  ?>                    
                                                 <tr>
-                                                    <td><b><?php echo ++$no; ?></b></td>
+                                                    <td><?php echo ++$no; ?></td>
                                                     <td><b><?php echo $row->nama; ?></b></td>
                                                     <td>
                                                     <?php 
@@ -128,15 +128,30 @@
                                                     </td>
                                                     
                                                     <!-- kimia 1 -->
-                                                    <td><a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=1&beasiswa=$row->id") ?>" class="btn-shadow btn btn-primary btn-block"><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan(1,$row->id)); ?></a></td> 
+                                                    <td>
+                                                    <a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=1&beasiswa=$row->id&status=lulus") ?>" class="btn-shadow btn btn-primary "><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan(1,$row->id)); ?></a>
+                                                    <a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=1&beasiswa=$row->id&status=tolak") ?>" class="btn-shadow btn btn-danger "><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan_tolak(1,$row->id)); ?></a>
+                                                    </td> 
                                                     <!-- biologi 2 -->
-                                                    <td><a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=2&beasiswa=$row->id") ?>" class="btn-shadow btn btn-success btn-block"><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan(2,$row->id)); ?></a></td> 
+                                                    <td>
+                                                    <a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=2&beasiswa=$row->id&status=lulus") ?>" class="btn-shadow btn btn-primary"><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan(2,$row->id)); ?></a>
+                                                    <a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=2&beasiswa=$row->id&status=tolak") ?>" class="btn-shadow btn btn-danger"><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan_tolak(2,$row->id)); ?></a>
+                                                    </td> 
                                                     <!-- matematika 3 -->
-                                                    <td><a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=3&beasiswa=$row->id") ?>" class="btn-shadow btn btn-danger btn-block"><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan(3,$row->id)); ?></a></td> 
+                                                    <td>
+                                                    <a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=3&beasiswa=$row->id&status=lulus") ?>" class="btn-shadow btn btn-primary "><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan(3,$row->id)); ?></a>
+                                                    <a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=3&beasiswa=$row->id&status=tolak") ?>" class="btn-shadow btn btn-danger "><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan_tolak(3,$row->id)); ?></a>
+                                                    </td> 
                                                     <!-- fisika 4 -->
-                                                    <td><a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=4&beasiswa=$row->id") ?>" class="btn-shadow btn btn-info btn-block"><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan(4,$row->id)); ?></a></td> 
+                                                    <td>
+                                                    <a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=4&beasiswa=$row->id&status=lulus") ?>" class="btn-shadow btn btn-primary"><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan(4,$row->id)); ?></a>
+                                                    <a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=4&beasiswa=$row->id&status=tolak") ?>" class="btn-shadow btn btn-danger"><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan_tolak(4,$row->id)); ?></a>
+                                                    </td> 
                                                     <!-- ilkom 5 -->
-                                                    <td><a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=5&beasiswa=$row->id") ?>" class="btn-shadow btn btn-warning btn-block"><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan(5,$row->id)); ?></a></td> 
+                                                    <td>
+                                                    <a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=5&beasiswa=$row->id&status=lulus") ?>" class="btn-shadow btn btn-primary"><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan(5,$row->id)); ?></a>
+                                                    <a href="<?php echo site_url("dosen/beasiswa-mhs/detail?jurusan=5&beasiswa=$row->id&status=tolak") ?>" class="btn-shadow btn btn-danger"><?php echo count($this->layanan_model->get_mhs_beasiswa_jurusan_tolak(5,$row->id)); ?></a>
+                                                    </td> 
                                                 </tr>
                                             <?php } ?>             
                                         </tbody>

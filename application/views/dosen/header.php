@@ -400,7 +400,7 @@ else{
                                     </ul>
                                 </li>
 
-                                <li >
+                                <li <?php if($this->uri->segment(2) == "lk") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-notebook"></i>
                                         Lmbg Kemahasiswaan
@@ -408,9 +408,9 @@ else{
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="#">
+                                            <a href="<?php echo site_url("dosen/lk/daftar-lk") ?>" <?php if($this->uri->segment(3) == "daftar-lk" || $this->uri->segment(3) == "detail-lk") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Asese
+                                                </i>Daftar LK
                                             </a>
                                         </li>
                                         <li>

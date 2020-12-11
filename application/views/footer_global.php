@@ -1222,16 +1222,16 @@
                         </select>  
                     <br>    
 
-                    <label><b>Periode</b></label>    
-                        <input name="periode_lk" id="periode" value="" type="text" placeholder="2020/2021" class="form-control"> 
+                    <label><b>Periode</b></label>
+                    <?php $thn = date("Y"); $thn2 = date("Y")+1 ?>
+                        <select name="periode_lk" id="periode" class="input-lg form-control">
+                            <option value = ''>-- Periode --</option>
+                            <option value ="<?php echo $thn."/".$thn2 ?>"><?php echo $thn."/".$thn2 ?></option>
+                        </select>  
+                        
                     <br> 
 
-                    <label><b>Status</b></label>    
-                        <select name="status_lk" class="input-lg form-control">
-                            <option>-- Status --</option>
-                            <option value ="1">Aktif</option>
-                            <option value ="0">Nonaktif</option>
-                        </select>  
+                    <input name="status_lk" id="" value="1" type="hidden" class="form-control">  
                 </form>
                
             </div>
@@ -3040,4 +3040,116 @@ $(document).ready(function() {
         </div>
     </div>
 </div>
+<?php } ?>
+
+<?php if($this->uri->segment(2) == 'lk') { ?>
+
+<div class="modal fade" id="EditLk" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Data LK</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="edit_lk" method="post" action="<?php echo site_url("dosen/edit_lk") ?>">
+                    <div class="position-relative form-group">
+                        <label>Nama LK</label>
+                            <input type="text" required placeholder ='Nama LK' class='form-control' name="nama" id='nama' value="">
+                            <input type="hidden" name="id" id='ID' value="">
+                    </div>
+                    <div class="position-relative form-group">
+                        <label>Tingkat</label>
+                            <select required name="tingkat" id="" class='form-control'>
+                                <option value="">-- Pilih Tingkat --</option>
+                                <option value="0">Fakultas</option>
+                                <option value="1">Jurusan Kimia</option>
+                                <option value="2">Jurusan Biologi</option>
+                                <option value="3">Jurusan Matematika</option>
+                                <option value="4">Jurusan Fisika</option>
+                                <option value="5">Jurusan Ilmu Komputer</option>
+                            </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="edit_lk" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="HapusLk" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="hapus_lk" method="post" action="<?php echo site_url("dosen/hapus_lk") ?>">
+                    <div class="position-relative form-group">
+                        <label>Hapus Lembaga Kemahasiswaan ?</label>
+                            <input type="hidden" name="id_lk" id='ID2' value="">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="hapus_lk" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="VerifLk" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="verif_lk" method="post" action="<?php echo site_url("dosen/verif_lk") ?>">
+                    <div class="position-relative form-group">
+                        <label>Verifikasi Struktur Organisasi LK ?</label>
+                            <input type="hidden" name="id_lk" id='ID3' value="">
+                            <input type="hidden" name="periode" id='periode' value="">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="verif_lk" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php } ?>

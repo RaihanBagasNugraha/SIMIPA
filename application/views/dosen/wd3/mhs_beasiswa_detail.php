@@ -18,10 +18,27 @@
                                     <div class="page-title-icon">
                                         <i class="pe-7s-note2 icon-gradient bg-mean-fruit"></i>
                                     </div>
-                                    
-                                    <div>Rekap Beasiswa
+                                    <?php 
+                                        $jur = $this->input->get('jurusan');
+                                        $bea_id = $this->input->get('beasiswa');
+                                        
+                                        if($jur == 1){
+                                            $jurusan = 'Kimia';
+                                        }elseif($jur == 2){
+                                            $jurusan = 'Biologi';
+                                        }elseif($jur == 3){
+                                            $jurusan = 'Matematika';
+                                        }elseif($jur == 4){
+                                            $jurusan = 'Fisika';
+                                        }elseif($jur == 5){
+                                            $jurusan = 'Ilmu Komputer';
+                                        }else{
+                                            $jurusan = '';
+                                        }
+                                    ?>
+                                    <div>Rekap Beasiswa Jurusan <?php echo $jurusan ?>
                                         <div class="page-title-subheading">
-                                           Daftar Mahasiswa Yang Mengajukan atau Menerima Beasiswa
+                                           Beasiswa : <b><?php if(!empty($bea)){echo $bea->nama; } ?></b>
                                         </div>
                                        
                                     </div>
@@ -55,10 +72,11 @@
                                         <thead>
                                             <tr>
                                                 <th width="5%">#</th>
-                                                <th width="20%">Nama</th>
-                                                <th width="15%">NPM</th>
-                                                <th width="20%">Status</th>
-                                                <th width="20%">Keterangan</th>
+                                                <th width="15%">Nama</th>
+                                                <th width="10%">NPM</th>
+                                                <th width="10%">Status</th>
+                                                <th width="45%">Keterangan</th>
+                                                <th width="15%">Lampiran</th>
                                             </tr>
                                         </thead>           
                                         <tbody>
@@ -67,9 +85,47 @@
                                             $no = 0;
                                             foreach($beasiswa as $row){ ?>
                                                 <tr>
-                                                    <td><b><?php echo ++$no; ?></b></td>
-                                                    <td><b><?php echo ++$no; ?></b></td>
-                                                    <td><b><?php echo ++$no; ?></b></td>
+                                                    <td class="align-top"><?php echo ++$no; ?></td>
+                                                    <td class="align-top"><?php echo $this->user_model->get_mahasiswa_name($row->npm); ?></td>
+                                                    <td class="align-top"><?php echo $row->npm; ?></td>
+                                                    <td class="align-top"><b>
+                                                    <?php 
+                                                        switch($row->status){
+                                                            case "2":
+                                                            echo "Sedang Diajukan";
+                                                            break;
+                                                            case "3":
+                                                            echo "Ditolak";
+                                                            break;
+                                                            case "4":
+                                                            echo "Diterima";
+                                                            break;
+                                                        }
+                                                    ?></b></td>
+                                                    <td class="align-top">
+                                                    <?php 
+                                                     $keterangan = $this->layanan_model->get_keterangan_form($row->id_layanan_fakultas_mahasiswa);
+                                                     $m = 1;
+                                                     foreach($keterangan as $ket){
+                                                         echo "<b>$m. $ket->nama : </b>$ket->meta_value<br>";
+                                                         $m++;
+                                                     }
+                                                    ?>
+                                                    </td>
+                                                    <td class="align-top">
+                                                        <?php 
+                                                             $lampiran = $this->layanan_model->get_lampiran_layanan_list($row->id_layanan_fakultas_mahasiswa); 
+                                                             if(empty($lampiran)) {
+                                                                 echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
+                                                             } else {
+                                                                
+                                                                 foreach($lampiran as $rw) {
+                                                                     echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
+                                                                 }
+                                                                 echo "</ul>";
+                                                             }
+                                                        ?>
+                                                    </td>
                                                 </tr>
                                             <?php }
                                             }  ?>         

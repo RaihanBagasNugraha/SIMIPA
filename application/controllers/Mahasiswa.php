@@ -894,9 +894,10 @@ class Mahasiswa extends CI_Controller {
 		$aktif = $data['status_lk'];
 		$periode = $data['periode_lk'];
 
-		$check = $this->user_model->check_lk($iduser,$id_lk,$jabatan,$aktif);
+		$check = $this->user_model->check_lk($periode,$id_lk,$jabatan);
 		if(!empty($check)){
-			redirect(site_url("mahasiswa/kelola-biodata?status=duplikat"));
+			// $mhs = $this->user_model->get_mahasiswa_data($check->id_);
+			redirect(site_url("mahasiswa/kelola-biodata?status=duplikat&user=".$this->encrypt->encode($check->id_user)));
 		}
 		else{
 		$data_lk = array(
@@ -2787,6 +2788,18 @@ class Mahasiswa extends CI_Controller {
 		$this->layanan_model->update_beasiswa_mhs($beasiswa->id,$beasiswa_dt);
 
 		redirect(site_url("mahasiswa/beasiswa"));
+	}
+
+	function struktur_organisasi()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/lk/struktur');
+
+        $this->load->view('footer_global');
 	}
 
 	

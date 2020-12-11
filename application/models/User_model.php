@@ -527,9 +527,9 @@ class User_model extends CI_Model
 		}
 	}
 
-	function check_lk($id_user,$id_lk,$jabatan,$aktif)
+	function check_lk($periode,$id_lk,$jabatan)
 	{
-		$result = $this->db->query("SELECT * FROM `tbl_users_tugas_mahasiswa` WHERE id_user = $id_user AND id_lk = $id_lk AND jabatan = $jabatan AND aktif = $aktif");
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas_mahasiswa` WHERE periode = '$periode' AND id_lk = $id_lk AND jabatan = $jabatan");
 		return $result->row();
 	}
 

@@ -4806,14 +4806,111 @@ class Dosen extends CI_Controller {
 	{
 		$jur = $this->input->get('jurusan');
 		$bea = $this->input->get('beasiswa');
+		$sts = $this->input->get('status');
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		$this->load->view('header_global', $header);
 		$this->load->view('dosen/header');
-		$data['beasiswa'] = $this->layanan_model->get_mhs_beasiswa_jurusan($jur,$bea);
+
+		if($sts == 'lulus'){
+			$data['beasiswa'] = $this->layanan_model->get_mhs_beasiswa_jurusan($jur,$bea);
+		}elseif($sts == 'tolak'){
+			$data['beasiswa'] = $this->layanan_model->get_mhs_beasiswa_jurusan_tolak($jur,$bea);
+		}
+		
+		$data['bea'] = $this->layanan_model->get_beasiswa_by_id($bea);
 
 		$this->load->view('dosen/wd3/mhs_beasiswa_detail',$data);
 		
 		$this->load->view('footer_global');
+	}
+
+	function daftar_lk()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['lk'] = $this->user_model->get_lk_all();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd3/daftar_lk',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function tambah_lk()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd3/tambah_lk');
+		
+		$this->load->view('footer_global');
+	}
+
+	function simpan_lk()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($thn);
+		$lk = array(
+			"nama_lk" => $data['nama'],
+			"jurusan_lk" => $data['tingkat']
+		);
+		$this->layanan_model->insert_lk($lk);
+		redirect(site_url("/dosen/lk/daftar-lk?status=sukses"));	
+	}
+
+	function edit_lk()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$lk = array(
+			"nama_lk" => $data['nama'],
+			"jurusan_lk" => $data['tingkat']
+		);
+		$id = $data['id'];
+		$this->layanan_model->update_lk($id,$lk);
+		redirect(site_url("/dosen/lk/daftar-lk?status=sukses"));
+	}
+
+	function hapus_lk()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$this->layanan_model->hapus_lk($data);
+		redirect(site_url("/dosen/lk/daftar-lk?status=sukses"));
+	}
+
+	function detail_lk()
+	{
+		$id = $this->input->get('id');
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$data['lk'] = $this->layanan_model->get_lk_by_id($id);
+		$data['periode'] = $this->layanan_model->get_periode_lk($id);
+
+		$this->load->view('dosen/wd3/detail_lk',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function verif_lk()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);	
+		$lk = array(
+			"verifikasi" => 1
+		);
+		$id = $data['id_lk'];
+		$periode = $data['periode'];
+		$this->layanan_model->verif_lk($periode,$id,$lk);
+		redirect(site_url("/dosen/lk/detail-lk?id=".$id));
 	}
 
 }

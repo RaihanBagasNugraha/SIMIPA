@@ -25,8 +25,11 @@
                             echo '<div class="alert alert-success fade show" role="alert">Biodata Anda sudah diperbarui, jangan lupa untuk memperbarui <a href="javascript:void(0);" class="alert-link">Akun</a> sebelum menggunakan layanan.</div>';
                         }
                         if(!empty($_GET['status']) && $_GET['status'] == 'duplikat') {
-
-                            echo '<div class="alert alert-danger fade show" role="alert">Terdapat Tugas Tambahan Yang Sama Dengan Status Yang Aktif</div>';
+                            $user = $this->input->get('user');
+                            $user = $this->encrypt->decode($user);
+                            $mhs = $this->user_model->get_mahasiswa_data($user);
+                            echo '<div class="alert alert-danger fade show" role="alert">Terdapat Tugas Tambahan Dengan Lembaga, Periode, dan Jabatan yang Sama : <br> <b>'.$mhs->name.'/'.$mhs->npm.'</b></div>';
+                            
                         }
                         $id_user = $this->session->userdata('userId');
                         ?>
@@ -300,11 +303,12 @@
                                                    
                                                    <td style="align:left;">
                                                        <?php if($lk->aktif != 0) { ?>
-                                                           <a data-toggle = "modal" data-id="<?php echo $lk->id ?>" ket="nonaktif" class="passingIDhapus" >
+                                                            <!-- nonaktif -->
+                                                           <!-- <a data-toggle = "modal" data-id="<?php echo $lk->id ?>" ket="nonaktif" class="passingIDhapus" >
                                                                    <button type="button" class="btn-small mb-1 btn btn-warning btn-lg"  data-toggle="modal" data-target="#nonaktiflk">
                                                                        Nonaktif
                                                                    </button>
-                                                           </a>
+                                                           </a> -->
                                                        <?php } ?>
                                                        <a data-toggle = "modal" data-id="<?php echo $lk->id ?>" ket="hapus" class="passingIDhapus" >
                                                                <button type="button" class="btn-small mb-1 btn btn-danger btn-lg"  data-toggle="modal" data-target="#nonaktiflk">
