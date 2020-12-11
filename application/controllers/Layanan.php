@@ -5312,6 +5312,9 @@ class Layanan extends CI_Controller {
         }
        
         $count = count($meta);
+        //ttd
+        //pa - 15
+        $app_pa = $this->get_approver_data($data->id,15);
 
         $numPage = '/PM/MIPA/III/19';
         $kode = 0;
@@ -5429,7 +5432,7 @@ class Layanan extends CI_Controller {
         $pdf->MultiCell(170, $spasi,'Demikian permohonan saya ini. Atas perhatian dan bantuan Bapak, saya ucapkan terima kasih.', 0, 'J');
         $pdf->Ln(5);
         $pdf->SetX(120);
-        $pdf->Cell(60, $spasi,'Bandar Lampung, ............................',0,1);
+        $pdf->Cell(60, $spasi,'Bandar Lampung, '.$this->convert_date($data->created_at),0,1);
         $pdf->SetX(120);
         $pdf->Cell(60, $spasi,'Hormat Saya,',0,1);
         $pdf->SetX(120);
@@ -5585,14 +5588,16 @@ class Layanan extends CI_Controller {
         $pdf->MultiCell(150, $spasi,'Demikian surat keterangan ini dibuat dengan sebenarnya.', 0, 'J');
         $pdf->Ln(10);
         $pdf->SetX(115);
-        $pdf->Cell(65, $spasi,'Bandar Lampung, .............................',0,1);
+        $pdf->Cell(65, $spasi,'Bandar Lampung, '.$this->convert_date($app_pa['created']),0,1);
         $pdf->SetX(115);
         $pdf->Cell(65, $spasi,'Dosen Pembimbing Akademik,',0,1);
+        $pdf->SetX(115);
+        $pdf->Cell(60, $spasi,$pdf->Image($app_pa['ttd'],$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         $pdf->Ln(20);
         $pdf->SetX(115);
-        $pdf->Cell(65, $spasi, $pa->gelar_depan." ".$pa->name.", ".$pa->gelar_belakang,0,1);
+        $pdf->Cell(65, $spasi, $app_pa['nama'],0,1);
         $pdf->SetX(115);
-        $pdf->Cell(65, $spasi, "NIP. ".$pa->nip_nik,0,1);
+        $pdf->Cell(65, $spasi, "NIP. ".$app_pa['nip'],0,1);
 
 
         // Page 4

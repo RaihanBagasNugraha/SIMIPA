@@ -457,9 +457,6 @@
         </div>
     </div>
 </div>
-
-
-
 <?php } ?>
 
 <?php if($this->uri->segment(1) == 'mahasiswa' && $this->uri->segment(3) == 'seminar' && $this->uri->segment(4) != 'lampiran') { ?>
@@ -2733,3 +2730,314 @@ $(document).ready(function() {
 
 <?php } ?>
 
+<?php if($this->uri->segment(2) == 'beasiswa' || $this->uri->segment(2) == 'beasiswa-detail') { ?>
+
+<div class="modal fade" id="HapusBeasiswa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="hapus_beasiswa" method="post" action="<?php echo site_url("dosen/hapus_beasiswa") ?>">
+                    <input type="hidden" name="id_beasiswa" id="id_hapus_beasiswa" value="">
+                    <label class="col-form-label" >Hapus Beasiswa ?</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="hapus_beasiswa" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EditBeasiswa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Data Beasiswa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="edit_beasiswa" method="post" action="<?php echo site_url("dosen/edit_beasiswa") ?>">
+                    <div class="position-relative form-group">
+                        <label>Nama Beasiswa</label>
+                            <input type="text" placeholder ='Nama Beasiswa' class='form-control' name="nama" id='nama_edit_beasiswa' value="">
+                            <input type="hidden" name="id" id='id_edit_beasiswa' value="">
+                    </div>
+                    <div class="position-relative form-group">
+                        <label>Tahun Akademik</label>
+                            <input type="text" placeholder ='Tahun Akadmeik' class='form-control' name="ta" id='ta_edit_beasiswa' value="">
+                    </div>
+                    <div class="position-relative form-group">
+                        <label>Tahun Beasiswa</label>
+                            <input type="text" placeholder ='Tahun Beasiswa' class='form-control' name="tahun" id='tahun_edit_beasiswa' value="">
+                    </div>
+                    <div class="position-relative form-group">
+                        <label>Semester</label>
+                            <input type="text" placeholder ='Semester' class='form-control' name="semester" id='smr_edit_beasiswa' value="">
+                    </div>
+                    <div class="position-relative form-group">
+                        <label>Penyelenggara</label>
+                            <input type="text" placeholder ='Penyelenggara' class='form-control' name="penyelenggara" id='png_edit_beasiswa' value="">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="edit_beasiswa" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="AktifBeasiswa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="aktif_beasiswa" method="post" action="<?php echo site_url("dosen/aktif_beasiswa") ?>">
+                    <input type="hidden" name="id_beasiswa" id="id_aktif_beasiswa" value="">
+                    <input type="hidden" name="aksi" id="status" value="">
+                    <label class="col-form-label" >Ubah Status Beasiswa ?</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="aktif_beasiswa" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="HapusBeasiswaMhs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="hapus_beasiswa_mhs" method="post" action="<?php echo site_url("mahasiswa/hapus_beasiswa") ?>">
+                    <input type="hidden" name="id_beasiswa" id="id_hapus_beasiswa_mhs" value="">
+                    <label class="col-form-label" >Hapus Pendaftaran Beasiswa ?</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="hapus_beasiswa_mhs" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="AjukanBeasiswaMhs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="ajukan_beasiswa_mhs" method="post" action="<?php echo site_url("mahasiswa/ajukan_beasiswa") ?>">
+                    <input type="hidden" name="id_beasiswa" id="id_ajukan_beasiswa_mhs" value="">
+                    <label class="col-form-label" >Ajukan Pendaftaran Beasiswa ?</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="ajukan_beasiswa_mhs" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Del Lampiran beasiswa -->
+<div class="modal fade" id="delBerkasBeasiswa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Berkas Lampiran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?php $id =  $this->input->get('id'); ?>
+                <form id="deleteberkasbea" method="post" action="<?php echo site_url("mahasiswa/hapus_berkas_beasiswa") ?>">
+                    <input type="hidden" name="id_berkas" id="berkasID" value="">
+                    <input type="hidden" name="id_beasiswa" id="IDBeasiswa" value="">
+                    <input type="hidden" name="file_berkas" id="berkasFile" value="">
+                    <input type="hidden" name="id" id="" value="<?php echo $id; ?>">
+                </form>
+                <p>Apakah Anda yakin akan menghapus <span id="berkasNama" class="text-danger"> ?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="deleteberkasbea" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya, hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Del Lampiran beasiswa -->
+<div class="modal fade" id="delBerkaslay" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Berkas Lampiran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <?php 
+            $jenis = $this->uri->segment(3); 
+            $id = $this->input->get('id');
+            $aksi = $this->input->get('aksi');
+            ?>
+                <form id="deleteberkaslay" method="post" action="<?php echo site_url("mahasiswa/beasiswa_hapus_berkas?id=$id") ?>">
+                    <input type="hidden" name="id_berkas" id="berkasID2" value="">
+                    <input type="hidden" name="id_layanan" id="IDBebas2" value="">
+                    <input type="hidden" name="file_berkas" id="berkasFile2" value="">
+                    <input type="hidden" name="aksi" value="<?php echo $aksi ?>"> 
+                </form>
+                <p>Apakah Anda yakin akan menghapus <span id="berkasNama2" class="text-danger"> ?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="deleteberkaslay" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya, hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- tolak beasiswa -->
+<div class="modal fade" id="TolakBeasiswa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?php  $seg = $this->uri->segment(4); ?>
+                <form id="tolakbea" method="post" action="<?php echo site_url("dosen/aksi_beasiswa") ?>">
+                    <input type="hidden" name="id_beasiswa" id="id_aksi_beasiswa2" value="">
+                    <input type="hidden" name="aksi" id="aksi_ket2" value="">
+                    <input type="hidden" name="seg" id="" value="<?php echo $seg ?>">
+                </form>
+                <p>Tolak Pengajuan Beasiswa Mahasiswa Ini ?</p>
+                <p><b>Mahasiswa Dinyatakan <span style='color:red'>Belum Lulus</span> Seleksi Beasiswa</b></p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="tolakbea" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- tolak beasiswa -->
+<div class="modal fade" id="LulusBeasiswa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <?php  $seg = $this->uri->segment(4); ?>
+                <form id="lulusbea" method="post" action="<?php echo site_url("dosen/aksi_beasiswa") ?>">
+                    <input type="hidden" name="id_beasiswa" id="id_aksi_beasiswa" value="">
+                    <input type="hidden" name="aksi" id="aksi_ket" value="">
+                    <input type="hidden" name="seg" id="" value="<?php echo $seg ?>">
+                </form>
+                <p>Setujui Pengajuan Beasiswa Mahasiswa Ini ?</p>
+                <p><b>Mahasiswa Dinyatakan <span style='color:blue'>Lulus</span> Seleksi Beasiswa</b></p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="lulusbea" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>

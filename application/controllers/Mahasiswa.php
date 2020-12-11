@@ -1561,6 +1561,9 @@ class Mahasiswa extends CI_Controller {
 		elseif($this->input->post('layanan') == 32 || $this->input->post('layanan') == 33){
 			redirect(site_url("mahasiswa/prestasi"));
 		}
+		elseif($this->input->post('layanan') == 26){
+			redirect(site_url("mahasiswa/beasiswa"));
+		}
 		else{
 			$this->load->view('header_global', $header);
 			$this->load->view('mahasiswa/header');
@@ -2421,10 +2424,369 @@ class Mahasiswa extends CI_Controller {
 	function beasiswa()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['beasiswa'] = $this->layanan_model->get_beasiswa_mhs();
+
 		$this->load->view('header_global', $header);
 		$this->load->view('mahasiswa/header');
-		$this->load->view('mahasiswa/beasiswa/beasiswa');
+		$this->load->view('mahasiswa/beasiswa/beasiswa',$data);
         $this->load->view('footer_global');
+	}
+
+	function tambah_beasiswa()
+	{
+		$id = $this->uri->segment(3);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['beasiswa'] = $this->layanan_model->get_beasiswa_by_id($id);	
+		$data['layanan'] = $this->layanan_model->select_layanan_by_id(26); //form beasiswa lengkap
+		$data['atribut'] = $this->layanan_model->select_layanan_atribut_by_id(26); // form beasiswa lengkap
+
+		$idb = $this->input->get('id');
+		$idb = $this->encrypt->decode($idb);
+
+		if($this->input->get('aksi') == "ubah")
+		{
+			$bea = $this->layanan_model->select_beasiswa($idb);
+
+			$data_bea = $bea[0];
+		}
+		else
+		{
+			$data_bea = array(
+				"ipk" => null,
+				"rekening" => null,
+				"status_menikah" => null,
+				"nama_ortu" => null,
+				"pekerjaan_ortu" => null,
+				"penghasilan_ortu" => null,
+				"tanggungan_ortu" => null,
+				"alamat_ortu" => null,
+				"nama_saudara" => null,
+				"beasiswa_saudara" => null,
+				"fakultas_saudara" => null,
+			);
+		}
+
+		$data['data_bea'] = $data_bea;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+		$this->load->view('mahasiswa/beasiswa/form_beasiswa2',$data);
+        $this->load->view('footer_global');
+	}
+
+	function simpan_beasiswa()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$aksi = $data['aksi'];
+
+		if($aksi == 'ubah'){
+			$bea_mhs = $data['id_beasiswa_mhs'];
+			$beasiswa = array(
+				"ipk" => $data['ipk'],
+				"rekening" => $data['no_rek'],
+				"status_menikah" => $data['menikah'],
+				"nama_ortu" => $data['ortu'],
+				"pekerjaan_ortu" => $data['pekerjaan'],
+				"penghasilan_ortu" => $data['penghasilan'],
+				"tanggungan_ortu" => $data['tanggungan'],
+				"alamat_ortu" => $data['alamat'],
+				"nama_saudara" => $data['nama_kakak'],
+				"beasiswa_saudara" => $data['jenis_kakak'],
+				"fakultas_saudara" => $data['fakultas_kakak'],
+				"ttd" => $data['ttd'],
+			);
+			//update beasiswa mahasiswa
+			$this->layanan_model->update_beasiswa_mhs($bea_mhs,$beasiswa);
+
+		}else{
+			$beasiswa = array(
+				"id_beasiswa" => $data['id_beasiswa'],
+				"npm" => $this->session->userdata('username'),
+				"ipk" => $data['ipk'],
+				"rekening" => $data['no_rek'],
+				"status_menikah" => $data['menikah'],
+				"nama_ortu" => $data['ortu'],
+				"pekerjaan_ortu" => $data['pekerjaan'],
+				"penghasilan_ortu" => $data['penghasilan'],
+				"tanggungan_ortu" => $data['tanggungan'],
+				"alamat_ortu" => $data['alamat'],
+				"nama_saudara" => $data['nama_kakak'],
+				"beasiswa_saudara" => $data['jenis_kakak'],
+				"fakultas_saudara" => $data['fakultas_kakak'],
+				"ttd" => $data['ttd'],
+			);
+			//insert beasiswa mahasiswa
+			$this->layanan_model->insert_beasiswa_mhs($beasiswa);
+		}
+		redirect(site_url("mahasiswa/beasiswa?status=sukses"));	
+	}
+
+	function simpan_beasiswa2()
+	{
+		
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		//insert layanan
+		$npm = $this->session->userdata('username');
+		$ttd = $data['ttd'];
+		$approver = $data['approver'];
+		$id_layanan = $data['id_layanan'];
+		$data_layanan = array(
+			"npm" => $npm,
+			"id_layanan_fakultas" => $id_layanan,
+			"ttd" => $ttd,
+			"tingkat" => null
+		);
+
+		//input layanan fak mhs
+		$insert_id = $this->layanan_model->insert_layanan_fak_mhs($data_layanan);
+
+		$atribut_id = $data['id_attribut'];
+		foreach($atribut_id as $atr)
+		{
+			$meta_val = $data[$atr];
+			$data_atr = array(
+				"id_layanan_fak_mhs" => $insert_id,
+				"meta_key" => $atr,
+				"meta_value" => $meta_val,
+			);
+			//input layanan_fakultas_mahasiswa_meta
+			$this->layanan_model->insert_layanan_fak_mhs_meta($data_atr);
+		}
+
+		//input beasiswa
+		$beasiswa = array(
+			"id_beasiswa" => $data['id_beasiswa'],
+			"id_layanan_fakultas_mahasiswa" => $insert_id,
+			"npm" => $npm
+		);
+		$this->layanan_model->insert_beasiswa_mhs($beasiswa);
+		redirect(site_url("mahasiswa/beasiswa?status=sukses"));	
+
+	}
+
+	function hapus_beasiswa()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$file = $this->layanan_model->get_berkas_by_beasiswa_mhs($data['id_beasiswa']);
+		foreach($file as $fl)
+		{
+			unlink($fl->file);
+		}
+		//hapus tbl beasiswa
+		$this->layanan_model->delete_beasiswa_mhs($data['id_beasiswa']);
+
+		redirect(site_url("/mahasiswa/beasiswa"));
+	}
+
+	function lampiran_beasiswa()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['beasiswa'] = $this->layanan_model->get_beasiswa_mhs_by_npm_bea($this->session->userdata('username'),$id);	
+		$data['lampiran'] = $this->layanan_model->get_lampiran_beasiswa($id);	
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+		$this->load->view('mahasiswa/beasiswa/lampiran_beasiswa',$data);
+        $this->load->view('footer_global');
+	}
+
+	function tambah_berkas_beasiswa()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		
+		$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+		$id = $this->encrypt->decode($this->input->post('id_beasiswa'));
+		$data = array(
+			'id_beasiswa_mhs' => $id,
+			'nama_berkas' => $this->input->post('nama_berkas'),
+			'jenis_berkas' => $this->input->post('jenis_berkas')
+		);
+
+		if(!empty($_FILES)) {
+			if($file1 == '%PDF' && $size <= 1200000){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
+				$folderPath = "assets/uploads/berkas-beasiswa/";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+				$data['file'] = $folderPath. $fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				$this->layanan_model->insert_lampiran_beasiswa($data);
+				redirect(site_url("mahasiswa/beasiswa/lampiran?id=".$this->input->post('id_beasiswa')."&status=sukses"));
+			}
+			else{
+				redirect(site_url("mahasiswa/beasiswa/lampiran?id=".$this->input->post('id_beasiswa')."&status=gagal"));
+			}
+		}
+		else{
+			redirect(site_url("mahasiswa/beasiswa/lampiran?id=".$this->input->post('id_beasiswa')."&status=gagal"));
+		}
+	}
+
+	function hapus_berkas_beasiswa()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$ids = $this->input->post('id');
+		$id = $this->input->post('id_beasiswa');
+		$file = $this->input->post('file_berkas');
+		
+		$data = array("id" => $id);
+		$this->layanan_model->delete_lampiran_beasiswa($data);
+		unlink($file);
+		redirect(site_url("mahasiswa/beasiswa/lampiran?id=".$ids));
+	}
+
+	function ajukan_beasiswa()
+	{
+		$id = $this->input->post('id_beasiswa');
+		$beasiswa = array(
+			"status" => 1
+		);
+		//update beasiswa mahasiswa
+		$this->layanan_model->update_beasiswa_mhs($id,$beasiswa);
+		redirect(site_url("mahasiswa/beasiswa"));
+	}
+
+	function form_ajukan_beasiswa()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		// echo $id;
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['lampiran'] = $this->layanan_model->get_lampiran_layanan($id);
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/beasiswa/form_ajukan_beasiswa',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function beasiswa_unggah()
+	{
+		// print_r($_POST);
+		// print_r($_FILES);
+		$aksi = $this->input->post('aksi');
+		$jenis = $this->uri->segment(3);
+		$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+
+		$id = $this->encrypt->decode($this->input->post('id_lay'));
+		$data = array(
+			'id_layanan_fakultas_mahasiswa' => $id,
+			'nama_berkas' => $this->input->post('nama_berkas'),
+			'jenis_berkas' => $this->input->post('jenis_berkas'),
+		);
+
+		if(!empty($_FILES)) {
+			if($file1 == '%PDF' && $size <= 2100000){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
+				$folderPath = "assets/uploads/berkas-beasiswa";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
+				$data['file'] = $folderPath.$fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				$this->layanan_model->insert_lampiran_layanan($data);
+				if($aksi == "perbaiki"){
+					redirect(site_url("mahasiswa/beasiswa/ajukan?id=".$this->input->post('id_lay')."&aksi=".$aksi."&status=sukses"));
+				}else{
+					redirect(site_url("mahasiswa/beasiswa/ajukan?id=".$this->input->post('id_lay')."&status=sukses"));
+				}
+			}
+			else{
+				if($aksi == "perbaiki" ){
+					redirect(site_url("mahasiswa/beasiswa/ajukan?id=".$this->input->post('id_lay')."&aksi=".$aksi."&status=gagal"));
+				}else{
+					redirect(site_url("mahasiswa/beasiswa/ajukan?id=".$this->input->post('id_lay')."&status=gagal"));
+				}
+			}
+		}
+		else{
+			if($aksi == "perbaiki"){
+				redirect(site_url("mahasiswa/beasiswa/ajukan?id=".$this->input->post('id_lay')."&aksi=".$aksi."&status=gagal"));
+			}else{
+				redirect(site_url("mahasiswa/beasiswa/ajukan?id=".$this->input->post('id_lay')."&status=gagal"));
+			}
+		}
+	}
+
+	function beasiswa_hapus_berkas()
+	{
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id = $this->input->post('id_berkas');
+		$id_layanan = $this->input->post('id_layanan');
+		$file = $this->input->post('file_berkas');
+		$id_get = $this->input->get('id');
+		$aksi = $this->input->post('aksi');
+
+		$jenis = $this->uri->segment(3); 
+		$data = array("id" => $id);
+		$this->layanan_model->delete_lampiran_layanan($data);
+		unlink($file);
+		if($aksi == "perbaiki"){
+			redirect(site_url("mahasiswa/beasiswa/ajukan?id=$id_get&aksi=$aksi"));
+		}else{
+			redirect(site_url("mahasiswa/beasiswa/ajukan?id=$id_get"));
+		}
+	}
+
+	function beasiswa_simpan()
+	{
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $this->encrypt->decode($this->input->post('id_lay'));
+		$aksi = $this->input->post('aksi');
+		$seg = $this->uri->segment(3);
+		if($aksi == "perbaiki"){
+			$data_tolak = array(
+				"status" => 0,
+				"keterangan" => null
+			);
+			$this->layanan_model->update_layanan_fak_mhs($id,$data_tolak);
+		}else{
+			//input approver
+			$data = $this->layanan_model->get_form_mhs_id($id);
+			$layanan = $this->layanan_model->get_layanan_fakultas_by_id($data->id_layanan_fakultas);
+			$this->layanan_model->insert_approver_mhs($id,$layanan->approver);
+		}
+
+		//beasiswa
+		$beasiswa = $this->layanan_model->get_beasiswa_by_layanan($id);
+		$beasiswa_dt = array(
+			"status" => 1
+		);
+		//update beasiswa mahasiswa
+		$this->layanan_model->update_beasiswa_mhs($beasiswa->id,$beasiswa_dt);
+
+		redirect(site_url("mahasiswa/beasiswa"));
 	}
 
 	

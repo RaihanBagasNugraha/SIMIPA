@@ -85,7 +85,7 @@
                                             <td class="align-top">
                                                 <?php 
                                                    echo "<li><a href='".site_url('/mahasiswa/layanan-fakultas/'.$seg.'/unduh?id='.$row->id.'&layanan='.$row->id_layanan_fakultas)."'>".$this->layanan_model->get_layanan_fakultas_by_id($row->id_layanan_fakultas)->nama."</a></li>";
-                                                   echo "<br>";
+ 
                                                    $lampiran = $this->layanan_model->get_lampiran_layanan_list($row->id); 
                                                    if(empty($lampiran)) {
                                                        echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";

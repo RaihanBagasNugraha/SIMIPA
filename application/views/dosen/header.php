@@ -372,6 +372,34 @@ else{
                                     </ul>
                                 </li>
 
+                                <li <?php if($this->uri->segment(2) == "beasiswa" || $this->uri->segment(2) == "beasiswa-detail" || $this->uri->segment(2) == "beasiswa-mhs") echo 'class="mm-active"' ?>>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-cash"></i>
+                                        Beasiswa
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/beasiswa") ?>" <?php if($this->uri->segment(2) == "beasiswa") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Tambah Beasiswa
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/beasiswa-detail") ?>" <?php if($this->uri->segment(2) == "beasiswa-detail") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Setujui Beasiswa
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/beasiswa-mhs") ?>" <?php if($this->uri->segment(2) == "beasiswa-mhs") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Rekap Beasiswa
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
                                 <li >
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-notebook"></i>

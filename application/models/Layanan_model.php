@@ -645,7 +645,146 @@ class Layanan_model extends CI_Model
         $result = $this->db->query("SELECT DISTINCT(b.id_prestasi) FROM prestasi_anggota a, prestasi b WHERE mid(a.anggota_npm,6,1) = $jurusan AND a.id_prestasi = b.id_prestasi AND b.jenis LIKE '%$jenis%' AND b.tahun = $tahun");
 		return $result->result();
     }
-    
 
+    function get_beasiswa_wd()
+    {
+        $result = $this->db->query("SELECT * FROM beasiswa");
+		return $result->result();
+    }
+
+    function tambah_beasiswa($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('beasiswa', $data);
+		$this->db->trans_complete();
+    }
+
+    function delete_beasiswa($data)
+	{
+		$this->db->delete('beasiswa', array('id'=>$data));
+    }
+
+    function edit_beasiswa($id,$data)
+    {
+        $this->db->where('id', $id);
+	    $this->db->update('beasiswa', $data);
+    }
+
+    function get_beasiswa_mhs()
+    {
+        $result = $this->db->query("SELECT * FROM beasiswa where status = 1");
+		return $result->result();
+    }
+
+    function get_beasiswa_by_id($id)
+    {
+        $result = $this->db->query("SELECT * FROM beasiswa where id = $id");
+		return $result->row();
+    }
+
+    function cek_beasiswa_by_id($id)
+    {
+        $result = $this->db->query("SELECT * FROM beasiswa where id = $id and status = 1");
+		return $result->row();
+    }
+
+    function get_beasiswa_mhs_by_npm_bea($npm,$id_beasiswa)
+    {
+        $result = $this->db->query("SELECT * FROM `beasiswa_mahasiswa` WHERE npm = $npm AND id_beasiswa = $id_beasiswa");
+		return $result->row();
+    }
+
+    function insert_beasiswa_mhs($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('beasiswa_mahasiswa', $data);
+		$this->db->trans_complete();   
+    }
+
+    function delete_beasiswa_mhs($id)
+    {
+        $this->db->delete('layanan_fakultas_mahasiswa', array('id'=>$id));   
+    }
+
+    function select_beasiswa($id)
+    {
+        $this->db->where(array('id' => $id));
+		$query = $this->db->get('beasiswa_mahasiswa');
+		return $query->result_array();
+    }
+
+    function update_beasiswa_mhs($id,$data)
+    {
+        $this->db->where('id', $id);
+	    $this->db->update('beasiswa_mahasiswa', $data);
+    }
+    
+    function get_lampiran_beasiswa($id)
+    {
+        $this->db->select('a.*, b.nama');
+		$this->db->from('beasiswa_berkas a');
+		$this->db->join('jenis_berkas_lampiran b', 'a.jenis_berkas = b.id_jenis');
+		$this->db->join('beasiswa_mahasiswa c', 'a.id_beasiswa_mhs = c.id');
+		$this->db->where(array('c.id' => $id));
+		$query = $this->db->get();
+		
+		return $query->result();
+    }
+
+    function get_berkas_by_beasiswa_mhs($id)
+    {
+        $result = $this->db->query("SELECT * FROM `beasiswa_berkas` WHERE id_beasiswa_mhs = $id");
+		return $result->row();
+    }
+
+    function get_beasiswa_by_layanan($id)
+    {
+        $result = $this->db->query("SELECT * FROM `beasiswa_mahasiswa` WHERE id_layanan_fakultas_mahasiswa = $id");
+		return $result->row();
+    }
+
+    function insert_lampiran_beasiswa($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('beasiswa_berkas', $data);
+		$this->db->trans_complete();   
+    }
+
+    function delete_lampiran_beasiswa($id)
+    {
+        $this->db->delete('beasiswa_berkas', $id);   
+    }
+
+    function jml_pendaftar_beasiswa($id)
+    {
+        $result = $this->db->query("SELECT COUNT(*) as jml FROM `beasiswa_mahasiswa` WHERE id_beasiswa = $id AND (status = 2 OR status = 4)");
+		return $result->row()->jml;
+    }
+
+    function get_pendaftar_beasiswa($id)
+    {
+        $result = $this->db->query("SELECT* FROM `beasiswa_mahasiswa` WHERE id_beasiswa = $id AND (status = 2 OR status = 4)");
+		return $result->result();
+    }
+
+    function get_tahun_beasiswa()
+    {
+        $result = $this->db->query("SELECT DISTINCT(tahun) FROM beasiswa ORDER BY tahun");
+		return $result->result();
+    }
+
+    function get_beasiswa_by_tahun($tahun)
+    {
+        $result = $this->db->query("SELECT * FROM `beasiswa` WHERE tahun = $tahun ORDER BY nama");
+		return $result->result();
+    }
+
+    function get_mhs_beasiswa_jurusan($jurusan,$bea)
+    {
+        $result = $this->db->query("SELECT * FROM `beasiswa_mahasiswa` WHERE MID(npm,6,1) = $jurusan AND (status >= 1) AND id_beasiswa = $bea");
+		return $result->result();
+    }
+
+    
 }
 ?>

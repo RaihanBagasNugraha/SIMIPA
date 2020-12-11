@@ -480,7 +480,17 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
 //Beasiswa
     //mahasiswa
     $route['mahasiswa/beasiswa'] = 'mahasiswa/beasiswa';
+    $route['mahasiswa/tambah-beasiswa/(:num)'] = 'mahasiswa/tambah_beasiswa';
+    $route['mahasiswa/beasiswa/lampiran'] = 'mahasiswa/lampiran_beasiswa';
+    $route['mahasiswa/beasiswa/ajukan'] = 'mahasiswa/form_ajukan_beasiswa';
 
+    //wd3
+    $route['dosen/beasiswa'] = 'dosen/beasiswa';
+    $route['dosen/beasiswa/tambah-beasiswa'] = 'dosen/tambah_beasiswa';
+    $route['dosen/beasiswa-detail'] = 'dosen/detail_beasiswa';
+    $route['dosen/beasiswa-detail/pendaftar/(:num)'] = 'dosen/detail_beasiswa_pendaftar';
+    $route['dosen/beasiswa-mhs'] = 'dosen/mhs_beasiswa';
+    $route['dosen/beasiswa-mhs/detail'] = 'dosen/mhs_beasiswa_detail';
 
 $route['beranda'] = 'admin';
 $route['admin'] = 'welcome';

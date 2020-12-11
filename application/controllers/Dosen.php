@@ -4581,7 +4581,19 @@ class Dosen extends CI_Controller {
 				$this->layanan_model->update_status_layanan($id_lay,$status);
 			}
 		}
-
+		//if beasiswa lengkap
+		if($cek_tingkat->id_layanan_fakultas == 26){
+			if($cek_tingkat->tingkat == "" || $cek_tingkat->tingkat == null){
+				$status = 2;
+				$this->layanan_model->update_status_layanan($id_lay,$status);
+			}
+			//update status beasiswa mahasiswa
+			$beasiswa = $this->layanan_model->get_beasiswa_by_layanan($cek_tingkat->id);
+			$beasiswa_dt = array(
+				"status" => 2
+			);
+			$this->layanan_model->update_beasiswa_mhs($beasiswa->id,$beasiswa_dt);
+		}
 		//if form hapus matkul
 		if($cek_tingkat->id_layanan_fakultas == 4 && $approver == 2){
 			$catatan = $data['catatan'];
@@ -4626,6 +4638,180 @@ class Dosen extends CI_Controller {
 		$this->load->view('dosen/header');
 
 		$this->load->view('dosen/wd3/prestasi_detail',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	//wd3 beasiswa
+	function beasiswa()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['beasiswa'] = $this->layanan_model->get_beasiswa_wd();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd3/beasiswa',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function tambah_beasiswa()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd3/tambah_beasiswa');
+		
+		$this->load->view('footer_global');
+	}
+
+	function simpan_beasiswa()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$beasiswa = array(
+			"nama" => $data['nama'],
+			"tahun_akademik" => $data['ta'],
+			"tahun" => $data['tahun'],
+			"semester" => $data['semester'],
+			"penyelenggara" => $data['penyelenggara'] 
+		);
+		//insert beasiswa
+		$this->layanan_model->tambah_beasiswa($beasiswa);
+		redirect(site_url("/dosen/beasiswa"));	
+	}
+
+	function hapus_beasiswa()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$this->layanan_model->delete_beasiswa($data['id_beasiswa']);
+		redirect(site_url("/dosen/beasiswa"));
+	}
+
+	function edit_beasiswa()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$beasiswa = array(
+			"nama" => $data['nama'],
+			"tahun_akademik" => $data['ta'],
+			"tahun" => $data['tahun'],
+			"semester" => $data['semester'],
+			"penyelenggara" => $data['penyelenggara'] 
+		);
+		//edit beasiswa
+		$this->layanan_model->edit_beasiswa($data['id'],$beasiswa);
+		redirect(site_url("/dosen/beasiswa"));	
+	}
+
+	function aktif_beasiswa()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		if($data['aksi'] == 'aktif'){
+			$status = 1;
+		}elseif($data['aksi'] == 'nonaktif'){
+			$staus = 0;
+		}
+		$beasiswa = array(
+			"status" => $status
+		);
+		//edit beasiswa
+		$this->layanan_model->edit_beasiswa($data['id_beasiswa'],$beasiswa);
+		redirect(site_url("/dosen/beasiswa"));	
+	}
+
+	function detail_beasiswa()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['beasiswa'] = $this->layanan_model->get_beasiswa_mhs();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd3/list_beasiswa',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function detail_beasiswa_pendaftar()
+	{
+		$seg = $this->uri->segment(4);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['pendaftar'] = $this->layanan_model->get_pendaftar_beasiswa($seg);
+		$data['beasiswa'] = $this->layanan_model->get_beasiswa_by_id($seg);
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd3/list_pendaftar',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function aksi_beasiswa()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $data['id_beasiswa'];
+		$aksi = $data['aksi'];
+		$seg = $data['seg'];
+		if($aksi == "lulus"){
+			$sts = 4;
+		}elseif($aksi == "tolak"){
+			$sts = 3;
+		}
+		$beasiswa_dt = array(
+			"status" => $sts
+		);
+		//update beasiswa mahasiswa
+		$this->layanan_model->update_beasiswa_mhs($id,$beasiswa_dt);
+		redirect(site_url("/dosen/beasiswa-detail/pendaftar/$seg"));	
+	}
+
+	function mhs_beasiswa()
+	{
+		$thn = $this->input->post();
+		// echo "<pre>";
+		// print_r($thn);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		
+		if(!empty($thn)){
+			$data['beasiswa'] = $this->layanan_model->get_beasiswa_by_tahun($thn['tahun']);
+			$data['post'] = 1;
+			$data['tahun'] = $thn['tahun'];
+		}else{
+			$data['beasiswa'] = null;
+			$data['post'] = 0;
+		}
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd3/mhs_beasiswa',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function mhs_beasiswa_detail()
+	{
+		$jur = $this->input->get('jurusan');
+		$bea = $this->input->get('beasiswa');
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+		$data['beasiswa'] = $this->layanan_model->get_mhs_beasiswa_jurusan($jur,$bea);
+
+		$this->load->view('dosen/wd3/mhs_beasiswa_detail',$data);
 		
 		$this->load->view('footer_global');
 	}
