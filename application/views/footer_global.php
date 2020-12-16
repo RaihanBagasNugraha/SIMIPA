@@ -1201,7 +1201,9 @@
                         <select name="id_lk" id="tugas"  class="input-lg form-control">
                             <option value = "">-- Pilih Lembaga Kemahasiswaan --</option>
                                 <?php
-                                $list_lk = $this->user_model->get_lk_all();
+                                $jur = substr($this->session->userdata('username'),5,1);
+
+                                $list_lk = $this->user_model->get_lk_jur($jur);
                                             
                                 foreach ($list_lk as $row) {
                                     // if($biodata->pangkat_gol == $row->id_pangkat_gol) $select = "selected";
@@ -1223,10 +1225,11 @@
                     <br>    
 
                     <label><b>Periode</b></label>
-                    <?php $thn = date("Y"); $thn2 = date("Y")+1 ?>
+                    <?php $thn = date("Y"); $thn2 = date("Y")+1; $thn3 = date("Y")-1 ?>
                         <select name="periode_lk" id="periode" class="input-lg form-control">
                             <option value = ''>-- Periode --</option>
                             <option value ="<?php echo $thn."/".$thn2 ?>"><?php echo $thn."/".$thn2 ?></option>
+                            <option value ="<?php echo $thn3."/".$thn ?>"><?php echo $thn3."/".$thn ?></option>
                         </select>  
                         
                     <br> 
@@ -3144,6 +3147,233 @@ $(document).ready(function() {
                                                 <i class="fas fa-times fa-w-20"></i>
                                             </span>Batal</button>
                 <button type="submit" form="verif_lk" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="setujuprop" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="setuju_prop" method="post" action="<?php echo site_url("dosen/aksi_prop") ?>">
+                    <div class="position-relative form-group">
+                        <label>Setujui Pengajuan Progja ?</label>
+                            <input type="hidden" name="id" id='ID_progja' value="">
+                            <input type="hidden" name="aksi" id='' value="setuju">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="setuju_prop" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="tolakprop" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="tolak_prop" method="post" action="<?php echo site_url("dosen/aksi_prop") ?>">
+                    <div class="position-relative form-group">
+                        <label>Tolak Pengajuan Progja ?</label>
+                            <input type="hidden" name="id" id='ID_progja2' value="">
+                            <input type="hidden" name="aksi" id='' value="tolak">
+                            <textarea name="keterangan" required cols="70" class='form-control' rows="3" placeholder="Keterangan Tolak"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="tolak_prop" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>
+
+<?php if($this->uri->segment(2) == 'proposal-kegiatan' || $this->uri->segment(2) == 'laporan-kegiatan') { ?>
+
+<div class="modal fade" id="delprop" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="del_prop" method="post" action="<?php echo site_url("mahasiswa/proposal_aksi") ?>">
+                    <div class="position-relative form-group">
+                        <label>Hapus Proposal Kegiatan ?</label>
+                            <input type="hidden" name="id" id='ID' value="">
+                            <input type="hidden" name="aksi" id='' value="hapus">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="del_prop" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ajukanprop" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="ajukan_prop" method="post" action="<?php echo site_url("mahasiswa/proposal_aksi") ?>">
+                    <div class="position-relative form-group">
+                        <label>Ajukan Proposal Kegiatan ?</label>
+                            <input type="hidden" name="id" id='ID2' value="">
+                            <input type="hidden" name="aksi" id='' value="ajukan">
+                            
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="ajukan_prop" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Del berkas proposal -->
+<div class="modal fade" id="delBerkasProposal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Berkas Lampiran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?php $id = $this->input->get('id'); ?>
+                <form id="deleteberkas" method="post" action="<?php echo site_url("mahasiswa/hapus_berkas_proposal") ?>">
+                    <input type="hidden" name="id_berkas" id="berkasID" value="">
+                    <input type="hidden" name="id_prop" id="IDProp" value="">
+                    <input type="hidden" name="file_berkas" id="berkasFile" value="">
+                    <input type="hidden" name="id" value="<?php echo $id ?>">
+                </form>
+                <p>Apakah Anda yakin akan menghapus <span id="berkasNama" class="text-danger"> ?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="deleteberkas" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya, hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="unggahlap" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="upl_prop" method="post" action="<?php echo site_url("mahasiswa/laporan_kegiatan_simpan") ?>">
+                    <input type="hidden" name="id" id='ID_lap' value="">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-9 col-form-label"><b>1. Upload File Laporan Kegiatan, Foto Kegiatan, dll Ke Folder Google Drive </b></label>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-6 col-form-label"><b>2. Generate Link Dari Folder Google Drive : </b></label>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                            <div class="col-sm-9">
+                                <img src="<?php echo site_url('assets/images/drive.png'); ?>" width="1100" height="400" />
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-6 col-form-label"><b>3. Atur Privasi Seperti Berikut : </b></label>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                            <div class="col-sm-9">
+                                <img src="<?php echo site_url('assets/images/drive2.png'); ?>" width="1100" height="400" />
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>4. Link Google Drive</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="link" value="" placeholder='Link Google Drive' class='form-control' id="">
+                            </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="upl_prop" class="btn btn-primary">
                     <span class="btn-icon-wrapper pr-2 opacity-7">
                                                 <i class="fas fa-check fa-w-20"></i>
                                             </span>Simpan</button>

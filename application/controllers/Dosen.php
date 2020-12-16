@@ -4913,4 +4913,72 @@ class Dosen extends CI_Controller {
 		redirect(site_url("/dosen/lk/detail-lk?id=".$id));
 	}
 
+	function progja()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+		$data['progja'] = $this->layanan_model->get_progja_approval();
+		$this->load->view('dosen/wd3/progja',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function aksi_prop()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);	
+		if($data['aksi'] == 'setuju'){
+			$status = 2;
+			$this->layanan_model->update_status_lk_proposal($data['id'],$status);
+		}else{
+			$prop = array(
+				"status" => '-1',
+				"keterangan" => $data['keterangan']
+			);
+			$this->layanan_model->update_lk_proposal($data['id'],$prop);
+		}
+		redirect(site_url("/dosen/lk/progja"));
+	}
+
+	function rekap_progja()
+	{
+		$thn = $this->input->post();
+		// echo "<pre>";
+		// print_r($thn);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		
+		if(!empty($thn)){
+			$data['lk'] = $this->user_model->get_lk_all();
+			$data['post'] = 1;
+			$data['ta'] = $thn['ta'];
+		}else{
+			$data['lk'] = null;
+			$data['post'] = 0;
+			$data['ta'] = 0;
+		}
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/wd3/rekap_progja',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function rekap_progja_detail()
+	{
+		$periode = $this->input->get('periode');
+		$lk = $this->input->get('lk');
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+		$data['progja'] = $this->layanan_model->get_lk_proposal_lk_periode($lk,$periode);
+		$this->load->view('dosen/wd3/rekap_progja_detail',$data);
+		
+		$this->load->view('footer_global');
+	}
+
 }

@@ -495,11 +495,18 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
 //Lembaga Kemahasiswaan
     //mahasiswa
     $route['mahasiswa/struktur-organisasi'] = 'mahasiswa/struktur_organisasi';
+    $route['mahasiswa/proposal-kegiatan'] = 'mahasiswa/proposal_kegiatan';
+    $route['mahasiswa/proposal-kegiatan/form'] = 'mahasiswa/proposal_kegiatan_form';
+    $route['mahasiswa/proposal-kegiatan/lampiran'] = 'mahasiswa/proposal_kegiatan_lampiran';
+    $route['mahasiswa/laporan-kegiatan'] = 'mahasiswa/laporan_kegiatan';
 
     //wd3
     $route['dosen/lk/daftar-lk'] = 'dosen/daftar_lk';
     $route['dosen/lk/tambah-lk'] = 'dosen/tambah_lk';
     $route['dosen/lk/detail-lk'] = 'dosen/detail_lk';
+    $route['dosen/lk/progja'] = 'dosen/progja';
+    $route['dosen/lk/rekap-progja'] = 'dosen/rekap_progja';
+    $route['dosen/lk/rekap-progja/detail'] = 'dosen/rekap_progja_detail';
     
 
 $route['beranda'] = 'admin';

@@ -162,21 +162,21 @@ $biodata = $this->user_model->get_mahasiswa_data($this->session->userdata('userI
                                     </a>
                                 </li>
 
-                                <li >
-                                    <a href="#">
+                                <li <?php if($this->uri->segment(2) == "proposal-kegiatan" || $this->uri->segment(2) == "laporan-kegiatan" ) echo 'class="mm-active"' ?>>
+                                <a href="#"  >
                                         <i class="metismenu-icon pe-7s-notebook"></i>
                                         Program Kerja
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="#" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "tema") echo 'class="mm-active"' ?>>
+                                            <a href="<?php echo site_url('mahasiswa/proposal-kegiatan') ?>" <?php if($this->uri->segment(2) == "proposal-kegiatan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Proposal Kegiatan
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                        <a href="<?php echo site_url('mahasiswa/laporan-kegiatan') ?>" <?php if($this->uri->segment(2) == "laporan-kegiatan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Laporan Kegiatan
                                             </a>

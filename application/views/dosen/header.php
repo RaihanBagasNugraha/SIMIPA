@@ -414,13 +414,13 @@ else{
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="<?php echo site_url("dosen/lk/progja") ?>" <?php if($this->uri->segment(3) == "progja") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Pemantauan Progja
+                                                </i>Persetujuan Progja
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                        <a href="<?php echo site_url("dosen/lk/rekap-progja") ?>" <?php if($this->uri->segment(3) == "rekap-progja") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Rekap Progja
                                             </a>

@@ -2705,7 +2705,7 @@ class Mahasiswa extends CI_Controller {
 				$file = $_FILES['file']['tmp_name']; 
 				$sourceProperties = getimagesize($file);
 				$fileNewName = $this->session->userdata('username').$this->input->post('jenis_berkas').$id;
-				$folderPath = "assets/uploads/berkas-beasiswa";
+				$folderPath = "assets/uploads/berkas-beasiswa/";
 				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 
 				$data['file'] = $folderPath.$fileNewName. ".". $ext;
@@ -2793,15 +2793,212 @@ class Mahasiswa extends CI_Controller {
 	function struktur_organisasi()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-
+		$data['lk'] = $this->layanan_model->get_lk_mahasiswa2($this->session->userdata('userId'));
 		$this->load->view('header_global', $header);
 		$this->load->view('mahasiswa/header');
 
-		$this->load->view('mahasiswa/lk/struktur');
+		$this->load->view('mahasiswa/lk/struktur',$data);
 
         $this->load->view('footer_global');
 	}
 
+	function proposal_kegiatan()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['proposal'] = $this->layanan_model->get_proposal_mahasiswa($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/lk/proposal',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function proposal_kegiatan_form()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		
+		if($this->input->get('aksi') == "ubah")
+		{
+			$prp = $this->layanan_model->select_proposal($id);
+			$data_prp = $prp[0];
+		}
+		else
+		{
+			$data_prp = array(
+				"id" => null,
+				"id_lk" => null,
+				"periode" => null,
+				"tahun" => null,
+				"nama" => null,
+				"nilai" => null,
+			);
+		}
+
+		$data['data_prp'] = $data_prp;
+
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/lk/proposal_form',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function simpan_proposal()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$nilai = str_replace(",","",$data['usulan']);	 
+		$prop = array(
+			"id_lk" => $data['lk'],
+			"periode" => $data['ta'],
+			"tahun" => $data['tahun'],
+			"nama" => $data['nama'],
+			"nilai" => $nilai,
+			"insert_by" => $this->session->userdata('username')
+		);
+
+		if($data['aksi'] == 'ubah'){
+			//update
+			$this->layanan_model->update_lk_proposal($data['id_proposal'],$prop);
+		}else{
+			//input
+			$this->layanan_model->insert_lk_proposal($prop);
+		}
+		redirect(site_url("mahasiswa/proposal-kegiatan"));
+	}
+
+	function proposal_kegiatan_lampiran()
+	{
+		$id = $this->input->get('id');
+		$id = $this->encrypt->decode($id);
+		$data['lampiran'] = $this->layanan_model->get_lampiran_proposal($id);
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/lk/proposal_form_lampiran',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function tambah_berkas_proposal()
+	{
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$file1 = file_get_contents($_FILES['file']['tmp_name']);
+		$file1 = substr($file1,0,4);
+		$size = $_FILES['file']['size'];
+
+		$id = $this->encrypt->decode($this->input->post('id'));
+		$data = array(
+			'proposal_id' => $id,
+			'nama_berkas' => $this->input->post('nama_berkas'),
+			'jenis_berkas' => $this->input->post('jenis_berkas'),
+		);
+
+		if(!empty($_FILES)) {
+			if($file1 == '%PDF'){
+				$file = $_FILES['file']['tmp_name']; 
+				$sourceProperties = getimagesize($file);
+				$fileNewName = md5($this->session->userdata('username').$this->input->post('jenis_berkas').$id.date("H:i:s"));
+				$folderPath = "assets/uploads/proposal-lk/";
+				$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+				$data['file'] = $folderPath.$fileNewName. ".". $ext;
+				move_uploaded_file($file, $folderPath. $fileNewName. ".". $ext);
+
+				$this->layanan_model->insert_lampiran_proposal($data);
+				redirect(site_url("mahasiswa/proposal-kegiatan/lampiran?id=".$this->input->post('id')."&status=sukses"));
+			}
+			else{
+				redirect(site_url("mahasiswa/proposal-kegiatan/lampiran?id=".$this->input->post('id')."&status=gagal"));
+			}
+		}
+		else{
+			redirect(site_url("mahasiswa/proposal-kegiatan/lampiran?id=".$this->input->post('id')."&status=gagal"));
+		}
+	}
 	
+	function hapus_berkas_proposal()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $this->input->post('id_berkas');
+		$id_prop = $this->input->post('id_prop');
+		$id_get = $this->input->post('id');
+		$file = $this->input->post('file_berkas');
+		
+		$data = array("id" => $id);
+		$this->layanan_model->delete_lampiran_proposal($data);
+		unlink($file);
+	    
+	    redirect(site_url("mahasiswa/proposal-kegiatan/lampiran?id=".$id_get));
+	}
+
+	function proposal_aksi()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$aksi = $data['aksi'];
+		$id = $data['id'];
+		if($aksi == "hapus"){
+			//berkas
+			$file = $this->layanan_model->get_lk_proposal_berkas($id);
+			foreach($file as $fl){
+				unlink($fl->file);
+			}
+			//row
+			$dt = array(
+				"id" => $id
+			);
+			$this->layanan_model->delete_lk_proposal($dt);
+		}else{
+			$dt = array(
+				"status" => 1,
+				"keterangan" => null
+			);
+			// $status = 1;
+			$this->layanan_model->update_lk_proposal($id,$dt);
+		}
+		redirect(site_url("mahasiswa/proposal-kegiatan"));
+	}
+
+	function laporan_kegiatan()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['proposal'] = $this->layanan_model->get_proposal_mahasiswa2($this->session->userdata('userId'));
+
+		$this->load->view('header_global', $header);
+		$this->load->view('mahasiswa/header');
+
+		$this->load->view('mahasiswa/lk/laporan_kegiatan',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function laporan_kegiatan_simpan()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$dt = array(
+			"status" => 3,
+			"laporan" => $data['link']
+		);
+		$id = $data['id'];
+		// $status = 1;
+		$this->layanan_model->update_lk_proposal($id,$dt);
+		redirect(site_url("mahasiswa/laporan-kegiatan"));
+	}
 
 }

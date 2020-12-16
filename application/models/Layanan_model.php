@@ -822,6 +822,12 @@ class Layanan_model extends CI_Model
 		return $result->result();
     }
 
+    function get_periode_tugas()
+    {
+        $result = $this->db->query("SELECT DISTINCT(periode) FROM `tbl_users_tugas_mahasiswa` WHERE verifikasi = 1");
+		return $result->result();
+    }
+
     function get_jabatan_lk($id,$periode,$jabatan)
     {
         $result = $this->db->query("SELECT * FROM `tbl_users_tugas_mahasiswa` WHERE periode = '$periode' AND id_lk = $id AND jabatan = $jabatan");
@@ -839,6 +845,120 @@ class Layanan_model extends CI_Model
         $this->db->where('periode', $periode);
         $this->db->where('id_lk', $id);
 	    $this->db->update('tbl_users_tugas_mahasiswa', $data);
+    }
+
+    function get_proposal_mahasiswa($id_user)
+    {
+        $result = $this->db->query("SELECT b.* FROM tbl_users_tugas_mahasiswa a, lk_proposal b WHERE a.id_user = $id_user AND a.id_lk = b.id_lk  AND a.periode = b.periode AND  a.jabatan < 5 AND b.status < 2 GROUP BY id ORDER BY b.created_at, a.id_lk");
+		return $result->result();
+    }
+
+    function get_proposal_mahasiswa2($id_user)
+    {
+        $result = $this->db->query("SELECT b.* FROM tbl_users_tugas_mahasiswa a, lk_proposal b WHERE a.id_user = $id_user AND a.id_lk = b.id_lk  AND a.periode = b.periode AND  a.jabatan < 5 AND b.status >= 2 GROUP BY id ORDER BY b.created_at, a.id_lk");
+		return $result->result();
+    }
+
+    function get_lk_mahasiswa($id_user)
+    {
+        $result = $this->db->query("SELECT DISTINCT(id_lk) FROM tbl_users_tugas_mahasiswa WHERE id_user = $id_user AND jabatan < 5 AND verifikasi = 1");
+		return $result->result();
+    }
+
+    function get_lk_mahasiswa2($id_user)
+    {
+        $result = $this->db->query("SELECT DISTINCT id_lk, periode FROM tbl_users_tugas_mahasiswa WHERE id_user = $id_user");
+		return $result->result();
+    }
+
+    function get_verif_struktur($lk,$ta)
+    {
+        $result = $this->db->query("SELECT DISTINCT id_lk, periode, verifikasi FROM tbl_users_tugas_mahasiswa WHERE id_lk = $lk AND jabatan < 5 AND periode = '$ta'");
+		return $result->row();
+    }
+
+    function insert_lk_proposal($data)
+    {
+        $this->db->trans_start();
+		$this->db->insert('lk_proposal', $data);
+		$this->db->trans_complete();   
+    }
+
+    
+    function get_lampiran_proposal($id)
+    {
+        $this->db->select('a.*, b.nama');
+		$this->db->from('lk_proposal_berkas a');
+		$this->db->join('jenis_berkas_lampiran b', 'a.jenis_berkas = b.id_jenis');
+		$this->db->join('lk_proposal c', 'a.proposal_id = c.id');
+		$this->db->where(array('c.id' => $id));
+		$query = $this->db->get();
+		
+		return $query->result();
+    }
+
+    function insert_lampiran_proposal($data)
+    {
+        $this->db->insert('lk_proposal_berkas', $data);
+    }
+
+    function delete_lampiran_proposal($data)
+	{
+		$this->db->delete('lk_proposal_berkas', $data);
+    }
+
+    function select_proposal($id)
+    {
+        $this->db->where(array('id' => $id));
+		$query = $this->db->get('lk_proposal');
+		return $query->result_array();
+    }
+
+    function update_lk_proposal($id,$data)
+    {
+        $this->db->where('id', $id);
+	    $this->db->update('lk_proposal', $data);
+    }
+
+    function update_status_lk_proposal($id,$status)
+    {
+        $this->db->where('id', $id);
+	    $this->db->update('lk_proposal', array("status"=>$status));
+    }
+
+    function get_lk_proposal_by_id($id)
+    {
+        $result = $this->db->query("SELECT * FROM `lk_proposal` WHERE id = $id");
+		return $result->row();
+    }
+
+    function get_lk_proposal_berkas($id_prop)
+    {
+        $result = $this->db->query("SELECT * FROM `lk_proposal_berkas` WHERE proposal_id = $id_prop");
+		return $result->result();
+    }
+   
+    function delete_lk_proposal($data)
+	{
+		$this->db->delete('lk_proposal', $data);
+    }
+
+    function get_progja_approval()
+    {
+        $result = $this->db->query("SELECT * FROM `lk_proposal` WHERE status = 1");
+		return $result->result();
+    }
+
+    function get_nilai_proposal($lk,$periode)
+    {
+        $result = $this->db->query("SELECT SUM(nilai) as nilai FROM `lk_proposal` WHERE id_lk = $lk AND periode = '$periode'");
+		return $result->row();
+    }
+
+    function get_lk_proposal_lk_periode($lk,$periode)
+    {
+        $result = $this->db->query("SELECT * FROM `lk_proposal` WHERE id_lk = $lk AND periode = '$periode'");
+		return $result->result();
     }
     
 }

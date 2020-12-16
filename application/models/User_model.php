@@ -499,6 +499,12 @@ class User_model extends CI_Model
 		return $query;
 	}
 
+	function get_lk_jur($jur)
+	{
+		$result = $this->db->query("SELECT * FROM `lembaga_kemahasiswaan` WHERE jurusan_lk = $jur or jurusan_lk = 0");
+		return $result->result();
+	}
+
 	function insert_lk_mhs($data)
 	{
 		$this->db->insert('tbl_users_tugas_mahasiswa', $data);

@@ -7,9 +7,9 @@
                                         <i class="pe-7s-note icon-gradient bg-mean-fruit">
                                         </i>
                                     </div>
-                                    <div>Struktur Organisasi
+                                    <div>Kelola Laporan Kegiatan
                                         <div class="page-title-subheading">
-                                          
+                                            Unggah Laporan Kegiatan
                                         </div>
                                     </div>
                                     
@@ -38,49 +38,72 @@
                                         <thead>
                                         <tr>
                                             <th style="width: 5%;">#</th>
-                                            <th style="width: 20%;">Nama LK</th>
-                                            <th style="width: 10%;">Periode</th>
-                                            <th style="width: 35%;">Struktur Organisasi</th>
-                                            <th style="width: 15%;">Status</th>
+                                            <th style="width: 15%;">Nama LK</th>
+                                            <th style="width: 25%;">Nama Kegiatan</th>
+                                            <th style="width: 15%;">Usulan</th>
+                                            <th style="width: 20%;">Keterangan</th>
+                                            <th style="width: 10%;">Status</th>
+                                            <th style="width: 15%;">Aksi</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if(empty($lk))
+                                        if(empty($proposal))
                                         {
                                             echo "<tr><td colspan='6'>Data tidak tersedia</td></tr>";
                                         }
                                         else
                                         {
                                             $no = 0;
-                                            foreach($lk as $row) {
-                                                $data = $this->layanan_model->get_lk_by_id($row->id_lk);
+                                            foreach($proposal as $row) {
                                         ?>
                                             <tr>
                                                 <td class="align-top"><?php echo ++$no; ?></td>
-                                                <td class="align-top"><b><?php echo $data->nama_lk; ?></b></td>
-                                                <td class="align-top"><?php echo $row->periode; ?></td>
+                                                <td class="align-top"><b><?php echo $this->layanan_model->get_lk_by_id($row->id_lk)->nama_lk; ?></b></td>
+                                                <td class="align-top"><?php echo $row->nama ?></td>
+                                                <td class="align-top">Rp<?php echo number_format($row->nilai) ?></td>
                                                 <td class="align-top">
                                                 <?php 
-                                                    $ketua = $this->layanan_model->get_jabatan_lk($row->id_lk,$row->periode,1);
-                                                    $wakil = $this->layanan_model->get_jabatan_lk($row->id_lk,$row->periode,2);
-                                                    $sekretaris = $this->layanan_model->get_jabatan_lk($row->id_lk,$row->periode,3);
-                                                    $bendahara = $this->layanan_model->get_jabatan_lk($row->id_lk,$row->periode,4);
+                                                    echo "<b>Diajukan Oleh : </b>".$this->user_model->get_mahasiswa_name($row->insert_by)." / ".$row->insert_by;
+                                                    echo "<br>";
+                                                    echo "<b>Lampiran : </b>";
+                                                    $lampiran = $this->layanan_model->get_lampiran_proposal($row->id);
+                                                    if(empty($lampiran)) {
+                                                        echo "<i>(Belum ada, silakan lengkapi berkas lampiran)</i>";
+                                                    } else {
+                                                       
+                                                        foreach($lampiran as $rw) {
+                                                            echo "<li><a href='".base_url($rw->file)."' download>".$rw->nama_berkas."</a></li>";
+                                                        }
+                                                        echo "</ul>";
+                                                    }
+                                                    if($row->status == '-1'){
+                                                        echo "<br>";
+                                                        echo "<b>Keterangan Tolak : </b>";
+                                                        echo "<span style='color:red'>$row->keterangan</span>";
+                                                    }
+                                                    
                                                 ?>
-                                                    <b>Ketua : </b><?php echo empty($ketua) ? "-" : $this->user_model->get_mahasiswa_data($ketua->id_user)->name." (".$this->user_model->get_mahasiswa_data($ketua->id_user)->npm.")" ?><br>
-                                                    <b>Wakil : </b><?php echo empty($wakil) ? "-" : $this->user_model->get_mahasiswa_data($wakil->id_user)->name." (".$this->user_model->get_mahasiswa_data($wakil->id_user)->npm.")" ?><br>
-                                                    <b>Sekretaris : </b><?php echo empty($sekretaris) ? "-" : $this->user_model->get_mahasiswa_data($sekretaris->id_user)->name." (".$this->user_model->get_mahasiswa_data($sekretaris->id_user)->npm.")" ?><br>
-                                                    <b>Bendahara : </b><?php echo empty($bendahara) ? "-" : $this->user_model->get_mahasiswa_data($bendahara->id_user)->name." (".$this->user_model->get_mahasiswa_data($bendahara->id_user)->npm.")" ?><br>
                                                 </td>
                                                 <td class="align-top">
-                                                    <?php 
-                                                        $status = $this->layanan_model->get_verif_struktur($row->id_lk,$row->periode);
-                                                        if($status->verifikasi == 0){
-                                                            echo "Menunggu Verifikasi";
-                                                        }else{
-                                                            echo "Diverifikasi";
-                                                        }
-                                                    ?>
+                                                <?php  
+                                                    if($row->status == 2){
+                                                        echo "<span style='color:red'>Menunggu</span>";
+                                                    }elseif($row->status == 3){
+                                                        echo "<span style='color:blue'>Selesai</span>";
+                                                    }
+                                                ?>
+                                                </td>
+                                                <td class="align-top">
+                                                <?php if($row->status == 2){ ?>
+                                                    <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="passingID" >
+                                                        <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm btn-block"  data-toggle="modal" data-target="#unggahlap">
+                                                            Unggah Laporan Kegiatan 
+                                                        </button>
+                                                    </a>
+                                                <?php }else{ ?>
+                                                    <a style="" href="<?php echo $row->laporan ?>" target="_blank" class="mr-1 mb-1 btn btn-info btn-sm" >Laporan Kegiatan
+                                                <?php } ?>    
                                                 </td>
                                             </tr>
                                         <?php
@@ -163,10 +186,6 @@ $(document).ready(function() {
 <script>
     $(".passingID").click(function () {
                 var id = $(this).attr('data-id');
-                $("#ID").val( id );
-            });
-    $(".passingID2").click(function () {
-                var id = $(this).attr('data-id');
-                $("#ID2").val( id );
-            });        
+                $("#ID_lap").val( id );
+            });       
 </script>
