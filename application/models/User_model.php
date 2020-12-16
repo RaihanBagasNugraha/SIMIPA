@@ -306,6 +306,12 @@ class User_model extends CI_Model
 		return $query;
 	}
 
+	function get_jurusan_fak()
+	{
+		$result = $this->db->query("SELECT * FROM `jurusan` WHERE id_jurusan > 0");
+		return $result->result();
+	}
+
 	function get_lab_all()
 	{
 		$this->db->select('*');

@@ -4981,4 +4981,60 @@ class Dosen extends CI_Controller {
 		$this->load->view('footer_global');
 	}
 
+	function rekap_layanan()
+	{
+		$date = $this->input->post();
+		// echo "<pre>";
+		// print_r($date);
+		$jns = $this->uri->segment(3);
+		if($jns == 'umum-keuangan'){
+			$jns = 'umum dan keuangan';
+		}
+		
+		$get_form = $this->layanan_model->get_form_by_jenis($jns);
+		$form_id = array();
+		$i = 0;
+		foreach($get_form as $form){
+			$form_id[$i] = $form->id_layanan_fakultas;
+			$i++; 
+		}
+
+		if(!empty($date)){
+			$data['form'] = $form_id;
+			$data['post'] = 1;
+			$data['awal'] = $date['awal'];
+			$data['akhir'] = $date['akhir'];
+		}else{
+			$data['form'] = null;
+			$data['post'] = 0;
+			$data['awal'] = null;
+			$data['akhir'] = null;
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+	
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+		
+		$this->load->view('dosen/rekap_layanan/rekap_layanan',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function rekap_layanan_detail()
+	{
+		$form = $this->input->get('form');
+		$awal = $this->input->get('awal');
+		$akhir = $this->input->get('akhir');
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+	
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+		$data['jurusan'] = $this->user_model->get_jurusan_fak();
+		$this->load->view('dosen/rekap_layanan/rekap_layanan_detail',$data);
+		
+		$this->load->view('footer_global');
+	}
+
 }

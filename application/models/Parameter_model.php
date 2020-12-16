@@ -86,5 +86,60 @@ class Parameter_model extends CI_Model
 		$result = $this->db->query("SELECT * FROM `laboratorium` WHERE nama_lab LIKE '%$nama%'");
 		return $result->row();
 	}
+
+	function get_month($month)
+    {
+        $bulan = "";
+        
+        if($month == '01' || $month == 'January'){
+            $bulan = "Januari";
+        }
+        
+        elseif($month == '02' || $month == 'February'){
+            $bulan = "Februari";
+        }
+        
+         elseif($month == '03' || $month == 'March'){
+            $bulan = "Maret";
+        }
+        
+         elseif($month == '04'  || $month == 'April'){
+            $bulan = "April";
+        }
+        
+         elseif($month == '05'  || $month == 'May'){
+            $bulan = "Mei";
+        }
+        
+         elseif($month == '06'  || $month == 'June'){
+            $bulan = "Juni";
+        }
+        
+         elseif($month == '07'  || $month == 'July'){
+            $bulan = "Juli";
+        }
+        
+         elseif($month == '08'  || $month == 'August'){
+            $bulan = "Agustus";
+        }
+        
+         elseif($month == '09'  || $month == 'September'){
+            $bulan = "September";
+        }
+        
+         elseif($month == '10'  || $month == 'October'){
+            $bulan = "Oktober";
+        }
+        
+         elseif($month == '11'  || $month == 'November'){
+            $bulan = "November";
+        }
+        
+        else{
+            $bulan = "Desember";
+        }
+        
+        return $bulan;
+    }
 	
 }

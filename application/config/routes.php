@@ -508,6 +508,9 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
     $route['dosen/lk/rekap-progja'] = 'dosen/rekap_progja';
     $route['dosen/lk/rekap-progja/detail'] = 'dosen/rekap_progja_detail';
     
+//Rekap Layanan
+    $route['dosen/rekap-layanan/(:any)'] = 'dosen/rekap_layanan';
+    $route['dosen/rekap-layanan/(:any)/detail'] = 'dosen/rekap_layanan_detail';
 
 $route['beranda'] = 'admin';
 $route['admin'] = 'welcome';

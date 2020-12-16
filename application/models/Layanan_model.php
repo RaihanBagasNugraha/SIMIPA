@@ -960,6 +960,25 @@ class Layanan_model extends CI_Model
         $result = $this->db->query("SELECT * FROM `lk_proposal` WHERE id_lk = $lk AND periode = '$periode'");
 		return $result->result();
     }
+
+    //rekap layanan akademik
+    function get_form_by_jenis($jenis)
+    {
+        $result = $this->db->query("SELECT * FROM `layanan_fakultas` WHERE bagian LIKE '$jenis'");
+		return $result->result();
+    }
+
+    function get_form_mhs_range($lay,$awal,$akhir)
+    {
+        $result = $this->db->query("SELECT * FROM `layanan_fakultas_mahasiswa` WHERE id_layanan_fakultas = $lay AND created_at BETWEEN '$awal' AND '$akhir' AND status = 2 order by created_at");
+		return $result->result();
+    }
+
+    function get_form_mhs_range_jur($lay,$awal,$akhir,$jur)
+    {
+        $result = $this->db->query("SELECT * FROM `layanan_fakultas_mahasiswa` WHERE id_layanan_fakultas = $lay AND created_at BETWEEN '$awal' AND '$akhir' AND status = 2  AND Mid(npm,6,1) = $jur");
+		return $result->result();
+    }
     
 }
 ?>

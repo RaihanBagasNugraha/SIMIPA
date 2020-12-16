@@ -1587,11 +1587,20 @@ class Mahasiswa extends CI_Controller {
 		$ttd = $data['ttd'];
 		$approver = $data['approver'];
 		$id_layanan = $data['id_layanan'];
+		$form_selesai = array(3,5,6,7,8,10,11,12,13,18,19,20,21,22,23,25,26,35,37,38,44,45);
+
+		if(in_array($id_layanan,$form_selesai)){
+			$sts = 2;
+		}else{
+			$sts = 0;
+		}
+
 		$data_layanan = array(
 			"npm" => $npm,
 			"id_layanan_fakultas" => $id_layanan,
 			"ttd" => $ttd,
-			"tingkat" => null
+			"tingkat" => null,
+			"status" => $sts
 		);
 
 		//input nama lab

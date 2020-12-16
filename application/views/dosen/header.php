@@ -283,7 +283,7 @@ else{
                                 <!-- WD 1 -->
 
                                 <li class="app-sidebar__heading">Wakil Dekan I</li>
-                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "wd1")) echo 'class="mm-active"' ?>>
+                                <li <?php if(($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "wd1")) || ($this->uri->segment(2) == "rekap-layanan" && $this->uri->segment(3) == "akademik") ) echo 'class="mm-active"' ?>>
                                     <a href="#">
                                     <?php 
                                         $lf_wd1 = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),2));
@@ -301,6 +301,13 @@ else{
                                             </a>
                                         </li>
 
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/rekap-layanan/akademik") ?>" <?php if($this->uri->segment(2) == "rekap-layanan" && $this->uri->segment(3) == "akademik") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Rekap Layanan
+                                            </a>
+                                        </li>
+
                                     </ul>
                                 </li>
                                 <?php } ?>
@@ -309,7 +316,7 @@ else{
                                 <!-- WD 2 -->
 
                                 <li class="app-sidebar__heading">Wakil Dekan II</li>
-                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "wd2")) echo 'class="mm-active"' ?>>
+                                <li <?php if(($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "wd2")) || ($this->uri->segment(2) == "rekap-layanan" && $this->uri->segment(3) == "umum-keuangan")) echo 'class="mm-active"' ?>>
                                     <a href="#">
                                     <?php 
                                         $lf_wd2 = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),3));
@@ -321,9 +328,15 @@ else{
                                     </a>
                                     <ul>
                                         <li>
-                                        <a href="<?php echo site_url("dosen/approval/wd2") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "wd2") echo 'class="mm-active"' ?>>
+                                            <a href="<?php echo site_url("dosen/approval/wd2") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "wd2") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_wd2 > 0 ? $lf_wd2 : "" ?></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/rekap-layanan/umum-keuangan") ?>" <?php if($this->uri->segment(2) == "rekap-layanan" && $this->uri->segment(3) == "umum-keuangan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Rekap Layanan
                                             </a>
                                         </li>
 
@@ -335,7 +348,7 @@ else{
                                 <!-- WD 3 -->
 
                                 <li class="app-sidebar__heading">Wakil Dekan III</li>
-                                <li <?php if($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "wd3")) echo 'class="mm-active"' ?>>
+                                <li <?php if(($this->uri->segment(2) == "approval" && ($this->uri->segment(3) == "wd3")) || ($this->uri->segment(2) == "rekap-layanan" && $this->uri->segment(3) == "kemahasiswaan")) echo 'class="mm-active"' ?>>
                                     <a href="#">
                                     <?php 
                                         $lf_wd3 = count($this->layanan_model->get_approval_struktural_fakultas($this->session->userdata('userId'),4));
@@ -350,6 +363,12 @@ else{
                                         <a href="<?php echo site_url("dosen/approval/wd3") ?>" <?php if($this->uri->segment(2) == "approval" && $this->uri->segment(3) == "wd3") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Form Pegajuan Layanan <span class="badge badge-danger"><?php echo $lf_wd3 > 0 ? $lf_wd3 : "" ?></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo site_url("dosen/rekap-layanan/kemahasiswaan") ?>" <?php if($this->uri->segment(2) == "rekap-layanan" && $this->uri->segment(3) == "kemahasiswaan") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Rekap Layanan
                                             </a>
                                         </li>
 
