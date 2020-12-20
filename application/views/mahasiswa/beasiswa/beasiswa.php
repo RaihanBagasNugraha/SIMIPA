@@ -150,7 +150,7 @@
                                                     echo "-";
                                                 }else{
                                             ?>
-                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/kemahasiswaan/unduh?id=".$cek->id_layanan_fakultas_mahasiswa."&layanan=26") ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                                <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/kemahasiswaan/unduh?id=".$this->encrypt->encode($cek->id_layanan_fakultas_mahasiswa)."&layanan=26") ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
 
                                             <?php       }
                                                     }

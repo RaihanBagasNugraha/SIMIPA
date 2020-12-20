@@ -1576,6 +1576,24 @@ class Mahasiswa extends CI_Controller {
 		
 	}
 
+	function get_random_code()
+	{
+		$characters ='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$charactersLength = strlen($characters);
+		$randomString = '';
+		for ($i = 0; $i < 6; $i++) {
+			$randomString .= $characters[rand(0, $charactersLength - 1)];
+		}
+		// $randomString = '5vv2pQ';
+		//cek kode 
+		$cek = $this->layanan_model->cek_kode_layanan($randomString);
+		if(!empty($cek)){
+			$this->get_random_code();
+		}else{
+			return $randomString;
+		}
+	}
+
 	function layanan_fakultas_form_simpan()
 	{
 		$data = $this->input->post();
@@ -1590,10 +1608,11 @@ class Mahasiswa extends CI_Controller {
 		$form_selesai = array(3,5,6,7,8,10,11,12,13,18,19,20,21,22,23,25,26,35,37,38,44,45);
 
 		if(in_array($id_layanan,$form_selesai)){
-			$sts = 2;
+			$sts = '-1';
 		}else{
 			$sts = 0;
 		}
+		$id_last = $this->layanan_model->get_last_id_fak_mhs()->id;
 
 		$data_layanan = array(
 			"npm" => $npm,
@@ -1610,7 +1629,10 @@ class Mahasiswa extends CI_Controller {
 		// }
 		//input layanan fak mhs
 		$insert_id = $this->layanan_model->insert_layanan_fak_mhs($data_layanan);
-
+		// update kode
+		$kode = $this->get_random_code();
+		$this->layanan_model->update_kode_layanan($insert_id,$kode);
+		
 		$atribut_id = $data['id_attribut'];
 		foreach($atribut_id as $atr)
 		{
@@ -1641,7 +1663,11 @@ class Mahasiswa extends CI_Controller {
 			}
 		}
 
-		redirect(site_url("mahasiswa/layanan-fakultas/$jns"));
+		if(in_array($id_layanan,$form_selesai)){
+			redirect(site_url("mahasiswa/layanan-lacak"));
+		}else{
+			redirect(site_url("mahasiswa/layanan-fakultas/$jns"));
+		}
 	}
 
 	function layanan_fakultas_delete()

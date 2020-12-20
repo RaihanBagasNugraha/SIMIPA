@@ -445,6 +445,7 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
     $route['tendik/verifikasi-berkas-fakultas-simpan/(:any)'] = 'tendik/verifikasi_fakultas_simpan';
     $route['tendik/verifikasi-berkas-masuk-fakultas/(:any)'] = 'tendik/verifikasi_masuk_fakultas';
     $route['tendik/verifikasi-berkas-masuk-fakultas-simpan/(:any)'] = 'tendik/verifikasi_masuk_fakultas_simpan';
+    $route['tendik/verifikasi-berkas-masuk-fakultas-simpan2/(:any)'] = 'tendik/verifikasi_masuk_fakultas_simpan2';
 
 
     //kalab

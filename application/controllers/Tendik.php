@@ -920,6 +920,9 @@ class Tendik extends CI_Controller {
 
 	function verifikasi_masuk_fakultas()
 	{
+		$post = $this->input->post();
+		// echo "<pre>";
+		// print_r($post);
 		$jenis = $this->uri->segment(3);
 		switch($jenis){
 			case "akademik":
@@ -933,8 +936,17 @@ class Tendik extends CI_Controller {
 			break;
 		}
 
+		if(!empty($post)){
+			$data['form'] = $this->layanan_model->get_approval_cek_tendik3($post['kode']);
+			$data['cek'] = 1;
+		}else{
+			$data['form'] = $this->layanan_model->get_approval_cek_tendik($jns);
+			$data['cek'] = 0;
+		}
+
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['form'] = $this->layanan_model->get_approval_cek_tendik($jns);
+		// $data['form'] = $this->layanan_model->get_approval_cek_tendik($jns);
+		// $data['form2'] = $this->layanan_model->get_approval_cek_tendik2($jns);
 
 		$this->load->view('header_global', $header);
 		$this->load->view('tendik/header');
@@ -971,6 +983,24 @@ class Tendik extends CI_Controller {
 				$this->layanan_model->insert_approval_layanan($data);
 			}
 		}
+		redirect(site_url("/tendik/verifikasi-berkas-masuk-fakultas/$jenis"));		
+	}
+
+	function verifikasi_masuk_fakultas_simpan2()
+	{
+		$id = $this->input->post('id_pengajuan');
+		$aksi = $this->input->post('aksi');
+		$ket = $this->input->post('keterangan');
+		// $data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$jenis = $this->uri->segment(3);
+			$data_tolak = array(
+				"status" => 1,
+				"keterangan" => $ket
+			);
+			$this->layanan_model->update_layanan_fak_mhs($id,$data_tolak);
+		
 		redirect(site_url("/tendik/verifikasi-berkas-masuk-fakultas/$jenis"));		
 	}
 

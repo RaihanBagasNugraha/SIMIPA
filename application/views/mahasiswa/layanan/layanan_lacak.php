@@ -52,7 +52,7 @@
                                             $n = 0;
                                             $form_selesai = array(3,5,6,7,8,10,11,12,13,18,19,20,21,22,23,25,26,35,37,38,44,45);
                                             foreach($form as $row) {
-                                              if(!in_array($row->id_layanan_fakultas,$form_selesai)){
+                                            //   if(!in_array($row->id_layanan_fakultas,$form_selesai)){
                                                 // if(($row->status == 0 && ($row->tingkat != null || $row->tingkat != "")) || $row->status == 1 ){
                                         ?>
                                         <tr>
@@ -93,13 +93,15 @@
                                                <?php 
                                                 $approval = $this->layanan_model->get_approval_layanan($row->id);
                                                 $form_selesai = array(3,5,6,7,8,10,11,12,13,18,19,20,21,22,23,25,26,35,37,38,44,45);
-                                                if(in_array($row->id_layanan_fakultas,$form_selesai)){
-                                                    echo "<span style='color:white;background-color:#5cb85c' class='btn-sm'>Selesai</span>";
-                                                }else{
+                                                // if(in_array($row->id_layanan_fakultas,$form_selesai)){
+                                                //     echo "<span style='color:white;background-color:#5cb85c' class='btn-sm'>Selesai</span>";
+                                                // }else{
                                                     if($row->status == 0 && ($row->tingkat == null || $row->tingkat == "") ){
                                                         echo "<span style='color:white;background-color:#d9534f' class='btn-sm'>Belum Diajukan</span>";
                                                     }elseif($row->status == 0 && ($row->tingkat != null || $row->tingkat != "") ){
                                                         echo "<span style='color:white;background-color:#f0ad4e' class='btn-sm'>Menunggu</span>";
+                                                    }elseif($row->status == '-1'){
+                                                        echo "<span style='color:white;background-color:#d9534f' class='btn-sm'>Belum Diajukan</span>";
                                                     }
                                                     elseif($row->status == 1){
                                                         echo "<span style='color:white;background-color:#0275d8' class='btn-sm'>Verifikasi</span>";
@@ -114,52 +116,58 @@
                                                         echo "<br>";
                                                         echo "<b><i><span style='color:red'>$row->keterangan<span></i></b>";
                                                     }
-                                                }
+                                                // }
                                                
                                                ?>
                                             </td>
 
                                             <td class="align-top">
                                                 <?php 
-                                                if($row->status != 3){
-                                                    if(!empty($approval)){
-                                                        foreach($approval as $app){
-                                                            // echo "<ul>";
-                                                            echo "<li><b>Disetujui ".$this->layanan_model->get_approver_by_id($app->approver_id)->nama." : </b></li>";
-                                                            // echo "<br>";
-                                                            if($app->approver_id > 9){
-                                                                echo substr($app->created_at,0,10);
-                                                            }else{
-                                                                if($app->updated_at == ""||$app->updated_at == null){
-                                                                    echo "<span style='color:red'>Menunggu</span>";
-                                                                }else{
-                                                                    echo substr($app->updated_at,0,10);
-                                                                }
-                                                               
-                                                            }
-                                                            echo "<br><br>";
-                                                        }
-
-                                                        // if($row->tingkat == null || $row->tingkat != ""){
-                                                        //     $tkt = explode("#",$row->tingkat);
-                                                        //     if(!empty($tkt)){
-                                                        //         foreach($tkt as $rw){
-                                                        //             echo "<b>Menunggu :</b>";
-                                                        //             echo "<li>".$this->layanan_model->get_approver_by_id($rw)->nama."</li>";
-                                                        //         }
-                                                        //     }             
-                                                        // }
-                                                }
+                                                if(in_array($row->id_layanan_fakultas,$form_selesai)){
+                                                ?>
+                                                    <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/jenis/unduh?id=".$this->encrypt->encode($row->id)."&layanan=".$row->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                                <?php        
                                                 }else{
-                                                    echo "<br>";
-                                                    echo "<b><i><span style='color:red'>$row->keterangan<span></i></b>";
+                                                    if($row->status != 3){
+                                                        if(!empty($approval)){
+                                                            foreach($approval as $app){
+                                                                // echo "<ul>";
+                                                                echo "<li><b>Disetujui ".$this->layanan_model->get_approver_by_id($app->approver_id)->nama." : </b></li>";
+                                                                // echo "<br>";
+                                                                if($app->approver_id > 9){
+                                                                    echo substr($app->created_at,0,10);
+                                                                }else{
+                                                                    if($app->updated_at == ""||$app->updated_at == null){
+                                                                        echo "<span style='color:red'>Menunggu</span>";
+                                                                    }else{
+                                                                        echo substr($app->updated_at,0,10);
+                                                                    }
+                                                                
+                                                                }
+                                                                echo "<br><br>";
+                                                            }
+
+                                                            // if($row->tingkat == null || $row->tingkat != ""){
+                                                            //     $tkt = explode("#",$row->tingkat);
+                                                            //     if(!empty($tkt)){
+                                                            //         foreach($tkt as $rw){
+                                                            //             echo "<b>Menunggu :</b>";
+                                                            //             echo "<li>".$this->layanan_model->get_approver_by_id($rw)->nama."</li>";
+                                                            //         }
+                                                            //     }             
+                                                            // }
+                                                    }
+                                                    }else{
+                                                        echo "<br>";
+                                                        echo "<b><i><span style='color:red'>$row->keterangan<span></i></b>";
+                                                    }
                                                 }
                                                 ?>
                                             </td>
                                         </tr>
                                         <?php
                                                     // }
-                                                }
+                                                // }
                                             }
                                         }
                                         ?>

@@ -168,7 +168,14 @@ foreach($tugas as $row){
                                             $vbm_umum = count($this->layanan_model->get_approval_cek_tendik('Umum dan Keuangan'));
                                             $vbm_kms = count($this->layanan_model->get_approval_cek_tendik('Kemahasiswaan'));
 
+                                            // $vbm_aka2 = count($this->layanan_model->get_approval_cek_tendik2('Akademik'));
+                                            // $vbm_umum2 = count($this->layanan_model->get_approval_cek_tendik2('Umum dan Keuangan'));
+                                            // $vbm_kms2 = count($this->layanan_model->get_approval_cek_tendik2('Kemahasiswaan'));
+
                                             $vbm = $vbm_aka + $vbm_umum + $vbm_kms;
+                                            // $vbm_aka_tot =  $vbm_aka +  $vbm_aka2;
+                                            // $vbm_umum_tot =  $vbm_umum +  $vbm_umum2;
+                                            // $vbm_kms_tot =  $vbm_kms +  $vbm_kms2;
                                         ?>
                                         <i class="metismenu-icon pe-7s-note2"></i>
                                         Verifikasi Berkas Masuk <span class="badge badge-danger"><?php echo $vbm > 0 ? $vbm : "" ?></span>
@@ -231,7 +238,7 @@ foreach($tugas as $row){
                                     </ul>
                                     
                                 </li>
-                                <li <?php if($this->uri->segment(2) == "atribut-form") echo 'class="mm-active"' ?>>
+                                <!-- <li <?php if($this->uri->segment(2) == "atribut-form") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-note"></i>
                                         <?php 
@@ -248,7 +255,7 @@ foreach($tugas as $row){
                                         </li> 
                                     </ul>
                                     
-                                </li>
+                                </li> -->
                                 <?php } ?>
 
                                 <?php if(in_array(18,$tb)){ ?>

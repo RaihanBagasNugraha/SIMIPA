@@ -40,11 +40,12 @@
                                     <table class="mb-0 table table-striped" id="example">
                                         <thead>
                                         <tr>
-                                            <th style="width: 5%;">#</th>
-                                            <th style="width: 13%;">Waktu</th>
+                                            <!-- <th style="width: 5%;">#</th> -->
+                                            <th style="width: 13%;">Waktu Pengajuan</th>
                                             <th style="width: 25%;">Npm<br>Nama</th>
-                                            <th style="width: 12%;">Jurusan</th>
-                                            <th style="width: 25%;">Form</th>
+                                            <th style="width: 15%;">Jenis</th>
+                                            <th style="width: 10%;">Kode</th>
+                                            <th style="width: 25%;">Lampiran</th>
                                             <th style="width: 20%;">Aksi</th>
                                         </tr>
                                         </thead>
@@ -61,9 +62,9 @@
                                             // $data_layanan = $this->layanan_model->get_form_mhs_id($row->id_layanan_fakultas_mahasiswa);
                                         ?>
                                         <tr>
-                                            <td class="align-top">
+                                            <!-- <td class="align-top">
                                                 <?php echo ++$n; ?>
-                                            </td>
+                                            </td> -->
                                             <td class="align-top">
                                                 <?php 
 
@@ -82,12 +83,21 @@
                                             </td>
                                             <td class="align-top">
                                                <?php 
-                                                   echo $this->user_model->get_jurusan_nama($row->npm);
+                                                 echo $this->layanan_model->get_layanan_fakultas_by_id($row->id_layanan_fakultas)->nama;
                                                ?>
                                             </td>
                                             <td class="align-top">
+                                               <?php echo "<b>$row->kode</b>"; ?>
+                                            </td>
+                                            <td class="align-top">
                                               <?php 
-                                                echo "<li><a href='".site_url('/mahasiswa/layanan-fakultas/'.$jenis.'/unduh?id='.$row->id.'&layanan='.$row->id_layanan_fakultas)."'>".$this->layanan_model->get_layanan_fakultas_by_id($row->id_layanan_fakultas)->nama."</a></li>";
+                                                $form_selesai = array(3,5,6,7,8,10,11,12,13,18,19,20,21,22,23,25,26,35,37,38,44,45);
+
+                                                if(in_array($row->id_layanan_fakultas,$form_selesai)){
+                                                    echo "Loket";
+                                                }else{
+                                                    echo "<li><a href='".site_url('/mahasiswa/layanan-fakultas/'.$jenis.'/unduh?id='.$this->encrypt->encode($row->id).'&layanan='.$row->id_layanan_fakultas)."'>".$this->layanan_model->get_layanan_fakultas_by_id($row->id_layanan_fakultas)->nama."</a></li>";
+                                                }
                                               ?>
                                             </td>
                                             <td class="align-top">

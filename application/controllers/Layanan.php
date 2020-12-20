@@ -12,6 +12,7 @@ class Layanan extends CI_Controller {
         $this->load->model('layanan_model');
         $this->load->model('wilayah_model');
         $this->load->helper('download');
+        $this->load->library('encrypt');
     }
 
     function convert_date($input)
@@ -245,9 +246,11 @@ class Layanan extends CI_Controller {
 
     function layanan_fakultas_form_unduh()
 	{
-		$id = $this->input->get('id');
+        $id = $this->input->get('id');
+        $id = $this->encrypt->decode($id);
 		$layanan = $this->input->get('layanan');
-		$jenis = $this->uri->segment(3);
+        $jenis = $this->uri->segment(3);
+        
 
         $data = $this->layanan_model->select_layanan_fakultas_mhs_id($id);
         $meta = $this->layanan_model->select_layanan_fakultas_mhs_id_layanan($id);
@@ -778,10 +781,12 @@ class Layanan extends CI_Controller {
      
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -2160,10 +2165,12 @@ class Layanan extends CI_Controller {
 
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -2444,10 +2451,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -2903,10 +2912,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -3021,7 +3032,9 @@ class Layanan extends CI_Controller {
         // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, "Kode : ".$data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -3043,6 +3056,11 @@ class Layanan extends CI_Controller {
         $pdf->Cell(45, $spasi,'Tanggal Pengisian', 0, 0, 'L');
         $pdf->Cell(5, $spasi,':', 0, 0, 'C');
         $pdf->Cell(100, $spasi, $this->convert_date($data->created_at), 0, 1, 'L');
+        // $pdf->Cell(45, $spasi,'Kode', 0, 0, 'L');
+        // $pdf->Cell(5, $spasi,':', 0, 0, 'C');
+        // $pdf->SetFont('Times','B',12);
+        // $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
+        $pdf->SetFont('Times','',12);
         $pdf->Ln(6);
 
         // SubHeader
@@ -3133,10 +3151,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -3440,10 +3460,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -3615,10 +3637,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -3809,10 +3833,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -4031,10 +4057,12 @@ class Layanan extends CI_Controller {
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -4229,10 +4257,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -4394,10 +4424,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -4554,10 +4586,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -4695,10 +4729,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -4834,10 +4870,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -4950,10 +4988,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -5141,10 +5181,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -5249,10 +5291,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -5682,10 +5726,12 @@ class Layanan extends CI_Controller {
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -5879,10 +5925,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -6084,10 +6132,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -6277,10 +6327,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -6467,10 +6519,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -6652,10 +6706,12 @@ class Layanan extends CI_Controller {
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -7121,10 +7177,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -7315,10 +7373,12 @@ class Layanan extends CI_Controller {
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -7540,10 +7600,12 @@ class Layanan extends CI_Controller {
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -7820,10 +7882,12 @@ class Layanan extends CI_Controller {
         //LEMBAR VERIFIKASI
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -8065,10 +8129,12 @@ class Layanan extends CI_Controller {
         $pdf->SetFillColor(205,205,205);
         $pdf->SetLeftMargin(30);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -8365,10 +8431,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
         $pdf->SetLeftMargin(30);
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -8558,10 +8626,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
         $pdf->SetLeftMargin(30);
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -8857,10 +8927,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
         $pdf->SetLeftMargin(30);
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');
@@ -9132,10 +9204,12 @@ class Layanan extends CI_Controller {
         $pdf->AddPage('P');
         $pdf->SetFillColor(205,205,205);
 
-        // Title
+       // Title
         $pdf->Ln(5);
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(150, $spasi, "VERIFIKASI LAYANAN",0,1,'L');
+        $pdf->Cell(120, $spasi, "VERIFIKASI LAYANAN",0,0,'L');
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(100, $spasi, $data->kode, 0, 1, 'L');
         $pdf->SetFont('Times','',12);
         $pdf->Ln(5);
         $pdf->Cell(45, $spasi,'No. Jenis Layanan', 0, 0, 'L');

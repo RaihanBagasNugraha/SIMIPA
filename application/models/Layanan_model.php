@@ -468,6 +468,18 @@ class Layanan_model extends CI_Model
 		return $result->result();
     }
 
+    function get_approval_cek_tendik2($bidang)
+    {
+        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE a.status = '-1' AND a.id_layanan_fakultas = b.id_layanan_fakultas AND b.bagian LIKE '$bidang' order by a.updated_at ");
+		return $result->result();
+    }
+
+    function get_approval_cek_tendik3($kode)
+    {
+        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE a.kode = '$kode' AND a.id_layanan_fakultas = b.id_layanan_fakultas");
+		return $result->result();
+    }
+
     //layanan tendik berkas keluar
     function get_approval_keluar_tendik($bidang)
     {
@@ -497,6 +509,12 @@ class Layanan_model extends CI_Model
 	{
         $this->db->where('id', $where);
 	    $this->db->update('layanan_fakultas_mahasiswa', array('status' => $status));
+    }
+
+    function update_kode_layanan($where,$kode)
+	{
+        $this->db->where('id', $where);
+	    $this->db->update('layanan_fakultas_mahasiswa', array('kode' => $kode));
     }
 
     function update_layanan_fak_mhs($where,$data)
@@ -542,7 +560,7 @@ class Layanan_model extends CI_Model
 
     function get_layanan_lacak($npm)
     {
-        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE a.npm = $npm AND ((a.status = 0 AND (a.tingkat IS NOT null AND a.tingkat != '' )) OR a.status = 1 ) AND a.id_layanan_fakultas = b.id_layanan_fakultas ORDER BY a.created_at asc,b.bagian,a.status");
+        $result = $this->db->query("SELECT * FROM layanan_fakultas_mahasiswa a, layanan_fakultas b WHERE a.npm = $npm AND ((a.status = 0 AND (a.tingkat IS NOT null AND a.tingkat != '' )) OR a.status = 1 OR a.status = '-1' ) AND a.id_layanan_fakultas = b.id_layanan_fakultas ORDER BY a.created_at asc,b.bagian,a.status");
 		return $result->result();
     }
 
@@ -978,6 +996,18 @@ class Layanan_model extends CI_Model
     {
         $result = $this->db->query("SELECT * FROM `layanan_fakultas_mahasiswa` WHERE id_layanan_fakultas = $lay AND created_at BETWEEN '$awal' AND '$akhir' AND status = 2  AND Mid(npm,6,1) = $jur");
 		return $result->result();
+    }
+
+    function get_last_id_fak_mhs()
+    {
+        $result = $this->db->query("SELECT id+1 as id FROM `layanan_fakultas_mahasiswa` ORDER BY `id` DESC limit 1");
+		return $result->row();
+    }
+
+    function cek_kode_layanan($kode)
+    {
+        $result = $this->db->query("SELECT * FROM `layanan_fakultas_mahasiswa` WHERE kode LIKE '$kode'");
+		return $result->row();
     }
     
 }

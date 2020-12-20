@@ -188,7 +188,7 @@
                                                     }//ditolak
                                                     elseif($layanan->status == 3){
                                                 ?>
-                                                        <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/kemahasiswaan/unduh?id=".$layanan->id."&layanan=".$layanan->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                                        <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/kemahasiswaan/unduh?id=".$this->encrypt->encode($layanan->id)."&layanan=".$layanan->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                         <a href="<?php echo site_url("/mahasiswa/prestasi/surat-tugas-form/ajukan?id=".$this->encrypt->encode($layanan->id)."&aksi=perbaiki")  ?> " class="btn-wide mb-2 btn btn-primary btn-sm"><i class="fa fa-wrench" aria-hidden="true"></i></a>
                                                         <!-- &emsp; -->
                                                         <a data-toggle = "modal" data-id="<?php echo $layanan->id ?>"  class="passingID" >
@@ -198,7 +198,7 @@
                                                         </a>
                                                 <?php
                                                     }else{ ?>
-                                                        <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/kemahasiswaan/unduh?id=".$layanan->id."&layanan=".$layanan->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                                        <a href="<?php echo site_url("/mahasiswa/layanan-fakultas/kemahasiswaan/unduh?id=".$this->encrypt->encode($layanan->id)."&layanan=".$layanan->id_layanan_fakultas) ?>" class="btn-wide mb-2 btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
                                                 <?php 
                                                     }
                                                     }

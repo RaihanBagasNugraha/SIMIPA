@@ -2626,6 +2626,39 @@ $(document).ready(function() {
     </div>
 </div>
 
+<!-- verif surat -->
+<div class="modal fade" id="verifikasimasuk2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <?php $jenis = $this->uri->segment(3); ?>
+                <form id="verifmasuk2" method="post" action="<?php echo site_url("tendik/verifikasi-berkas-masuk-fakultas-simpan2/$jenis") ?>">
+                    <input type="hidden" name="id_pengajuan" id="IDMasuk2" value="">                
+                    <input type="hidden" name="aksi" id="aksi" value="setuju">                
+                    <label >Verifikasi Berkas Masuk ?</label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="verifmasuk2" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- tolak verif surat -->
 <div class="modal fade" id="tolakmasuk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
