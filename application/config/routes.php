@@ -513,8 +513,13 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
     $route['dosen/rekap-layanan/(:any)'] = 'dosen/rekap_layanan';
     $route['dosen/rekap-layanan/(:any)/detail'] = 'dosen/rekap_layanan_detail';
 
+//admin
+$route['admin/kelola-akun'] = 'admin/kelola_akun';
+$route['admin/mahasiswa/registrasi'] = 'admin/mahasiswa_registrasi';
+$route['admin/form-layanan/atribut'] = 'tendik/tambah_atribut';
+
 $route['beranda'] = 'admin';
-$route['admin'] = 'welcome';
+// $route['admin'] = 'welcome';
 $route['periksa-akses'] = 'welcome/periksa_sandi';
 $route['keluar-sistem'] = 'welcome/logout';
 $route['data-peserta'] = 'admin/list';
@@ -544,3 +549,5 @@ $route['approval/simpan-ta'] = 'approval/simpan_data';
 $route['email-test'] = 'approval/send';
 $route['approval/seminar?(:any)'] = 'approval/approval_seminar';
 $route['approval/simpan-seminar'] = 'approval/simpan_seminar';
+$route['verifikasi-registrasi/(:any)'] = 'approval/verifikasi_registrasi';
+$route['ganti-password/(:any)'] = 'approval/ganti_password';

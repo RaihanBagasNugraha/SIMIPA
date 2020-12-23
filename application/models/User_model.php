@@ -13,12 +13,14 @@ class User_model extends CI_Model
 	{
 		$query = "SELECT userId, password, roleId, name,
 		case
+		when roleId = '1' then (select nip_nik from tbl_users_dosen where id_user = userId)
 		when roleId = '2' then (select nip_nik from tbl_users_dosen where id_user = userId)
 		when roleId = '3' then (select npm from tbl_users_mahasiswa where id_user = userId)
 		when roleId = '4' then (select nip_nik from tbl_users_tendik where id_user = userId)
 		end akun
 		FROM `tbl_users`
 		where (case
+		when roleId = '1' then (select nip_nik from tbl_users_dosen where id_user = userId)
 		when roleId = '2' then (select nip_nik from tbl_users_dosen where id_user = userId)
 		when roleId = '3' then (select npm from tbl_users_mahasiswa where id_user = userId)
 		when roleId = '4' then (select nip_nik from tbl_users_tendik where id_user = userId)
@@ -68,6 +70,20 @@ class User_model extends CI_Model
         }
 	}
 
+	function cek_nip_dosen($nip)
+	{
+		$this->db->where('nip_nik', $nip);
+		$query = $this->db->get($this->tbl_dosen);
+
+		$user= $query->row();
+
+		if(!empty($user)){
+            return 1;
+        } else {
+            return 0;
+        }
+	}
+
 	function addNewUser($userInfo, $data_mhs)
     {
         $this->db->trans_start();
@@ -79,6 +95,10 @@ class User_model extends CI_Model
 		if($userInfo['roleId'] == 3)
 		{
 			$this->db->insert($this->tbl_mahasiswa, $data_mhs);
+			//$this->db->error(); 
+		}elseif($userInfo['roleId'] == 2 || $userInfo['roleId'] == 1)
+		{
+			$this->db->insert($this->tbl_dosen, $data_mhs);
 			//$this->db->error(); 
 		}
         
@@ -580,6 +600,80 @@ class User_model extends CI_Model
 		$result = $this->db->query("SELECT roleId FROM `tbl_users` WHERE userId = $id_user");
 		return $result->row()->roleId;
 	}
+
+	//admin
+	function get_mhs_regis()
+	{
+		$result = $this->db->query("SELECT * FROM tbl_users WHERE (roleId = 3 OR roleId = 5) AND is_active = 0 AND userId NOT IN (SELECT userId FROM tbl_user_registrasi)");
+		return $result->result();
+	}
+
+	function delete_user($id)
+	{
+        $this->db->delete('tbl_users_mahasiswa', array('id_user' => $id));
+        $this->db->delete('tbl_users', array('userId' => $id));
+	}
+	
+	function insert_mhs_registrasi($data)
+	{
+		$this->db->trans_start();
+		$this->db->insert('tbl_user_registrasi', $data);	
+		$this->db->trans_complete();
+	}
+
+	function cek_token_regis($token)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_user_registrasi` WHERE token = '$token'");
+		return $result->row();
+	}
+
+	function verifikasi_registrasi($id)
+	{
+	    $this->db->where('userId', $id);
+	    $this->db->update($this->tbl_user, array('is_active' => 1));
+	}
+
+	function delete_token($data)
+	{
+		$this->db->delete('tbl_user_registrasi', array('token'=>$data));
+	}
+
+	function get_user_by_email($email)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users` WHERE email = '$email'");
+		return $result->row();
+	}
+
+	function insert_mhs_reset_pass($data_reset)
+	{
+		$this->db->trans_start();
+		$this->db->insert('tbl_user_reset', $data_reset);	
+		$this->db->trans_complete();
+	}
+
+	function cek_token_reset($token)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_user_reset` WHERE token = '$token'");
+		return $result->row();
+	}
+
+	function get_from_token($token)
+	{
+		$result = $this->db->query("SELECT * FROM tbl_user_reset a, tbl_users b WHERE a.token = '$token' AND a.email = b.email");
+		return $result->row();
+	}
+
+	function update_password_user($id,$data)
+	{
+	    $this->db->where('userId', $id);
+	    $this->db->update($this->tbl_user, $data);
+	}
+
+	function delete_token_reset($data)
+	{
+		$this->db->delete('tbl_user_reset', array('token'=>$data));
+	}
+
 
 	/* ------------------------------------
 	function select_all()

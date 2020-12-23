@@ -71,8 +71,8 @@ class Welcome extends CI_Controller {
 			//print_r($newData);
 			
 	        if($user->roleId == 1) {
-				// administrato
-	            //redirect(site_url("pimpinan"));
+				// administrator
+	            redirect(site_url("admin"));
 	        } if($user->roleId == 2) {
 				// dosen
 				redirect(site_url("dosen"));
@@ -127,10 +127,19 @@ class Welcome extends CI_Controller {
 			$jurusan = 0;
 		}
 
-		$data_mhs = array(
-			'jurusan' => $jurusan,
-			'npm' => $npm
-		);
+		if($status == 3){
+			$data_mhs = array(
+				'jurusan' => $jurusan,
+				'npm' => $npm
+			);
+		}
+		
+		elseif($status == 2 || $status == 1){
+			$data_mhs = array(
+				'nip_nik' => $npm
+			);
+		}
+		
 
 		// cek email
 		$cek_email = $this->user_model->cek_email($email);
@@ -145,9 +154,10 @@ class Welcome extends CI_Controller {
 				// cek npm
 				$cek_npm = $this->user_model->cek_npm($npm);
 			}
-			else{
-				// cek npm alumni
-				$cek_npm = $this->user_model->cek_npm_alumni($npm);
+			elseif($status == 2 || $status == 1){
+				// cek nip dosen
+				$cek_npm = $this->user_model->cek_nip_dosen($npm);
+				// $cek_npm = $this->user_model->cek_npm_alumni($npm);
 			}
 			if($cek_npm)
 			{

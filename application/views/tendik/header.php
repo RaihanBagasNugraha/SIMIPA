@@ -6,8 +6,13 @@
 // $tb_admin_kabag_tu = $this->user_model->tugas_tendik_kabag_tu($this->session->userdata('userId'));
 
 $tugas = $this->user_model->tugas_tambahan_get($this->session->userdata('userId'));
+if(empty($tugas)){
+    $tb=array();
+}
+else{
 foreach($tugas as $row){
     $tb[] = $row->tugas;
+}
 }
 
 ?>

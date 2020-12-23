@@ -48,7 +48,12 @@
                                     <?php } ?>
                                     <?php if(isset($_GET['access']) && $_GET['access'] == 'ditolak') { ?>
                                     <div class="alert alert-danger fade show" role="alert">Anda belum Login — silakan Login terlebih dahulu!</div>
-                                    <?php } ?>
+                                    <?php }if(isset($_GET['verifikasi']) && $_GET['verifikasi'] == 'sukses') { ?>
+                                        <div class="alert alert-success fade show" role="alert">Berhasil Verifikasi Akun!</div>
+                                    <?php }?>
+                                    <?php if(isset($_GET['reset']) && $_GET['reset'] == 'sukses') { ?>
+                                        <div class="alert alert-success fade show" role="alert">Password Berhasil Diubah</div>
+                                    <?php }?>
                             <div class="divider row"></div>
                             <div>
                                 <form class="" method="post" action="<?php echo site_url('periksa-akses') ?>">

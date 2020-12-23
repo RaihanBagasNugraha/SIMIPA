@@ -151,6 +151,110 @@ class Approval extends CI_Controller {
         window.location='apps.fmipa.unila.ac.id/simipa';</script>"; //ganti url
     }
 
+    
+	function verifikasi_registrasi()
+	{
+		$token = $this->uri->segment(2);
+        //get id from token
+        $cek = $this->user_model->cek_token_regis($token);
+        if(empty($cek)){
+            echo "<script>alert('Token Salah Atau Sudah Tidak Berlaku');javascript:history.back();</script>";
+        }else{
+            $this->user_model->verifikasi_registrasi($cek->userId);
+            //delete
+            $this->user_model->delete_token($token);
+            redirect(site_url('?verifikasi=sukses'));
+        }
+        
+    }
+    
+    function lupa_password()
+    {
+        $data = $this->input->post();
+        // echo "<pre>";
+        // print_r($data);
+
+        //cek email
+        $cek = $this->user_model->get_user_by_email($data['email']);
+
+        if(empty($cek)){
+            redirect(site_url('lupa-kata-kunci?status=gagal'));
+        }else{
+
+            $token = md5($data['email'].'simipa_password'.date('Y-m-d H:i:s'));
+            // echo $token;
+            $data_reset = array(
+				"email" => $data['email'],
+				"token" => $token,
+			);
+			
+
+			$config = Array(  
+				'protocol' => 'smtp',  
+				'smtp_host' => 'ssl://smtp.googlemail.com',  
+				'smtp_port' => 465,  
+				'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+				'smtp_pass' => 'apps_fmipa 2020',   
+				'mailtype' => 'html',   
+				'charset' => 'iso-8859-1'  
+			);  
+
+			$this->load->library('email', $config);
+			$this->email->set_newline("\r\n");  
+			$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
+			$this->email->to($data['email']);//$row->email   
+			$this->email->subject('Lupa Password SIMIPA');   
+			$this->email->message("
+			Silahkan Klik Link Berikut Untuk Reset Password Website SIMIPA <br>
+			http://localhost/simipa/ganti-password/$token
+			<br><br>
+			Terimakasih.
+			
+			");
+			if (!$this->email->send()) {  
+                redirect(site_url('lupa-kata-kunci?status=kesalahan'));
+			   }else{  
+                $this->user_model->insert_mhs_reset_pass($data_reset);
+                redirect(site_url('lupa-kata-kunci?status=sukses'));
+			}   
+
+        }
+    }
+
+    function ganti_password()
+    {
+        $token = $this->uri->segment(2);
+        // echo $token;
+        
+        $cek = $this->user_model->cek_token_reset($token);
+        if(empty($cek)){
+            echo "<script>alert('Token Salah Atau Sudah Tidak Berlaku');javascript:history.back();</script>";
+        }else{
+            $data['user'] = $this->user_model->get_user_by_email($cek->email);
+            $this->load->view('approval/header_global');
+            $this->load->view('approval/header');
+            $this->load->view('approval/reset_password',$data);
+            $this->load->view('footer_global');
+        }
+
+    }
+
+    function simpan_password()
+    {
+        $data = $this->input->post();
+        // echo "<pre>";
+        // print_r($data);
+        //get user
+        $cek = $this->user_model->get_from_token($data['token']);
+        //update password
+        $pass = array(
+            "password" => getHashedPassword($data['password'])
+        );
+        //hapus
+        $this->user_model->delete_token_reset($data['token']);
+        $this->user_model->update_password_user($cek->userId,$pass);
+        redirect(site_url('?reset=sukses'));
+    }
 
 
 }  

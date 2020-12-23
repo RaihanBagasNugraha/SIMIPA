@@ -6,14 +6,18 @@ class Admin extends CI_Controller {
     public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('peserta_model');
-		$this->load->model('nilai_model');
-		$this->load->model('pejabat_model');
+		$this->load->model('wilayah_model');
+		$this->load->model('parameter_model');
+		$this->load->model('jurusan_model');
 		$this->load->model('user_model');
+		$this->load->model('ta_model');
+		$this->load->model('pkl_model');
+		$this->load->model('layanan_model');
 		$this->load->library('pdf');
+		$this->load->library('encrypt');
 		
 		if($this->session->has_userdata('username')) {
-		    if($this->session->userdata('state') == 'Pimpinan') {
+			if($this->session->userdata('state') != 1) {
 		        echo "<script>alert('Akses ditolak!!');javascript:history.back();</script>";
 		    }
 		} else {
@@ -23,10 +27,90 @@ class Admin extends CI_Controller {
 
 	public function index()
 	{
+		redirect(site_url("admin/kelola-akun"));
+	}
+
+	// public function index()
+	// {
+	// 	$this->load->view('admin/header');
+	// 	$this->load->view('admin/dashboard');
+	// 	//echo base_url()."<br>".site_url();
+	// 	$this->load->view('admin/footer');
+	// }
+
+	public function kelola_akun()
+	{
+		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $data);
 		$this->load->view('admin/header');
-		$this->load->view('admin/dashboard');
-		//echo base_url()."<br>".site_url();
-		$this->load->view('admin/footer');
+		
+		$this->load->view('admin/akun',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function mahasiswa_registrasi()
+	{
+		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $data);
+		$this->load->view('admin/header');
+		$data['mahasiswa'] = $this->user_model->get_mhs_regis();
+
+		$this->load->view('admin/user/mhs_registrasi',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function simpan_registrasi_mhs()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		if($data['aksi'] == 'hapus'){
+			$this->user_model->delete_user($data['id']);
+		}else{
+			//get user data
+			$mhs = $this->user_model->get_mahasiswa_data($data['id']);
+
+			//insert token
+			$token = md5($data['id'].'apps_fmipa_2020'.date('Y-m-d H:i:s'));
+			$data_regis = array(
+				"userId" => $data['id'],
+				"token" => $token,
+			);
+			
+
+			$config = Array(  
+				'protocol' => 'smtp',  
+				'smtp_host' => 'ssl://smtp.googlemail.com',  
+				'smtp_port' => 465,  
+				'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+				'smtp_pass' => 'apps_fmipa 2020',   
+				'mailtype' => 'html',   
+				'charset' => 'iso-8859-1'  
+			);  
+
+			$this->load->library('email', $config);
+			$this->email->set_newline("\r\n");  
+			$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
+			$this->email->to($mhs->email);//$row->email   
+			$this->email->subject('Verifikasi Email Registrasi SIMIPA');   
+			$this->email->message("
+			Silahkan Klik Link Berikut Untuk Menyelesaikan Verifikasi Registrasi <br>
+			http://localhost/simipa/verifikasi-registrasi/$token
+			<br><br>
+			Terimakasih.
+			
+			");
+			if (!$this->email->send()) {  
+					
+			   }else{  
+				$this->user_model->insert_mhs_registrasi($data_regis);
+			}   
+
+		}
+
+		redirect(site_url("admin/mahasiswa/registrasi?status=sukses"));
 	}
 	
 	

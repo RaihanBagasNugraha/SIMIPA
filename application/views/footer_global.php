@@ -3416,3 +3416,71 @@ $(document).ready(function() {
 </div>
 
 <?php } ?>
+
+<?php if($this->uri->segment(1) == 'admin' || $this->uri->segment(2) == 'mahasiswa') { ?>
+
+<div class="modal fade" id="verif_regis" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="form_verif" method="post" action="<?php echo site_url("admin/simpan_registrasi_mhs") ?>">
+                    <div class="position-relative form-group">
+                        <label><b>Verifikasi</b> User ?</label>
+                            <input type="hidden" name="id" id='id_mhs' value="">
+                            <input type="hidden" name="aksi" id='' value="simpan">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="form_verif" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="tolak_regis" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="tolak_regis_form" method="post" action="<?php echo site_url("admin/simpan_registrasi_mhs") ?>">
+                    <div class="position-relative form-group">
+                        <label><b>Hapus</b> User ?</label>
+                            <input type="hidden" name="id" id='id_mhs2' value="">
+                            <input type="hidden" name="aksi" id='' value="hapus">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="tolak_regis_form" class="btn btn-danger">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>

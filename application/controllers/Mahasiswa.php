@@ -59,7 +59,7 @@ class Mahasiswa extends CI_Controller {
 		if($this->input->post('output_ttd') != "")
 			$data['ttd'] = $this->input->post('output_ttd');
 		if(!empty($this->input->post('password')))
-			$data['password'] = $this->input->post('password');
+			$data['password'] = getHashedPassword($this->input->post('password'));
 
 		if(!empty($_FILES)) {
 			$file = $_FILES['file']['tmp_name']; 
