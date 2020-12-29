@@ -102,10 +102,10 @@ class Layanan_model extends CI_Model
     {
         $cek = $this->db->query("SELECT * FROM tugas_tambahan a, tbl_users_tugas b, tbl_users c, laboratorium d WHERE a.id_tugas_tambahan = 15 AND d.nama_lab LIKE '%$nama_lab%' AND a.id_tugas_tambahan = b.tugas AND d.id_lab = b.jurusan_unit AND b.id_user = c.userId")->row(); 
         if($cek->roleId == 2){
-            $result = $this->db->query("SELECT d.*,e.* FROM tugas_tambahan a, laboratorium b, tbl_users_tugas c, tbl_users_dosen d, tbl_users e WHERE a.id_tugas_tambahan = 15 AND a.id_tugas_tambahan = c.tugas AND b.nama_lab LIKE '%$nama_lab%' AND b.id_lab = c.jurusan_unit AND c.id_user = d.id_user AND d.id_user = e.userId");
+            $result = $this->db->query("SELECT d.*,e.* FROM tugas_tambahan a, laboratorium b, tbl_users_tugas c, tbl_users_dosen d, tbl_users e WHERE a.id_tugas_tambahan = 15 AND c.aktif = 1 and a.id_tugas_tambahan = c.tugas AND b.nama_lab LIKE '%$nama_lab%' AND b.id_lab = c.jurusan_unit AND c.id_user = d.id_user AND d.id_user = e.userId");
         }
         elseif($cek->roleId == 4){
-            $result = $this->db->query("SELECT d.*,e.* FROM tugas_tambahan a, laboratorium b, tbl_users_tugas c, tbl_users_tendik d, tbl_users e WHERE a.id_tugas_tambahan = 15 AND a.id_tugas_tambahan = c.tugas AND b.nama_lab LIKE '%$nama_lab%' AND b.id_lab = c.jurusan_unit AND c.id_user = d.id_user AND d.id_user = e.userId");
+            $result = $this->db->query("SELECT d.*,e.* FROM tugas_tambahan a, laboratorium b, tbl_users_tugas c, tbl_users_tendik d, tbl_users e WHERE a.id_tugas_tambahan = 15 AND c.aktif = 1 and a.id_tugas_tambahan = c.tugas AND b.nama_lab LIKE '%$nama_lab%' AND b.id_lab = c.jurusan_unit AND c.id_user = d.id_user AND d.id_user = e.userId");
         }     
 		return $result->row();
     }
@@ -422,7 +422,7 @@ class Layanan_model extends CI_Model
      //layanan kaprodi (kode 12)
      function get_approval_kaprodi_fakultas($id_user)
      {
-         $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a, tbl_users_mahasiswa b, tbl_users_tugas c WHERE a.tingkat LIKE '12%' AND c.id_user = $id_user AND c.tugas = 14 AND c.prodi = b.prodi AND a.npm = b.npm AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 12) order by a.updated_at");
+         $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a, tbl_users_mahasiswa b, tbl_users_tugas c WHERE a.tingkat LIKE '12%' AND c.id_user = $id_user AND c.tugas = 14 AND c.aktif = 1 AND c.prodi = b.prodi AND a.npm = b.npm AND a.id NOT IN (SELECT id_layanan_mahasiswa FROM layanan_fakultas_approval WHERE approver_id = 12) order by a.updated_at");
          return $result->result();
      }
 
@@ -457,7 +457,7 @@ class Layanan_model extends CI_Model
     //layanan kalab (kode 17)
     function get_approval_kalab_fakultas($id_user)
     {
-        $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a, layanan_fakultas_mahasiswa_meta b, layanan_fakultas_atribut c, laboratorium d, tbl_users_tugas e WHERE a.tingkat LIKE '17%' AND a.id_layanan_fakultas = c.id_layanan AND c.nama LIKE '%lab%' AND c.id_atribut = b.meta_key AND a.id = b.id_layanan_fak_mhs AND d.nama_lab LIKE CONCAT('%',b.meta_value,'%') AND e.id_user = $id_user AND e.tugas = 15 AND e.jurusan_unit = d.id_lab");
+        $result = $this->db->query("SELECT a.* FROM layanan_fakultas_mahasiswa a, layanan_fakultas_mahasiswa_meta b, layanan_fakultas_atribut c, laboratorium d, tbl_users_tugas e WHERE a.tingkat LIKE '17%' AND a.id_layanan_fakultas = c.id_layanan AND c.nama LIKE '%lab%' AND c.id_atribut = b.meta_key AND a.id = b.id_layanan_fak_mhs AND d.nama_lab LIKE CONCAT('%',b.meta_value,'%') AND e.id_user = $id_user AND e.tugas = 15 AND e.aktif = 1 AND e.jurusan_unit = d.id_lab");
         return $result->result();
     }
 

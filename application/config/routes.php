@@ -516,7 +516,9 @@ $route['tendik/verifikasi-berkas/seminar-pkl/form/setujui'] = 'tendik/verifikasi
 //admin
 $route['admin/kelola-akun'] = 'admin/kelola_akun';
 $route['admin/mahasiswa/registrasi'] = 'admin/mahasiswa_registrasi';
-$route['admin/form-layanan/atribut'] = 'tendik/tambah_atribut';
+$route['admin/struktural/tugas'] = 'admin/struktural_tugas';
+$route['admin/struktural/tugas/form'] = 'admin/struktural_tugas_form';
+// $route['admin/form-layanan/atribut'] = 'tendik/tambah_atribut';
 
 $route['beranda'] = 'admin';
 // $route['admin'] = 'welcome';

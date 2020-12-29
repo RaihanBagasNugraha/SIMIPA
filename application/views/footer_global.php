@@ -864,11 +864,11 @@
                             <option value = "">-- Pilih Tugas Tambahan --</option>
                                 <?php
                                 $list_tugas = $this->user_model->get_tugas_tambahan_all();
-                                            
+                                $array = array(17,19);            
                                 foreach ($list_tugas as $row) {
-                                    // if($biodata->pangkat_gol == $row->id_pangkat_gol) $select = "selected";
-                                    // else $select = "";
-                                    echo "<option ".$select." value='".$row->id_tugas_tambahan."'>".$row->nama."</option>";
+                                    if(in_array($row->id_tugas_tambahan, $array)){
+                                        echo "<option ".$select." value='".$row->id_tugas_tambahan."'>".$row->nama."</option>";
+                                    }
                                 }
                                 ?>
                         </select>
@@ -1033,11 +1033,11 @@
                             <option value = "">-- Pilih Tugas Tambahan --</option>
                                 <?php
                                 $list_tugas = $this->user_model->get_tugas_tambahan_all();
-                                            
+                                $array = array(16,18,21,11);    
                                 foreach ($list_tugas as $row) {
-                                    // if($biodata->pangkat_gol == $row->id_pangkat_gol) $select = "selected";
-                                    // else $select = "";
-                                    echo "<option ".$select." value='".$row->id_tugas_tambahan."'>".$row->nama."</option>";
+                                    if(in_array($row->id_tugas_tambahan, $array)){
+                                        echo "<option ".$select." value='".$row->id_tugas_tambahan."'>".$row->nama."</option>";
+                                    }
                                 }
                                 ?>
                         </select>
@@ -3482,5 +3482,251 @@ $(document).ready(function() {
         </div>
     </div>
 </div>
+
+<?php } ?>
+
+<?php if($this->uri->segment(1) == 'admin' || $this->uri->segment(2) == 'struktural') { ?>
+
+<div class="modal fade" id="add_tugas" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Tugas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="add_tgs" method="post" action="<?php echo site_url("admin/tambah_tugas") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Tugas Tambahan</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="tugas" value="" placeholder='Nama Tugas Tambahan' class='form-control' id="">
+                            </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="add_tgs" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="nonaktif_tugas_user" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+            <?php  $tgs = $this->input->get('tugas'); ?>
+                <form id="aksi_tgs" method="post" action="<?php echo site_url("admin/aksi_tugas") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-9 col-form-label"><b>Nonaktifkan </b>User Berikut Dari Jabatan Struktural ?</label>
+                        <input type="hidden" id='id_tugas' name='id'>
+                        <input type="hidden" id='' name='aksi' value='nonaktif'>
+                        <input type="hidden" id='' name='tugas' value="<?php echo $tgs ?>">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="aksi_tgs" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="hapus_tugas_user" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+            <?php  $tgs = $this->input->get('tugas'); ?>
+                <form id="aksi_tgs2" method="post" action="<?php echo site_url("admin/aksi_tugas") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-9 col-form-label"><b>Hapus </b>User Berikut Dari Jabatan Struktural ?</label>
+                        <input type="hidden" id='id_tugas2' name='id'>
+                        <input type="hidden" id='' name='aksi' value='hapus'>
+                        <input type="hidden" id='' name='tugas' value="<?php echo $tgs ?>">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="aksi_tgs2" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add_tugas_user" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Tugas Tambahan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="tgs-tmbh" method="post" action="<?php echo site_url("admin/simpan_tugas") ?>">
+                    <?php  $tgs = $this->input->get('tugas'); ?>
+                    <input type="hidden" name="tugas" id="tugas" value="<?php echo $tgs; ?>">
+                    <label><b>Tugas Tambahan</b></label>
+                      <input type="text" value="<?php echo $tgs == '' ? "" : $this->user_model->get_tugas_by_id($tgs)->nama ?>" class='form-control' readonly >
+                    <br>
+                    <label><b>Nama</b></label>
+                    <select required name="user" id="" class='form-control'>
+                        <option value="">-- Pilih Nama --</option>
+                        <?php 
+                            $list = $this->user_model->get_user_tgs();
+                            foreach($list as $lst){
+                        ?>
+                            <option value="<?php echo $lst->userId ?>"><?php echo $lst->name ?></option>
+                        <?php } ?>
+                    </select>
+
+                    <br>   
+                    <div id="prodi" style="display: none;">
+                    <label><b>Program Studi</b></label>
+                        <select name="prodi" class="input-lg form-control">
+                        <option value = "">-- Pilih Prodi --</option>
+                                <?php
+                                $list_prodi = $this->user_model->get_prodi_all();
+                                            
+                                foreach ($list_prodi as $row) {
+                                    // if($biodata->pangkat_gol == $row->id_pangkat_gol) $select = "selected";
+                                    // else $select = "";
+                                    echo "<option ".$select." value='".$row->id_prodi."'>".$row->nama."</option>";
+                                }
+                                ?>
+                        </select>
+                    <br> 
+                    </div>    
+
+                    <div id="jurusan" style="display: none;">
+                    <label><b>Jurusan</b></label>
+                        <select name="jurusan" class="input-lg form-control">
+                        <option value = "">-- Pilih Jurusan --</option>
+                                <?php
+                                $list_jurusan = $this->user_model->get_jurusan_all();
+                                            
+                                foreach ($list_jurusan as $row) {
+                                    // if($biodata->pangkat_gol == $row->id_pangkat_gol) $select = "selected";
+                                    // else $select = "";
+                                    echo "<option ".$select." value='".$row->id_jurusan."'>".$row->nama."</option>";
+                                }
+                                ?>
+                        </select>
+                    <br> 
+                    </div>   
+
+                    <div id="lab" style="display: none;">
+                    <label><b>Laboratorium</b></label>
+                        <select name="lab" class="input-lg form-control">
+                        <option value = "">-- Pilih Laboratorium --</option>
+                                <?php
+                                $list_lab = $this->user_model->get_lab_all();
+                                            
+                                foreach ($list_lab as $row) {
+                                    // if($biodata->pangkat_gol == $row->id_pangkat_gol) $select = "selected";
+                                    // else $select = "";
+                                    echo "<option ".$select." value='".$row->id_lab."'>".$row->nama_lab."</option>";
+                                }
+                                ?>
+                        </select>
+                    <br> 
+                    </div>     
+                       
+                    <label><b>Periode</b></label>    
+                        <input required name="periode" id="periode" value="" type="text" placeholder="2020/2024" class="form-control"> 
+                    
+                    <br> 
+                     <!-- <label><b>Status</b></label>    
+                        <select name="status_tgs" class="input-lg form-control">
+                            <option>-- Status --</option>
+                            <option value ="1">Aktif</option>
+                            <option value ="0">Nonaktif</option>
+                        </select>   -->
+                </form>
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="tgs-tmbh" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+ $(document).ready(function(){   
+    $("select").select2({
+        theme: "bootstrap"
+    });
+    
+    var value = $('#tugas').val();
+    // $('#tugas').on('change', function() {
+          if (value == '14')
+          {
+            jQuery("#prodi").show();
+            jQuery("#jurusan").hide();
+            jQuery("#lab").hide();
+          }
+          else if(value == '19' || value == '12' || value == '13' || value == '17' || value == '18')
+          {
+            jQuery("#prodi").hide();
+            jQuery("#jurusan").show();
+            jQuery("#lab").hide();
+          }
+          else if(value == '15' || value == '16')
+          {
+            jQuery("#prodi").hide();
+            jQuery("#jurusan").hide();
+            jQuery("#lab").show();
+          }
+          else{
+            jQuery("#prodi").hide();
+            jQuery("#jurusan").hide();
+            jQuery("#lab").hide();
+          }
+        // });
+    }); 
+    
+</script>
 
 <?php } ?>

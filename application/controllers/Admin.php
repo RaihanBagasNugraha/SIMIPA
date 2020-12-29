@@ -17,7 +17,7 @@ class Admin extends CI_Controller {
 		$this->load->library('encrypt');
 		
 		if($this->session->has_userdata('username')) {
-			if($this->session->userdata('state') != 1) {
+			if($this->session->userdata('state') <> 1) {
 		        echo "<script>alert('Akses ditolak!!');javascript:history.back();</script>";
 		    }
 		} else {
@@ -111,6 +111,128 @@ class Admin extends CI_Controller {
 		}
 
 		redirect(site_url("admin/mahasiswa/registrasi?status=sukses"));
+	}
+
+	function struktural_tugas()
+	{
+		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $data);
+		$data['tugas'] = $this->user_model->get_tugas_tambahan_all();
+
+		$this->load->view('admin/header');
+		$this->load->view('admin/struktural/tugas_tambahan',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function tambah_tugas()
+	{
+		$tgs = $this->input->post('tugas');
+		$data = array(
+			"nama" => $tgs
+		);
+		$this->user_model->tambah_tugas($data);
+		redirect(site_url("admin/struktural/tugas"));
+	}
+
+	function struktural_tugas_form()
+	{
+		$tgs = $this->input->get('tugas');
+		// echo $tgs;
+		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $data);
+		$data['tugas'] = $this->user_model->get_tugas_periode($tgs);
+
+		$this->load->view('admin/header');
+		$this->load->view('admin/struktural/tugas_tambahan_form',$data);
+
+        $this->load->view('footer_global');
+	}
+
+	function simpan_tugas()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$tugas = $data['tugas'];
+		$status = 1;
+		$jurusan = $data['jurusan'];
+		//set
+		if($jurusan == ""){
+			$jurusan = 0;
+		}
+		if($data['prodi'] == ""){
+			$prodi = 0;
+		}
+		if($data['lab'] == ""){
+			$lab = 0;
+		}
+
+		//get jurusan, unit, lab
+		if($tugas == 16 || $tugas == 15)
+		{
+			$jur_unit = $lab;
+		}
+		elseif($tugas == 14)
+		{
+			$jur_prodi = $this->jurusan_model->get_prodi_id($prodi);
+			$jur_unit = $jur_prodi->jurusan;
+		}
+		else{
+			$jur_unit = $jurusan;
+		}
+		$array = array(16,17,18,19,21,11);
+		$check = $this->user_model->check_tugas_tambahan($data['user'],$tugas,$jur_unit,$prodi,$status);
+
+		if(!empty($check)){
+			redirect(site_url("admin/struktural/tugas/form?tugas=$tugas&status=duplikat"));
+		}else{
+			if(!in_array($tugas, $array)){
+				$check_double =  $this->user_model->check_tugas_tambahan_duplikat($tugas,$jur_unit,$prodi,$status,$data['periode']);
+				if(!empty($check_double)){
+					$id_user_double = $check_double->id_user;
+					redirect(site_url("admin/struktural/tugas/form?tugas=$tugas&status=duplikat_user&id=".$this->encrypt->encode($id_user_double)));
+				}else{
+					$data_tugas = array(
+						'id_user' => $data['user'],
+						'tugas' => $tugas,
+						'jurusan_unit' => $jur_unit,
+						'prodi' => $prodi,
+						'periode' => $data['periode'],
+						'aktif' => $status,
+					);			
+					$this->user_model->insert_tugas_tambah($data_tugas);
+					
+				}
+
+			}else{
+				$data_tugas = array(
+					'id_user' => $data['user'],
+					'tugas' => $tugas,
+					'jurusan_unit' => $jur_unit,
+					'prodi' => $prodi,
+					'periode' => $data['periode'],
+					'aktif' => $status,
+				);			
+				$this->user_model->insert_tugas_tambah($data_tugas);
+			}
+			redirect(site_url("admin/struktural/tugas/form?tugas=$tugas&status=sukses"));
+		}
+	}
+
+	function aksi_tugas()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$tgs = $data['tugas'];
+		if($data['aksi'] == 'nonaktif'){
+			$this->user_model->nonaktifkan_tugas($data['id']);
+		}else{
+			$this->user_model->hapus_user_tugas($data['id']);
+		}
+		
+		redirect(site_url("admin/struktural/tugas/form?tugas=".$tgs));
 	}
 	
 	

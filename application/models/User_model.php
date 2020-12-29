@@ -473,7 +473,7 @@ class User_model extends CI_Model
 
 	function tugas_tambahan_get($userId)
 	{
-		$result = $this->db->query("SELECT tugas FROM `tbl_users_tugas` WHERE id_user = $userId");
+		$result = $this->db->query("SELECT tugas FROM `tbl_users_tugas` WHERE id_user = $userId and aktif = 1");
 		return $result->result();
 	}
 
@@ -674,6 +674,59 @@ class User_model extends CI_Model
 		$this->db->delete('tbl_user_reset', array('token'=>$data));
 	}
 
+	function get_tugas_tambahan_admin()
+	{
+		$result = $this->db->query("SELECT * FROM `tugas_tambahan` WHERE id_tugas_tambahan < 16");
+		return $result->result();
+	}
+
+	function tambah_tugas($data)
+	{
+		$this->db->trans_start();
+		$this->db->insert('tugas_tambahan', $data);	
+		$this->db->trans_complete();
+	}
+
+	function get_tugas_by_id($tugas)
+	{
+		$result = $this->db->query("SELECT * FROM `tugas_tambahan` WHERE id_tugas_tambahan = $tugas");
+		return $result->row();
+	}
+
+	function get_tugas_user($tugas)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = $tugas ORDER BY periode");
+		return $result->result();
+	}
+
+	function get_tugas_periode($tugas)
+	{
+		$result = $this->db->query("SELECT DISTINCT(periode) FROM `tbl_users_tugas` WHERE tugas = $tugas ORDER BY periode");
+		return $result->result();
+	}
+
+	function get_tugas_periode_user($tugas,$periode)
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users_tugas` WHERE tugas = $tugas AND periode = '$periode' ORDER BY periode");
+		return $result->result();
+	}
+
+	function get_user_tgs()
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users` WHERE roleId = 2 OR roleId = 4 ORDER BY roleId,name");
+		return $result->result();
+	}
+
+	function nonaktifkan_tugas($id)
+	{
+		$this->db->where('id', $id);
+	    $this->db->update('tbl_users_tugas', array("aktif" => 0));	
+	}
+
+	function hapus_user_tugas($data)
+	{
+		$this->db->delete('tbl_users_tugas', array('id'=>$data));
+	}
 
 	/* ------------------------------------
 	function select_all()

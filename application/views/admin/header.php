@@ -17,11 +17,11 @@
                                     </a>
                                 </li> -->
 
-                                <li class="app-sidebar__heading">User</li>
+                                <li class="app-sidebar__heading">MENU</li>
                                 <li <?php if($this->uri->segment(2) == "mahasiswa") echo 'class="mm-active"' ?> >
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-users"></i>
-                                        Mahasiswa
+                                        Registrasi
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
@@ -35,8 +35,26 @@
                                     </ul>
                                 </li>
 
+                               
+                                <li <?php if($this->uri->segment(2) == "struktural") echo 'class="mm-active"' ?> >
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-network"></i>
+                                       Struktural
+                                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                        <a href="<?php echo site_url("admin/struktural/tugas") ?>" <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) == "tugas") echo 'class="mm-active"' ?>>
+                                                <i class="metismenu-icon">
+                                                </i>Tugas Tambahan
+                                            </a>
+                                        </li>
 
-                                <li <?php if($this->uri->segment(2) == "form-layanan") echo 'class="mm-active"' ?>>
+                                    </ul>
+                                </li>
+
+
+                                <!-- <li <?php if($this->uri->segment(2) == "form-layanan") echo 'class="mm-active"' ?>>
                                         <a href="#">
                                             <i class="metismenu-icon pe-7s-note"></i>
                                             Form Layanan
@@ -51,7 +69,7 @@
                                         </li> 
                                     </ul>
                                             
-                                </li>
+                                </li> -->
                              
                                 <div class="divider"></div>
                                 <li>
