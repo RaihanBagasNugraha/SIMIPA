@@ -26,6 +26,13 @@ class Jurusan_model extends CI_Model
 		return $query;
 	}
 
+	function get_unit_kerja_all()
+	{
+		$this->db->order_by('id_unit_kerja', 'ASC');
+		$query = $this->db->get('unit_kerja')->result();
+		return $query;
+	}
+
 	function get_prodi_id($id)
 	{
 		$result = $this->db->query("SELECT * FROM prodi WHERE id_prodi = $id");
@@ -35,6 +42,12 @@ class Jurusan_model extends CI_Model
 	function get_jurusan_id($id)
 	{
 		$result = $this->db->query("SELECT * FROM jurusan WHERE id_jurusan = $id");
+		return $result->row();
+	}
+
+	function get_unit_kerja_id($id)
+	{
+		$result = $this->db->query("SELECT * FROM unit_kerja WHERE id_unit_kerja = $id");
 		return $result->row();
 	}
 	

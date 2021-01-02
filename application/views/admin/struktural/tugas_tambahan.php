@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="page-title-actions">
                                     <a data-toggle = "modal" data-id="" class="passing" >
-                                        <button type="button" class="btn mb-2 btn-primary btn-md"  data-toggle="modal" data-target="#add_tugas">
+                                        <button type="button" class="btn mb-2 btn-success btn-md"  data-toggle="modal" data-target="#add_tugas">
                                             <span class="btn-icon-wrapper"><i class="fa fa-plus" aria-hidden="true"></i>
                                             </span>  Tambah Tugas 
                                         </button>

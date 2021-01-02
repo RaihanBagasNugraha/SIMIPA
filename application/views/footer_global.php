@@ -3730,3 +3730,414 @@ $(document).ready(function() {
 </script>
 
 <?php } ?>
+
+<?php if($this->uri->segment(1) == 'admin' || $this->uri->segment(2) == 'user') { ?>
+
+<!-- dosen -->
+<div class="modal fade" id="add_user" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+            <?php 
+                $seg = $this->uri->segment(3);
+                if($seg == 'dosen'){
+                    $status = 2;
+                }else{
+                    $status = 4;
+                }
+            ?>
+                <form id="upl_prop" method="post" action="<?php echo site_url("admin/add_user_admin") ?>">
+                    <input type="hidden" name="jns" id='' value="<?php echo $this->uri->segment(3) ?>">
+                    <input type="hidden" name="sts" id='' value="<?php echo $status ?>">
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">NIP / Username <span style='color:red'>*</span> </label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="nip" value="" placeholder='NIP / Username' class='form-control' id="">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Nama Lengkap <span style='color:red'>*</span> </label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="nama" value="" placeholder='Nama Lengkap (tanpa gelar)' class='form-control' id="">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Gelar Depan</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="gelar_depan" value="" placeholder='Gelar Depan' class='form-control' id="">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Gelar Belakang</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="gelar_belakang" value="" placeholder='Gelar Belakang' class='form-control' id="">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Email <span style='color:red'>*</span> </label>
+                            <div class="col-sm-9">
+                                <input type="email" required name="email" value="" placeholder='Email' class='form-control' id="">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Password <span style='color:red'>*</span> </label>
+                            <div class="col-sm-6">
+                                <input type="password" required name="password" value="" placeholder='Password' class='form-control' id="myInput">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="checkbox" onclick="myFunction()" id='lihat_pw'>&nbsp;<label for="lihat_pw"> Lihat Password</label>
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">No. HP</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="hp" value="" placeholder='Nomor Handphone/WA' class='form-control' id="">
+                            </div>
+                    </div>
+                    <?php if($seg == 'dosen'){ ?>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Jurusan <span style='color:red'>*</span></label>
+                            <div class="col-sm-6">
+                                <select name="jurusan" required class='form-control' id="">
+                                    <option value="">-- Pilih Jurusan --</option>
+                                    <?php $jur = $this->jurusan_model->get_jurusan_all();
+                                        foreach ($jur as $jur){
+                                    ?>
+                                        <option value="<?php echo $jur->id_jurusan ?>"><?php echo $jur->nama ?></option> 
+                                    <?php } ?>
+                                </select>
+                            </div>
+                    </div>
+                   
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">NIDN</label>
+                            <div class="col-sm-4">
+                               <input type="text" name='nidn' class='form-control' value='' placeholder = 'NIDN' >
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">ID SINTA</label>
+                            <div class="col-sm-4">
+                               <input type="text" name='sinta' class='form-control' value='' placeholder = 'ID SINTA' >
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Pangkat Golongan</label>
+                        <div class="col-sm-4">
+                            <select name="pangkat" class='form-control' id="" >
+                                <option value="">-- Pilih Pangkat Golongan --</option>
+                                <?php $pgkt = $this->user_model->get_pangkat_all();
+                                    foreach ($pgkt as $pgkt){
+                                ?>
+                                <option value="<?php echo $pgkt->id_pangkat_gol ?>"><?php echo $pgkt->pangkat." ".$pgkt->golongan." ".$pgkt->ruang ?></option> 
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Jabatan Fungsional</label>
+                        <div class="col-sm-4">
+                            <select name="jabfung" class='form-control' id="" >
+                                <option value="">-- Pilih Jabatan Fungsional --</option>
+                                <?php $jbt = $this->user_model->get_jabfung_all();
+                                    foreach ($jbt as $jbt){
+                                ?>
+                                <option value="<?php echo $jbt->id_fungsional ?>"><?php echo $jbt->nama ?></option> 
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <?php } elseif($seg == 'tendik'){ ?>
+                        <div class="position-relative row form-group">
+                            <label for="prodi" class="col-sm-3 col-form-label">Unit Kerja <span style='color:red'>*</span></label>
+                                <div class="col-sm-6">
+                                    <select name="jurusan" required class='form-control' id="">
+                                        <option value="">-- Pilih Unit Kerja --</option>
+                                        <?php $jur = $this->jurusan_model->get_unit_kerja_all();
+                                            foreach ($jur as $jur){
+                                        ?>
+                                            <option value="<?php echo $jur->id_unit_kerja?>"><?php echo $jur->nama ?></option> 
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                        </div>
+
+                        <div class="position-relative row form-group">
+                            <label for="prodi" class="col-sm-3 col-form-label">Pangkat Golongan</label>
+                            <div class="col-sm-4">
+                                <select name="pangkat" class='form-control' id="" >
+                                    <option value="">-- Pilih Pangkat Golongan --</option>
+                                    <?php $pgkt = $this->user_model->get_pangkat_all();
+                                        foreach ($pgkt as $pgkt){
+                                    ?>
+                                    <option value="<?php echo $pgkt->id_pangkat_gol ?>"><?php echo $pgkt->pangkat." ".$pgkt->golongan." ".$pgkt->ruang ?></option> 
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+
+                    <?php } ?>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="upl_prop" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delete_user" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+            <?php  $seg = $this->uri->segment(3); ?>
+                <form id="del_ser" method="post" action="<?php echo site_url("admin/hapus_user") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-9 col-form-label"><b>Hapus </b>User Berikut ?</label>
+                        <input type="hidden" id='id_user_del' name='id'>
+                        <input type="hidden" id='' value='hapus' name='aksi'>
+                        <input type="hidden" id='' value='<?php echo $seg ?>' name='seg'>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="del_ser" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- edit -->
+<div class="modal fade" id="edit_user" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+            <?php 
+                $seg = $this->uri->segment(3);
+                if($seg == 'dosen'){
+                    $status = 2;
+                }else{
+                    $status = 4;
+                }
+            ?>
+                <form id="edit_user_form_admin" method="post" action="<?php echo site_url("admin/edit_user_admin") ?>">
+                    <input type="hidden" name="id" id='id_user_edit' value="">
+                    <input type="hidden" name="sts" id='' value="<?php echo $status ?>">
+                    <input type="hidden" name="jns" id='' value="<?php echo $seg ?>">
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">NIP / Username </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="nip" value="" placeholder='NIP / Username' class='form-control' id="nip_edit">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Nama Lengkap </label>
+                            <div class="col-sm-9">
+                                <input type="text" name="nama" value="" placeholder='Nama Lengkap (tanpa gelar)' class='form-control' id="nama_edit">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Gelar Depan</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="gelar_depan" value="" placeholder='Gelar Depan' class='form-control' id="gdepan_edit">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Gelar Belakang</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="gelar_belakang" value="" placeholder='Gelar Belakang' class='form-control' id="gbelakang_edit">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Email  </label>
+                            <div class="col-sm-9">
+                                <input type="email" name="email" value="" placeholder='Email' class='form-control' id="email_edit">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Password </label>
+                            <div class="col-sm-6">
+                                <input type="password" name="password" value="" placeholder='Password' class='form-control' id="myInput">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="checkbox" onclick="myFunction()" id='lihat_pw'>&nbsp;<label for="lihat_pw"> Lihat Password</label>
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">No. HP</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="hp" value="" placeholder='Nomor Handphone/WA' class='form-control' id="hp_edit">
+                            </div>
+                    </div>
+
+                    <?php if($seg == 'dosen'){ ?>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Jurusan </label>
+                            <div class="col-sm-6">
+                                <select name="jurusan" class='form-control' id="jur_edit">
+                                    <option value="">-- Pilih Jurusan --</option>
+                                    <?php $jur = $this->jurusan_model->get_jurusan_all();
+                                        foreach ($jur as $jur){
+                                    ?>
+                                        <option value="<?php echo $jur->id_jurusan ?>"><?php echo $jur->nama ?></option> 
+                                    <?php } ?>
+                                </select>
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">NIDN</label>
+                            <div class="col-sm-4">
+                               <input type="text" name='nidn' class='form-control' value='' id="nidn_edit" placeholder = 'NIDN' >
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">ID SINTA</label>
+                            <div class="col-sm-4">
+                               <input type="text" name='sinta' class='form-control' value='' id = 'sinta_edit' placeholder = 'ID SINTA' >
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Pangkat Golongan</label>
+                        <div class="col-sm-4">
+                            <select name="pangkat" class='form-control' id="pkt_edit" >
+                                <option value="">-- Pilih Pangkat Golongan --</option>
+                                <?php $pgkt = $this->user_model->get_pangkat_all();
+                                    foreach ($pgkt as $pgkt){
+                                ?>
+                                <option value="<?php echo $pgkt->id_pangkat_gol ?>"><?php echo $pgkt->pangkat." ".$pgkt->golongan." ".$pgkt->ruang ?></option> 
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label">Jabatan Fungsional</label>
+                        <div class="col-sm-4">
+                            <select name="jabfung" class='form-control' id="fung_edit" >
+                                <option value="">-- Pilih Jabatan Fungsional --</option>
+                                <?php $jbt = $this->user_model->get_jabfung_all();
+                                    foreach ($jbt as $jbt){
+                                ?>
+                                <option value="<?php echo $jbt->id_fungsional ?>"><?php echo $jbt->nama ?></option> 
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <?php } elseif($seg == 'tendik'){ ?>
+
+                        <div class="position-relative row form-group">
+                            <label for="prodi" class="col-sm-3 col-form-label">Unit Kerja </label>
+                                <div class="col-sm-6">
+                                    <select name="jurusan" class='form-control' id="jur_edit">
+                                        <option value="">-- Pilih Unit Kerja --</option>
+                                        <?php $jur = $this->jurusan_model->get_unit_kerja_all();
+                                            foreach ($jur as $jur){
+                                        ?>
+                                            <option value="<?php echo $jur->id_unit_kerja?>"><?php echo $jur->nama ?></option> 
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                        </div>
+
+                        <div class="position-relative row form-group">
+                            <label for="prodi" class="col-sm-3 col-form-label">Pangkat Golongan</label>
+                            <div class="col-sm-4">
+                                <select name="pangkat" class='form-control' id="pkt_edit" >
+                                    <option value="">-- Pilih Pangkat Golongan --</option>
+                                    <?php $pgkt = $this->user_model->get_pangkat_all();
+                                        foreach ($pgkt as $pgkt){
+                                    ?>
+                                    <option value="<?php echo $pgkt->id_pangkat_gol ?>"><?php echo $pgkt->pangkat." ".$pgkt->golongan." ".$pgkt->ruang ?></option> 
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+
+                    <?php } ?>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="edit_user_form_admin" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- tendik -->
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myInput");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+</script>
+
+<?php } ?>

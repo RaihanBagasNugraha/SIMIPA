@@ -56,6 +56,22 @@ class User_model extends CI_Model
         }
 	}
 
+	
+	function cek_email_edit($email,$id)
+	{
+		$this->db->where('email', $email);
+		$this->db->where('userId !=', $id);
+		$query = $this->db->get($this->tbl_user);
+
+		$user= $query->row();
+
+		if(!empty($user)){
+            return 1;
+        } else {
+            return 0;
+        }
+	}
+
 	function cek_npm($npm)
 	{
 		$this->db->where('npm', $npm);
@@ -74,6 +90,50 @@ class User_model extends CI_Model
 	{
 		$this->db->where('nip_nik', $nip);
 		$query = $this->db->get($this->tbl_dosen);
+
+		$user= $query->row();
+
+		if(!empty($user)){
+            return 1;
+        } else {
+            return 0;
+        }
+	}
+
+	function cek_nip_dosen_edit($nip,$id)
+	{
+		$this->db->where('nip_nik', $nip);
+		$this->db->where('id_user !=', $id);
+		$query = $this->db->get($this->tbl_dosen);
+
+		$user= $query->row();
+
+		if(!empty($user)){
+            return 1;
+        } else {
+            return 0;
+        }
+	}
+
+	function cek_nip_tendik($nip)
+	{
+		$this->db->where('nip_nik', $nip);
+		$query = $this->db->get($this->tbl_tendik);
+
+		$user= $query->row();
+
+		if(!empty($user)){
+            return 1;
+        } else {
+            return 0;
+        }
+	}
+
+	function cek_nip_tendik_edit($nip,$id)
+	{
+		$this->db->where('nip_nik', $nip);
+		$this->db->where('id_user !=', $id);
+		$query = $this->db->get($this->tbl_tendik);
 
 		$user= $query->row();
 
@@ -105,6 +165,45 @@ class User_model extends CI_Model
         $this->db->trans_complete();
         
         return $insert_id;
+	}
+
+	function addNewUser2($userInfo, $data)
+    {
+        $this->db->trans_start();
+        $this->db->insert($this->tbl_user, $userInfo);
+        
+		$insert_id = $this->db->insert_id();
+		
+		$data['id_user'] = $insert_id;
+		if($userInfo['roleId'] == 2)
+		{
+			$this->db->insert($this->tbl_dosen, $data);
+		}else{
+			$this->db->insert($this->tbl_tendik, $data);
+		}
+        
+        $this->db->trans_complete();
+        
+        return $insert_id;
+	}
+
+	function updateNewUser2($userInfo, $data, $iduser)
+    {
+		$this->db->trans_start();
+		
+		//update tbl users
+		$this->db->where('userId', $iduser);
+	    $this->db->update($this->tbl_user, $userInfo);
+        
+		if($userInfo['roleId'] == 2)
+		{
+			$this->db->where('id_user', $iduser);
+	    	$this->db->update($this->tbl_dosen, $data);
+		}else{
+			$this->db->where('id_user', $iduser);
+	    	$this->db->update($this->tbl_tendik, $data);
+		}
+        $this->db->trans_complete();
 	}
 
 	function update($data, $userId)
@@ -727,6 +826,34 @@ class User_model extends CI_Model
 	{
 		$this->db->delete('tbl_users_tugas', array('id'=>$data));
 	}
+
+	function get_user_dosen_tendik()
+	{
+		$result = $this->db->query("SELECT * FROM `tbl_users` WHERE roleId = 2 OR roleId = 4 ORDER BY userId DESC");
+		return $result->result();
+	}
+
+	function get_user_by_role($role)
+	{
+		if($role == 2){
+			$result = $this->db->query("SELECT * FROM tbl_users a, tbl_users_dosen b WHERE a.roleId = 2 AND a.userId = b.id_user ORDER BY userId DESC");
+		}else{
+			$result = $this->db->query("SELECT * FROM tbl_users a, tbl_users_tendik b WHERE a.roleId = 4 AND a.userId = b.id_user ORDER BY userId DESC");
+		}
+		return $result->result();
+	}
+
+	function delete_user_admin($id,$seg)
+	{
+		if($seg == 'dosen'){
+			$this->db->delete('tbl_users_dosen', array('id_user' => $id));
+			$this->db->delete('tbl_users', array('userId' => $id));
+		}elseif($seg == 'tendik'){
+			$this->db->delete('tbl_users_tendik', array('id_user' => $id));
+			$this->db->delete('tbl_users', array('userId' => $id));
+		}	
+	}
+
 
 	/* ------------------------------------
 	function select_all()

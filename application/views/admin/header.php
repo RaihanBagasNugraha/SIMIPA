@@ -5,7 +5,7 @@
 <ul class="vertical-nav-menu">
                                 <li class="app-sidebar__heading">Profil</li>
                                 <li>
-                                    <a href="<?php echo site_url('#') ?>" <?php if($this->uri->segment(2) == "kelola-akun") echo 'class="mm-active"' ?> >
+                                    <a href="<?php echo site_url('admin/kelola-akun') ?>" <?php if($this->uri->segment(2) == "kelola-akun") echo 'class="mm-active"' ?> >
                                         <i class="metismenu-icon pe-7s-user"></i>
                                         Akun
                                     </a>
@@ -18,10 +18,10 @@
                                 </li> -->
 
                                 <li class="app-sidebar__heading">MENU</li>
-                                <li <?php if($this->uri->segment(2) == "mahasiswa") echo 'class="mm-active"' ?> >
+                                <li <?php if($this->uri->segment(2) == "mahasiswa" || $this->uri->segment(2) == "user") echo 'class="mm-active"' ?> >
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-users"></i>
-                                        Registrasi
+                                        User
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
@@ -30,6 +30,28 @@
                                                 <i class="metismenu-icon">
                                                 </i>Registrasi
                                             </a>
+                                        </li>
+
+                                        <li  <?php if($this->uri->segment(2) == "user") echo 'class="mm-active"' ?>>
+                                            <a href="#">
+                                                <i class="metismenu-icon">
+                                                </i>Tambah User
+                                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                            </a>
+                                            <ul>
+                                                <li>
+                                                    <a href="<?php echo site_url("admin/user/dosen") ?>" <?php if($this->uri->segment(2) == "user" && $this->uri->segment(3) == "dosen") echo 'class="mm-active"' ?>>
+                                                        <i class="metismenu-icon">
+                                                        </i>Dosen
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<?php echo site_url("admin/user/tendik") ?>" <?php if($this->uri->segment(2) == "user" && $this->uri->segment(3) == "tendik") echo 'class="mm-active"' ?>>
+                                                        <i class="metismenu-icon">
+                                                        </i>Tendik
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </li>
 
                                     </ul>

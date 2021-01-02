@@ -106,7 +106,7 @@
                                             <tr>
                                                <td style="border-bottom:1pt solid black;">
                                                <?php 
-                                                    echo $row->gelar_depan.$row->name.$row->gelar_belakang; 
+                                                    echo $row->gelar_depan." ".$row->name.", ".$row->gelar_belakang; 
                                                     echo "<br>";
                                                     echo $row->nip_nik;
                                                

@@ -234,6 +234,219 @@ class Admin extends CI_Controller {
 		
 		redirect(site_url("admin/struktural/tugas/form?tugas=".$tgs));
 	}
+
+	function user_registrasi()
+	{
+		$seg = $this->uri->segment(3);
+
+		if($seg == 'dosen'){
+			$role = 2;
+			// $tbl = 'tbl_users_dosen';
+		}elseif($seg == 'tendik'){
+			$role = 4;
+			// $tbl = 'tbl_users_tendik';
+		}
+
+		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['user'] = $this->user_model->get_user_by_role($role);
+
+		$this->load->view('header_global', $data);
+		$this->load->view('admin/header');
+		$this->load->view('admin/user/tambah_user');
+
+        $this->load->view('footer_global');
+	}
+
+	function add_user_admin()
+	{
+		if($this->session->userdata('state') == 1) {
+
+			$jns = $this->input->post('jns');
+
+			$nama = ucwords(strtolower($this->security->xss_clean($this->input->post('nama'))));
+			$email = strtolower($this->security->xss_clean($this->input->post('email')));
+			$password = $this->input->post('password');
+			$nip = $this->input->post('nip');
+			$hp = $this->security->xss_clean($this->input->post('hp'));
+			$status = $this->security->xss_clean($this->input->post('sts'));
+
+			//tbl users
+			$userInfo = array(
+				'email' => $email,
+				'password' => getHashedPassword($password),
+				'roleId' => $status, // Default Mahasiswa
+				'name' => $nama,
+				'mobile' => $hp,
+				'createdBy' => $this->session->userdata('userId'), // user
+				'createdDtm' => date('Y-m-d H:i:s'),
+				'is_active' => 1
+			);
+
+			$cek_email = $this->user_model->cek_email($email);
+			if($cek_email)
+			{
+				$this->session->set_flashdata('error', 'Email Anda telah terdaftar!');
+			}
+			else
+			{
+				if($status == 2){
+					//dosen
+					$cek = $this->user_model->cek_nip_dosen($nip);
+
+					$data_user = array(
+						"nip_nik" => $nip,
+						"nidn" => $this->input->post('nidn'),
+						"gelar_depan" => $this->input->post('gelar_depan'),
+						"gelar_belakang" => $this->input->post('gelar_belakang'),
+						"id_sinta" => $this->input->post('sinta'),
+						"jurusan" => $this->input->post('jurusan'),
+						"pangkat_gol" => $this->input->post('pangkat'),
+						"fungsional" => $this->input->post('jabfung')
+					);
+				}else{
+					//tendik
+					$cek = $this->user_model->cek_nip_tendik($nip);
+					$data_user = array(
+						"nip_nik" => $nip,
+						"gelar_depan" => $this->input->post('gelar_depan'),
+						"gelar_belakang" => $this->input->post('gelar_belakang'),
+						"unit_kerja" => $this->input->post('jurusan'),
+						"pangkat_gol" => $this->input->post('pangkat'),
+					);
+				}
+
+				if($cek)
+				{
+					$this->session->set_flashdata('error', 'NIP / NIK Telah Terdaftar');
+				}
+				else{
+					$result = $this->user_model->addNewUser2($userInfo, $data_user);
+
+					if ($result > 0) {
+						$this->session->set_flashdata('success', 'Berhasil Menambah User');
+					} else {
+						$this->session->set_flashdata('error', 'Gagal Mendaftar!');
+					}
+
+				}
+			}
+			redirect(site_url('admin/user/'.$jns));
+		} else {
+			echo "<script>alert('Akses ditolak!!');javascript:history.back();</script>";
+		}
+
+		
+	}
+
+	function hapus_user()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $data['id'];
+		$seg = $data['seg'];
+		$aksi = $data['aksi'];
+
+		if($this->session->userdata('state') == 1) {
+			$this->user_model->delete_user_admin($id,$seg);
+		}else{
+			echo "<script>alert('Akses ditolak!!');javascript:history.back();</script>";
+		}
+
+		redirect(site_url("admin/user/$seg?status=sukses"));
+	}
+
+	function edit_user_admin()
+	{
+
+		if($this->session->userdata('state') == 1) {
+			$jns = $this->input->post('jns');
+
+			$nama = ucwords(strtolower($this->security->xss_clean($this->input->post('nama'))));
+			$email = strtolower($this->security->xss_clean($this->input->post('email')));
+			$password = $this->input->post('password');
+			$nip = $this->input->post('nip');
+			$hp = $this->security->xss_clean($this->input->post('hp'));
+			$status = $this->security->xss_clean($this->input->post('sts'));
+			$id_user = $this->input->post('id');
+			//tbl users
+
+			if($password == ''){
+				$userInfo = array(
+					'email' => $email,
+					'roleId' => $status, // Default Mahasiswa
+					'name' => $nama,
+					'mobile' => $hp,
+					'updatedBy' => $this->session->userdata('userId'), // user
+				);
+			}else{
+				$userInfo = array(
+					'email' => $email,
+					'password' => getHashedPassword($password),
+					'roleId' => $status, // Default Mahasiswa
+					'name' => $nama,
+					'mobile' => $hp,
+					'updatedBy' => $this->session->userdata('userId'), // user
+				);
+			}
+
+			$cek_email = $this->user_model->cek_email_edit($email,$id_user);
+			if($cek_email)
+			{
+				$this->session->set_flashdata('error', 'Email Anda telah terdaftar!');
+			}
+			else
+			{
+				if($status == 2){
+					//dosen
+					$cek = $this->user_model->cek_nip_dosen_edit($nip,$id_user);
+
+					$data_user = array(
+						"nip_nik" => $nip,
+						"nidn" => $this->input->post('nidn'),
+						"gelar_depan" => $this->input->post('gelar_depan'),
+						"gelar_belakang" => $this->input->post('gelar_belakang'),
+						"id_sinta" => $this->input->post('sinta'),
+						"jurusan" => $this->input->post('jurusan'),
+						"pangkat_gol" => $this->input->post('pangkat'),
+						"fungsional" => $this->input->post('jabfung')
+					);
+				}else{
+					//tendik
+					$cek = $this->user_model->cek_nip_tendik_edit($nip,$id_user);
+
+					$data_user = array(
+						"nip_nik" => $nip,
+						"gelar_depan" => $this->input->post('gelar_depan'),
+						"gelar_belakang" => $this->input->post('gelar_belakang'),
+						"unit_kerja" => $this->input->post('jurusan'),
+						"pangkat_gol" => $this->input->post('pangkat'),
+					);
+				}
+
+				if($cek)
+				{
+					$this->session->set_flashdata('error', 'NIP / NIK Telah Terdaftar');
+				}
+				else{
+					// print_r($data_user);
+					//edit
+					$result = $this->user_model->updateNewUser2($userInfo, $data_user,$id_user);
+
+					// if ($result > 0) {
+						$this->session->set_flashdata('success', 'Berhasil Ubah Data User');
+					// } else {
+					// 	$this->session->set_flashdata('error', 'Gagal Edit!');
+					// }
+
+				}
+			}
+			redirect(site_url('admin/user/'.$jns));
+		}else{
+			echo "<script>alert('Akses ditolak!!');javascript:history.back();</script>";
+		}
+		
+	}
 	
 	
 	public function list()
@@ -298,13 +511,13 @@ class Admin extends CI_Controller {
 	
 	public function user()
 	{
-	    if($this->session->userdata('state') == 'Administrator') {
+	    if($this->session->userdata('state') == 1) {
     	    $data['list_user'] = $this->user_model->select_all()->result();
     	    $this->load->view('admin/header');
     		$this->load->view('admin/user', $data);
     		$this->load->view('admin/footer');
 	    } else {
-	        echo "<script>alert('Akses ditolak!!');javascript:history.back();</script>";
+	        echo "<script>alert('Aksesaaa ditolak!!');javascript:history.back();</script>";
 	    }
 	}
 	

@@ -413,7 +413,7 @@ class Pdfta extends CI_Controller {
 
         // $pdf->Image("$ta->ttd",80,200,30,0,'PNG');
         $pdf->Ln(26);
-        $pdf->Cell(90, $spasi,$pa->gelar_depan.$pa->name.$pa->gelar_belakang, 0, 0, 'L');
+        $pdf->Cell(90, $spasi,$pa->gelar_depan.". "$pa->name.", ".$pa->gelar_belakang, 0, 0, 'L');
         $pdf->Cell(30, $spasi,$mhs->name, 0, 0, 'L');
         $pdf->Ln(5);
 
@@ -726,7 +726,7 @@ class Pdfta extends CI_Controller {
 
                 $pdf->Ln(26);
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$admin->gelar_depan.$admin->name.$admin->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->gelar_depan." ".$admin->name.", ".$admin->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
 
                 $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
@@ -746,8 +746,8 @@ class Pdfta extends CI_Controller {
                 $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
 
                 $pdf->Ln(25);
-                $pdf->Cell(90, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$admin->gelar_depan.$admin->name.$admin->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(90, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->gelar_depan." ".$admin->name.", ".$admin->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
 
                 $pdf->Cell(90, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
@@ -792,7 +792,7 @@ class Pdfta extends CI_Controller {
 
                 $pdf->Ln(26);
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$admin->gelar_depan.$admin->name.$admin->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->gelar_depan." ".$admin->name.", ".$admin->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
 
                 $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
@@ -815,8 +815,8 @@ class Pdfta extends CI_Controller {
                 $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
 
                 $pdf->Ln(25);
-                $pdf->Cell(90, $spasi,$kaprodi_data->gelar_depan.$kaprodi_data->name.$kaprodi_data->gelar_belakang, 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$admin->gelar_depan.$admin->name.$admin->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(90, $spasi,$kaprodi_data->gelar_depan." ".$kaprodi_data->name.", ".$kaprodi_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->gelar_depan." ".$admin->name.", ".$admin->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
 
                 $pdf->Cell(90, $spasi,"NIP. ".$kaprodi_data->nip_nik, 0, 0, 'L');
@@ -933,7 +933,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-                $pdf->RowNoBorder(array(strtoupper($kom->status),':',$g_depan.$kom->nama.$g_belakang,'NIP',':',$kom->nip_nik));
+                $pdf->RowNoBorder(array(strtoupper($kom->status),':',$g_depan." ".$kom->nama.", ".$g_belakang,'NIP',':',$kom->nip_nik));
                 // $pdf->Ln(1);
                 $pdf->Cell(45, $spasi,"TANDA TANGAN", 0, 0, 'L');
                 $pdf->Cell(5, $spasi,':', 0, 0, 'C');
@@ -974,8 +974,8 @@ class Pdfta extends CI_Controller {
             $pdf->Ln(20);
 
             if($ta->status < 7){
-                $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(90, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
                 $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');
                 $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
@@ -983,7 +983,7 @@ class Pdfta extends CI_Controller {
             }
             else{
                 $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
                 $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
                 $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
@@ -1101,7 +1101,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-            $pdf->RowNoBorder(array($kom->status_slug,':',$g_depan.$kom->nama.$g_belakang,'NIP',':',$kom->nip_nik));
+            $pdf->RowNoBorder(array($kom->status_slug,':',$g_depan." ".$kom->nama.", ".$g_belakang,'NIP',':',$kom->nip_nik));
             $pdf->Ln(4);
         }
 
@@ -1127,8 +1127,8 @@ class Pdfta extends CI_Controller {
         }
 
         $pdf->Ln(25);
-        $pdf->Cell(90, $spasi,$pa->gelar_depan.$pa->name.$pa->gelar_belakang, 0, 0, 'L');
-        $pdf->Cell(30, $spasi,$pb->gelar_depan.$pb->name.$pb->gelar_belakang, 0, 0, 'L');
+        $pdf->Cell(90, $spasi,$pa->gelar_depan." ".$pa->name." ".$pa->gelar_belakang, 0, 0, 'L');
+        $pdf->Cell(30, $spasi,$pb->gelar_depan." ".$pb->name." ".$pb->gelar_belakang, 0, 0, 'L');
         $pdf->Ln(5);
 
         $pdf->Cell(90, $spasi,"NIP. ".$pa->nip_nik, 0, 0, 'L');
@@ -1153,7 +1153,7 @@ class Pdfta extends CI_Controller {
 
             $pdf->Cell(150, $spasi,$pdf->Image("$kajur_approve->ttd",$pdf->GetX()+55, $pdf->GetY(),33,0,'PNG'), 0, 0, 'C');
             $pdf->Ln(25);
-            $pdf->Cell(150, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'C');
+            $pdf->Cell(150, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'C');
             $pdf->Ln(5);
             $pdf->Cell(150, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'C');
         }
@@ -1252,7 +1252,7 @@ class Pdfta extends CI_Controller {
 
             $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
             $pdf->SetAligns(array('L','C','L','L','C','L'));
-            $pdf->RowNoBorder(array($kom->status_slug,':',$g_depan.$kom->nama.$g_belakang));
+            $pdf->RowNoBorder(array($kom->status_slug,':',$g_depan." ".$kom->nama.", ".$g_belakang));
             $pdf->Ln(4);
         }
         //verifikator
@@ -1268,7 +1268,7 @@ class Pdfta extends CI_Controller {
             }
           $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
           $pdf->SetAligns(array('L','C','L','L','C','L'));
-          $pdf->RowNoBorder(array('Dosen Verifikasi',':',$g_depanv.$verifikator->nama.$g_belakangv));
+          $pdf->RowNoBorder(array('Dosen Verifikasi',':',$g_depanv." ".$verifikator->nama." ".$g_belakangv));
           $pdf->Ln(2);  
         $bulan = $this->get_month($date[1]);
         $pdf->Cell(90, $spasi,"", 0, 0, 'L');
@@ -1301,7 +1301,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-            $pdf->Cell(90, $spasi,$g_depan.$kom->nama.$g_belakang, 0, 0, 'L');   
+            $pdf->Cell(90, $spasi,$g_depan." ".$kom->nama.", ".$g_belakang, 0, 0, 'L');   
         } 
         $pdf->Ln(5);
         foreach($komisi as $kom){
@@ -1337,7 +1337,7 @@ class Pdfta extends CI_Controller {
             $pdf->Cell(90, $spasi,$pdf->Image($ttd_pa->ttd,$pdf->GetX(), $pdf->GetY(),40,0,'PNG'), 0, 0, 'L'); 
             $pdf->Ln(25);
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-            $pdf->Cell(90, $spasi,$pa->gelar_depan.$pa->name.$pa->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$pa->gelar_depan." ".$pa->name.", ".$pa->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
@@ -1359,7 +1359,7 @@ class Pdfta extends CI_Controller {
             $pdf->Cell(90, $spasi,$pdf->Image($ttd_pa->ttd,$pdf->GetX(), $pdf->GetY(),40,0,'PNG'), 0, 0, 'L'); 
             $pdf->Ln(25);
             $pdf->Cell(90, $spasi,$kaprodi_data->name, 0, 0, 'L');
-            $pdf->Cell(90, $spasi,$pa->gelar_depan.$pa->name.$pa->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$pa->gelar_depan." ".$pa->name.", ".$pa->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP. ".$kaprodi_data->nip_nik, 0, 0, 'L');
@@ -1491,8 +1491,8 @@ class Pdfta extends CI_Controller {
         }
 
         $pdf->Ln(25);
-        $pdf->Cell(90, $spasi,$pa->gelar_depan.$pa->name.$pa->gelar_belakang, 0, 0, 'L');
-        $pdf->Cell(30, $spasi,$pb->gelar_depan.$pb->name.$pb->gelar_belakang, 0, 0, 'L');
+        $pdf->Cell(90, $spasi,$pa->gelar_depan." ".$pa->name.", ".$pa->gelar_belakang, 0, 0, 'L');
+        $pdf->Cell(30, $spasi,$pb->gelar_depan." ".$pb->name.", ".$pb->gelar_belakang, 0, 0, 'L');
         $pdf->Ln(5);
 
         $pdf->Cell(90, $spasi,"NIP. ".$pa->nip_nik, 0, 0, 'L');
@@ -2184,7 +2184,7 @@ class Pdfta extends CI_Controller {
 
                 $pdf->Ln(15);
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$admin->gelar_depan.$admin->name.$admin->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->gelar_depan." ".$admin->name.", ".$admin->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
 
                 $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
@@ -2210,8 +2210,8 @@ class Pdfta extends CI_Controller {
                 $pdf->Cell(30, $spasi,$pdf->Image("$admin->ttd",$pdf->GetX(), $pdf->GetY()-5,30,0,'PNG'), 0, 0, 'L');
 
                 $pdf->Ln(15);
-                $pdf->Cell(90, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$admin->gelar_depan.$admin->name.$admin->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(90, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$admin->gelar_depan." ".$admin->name.", ".$admin->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
 
                 $pdf->Cell(90, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
@@ -2307,7 +2307,7 @@ class Pdfta extends CI_Controller {
                 $g_belakang = $gelar->gelar_belakang;
             }
 
-            $pdf->Cell(150, $spasi,"Bapak/Ibu/Sdr/i ".$g_depan.$kom->nama.$g_belakang, 0, 0, 'L');
+            $pdf->Cell(150, $spasi,"Bapak/Ibu/Sdr/i ".$g_depan." ".$kom->nama.", ".$g_belakang, 0, 0, 'L');
             $pdf->Ln(8);
 
             $pdf->Cell(150, $spasi,"Di Tempat", 0, 0, 'L');
@@ -2435,7 +2435,7 @@ class Pdfta extends CI_Controller {
 
                 $pdf->Ln(20);
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
                 $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
                 $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
@@ -2460,8 +2460,8 @@ class Pdfta extends CI_Controller {
                 $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
                 $pdf->Ln(20);
-                $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(90, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
                 $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');
                 $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
@@ -2557,7 +2557,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-            $pdf->Cell(150, $spasi,"Bapak/Ibu/Sdr/i ".$g_depan.$kom->nama.$g_belakang, 0, 0, 'L');
+            $pdf->Cell(150, $spasi,"Bapak/Ibu/Sdr/i ".$g_depan.", ".$kom->nama.", ".$g_belakang, 0, 0, 'L');
             $pdf->Ln(8);
 
             $pdf->Cell(150, $spasi,"Di Tempat", 0, 0, 'L');
@@ -2657,7 +2657,7 @@ class Pdfta extends CI_Controller {
 
                 $pdf->Ln(20);
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
                 $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
                 $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
@@ -2682,8 +2682,8 @@ class Pdfta extends CI_Controller {
                 $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
                 $pdf->Ln(20);
-                $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(90, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
                 $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');
                 $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
@@ -2795,7 +2795,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-            $pdf->Cell(150, $spasi,"Bapak/Ibu/Sdr/i ". $g_depan.$kom->nama. $g_belakang, 0, 0, 'L');
+            $pdf->Cell(150, $spasi,"Bapak/Ibu/Sdr/i ". $g_depan." ".$kom->nama.", ".$g_belakang, 0, 0, 'L');
             $pdf->Ln(8);
 
             $pdf->Cell(150, $spasi,"Di Tempat", 0, 0, 'L');
@@ -2895,7 +2895,7 @@ class Pdfta extends CI_Controller {
 
                 $pdf->Ln(20);
                 $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
                 $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
                 $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
@@ -2920,8 +2920,8 @@ class Pdfta extends CI_Controller {
                 $pdf->Cell(30, $spasi,$pdf->Image("$koor_approve->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
                 $pdf->Ln(20);
-                $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(90, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
                 $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');
                 $pdf->Cell(30, $spasi,"NIP. ".$koor_data->nip_nik, 0, 0, 'L');
@@ -3082,7 +3082,7 @@ class Pdfta extends CI_Controller {
 
             $pdf->Ln(25);
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$g_depan.$kom_data->nama.$g_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$g_depan." ".$kom_data->nama.", ".$g_belakang, 0, 0, 'L');
             $pdf->Ln(5);
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
             $pdf->Cell(30, $spasi,"NIP. ".$kom_data->nip_nik, 0, 0, 'L');
@@ -3232,7 +3232,7 @@ class Pdfta extends CI_Controller {
 
                 $pdf->Ln(25);
                 $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$g_depan.$kom->nama.$g_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$g_depan." ".$kom->nama.", ".$g_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
                 $pdf->Cell(90, $spasi,"", 0, 0, 'L');
                 $pdf->Cell(30, $spasi,"NIP. ".$kom->nip_nik, 0, 0, 'L');
@@ -3377,7 +3377,7 @@ class Pdfta extends CI_Controller {
 
                 $pdf->Ln(25);
                 $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-                $pdf->Cell(30, $spasi,$g_depan.$kom_data->nama.$g_belakang, 0, 0, 'L');
+                $pdf->Cell(30, $spasi,$g_depan." ".$kom_data->nama.", ".$g_belakang, 0, 0, 'L');
                 $pdf->Ln(5);
                 $pdf->Cell(90, $spasi,"", 0, 0, 'L');
                 $pdf->Cell(30, $spasi,"NIP. ".$kom_data->nip_nik, 0, 0, 'L');
@@ -3581,7 +3581,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-                $pdf->Row(array(" \n".$g_depan.$kom->nama.$g_belakang."\n  "," \n$kom->status","\n ".$nilai2,"\n ".$bobot[$i],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
+                $pdf->Row(array(" \n".$g_depan." ".$kom->nama.", ".$g_belakang."\n  "," \n$kom->status","\n ".$nilai2,"\n ".$bobot[$i],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
                 // $nilai_rekap += $na;
                 $i++;
             }
@@ -3616,7 +3616,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-                $pdf->Row(array(" \n".$g_depan.$kom->nama.$g_belakang."\n  "," \n$kom->status","\n ".$nilai2,"\n ".$bobot[$i],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
+                $pdf->Row(array(" \n".$g_depan." ".$kom->nama.", ".$g_belakang."\n  "," \n$kom->status","\n ".$nilai2,"\n ".$bobot[$i],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
                 // $nilai_rekap += $na;
                 $i++;
             }
@@ -3649,7 +3649,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-                $pdf->Row(array(" \n".$g_depan.$kom->nama.$g_belakang."\n  "," \n$kom->status","\n ".$nilai2,"\n ".$bobot[$this->komisi_number($kom->status)],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
+                $pdf->Row(array(" \n".$g_depan." ".$kom->nama.", ".$g_belakang."\n  "," \n$kom->status","\n ".$nilai2,"\n ".$bobot[$this->komisi_number($kom->status)],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
                 // $nilai_rekap += $na;
             }
         }
@@ -3702,7 +3702,7 @@ class Pdfta extends CI_Controller {
 
             $pdf->Ln(20);
             $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
@@ -3737,8 +3737,8 @@ class Pdfta extends CI_Controller {
             $pdf->Cell(30, $spasi,$pdf->Image("$koor->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
             $pdf->Ln(20);
-            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');
@@ -3849,7 +3849,7 @@ class Pdfta extends CI_Controller {
         
                     $pdf->Ln(20);
                     $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-                    $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
                     $pdf->Ln(5);
         
                     $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
@@ -3881,8 +3881,8 @@ class Pdfta extends CI_Controller {
                     $pdf->Cell(30, $spasi,$pdf->Image("$koor->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
         
                     $pdf->Ln(20);
-                    $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
-                    $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+                    $pdf->Cell(90, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'L');
+                    $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
                     $pdf->Ln(5);
         
                     $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');
@@ -4098,7 +4098,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-                $pdf->Row(array(" \n".$g_depan.$kom->nama.$g_belakang."\n  "," \n".$this->komisi_kompre($jml_pbb,$kom->status),"\n ".$nilai2,"\n ".$bobot[$i],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
+                $pdf->Row(array(" \n".$g_depan." ".$kom->nama.", ".$g_belakang."\n  "," \n".$this->komisi_kompre($jml_pbb,$kom->status),"\n ".$nilai2,"\n ".$bobot[$i],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
                 // $nilai_rekap += $na;
                 $i++;
             }
@@ -4134,7 +4134,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-                $pdf->Row(array(" \n".$g_depan.$kom->nama.$g_belakang."\n  "," \n".$this->komisi_kompre($jml_pbb,$kom->status),"\n ".$nilai2,"\n ".$bobot[$this->komisi_number($kom->status)],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
+                $pdf->Row(array(" \n".$g_depan." ".$kom->nama.", ".$g_belakang."\n  "," \n".$this->komisi_kompre($jml_pbb,$kom->status),"\n ".$nilai2,"\n ".$bobot[$this->komisi_number($kom->status)],"\n ".$na,$pdf->Image("$ttd->ttd",$pdf->GetX()+126, $pdf->GetY(),25,0,'PNG'))); 
                 // $nilai_rekap += $na;
             }
         }
@@ -4176,7 +4176,7 @@ class Pdfta extends CI_Controller {
               }
 
             $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$g_depan.$pbb_utama->nama.$g_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$g_depan." ".$pbb_utama->nama.", ".$g_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
@@ -4217,7 +4217,7 @@ class Pdfta extends CI_Controller {
                   $g_belakang = $gelar->gelar_belakang;
               }
 
-            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'L');
             $pdf->Cell(30, $spasi,$g_depan.$pbb_utama->nama.$g_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
@@ -4318,7 +4318,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-            $pdf->RowNoBorder(array($kom->status,':',$g_depan.$kom->nama.$g_belakang));
+            $pdf->RowNoBorder(array($kom->status,':',$g_depan." ".$kom->nama.", ".$g_belakang));
             $pdf->Ln(4);
         }
         //verifikator
@@ -4334,7 +4334,7 @@ class Pdfta extends CI_Controller {
             }
             $pdf->SetWidths(array(45,5, 60, 12, 5, 50));
             $pdf->SetAligns(array('L','C','L','L','C','L'));
-            $pdf->RowNoBorder(array('Dosen Verifikasi',':',$g_depanv.$verifikator->nama.$g_belakangv));
+            $pdf->RowNoBorder(array('Dosen Verifikasi',':',$g_depanv." ".$verifikator->nama.", ".$g_belakangv));
             $pdf->Ln(4);
 
         $created = $this->ta_model->get_created_verifikasi_ta($ta->id_pengajuan);    
@@ -4383,7 +4383,7 @@ class Pdfta extends CI_Controller {
             $pdf->Ln(5);
             $pdf->Cell(90, $spasi,$pdf->Image("$pb->ttd",$pdf->GetX()+60, $pdf->GetY(),33,0,'PNG'), 0, 0, 'C');
             $pdf->Ln(25);
-            $pdf->Cell(150, $spasi,$pb_data->gelar_depan.$pb_data->name.$pb_data->gelar_belakang, 0, 0, 'C');
+            $pdf->Cell(150, $spasi,$pb_data->gelar_depan." ".$pb_data->name.", ".$pb_data->gelar_belakang, 0, 0, 'C');
             $pdf->Ln(5);
             $pdf->Cell(150, $spasi,"NIP.".$pb_data->nip_nik, 0, 0, 'C');
 
@@ -4415,7 +4415,7 @@ class Pdfta extends CI_Controller {
             $pdf->Ln(5);
             $pdf->Cell(90, $spasi,$pdf->Image("$pb->ttd",$pdf->GetX()+60, $pdf->GetY(),33,0,'PNG'), 0, 0, 'C');
             $pdf->Ln(25);
-            $pdf->Cell(150, $spasi,$pb_data->gelar_depan.$pb_data->name.$pb_data->gelar_belakang, 0, 0, 'C');
+            $pdf->Cell(150, $spasi,$pb_data->gelar_depan." ".$pb_data->name.", ".$pb_data->gelar_belakang, 0, 0, 'C');
             $pdf->Ln(5);
             $pdf->Cell(150, $spasi,"NIP.".$pb_data->nip_nik, 0, 0, 'C');
 
@@ -4433,7 +4433,7 @@ class Pdfta extends CI_Controller {
 
             $pdf->Ln(25);
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$pa_data->gelar_depan.$pa_data->name.$pa_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pa_data->gelar_depan." ".$pa_data->name.", ".$pa_data->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
@@ -4454,7 +4454,7 @@ class Pdfta extends CI_Controller {
             $pdf->Ln(5);
             $pdf->Cell(90, $spasi,$pdf->Image("$pb->ttd",$pdf->GetX()+60, $pdf->GetY(),33,0,'PNG'), 0, 0, 'C');
             $pdf->Ln(25);
-            $pdf->Cell(150, $spasi,$pb_data->gelar_depan.$pb_data->name.$pb_data->gelar_belakang, 0, 0, 'C');
+            $pdf->Cell(150, $spasi,$pb_data->gelar_depan." ".$pb_data->name.", ".$pb_data->gelar_belakang, 0, 0, 'C');
             $pdf->Ln(5);
             $pdf->Cell(150, $spasi,"NIP.".$pb_data->nip_nik, 0, 0, 'C');
 
@@ -4471,8 +4471,8 @@ class Pdfta extends CI_Controller {
             $pdf->Cell(30, $spasi,$pdf->Image("$pa->ttd",$pdf->GetX(), $pdf->GetY(),33,0,'PNG'), 0, 0, 'L');
 
             $pdf->Ln(25);
-            $pdf->Cell(90, $spasi,$kaprodi_data->gelar_depan.$kaprodi_data->name.$kaprodi_data->gelar_belakang, 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$pa_data->gelar_depan.$pa_data->name.$pa_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$kaprodi_data->gelar_depan." ".$kaprodi_data->name.", ".$kaprodi_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pa_data->gelar_depan." ".$pa_data->name.", ".$pa_data->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP. ".$kaprodi_data->nip_nik, 0, 0, 'L');
@@ -4641,7 +4641,7 @@ class Pdfta extends CI_Controller {
 
         $pdf->Ln(25);
         $pdf->Cell(90,$spasi,"", 0, 0, 'L');
-        $pdf->Cell(30, $spasi,$g_depan.$verifikator->nama.$g_belakang, 0, 0, 'L');
+        $pdf->Cell(30, $spasi,$g_depan." ".$verifikator->nama.", ".$g_belakang, 0, 0, 'L');
         $pdf->Ln(5);
         $pdf->Cell(90, $spasi,"", 0, 0, 'L');
         $pdf->Cell(30, $spasi,"NIP. ".$verifikator->nip_nik, 0, 0, 'L');
@@ -4809,7 +4809,7 @@ class Pdfta extends CI_Controller {
         $pdf->Cell(90, $spasi,$pdf->Image($pkl->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         
         $pdf->Ln(26);
-        $pdf->Cell(90, $spasi,$pa->gelar_depan.$pa->name.$pa->gelar_belakang, 0, 0, 'L');
+        $pdf->Cell(90, $spasi,$pa->gelar_depan." ".$pa->name.", ".$pa->gelar_belakang, 0, 0, 'L');
         $pdf->Cell(30, $spasi,$mhs->name, 0, 0, 'L');
         $pdf->Ln(5);
 
@@ -4981,7 +4981,7 @@ class Pdfta extends CI_Controller {
             $admin = $this->user_model->get_tendik_name($ttd_admin->id_user);
             $pdf->Ln(26);
             $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$admin->gelar_depan.$admin->name.$admin->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$admin->gelar_depan." ".$admin->name.", ".$admin->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
@@ -5150,7 +5150,7 @@ class Pdfta extends CI_Controller {
             
             $pdf->Ln(26);
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
@@ -5174,8 +5174,8 @@ class Pdfta extends CI_Controller {
 
             $pdf->Ln(26);
             
-            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$kaprodi_data->gelar_depan.$kaprodi_data->name.$kaprodi_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$kaprodi_data->gelar_depan." ".$kaprodi_data->name.", ".$kaprodi_data->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP.".$kajur_data->nip_nik, 0, 0, 'L');
@@ -5455,7 +5455,7 @@ class Pdfta extends CI_Controller {
             $admin = $this->user_model->get_tendik_name($ttd_admin->id_user);
             $pdf->Ln(26);
             $pdf->Cell(90, $spasi,'', 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$admin->gelar_depan.$admin->name.$admin->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$admin->gelar_depan." ".$admin->name.", ".$admin->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
@@ -5599,7 +5599,7 @@ class Pdfta extends CI_Controller {
             $koor_data = $this->user_model->get_dosen_data($ttd_koor->id_user);
             $pdf->Ln(26);
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
@@ -5616,8 +5616,8 @@ class Pdfta extends CI_Controller {
             $koor_data = $this->user_model->get_dosen_data($ttd_koor->id_user);
             $kajur_data = $this->user_model->get_dosen_data($ttd_kajur->id_user);
             $pdf->Ln(26);
-            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');
@@ -5768,7 +5768,7 @@ class Pdfta extends CI_Controller {
         
             $pdf->Ln(26);
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$pbb_data->gelar_depan.$pbb_data->name.$pbb_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$pbb_data->gelar_depan." ".$pbb_data->name.", ".$pbb_data->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
@@ -5846,7 +5846,7 @@ class Pdfta extends CI_Controller {
         $pbb_data = $this->user_model->get_dosen_data($pkl->pembimbing);
         $pdf->SetWidths(array(45,5, 120));
         $pdf->SetAligns(array('L','C','L'));
-        $pdf->RowNoBorder(array('Dosen Pembimbing',':',$pbb_data->gelar_depan.$pbb_data->name.$pbb_data->gelar_belakang));
+        $pdf->RowNoBorder(array('Dosen Pembimbing',':',$pbb_data->gelar_depan." ".$pbb_data->name.", ".$pbb_data->gelar_belakang));
         $pdf->Ln(1);
         //pbl 
         $pbl_data = $this->pkl_model->get_pb_lapangan($pkl->pkl_id);
@@ -5885,7 +5885,7 @@ class Pdfta extends CI_Controller {
         $na_pbb = $nilai_pbb->nilai * ($bobot_pbb/100);
         $pdf->SetWidths(array(40,70,15,10,15));
         $pdf->SetAligns(array('C','L','C','C','C'));
-        $pdf->Row(array("\nDosen\nPembimbing","\n".$pbb_data->gelar_depan.$pbb_data->name.$pbb_data->gelar_belakang."\nNIP.".$pbb_data->nip_nik,"\n".$nilai_pbb->nilai,"\n".$bobot_pbb,"\n".$na_pbb)); 
+        $pdf->Row(array("\nDosen\nPembimbing","\n".$pbb_data->gelar_depan." ".$pbb_data->name.", ".$pbb_data->gelar_belakang."\nNIP.".$pbb_data->nip_nik,"\n".$nilai_pbb->nilai,"\n".$bobot_pbb,"\n".$na_pbb)); 
         }
         else{
         //nilai
@@ -5900,7 +5900,7 @@ class Pdfta extends CI_Controller {
         //dosen pbb
         $pdf->SetWidths(array(40,70,15,10,15));
         $pdf->SetAligns(array('C','L','C','C','C'));
-        $pdf->Row(array("\nDosen\nPembimbing","\n".$pbb_data->gelar_depan.$pbb_data->name.$pbb_data->gelar_belakang."\nNIP.".$pbb_data->nip_nik,"\n".$tot_nilai_pb,"\n".$bobot_pbb,"\n".$na_pb)); 
+        $pdf->Row(array("\nDosen\nPembimbing","\n".$pbb_data->gelar_depan." ".$pbb_data->name.", ".$pbb_data->gelar_belakang."\nNIP.".$pbb_data->nip_nik,"\n".$tot_nilai_pb,"\n".$bobot_pbb,"\n".$na_pb)); 
         }
 
         if($seminar->status >= 8){
@@ -5942,7 +5942,7 @@ class Pdfta extends CI_Controller {
             $nilai_k = $this->pkl_model->get_pkl_nilai_status($seminar->seminar_id,$pkl->pkl_id,'Koordinator')->nilai;
             $pdf->SetWidths(array(40,70,25,15));
             $pdf->SetAligns(array('C','L','C','C'));
-            $pdf->Row(array("\nKoordinator","\n".$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang."\nNIP.".$koor_data->nip_nik,"\nPengurangan","\n".$nilai_k)); 
+            $pdf->Row(array("\nKoordinator","\n".$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang."\nNIP.".$koor_data->nip_nik,"\nPengurangan","\n".$nilai_k)); 
 
             //total Nilai
             $total_nilai = ($na_pbb + $na_pbl) - $nilai_k;
@@ -6020,7 +6020,7 @@ class Pdfta extends CI_Controller {
         
             $pdf->Ln(26);
             $pdf->Cell(90, $spasi,"", 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP. ", 0, 0, 'L');
@@ -6038,8 +6038,8 @@ class Pdfta extends CI_Controller {
             $pdf->Cell(90, $spasi,$pdf->Image($koor_approve->ttd,$pdf->GetX()+1, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         
             $pdf->Ln(26);
-            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan.$kajur_data->name.$kajur_data->gelar_belakang, 0, 0, 'L');
-            $pdf->Cell(30, $spasi,$koor_data->gelar_depan.$koor_data->name.$koor_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(90, $spasi,$kajur_data->gelar_depan." ".$kajur_data->name.", ".$kajur_data->gelar_belakang, 0, 0, 'L');
+            $pdf->Cell(30, $spasi,$koor_data->gelar_depan." ".$koor_data->name.", ".$koor_data->gelar_belakang, 0, 0, 'L');
             $pdf->Ln(5);
 
             $pdf->Cell(90, $spasi,"NIP. ".$kajur_data->nip_nik, 0, 0, 'L');

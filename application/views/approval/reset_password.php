@@ -36,7 +36,7 @@
                                             <label class="col-sm-3 col-form-label">Password Baru</label>
                                             <div class="col-sm-6">
                                                 <input value="" placeholder='Password Baru' required name="password" id="myInput" class="form-control " type='password' >
-                                                <input value="<?php echo $this->uri->segment(2) ?>" required name="token" id="myInput" class="form-control " type='hidden' >
+                                                <input value="<?php echo $this->uri->segment(2) ?>" required name="token" id="" class="form-control " type='hidden' >
                                             </div>
                                             <div class="col-sm-3">
                                                 
