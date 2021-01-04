@@ -1009,6 +1009,27 @@ class Layanan_model extends CI_Model
         $result = $this->db->query("SELECT * FROM `layanan_fakultas_mahasiswa` WHERE kode LIKE '$kode'");
 		return $result->row();
     }
+
+    function get_layanan_order_bagian()
+    {
+        $result = $this->db->query("SELECT * FROM `layanan_fakultas` ORDER BY bagian, nama");
+		return $result->result();
+    }
+
+    //insert form
+	function insert_form_layanan_fakultas($data)
+	{
+		$this->db->trans_start();
+		$this->db->insert('layanan_fakultas', $data);	
+		$this->db->trans_complete();
+	}
     
+    function edit_form_layanan_fakultas($id,$data)
+	{
+		$this->db->where('id_layanan_fakultas', $id);
+	    $this->db->update('layanan_fakultas', $data);
+	}
+
+
 }
 ?>

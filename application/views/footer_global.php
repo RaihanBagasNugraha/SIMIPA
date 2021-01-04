@@ -4141,3 +4141,458 @@ function myFunction() {
 </script>
 
 <?php } ?>
+
+<?php if($this->uri->segment(1) == 'admin' || $this->uri->segment(2) == 'unit') { ?>
+
+<!-- prodi -->
+<div class="modal fade" id="add_prodi" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Prodi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="add_pro" method="post" action="<?php echo site_url("admin/tambah_unit") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Nama</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="prodi" value="" placeholder='Nama Prodi' class='form-control' id="">
+                                <input type="hidden" name="aksi" value="prodi" class='form-control' id="">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Jurusan</b></label>
+                            <div class="col-sm-9">
+                                <select name="jurusan" id="" class = 'form-control' required>
+                                    <option value="">-- Pilih Jurusan --</option>
+                                    <?php 
+                                        $list = $this->jurusan_model->get_jurusan_all();
+                                        foreach($list as $list){
+                                    ?>
+                                        <option value="<?php echo $list->id_jurusan ?>"><?php echo $list->nama ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="add_pro" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit_prodi" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Edit Prodi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="edit_pro" method="post" action="<?php echo site_url("admin/edit_unit") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Nama</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="prodi" value="" placeholder='Nama Prodi' class='form-control' id="id_prodi_nama">
+                                <input type="hidden" name="aksi" value="prodi" class='form-control' id="">
+                                <input type="hidden" name="id" value="" class='form-control' id="id_prodi">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Jurusan</b></label>
+                            <div class="col-sm-9">
+                                <select name="jurusan" id="id_prodi_jur" class = 'form-control' required>
+                                    <option value="">-- Pilih Jurusan --</option>
+                                    <?php 
+                                        $list = $this->jurusan_model->get_jurusan_all();
+                                        foreach($list as $list){
+                                    ?>
+                                        <option value="<?php echo $list->id_jurusan ?>"><?php echo $list->nama ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="edit_pro" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jurusan -->
+<div class="modal fade" id="add_jurusan" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Jurusan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="add_jur" method="post" action="<?php echo site_url("admin/tambah_unit") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Nama</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="jurusan" value="" placeholder='Nama Jurusan' class='form-control' id="">
+                                <input type="hidden" name="aksi" value="jurusan" class='form-control' id="">
+                            </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="add_jur" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit_jurusan" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Edit Jurusan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="edt_jur" method="post" action="<?php echo site_url("admin/edit_unit") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Nama</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="jurusan" value="" placeholder='Nama Jurusan' class='form-control' id="id_jur_nama">
+                                <input type="hidden" name="aksi" value="jurusan" class='form-control' id="">
+                                <input type="hidden" name="id" value="" class='form-control' id="id_jur">
+                            </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="edt_jur" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- lab -->
+<div class="modal fade" id="add_lab" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Lab</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="form_lab" method="post" action="<?php echo site_url("admin/tambah_unit") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Nama</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="lab" value="" placeholder='Nama Lab' class='form-control' id="">
+                                <input type="hidden" name="aksi" value="lab" class='form-control' id="">
+                            </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="form_lab" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit_lab" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Lab</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="form_edit_lab" method="post" action="<?php echo site_url("admin/edit_unit") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Nama</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="lab" value="" placeholder='Nama Lab' class='form-control' id="id_lab_nama">
+                                <input type="hidden" name="aksi" value="lab" class='form-control' id="">
+                                <input type="hidden" name="id" value="" class='form-control' id="id_lab">
+                            </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="form_edit_lab" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- unit kerja -->
+<div class="modal fade" id="add_unit" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Unit Kerja</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="form_unit" method="post" action="<?php echo site_url("admin/tambah_unit") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Nama</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="unit" value="" placeholder='Nama Unit Kerja' class='form-control' id="">
+                                <input type="hidden" name="aksi" value="unit" class='form-control' id="">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Jurusan</b></label>
+                            <div class="col-sm-9">
+                                <select name="jurusan" id="" class = 'form-control' required>
+                                    <option value="">-- Pilih Jurusan --</option>
+                                    <?php 
+                                        $list = $this->jurusan_model->get_jurusan_all();
+                                        foreach($list as $list){
+                                    ?>
+                                        <option value="<?php echo $list->id_jurusan ?>"><?php echo $list->nama ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="form_unit" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit_unit" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Edit Unit Kerja</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="form_edit_unit" method="post" action="<?php echo site_url("admin/edit_unit") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Nama</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="unit" value="" placeholder='Nama Unit Kerja' class='form-control' id="id_unit_nama">
+                                <input type="hidden" name="aksi" value="unit" class='form-control' id="">
+                                <input type="hidden" name="id" value="" class='form-control' id="id_unit">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Jurusan</b></label>
+                            <div class="col-sm-9">
+                                <select name="jurusan" id="id_unit_parent" class = 'form-control' required>
+                                    <option value="">-- Pilih Jurusan --</option>
+                                    <?php 
+                                        $list = $this->jurusan_model->get_jurusan_all();
+                                        foreach($list as $list){
+                                    ?>
+                                        <option value="<?php echo $list->id_jurusan ?>"><?php echo $list->nama ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="form_edit_unit" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>
+
+<?php if($this->uri->segment(1) == 'admin' || $this->uri->segment(3) == 'tambah-form') { ?>
+
+<div class="modal fade" id="add_form" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Layananan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="add_form_layanan" method="post" action="<?php echo site_url("admin/save_form") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Nama Form</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="nama" value="" placeholder='Nama Form' class='form-control' id="">
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Bagian</b></label>
+                            <div class="col-sm-9">
+                                <select name="bagian" required id="" class='form-control'>
+                                    <option value="">-- Pilih Bagian --</option>
+                                    <option value="Akademik">Akademik</option>
+                                    <option value="Kemahasiswaan">Kemahasiswaan</option>
+                                    <option value="Umum dan Keuangan">Umum dan Keuangan</option>
+                                </select>
+                            </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="add_form_layanan" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit_form" tabindex="" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Tambah Layananan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">    
+                <form id="edit_form_layanan" method="post" action="<?php echo site_url("admin/edit_form") ?>">
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Nama Form</b></label>
+                            <div class="col-sm-9">
+                                <input type="text" required name="nama" value="" placeholder='Nama Form' class='form-control' id="nama">
+                                <input type="hidden" name='id' id = 'id'>
+                            </div>
+                    </div>
+
+                    <div class="position-relative row form-group">
+                        <label for="prodi" class="col-sm-3 col-form-label"><b>Bagian</b></label>
+                            <div class="col-sm-9">
+                                <select name="bagian" required id="bagian" class='form-control'>
+                                    <option value="">-- Pilih Bagian --</option>
+                                    <option value="Akademik">Akademik</option>
+                                    <option value="Kemahasiswaan">Kemahasiswaan</option>
+                                    <option value="Umum dan Keuangan">Umum dan Keuangan</option>
+                                </select>
+                            </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-times fa-w-20"></i>
+                                            </span>Batal</button>
+                <button type="submit" form="edit_form_layanan" class="btn btn-primary">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                                                <i class="fas fa-check fa-w-20"></i>
+                                            </span>Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>

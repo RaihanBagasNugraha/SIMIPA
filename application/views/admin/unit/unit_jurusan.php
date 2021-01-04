@@ -8,17 +8,17 @@
                                         </i>
                                     </div>
                                     
-                                    <div>List Tugas Tambahan Struktural
+                                    <div>List Unit Jurusan
                                         <div class="page-title-subheading">
-                                            Kelola Data Struktural 
+                                            
                                         </div>
                                     </div>
                                 </div>
                                 <div class="page-title-actions">
                                     <a data-toggle = "modal" data-id="" class="passing" >
-                                        <button type="button" class="btn mb-2 btn-success btn-md"  data-toggle="modal" data-target="#add_tugas">
+                                        <button type="button" class="btn mb-2 btn-success btn-md"  data-toggle="modal" data-target="#add_jurusan">
                                             <span class="btn-icon-wrapper"><i class="fa fa-plus" aria-hidden="true"></i>
-                                            </span>  Tambah Tugas 
+                                            </span>  Tambah 
                                         </button>
                                     </a>
                                 </div>
@@ -38,43 +38,49 @@
                             
                          <div class="main-card mb-3 card">
                                 <div class="card-body">
+                                
+                                <?php if ($this->session->flashdata('success')) : ?>
+                                    <div class="alert alert-success" role="alert">
+                                    <!-- <h4 class="alert-heading"></h4> -->
+                                    <p class="mb-0"><?php echo $this->session->flashdata('success'); ?></p>
+                                    </div>
+                                <?php endif; ?>
+
                                 <div class="table-responsive">
                                     <table class="mb-0 table table-striped" data-page-length='100' id="example">
                                         <thead>
                                         <tr>
                                             <th style="width: 5%;">No</th>
-                                            <th style="width: 80%;">Tugas Tambahan</th>
+                                            <th style="width: 80%;">Jurusan</th>
                                             <th style="width: 15%;">Aksi</th>
                                         </tr>
                                       
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if(empty($tugas))
+                                        if(empty($list))
                                         {
                                             echo "<tr><td colspan='8'>Data tidak tersedia</td></tr>";
                                         }
                                         else
                                         {
                                             $no = 0;
-                                            foreach($tugas as $row) {
-                                               $array = array(16,17,18,19,21,11);
-                                               if(!in_array($row->id_tugas_tambahan, $array)){
+                                            foreach($list as $row) {
                                         ?>
                                         <tr>
                                             <td><?php echo ++$no; ?></td>
                                             <td><?php echo $row->nama; ?></td>
                                             <td>
-                                                <a href="<?php echo site_url("admin/struktural/tugas/form?tugas=".$row->id_tugas_tambahan) ?>" class="btn btn-shadow btn-primary">
-                                                    <span class="btn-icon-wrapper pr-2 opacity-7">
-                                                        <i class="fas fa-edit fa-w-20"></i>
-                                                    </span>
-                                                    Tambah
+                                                <a data-toggle = "modal" data-id="<?php echo $row->id_jurusan ?>" data-nama="<?php echo $row->nama ?>" class="passing2" >
+                                                    <button type="button" class="btn mb-2 btn-primary btn-md"  data-toggle="modal" data-target="#edit_jurusan">
+                                                        <span class="btn-icon-wrapper"><i class="fa fa-edit" aria-hidden="true"></i>
+                                                        </span>Ubah
+                                                    </button>
                                                 </a>
                                             </td>
                                         </tr>
                                         <?php
-                                               }
+                                               
                                             }
                                         }
                                         ?>
@@ -101,6 +107,13 @@ $(document).ready(function() {
     $(".passingID").click(function () {
         var id = $(this).attr('data-id');
         $("#id_mhs").val(id);
+    }); 
+
+    $(".passing2").click(function () {
+        var id = $(this).attr('data-id');
+        var nama = $(this).attr('data-nama');
+        $("#id_jur").val(id);
+        $("#id_jur_nama").val(nama);
     }); 
 
      

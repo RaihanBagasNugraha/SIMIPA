@@ -8,17 +8,17 @@
                                         </i>
                                     </div>
                                     
-                                    <div>List Tugas Tambahan Struktural
+                                    <div>List Unit Prodi
                                         <div class="page-title-subheading">
-                                            Kelola Data Struktural 
+                                            
                                         </div>
                                     </div>
                                 </div>
                                 <div class="page-title-actions">
                                     <a data-toggle = "modal" data-id="" class="passing" >
-                                        <button type="button" class="btn mb-2 btn-success btn-md"  data-toggle="modal" data-target="#add_tugas">
+                                        <button type="button" class="btn mb-2 btn-success btn-md"  data-toggle="modal" data-target="#add_prodi">
                                             <span class="btn-icon-wrapper"><i class="fa fa-plus" aria-hidden="true"></i>
-                                            </span>  Tambah Tugas 
+                                            </span>  Tambah 
                                         </button>
                                     </a>
                                 </div>
@@ -43,38 +43,38 @@
                                         <thead>
                                         <tr>
                                             <th style="width: 5%;">No</th>
-                                            <th style="width: 80%;">Tugas Tambahan</th>
+                                            <th style="width: 40%;">Prodi</th>
+                                            <th style="width: 40%;">Jurusan</th>
                                             <th style="width: 15%;">Aksi</th>
                                         </tr>
                                       
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if(empty($tugas))
+                                        if(empty($list))
                                         {
                                             echo "<tr><td colspan='8'>Data tidak tersedia</td></tr>";
                                         }
                                         else
                                         {
                                             $no = 0;
-                                            foreach($tugas as $row) {
-                                               $array = array(16,17,18,19,21,11);
-                                               if(!in_array($row->id_tugas_tambahan, $array)){
+                                            foreach($list as $row) {
                                         ?>
                                         <tr>
                                             <td><?php echo ++$no; ?></td>
+                                            <td><?php echo $this->jurusan_model->get_jurusan_id($row->jurusan)->nama; ?></td>
                                             <td><?php echo $row->nama; ?></td>
                                             <td>
-                                                <a href="<?php echo site_url("admin/struktural/tugas/form?tugas=".$row->id_tugas_tambahan) ?>" class="btn btn-shadow btn-primary">
-                                                    <span class="btn-icon-wrapper pr-2 opacity-7">
-                                                        <i class="fas fa-edit fa-w-20"></i>
-                                                    </span>
-                                                    Tambah
+                                                <a data-toggle = "modal" data-id="<?php echo $row->id_prodi ?>" data-nama="<?php echo $row->nama ?>" data-jur="<?php echo $row->jurusan ?>" class="passing2" >
+                                                    <button type="button" class="btn mb-2 btn-primary btn-md"  data-toggle="modal" data-target="#edit_prodi">
+                                                        <span class="btn-icon-wrapper"><i class="fa fa-edit" aria-hidden="true"></i>
+                                                        </span>Ubah
+                                                    </button>
                                                 </a>
                                             </td>
                                         </tr>
                                         <?php
-                                               }
+                                               
                                             }
                                         }
                                         ?>
@@ -101,6 +101,15 @@ $(document).ready(function() {
     $(".passingID").click(function () {
         var id = $(this).attr('data-id');
         $("#id_mhs").val(id);
+    }); 
+
+    $(".passing2").click(function () {
+        var id = $(this).attr('data-id');
+        var jur = $(this).attr('data-jur');
+        var nama = $(this).attr('data-nama');
+        $("#id_prodi").val(id);
+        $("#id_prodi_jur").val(jur);
+        $("#id_prodi_nama").val(nama);
     }); 
 
      

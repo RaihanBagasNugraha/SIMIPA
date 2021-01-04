@@ -447,6 +447,240 @@ class Admin extends CI_Controller {
 		}
 		
 	}
+
+	function tambah_atribut()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('admin/header');
+
+		$this->load->view('admin/fakultas/tambah_atribut');
+		
+		$this->load->view('footer_global');
+	}
+
+	function tambah_atribut_add()
+	{
+		$jns = $this->input->post('jns_layanan');
+
+		if($jns == 'Akademik'){
+			$form = $this->input->post('form');
+		}
+		elseif($jns == 'Umum dan Keuangan'){
+			$form = $this->input->post('form2');
+		}
+		elseif($jns == 'Kemahasiswaan'){
+			$form = $this->input->post('form3');
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['jenis'] = $jns;
+		$data['form'] = $form;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('admin/header');
+
+		$this->load->view('admin/fakultas/tambah_atribut_tambah',$data);
+		
+		$this->load->view('footer_global');
+
+	}
+
+	function tambah_atribut_save()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		$id_form = $data['id_form'];
+		$nama = $data['nama'];
+		$ttd = $data['ttd'];
+
+		$i = 0;
+		foreach($nama as $row){
+			$slug = str_replace(" ","-",strtolower($data['nama'][$i]));
+
+			$input = array(
+				"id_layanan" => $id_form,
+				"slug" => $slug,
+				"nama" => $data['nama'][$i],
+				"placeholder" => $data['placeholder'][$i],
+				"tipe" => $data['tipe'][$i],
+				"pilihan" => $data['pilihan'][$i]
+			);
+			//input atribut layanan
+			$this->layanan_model->insert_atribut_layanan($input);
+			$i++;
+		}
+
+		//input approver
+		if($ttd == ""){
+			$ttd = null;
+		}
+		$this->layanan_model->insert_approver($id_form,$ttd);
+		redirect(site_url("/admin/layanan-fakultas/form-atribut"));
+	}
+
+	function unit()
+	{
+		$seg = $this->uri->segment(3);
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		
+		$this->load->view('header_global', $header);
+		$this->load->view('admin/header');
+
+		if($seg == 'prodi'){
+			$data['list'] = $this->jurusan_model->get_prodi_all(); 
+			$this->load->view('admin/unit/unit_prodi',$data);	
+		}elseif($seg == 'jurusan'){
+			$data['list'] = $this->jurusan_model->get_jurusan_all(); 
+			$this->load->view('admin/unit/unit_jurusan',$data);
+		}elseif($seg == 'lab'){
+			$data['list'] = $this->jurusan_model->get_lab_all();
+			$this->load->view('admin/unit/unit_lab',$data);
+		}elseif($seg == 'unit-tendik'){
+			$data['list'] = $this->jurusan_model->get_unit_kerja_all();
+			$this->load->view('admin/unit/unit_tendik',$data);
+		}
+		$this->load->view('footer_global');
+
+	}
+
+	function tambah_unit()
+	{
+		$data = $this->input->post();
+	
+		if($data['aksi'] == 'prodi'){
+			$insert = array(
+				"nama" => $data['prodi'],
+				"jurusan" => $data['jurusan']
+			);
+			$this->session->set_flashdata('success', 'Berhasil Ubah Data');
+			$this->jurusan_model->insert_prodi($insert);
+			redirect(site_url("/admin/unit/prodi"));
+		}
+		elseif($data['aksi'] == 'jurusan')
+		{
+			$insert = array(
+				"nama" => $data['jurusan'],
+				"fakultas" => 1
+			);
+			$this->session->set_flashdata('success', 'Berhasil Ubah Data');
+			//tbl jurusan
+			$this->jurusan_model->insert_jurusan($insert);
+			redirect(site_url("/admin/unit/jurusan"));
+		}
+		elseif($data['aksi'] == 'lab')
+		{
+			$insert = array(
+				"nama_lab" => $data['lab'],
+			);
+
+			$this->session->set_flashdata('success', 'Berhasil Ubah Data');
+			$this->jurusan_model->insert_lab($insert);
+			redirect(site_url("/admin/unit/lab"));
+		}
+		elseif($data['aksi'] == 'unit')
+		{
+			$id = $this->jurusan_model->get_las_id_unit_kerja();
+			$id = $id+1;
+			$insert = array(
+				"id_unit_kerja" => $id,
+				"parent" => $data['jurusan'],
+				"nama" => $data['unit']
+			);
+
+			$this->session->set_flashdata('success', 'Berhasil Ubah Data');
+			$this->jurusan_model->insert_unit($insert);
+			redirect(site_url("/admin/unit/unit-tendik"));
+		}
+	}
+
+	function edit_unit()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+
+		if($data['aksi'] == 'prodi'){
+			$insert = array(
+				"nama" => $data['prodi'],
+				"jurusan" => $data['jurusan']
+			);
+			
+			$this->jurusan_model->edit_prodi($data['id'],$insert);
+			$this->session->set_flashdata('success', 'Berhasil Ubah Data');
+			redirect(site_url("/admin/unit/prodi"));
+		}elseif($data['aksi'] == 'jurusan'){
+			$insert = array(
+				"nama" => $data['jurusan'],
+			);
+			
+			$this->jurusan_model->edit_jurusan($data['id'],$insert);
+			$this->session->set_flashdata('success', 'Berhasil Ubah Data');
+			redirect(site_url("/admin/unit/jurusan"));
+		}elseif($data['aksi'] == 'lab'){
+			$insert = array(
+				"nama_lab" => $data['lab'],
+			);
+			
+			$this->jurusan_model->edit_lab($data['id'],$insert);
+			$this->session->set_flashdata('success', 'Berhasil Ubah Data');
+			redirect(site_url("/admin/unit/lab"));
+		}elseif($data['aksi'] == 'unit'){
+			$insert = array(
+				"parent" => $data['jurusan'],
+				"nama" => $data['unit']
+			);
+			$this->jurusan_model->edit_unit($data['id'],$insert);
+			$this->session->set_flashdata('success', 'Berhasil Ubah Data');
+			redirect(site_url("/admin/unit/unit-tendik"));
+		}
+	}
+
+	function tambah_form()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+
+		$this->load->view('header_global', $header);
+		$this->load->view('admin/header');
+		$data['form'] = $this->layanan_model->get_layanan_order_bagian();
+		$this->load->view('admin/fakultas/tambah_form',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function save_form()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$insert = array(
+			"bagian" => $data['bagian'],
+			"nama" => $data['nama']
+		);
+
+		$this->layanan_model->insert_form_layanan_fakultas($insert);
+		$this->session->set_flashdata('success', 'Berhasil Tambah Data');
+		redirect(site_url("/admin/layanan-fakultas/tambah-form"));
+	}
+	
+	function edit_form()
+	{
+		$data = $this->input->post();
+		// echo "<pre>";
+		// print_r($data);
+		$id = $data['id'];
+		$insert = array(
+			"bagian" => $data['bagian'],
+			"nama" => $data['nama']
+		);
+		$this->layanan_model->edit_form_layanan_fakultas($id,$insert);
+		$this->session->set_flashdata('success', 'Berhasil Tambah Data');
+		redirect(site_url("/admin/layanan-fakultas/tambah-form"));
+	}
 	
 	
 	public function list()

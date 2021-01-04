@@ -519,8 +519,11 @@ $route['admin/mahasiswa/registrasi'] = 'admin/mahasiswa_registrasi';
 $route['admin/user/(:any)'] = 'admin/user_registrasi';
 $route['admin/struktural/tugas'] = 'admin/struktural_tugas';
 $route['admin/struktural/tugas/form'] = 'admin/struktural_tugas_form';
-
-// $route['admin/form-layanan/atribut'] = 'tendik/tambah_atribut';
+$route['admin/unit/(:any)'] = 'admin/unit';
+$route['admin/layanan-fakultas/form-atribut'] = 'admin/tambah_atribut';
+$route['admin/layanan-fakultas/form-atribut/tambah'] = 'admin/tambah_atribut_add';
+$route['admin/layanan-fakultas/save'] = 'admin/tambah_atribut_save';
+$route['admin/layanan-fakultas/tambah-form'] = 'admin/tambah_form';
 
 $route['beranda'] = 'admin';
 // $route['admin'] = 'welcome';
