@@ -21,14 +21,17 @@
                                 <li <?php if($this->uri->segment(2) == "mahasiswa" || $this->uri->segment(2) == "user") echo 'class="mm-active"' ?> >
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-users"></i>
-                                        User
+                                        <?php 
+                                             $jml = count($this->user_model->get_mhs_regis());
+                                        ?>
+                                        User  <span class="badge badge-danger"><?php echo $jml > 0 ? $jml : "" ?></span>
                                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                     </a>
                                     <ul>
                                         <li>
                                         <a href="<?php echo site_url("admin/mahasiswa/registrasi") ?>" <?php if($this->uri->segment(2) == "mahasiswa" && $this->uri->segment(3) == "registrasi") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Registrasi
+                                                </i>Registrasi  <span class="badge badge-danger"><?php echo $jml > 0 ? $jml : "" ?></span>
                                             </a>
                                         </li>
 

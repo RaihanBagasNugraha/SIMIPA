@@ -40,7 +40,7 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 
-                                                <input type="checkbox" onclick="myFunction()"> Lihat Password
+                                                <input type="checkbox" onclick="myFunction()" id='lihat'>&emsp;<label for="lihat">Lihat Password</label>
                                             </div>
                                     </div>
 

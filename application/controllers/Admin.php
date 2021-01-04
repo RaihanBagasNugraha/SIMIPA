@@ -678,7 +678,7 @@ class Admin extends CI_Controller {
 			"nama" => $data['nama']
 		);
 		$this->layanan_model->edit_form_layanan_fakultas($id,$insert);
-		$this->session->set_flashdata('success', 'Berhasil Tambah Data');
+		$this->session->set_flashdata('success', 'Berhasil Ubah Data');
 		redirect(site_url("/admin/layanan-fakultas/tambah-form"));
 	}
 	

@@ -44,7 +44,7 @@
                                 <span>Silakan masuk ke sistem menggunakan akun Anda.</span></h4>
                             <h6 class="mt-3">Belum punya akun (mahasiswa/alumni)? <a href="<?php echo site_url('registrasi') ?>" class="text-primary">Daftar sekarang</a></h6>
                             <?php if(isset($_GET['login']) && $_GET['login'] == 'gagal') { ?>
-                                    <div class="alert alert-danger fade show" role="alert">Akun Anda belum diverifikasi atau Username/password salah — silakan cek kembali!</div>
+                                    <div class="alert alert-danger fade show" role="alert">Akun Anda belum diverifikasi atau Username/password salah — silakan cek email untuk verifikasi!</div>
                                     <?php } ?>
                                     <?php if(isset($_GET['access']) && $_GET['access'] == 'ditolak') { ?>
                                     <div class="alert alert-danger fade show" role="alert">Anda belum Login — silakan Login terlebih dahulu!</div>

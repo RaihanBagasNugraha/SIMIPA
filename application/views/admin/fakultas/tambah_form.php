@@ -71,7 +71,7 @@
                                         <tr>
                                             <td><?php echo ++$no; ?></td>
                                             <td><?php echo $row->nama; ?></td>
-                                            <td><?php echo $row->bagian; ?></td>
+                                            <td><b><?php echo $row->bagian; ?></b></td>
                                             <td>
                                                 <a data-toggle = "modal" data-id="<?php echo $row->id_layanan_fakultas ?>" data-nama="<?php echo $row->nama ?>" data-bagian="<?php echo $row->bagian ?>" class="passing2" >
                                                     <button type="button" class="btn mb-2 btn-primary btn-md"  data-toggle="modal" data-target="#edit_form">
