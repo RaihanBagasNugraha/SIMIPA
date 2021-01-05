@@ -181,7 +181,7 @@ class Admin extends CI_Controller {
 		else{
 			$jur_unit = $jurusan;
 		}
-		$array = array(16,17,18,19,21,11);
+		$array = array(16,17,18,19,11);
 		$check = $this->user_model->check_tugas_tambahan($data['user'],$tugas,$jur_unit,$prodi,$status);
 
 		if(!empty($check)){
