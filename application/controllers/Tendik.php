@@ -105,13 +105,13 @@ class Tendik extends CI_Controller {
 
 		$this->user_model->update_tendik($data_tendik, $this->session->userdata('userId'));
 
-		$tgl_lahir = new DateTime($this->input->post('tanggal_lahir'));
+		// $tgl_lahir = new DateTime($this->input->post('tanggal_lahir'));
 
 		$data_akun = array(
 			'jenis_kelamin' => $this->input->post('jenkel'),
 			'agama' => $this->input->post('agama'),
 			'tempat_lahir' => $this->input->post('tempat_lahir'),
-			'tanggal_lahir' => $tgl_lahir->format('Y-m-d'),
+			'tanggal_lahir' => $this->input->post('tanggal_lahir'),
 			'jalan' => $this->input->post('jalan'),
 			'provinsi' => $this->input->post('provinsi'),
 			'kota_kabupaten' => $this->input->post('kota_kabupaten'),

@@ -119,7 +119,8 @@
                                                 <div class="position-relative row form-group">
                                                 <div class="col-sm-12"><input oninvalid="this.setCustomValidity('Anda belum memilih berkas!')" oninput="this.setCustomValidity('')" accept=".pdf,.doc,.docx" name="file" id="file" type="file" class="form-control-file">
                                                 </div>
-                                                
+                                                <br>
+                                                <div class="col-sm-12"><span style="color:red">*Ukuran File Max 5 MB</span></div>
                                                 </div>
 
                                                                

@@ -1328,6 +1328,12 @@ class Ta_model extends CI_Model
 		return $query->row();
 	}
 
+	function get_bimbingan_dosen_user($id_user)
+	{
+		$query = $this->db->query("SELECT b.*, c.name FROM tbl_users_dosen b, tbl_users c WHERE b.id_user = $id_user AND b.id_user = c.userId ORDER by c.name");
+		return $query->result();
+	}
+
 	function get_bimbingan_dosen($id_user)
 	{
 		$query = $this->db->query("SELECT b.*, c.name FROM tbl_users_dosen a, tbl_users_dosen b, tbl_users c WHERE a.id_user = $id_user AND a.jurusan = b.jurusan AND b.id_user = c.userId ORDER by c.name");

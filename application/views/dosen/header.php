@@ -160,13 +160,13 @@ else{
                                         </li>
                                         <?php } ?>
                                         <li>
-                                            <a href="#">
+                                            <a href="<?php echo site_url("dosen/tugas-akhir/bimbingan") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "bimbingan") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
-                                                </i>Kemajuan Bimbingan
+                                                </i>Bimbingan
                                             </a>
                                         </li>
                                         <li>
-                                        <a href="<?php echo site_url("dosen/tugas-akhir/nilai-seminar") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "nilai-seminar") echo 'class="mm-active"' ?>>
+                                            <a href="<?php echo site_url("dosen/tugas-akhir/nilai-seminar") ?>" <?php if($this->uri->segment(2) == "tugas-akhir" && $this->uri->segment(3) == "nilai-seminar") echo 'class="mm-active"' ?>>
                                                 <i class="metismenu-icon">
                                                 </i>Nilai Seminar/Sidang <span class="badge badge-danger"><?php echo $smr_nilai > 0 ? $smr_nilai : "" ?></span>
                                             </a>
@@ -183,7 +183,7 @@ else{
                                     </ul>
                                 </li>
                                 
-                                <li>
+                                <!-- <li>
                                     <a href="#" <?php if($this->uri->segment(1) == "unggah-nilai") echo 'class="mm-active"' ?> >
                                         <i class="metismenu-icon pe-7s-display1"></i>
                                         Penelitian
@@ -200,7 +200,7 @@ else{
                                         <i class="metismenu-icon pe-7s-box1"></i>
                                         Penunjang
                                     </a>
-                                </li>
+                                </li> -->
 
                                 <?php if(in_array(1,$tb)){ ?>
                                 <!-- Menu Dekan -->
@@ -224,7 +224,7 @@ else{
                                         </li>
                                     </ul>
                                 </li>
-                                <li >
+                                <!-- <li >
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-monitor"></i>
                                         Pemantauan
@@ -246,9 +246,9 @@ else{
                                         
                                        
                                     </ul>
-                                </li>
+                                </li> -->
 
-                                <li >
+                                <!-- <li >
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-copy-file"></i>
                                         Monitor
@@ -276,7 +276,7 @@ else{
                                         
                                        
                                     </ul>
-                                </li>
+                                </li> -->
                                 <?php } ?>
 
                                 <?php if(in_array(2,$tb)){ ?>
@@ -475,7 +475,7 @@ else{
                                 </li>
                                 <li <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) != "bidang-nilai" && $this->uri->segment(3) != "kaprodi" && $this->uri->segment(3) != "komposisi-nilai" && $this->uri->segment(3) != "pkl"  && $this->uri->segment(3) != "rekap-pkl" && $this->uri->segment(3) != "rekap" ) echo 'class="mm-active"' ?>>
                                     <a href="#">
-                                        <i class="metismenu-icon pe-7s-pen"></i>
+                                        <i class="metismenu-icon pe-7s-paperclip"></i>
                                         <?php 
                                             $ta_kajur = count($this->ta_model->get_approval_ta_kajur($this->session->userdata('userId')));
                                             $smr_kajur = count($this->ta_model->get_approval_seminar_kajur($this->session->userdata('userId')));
@@ -608,7 +608,7 @@ else{
                                     </ul>
                                 </li>
 
-                                <li>
+                                <!-- <li>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-monitor"></i>
                                         Pemantauan
@@ -630,11 +630,11 @@ else{
                                         
                                        
                                     </ul>
-                                </li>
+                                </li> -->
 
                                <li <?php if($this->uri->segment(2) == "struktural" && $this->uri->segment(3) == "rekap") echo 'class="mm-active"' ?>>
                                     <a href="#">
-                                        <i class="metismenu-icon pe-7s-copy-file"></i>
+                                        <i class="metismenu-icon pe-7s-study"></i>
                                         <!-- <?php 
                                             $rekap = count($this->ta_model->get_ta_rekap($this->session->userdata('userId')));
                                         ?> -->
@@ -709,12 +709,12 @@ else{
                                     </ul>
                                 </li>
                                 
-                                <li>
+                                <!-- <li>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-config"></i>
                                         Pengaturan
                                     </a>
-                                </li>
+                                </li> -->
                                 <?php } ?>
 
                                 <?php if(in_array(13,$tb)){ ?>
@@ -970,18 +970,18 @@ else{
                                     </ul>
                                 </li>
 
-                                <li >
+                                <!-- <li >
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-graph1"></i>
                                         Kemajuan Tugas Akhir
                                         
                                     </a>
                                     
-                                </li>
+                                </li> -->
 
                                 <li <?php if($this->uri->segment(2) == "koordinator" && $this->uri->segment(3) == "rekap") echo 'class="mm-active"' ?>>
                                     <a href="#">
-                                        <i class="metismenu-icon pe-7s-copy-file"></i>
+                                        <i class="metismenu-icon pe-7s-study"></i>
                                         <!-- <?php 
                                             $rekap = count($this->ta_model->get_ta_rekap($this->session->userdata('userId')));
                                         ?> -->

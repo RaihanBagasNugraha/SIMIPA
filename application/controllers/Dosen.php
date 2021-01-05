@@ -113,13 +113,13 @@ class Dosen extends CI_Controller {
 
 		$this->user_model->update_dosen($data_dosen, $this->session->userdata('userId'));
 
-		$tgl_lahir = new DateTime($this->input->post('tanggal_lahir'));
+		// $tgl_lahir = new DateTime($this->input->post('tanggal_lahir'));
 
 		$data_akun = array(
 			'jenis_kelamin' => $this->input->post('jenkel'),
 			'agama' => $this->input->post('agama'),
 			'tempat_lahir' => $this->input->post('tempat_lahir'),
-			'tanggal_lahir' => $tgl_lahir->format('Y-m-d'),
+			'tanggal_lahir' => $this->input->post('tanggal_lahir'),
 			'jalan' => $this->input->post('jalan'),
 			'provinsi' => $this->input->post('provinsi'),
 			'kota_kabupaten' => $this->input->post('kota_kabupaten'),
@@ -5033,6 +5033,74 @@ class Dosen extends CI_Controller {
 		$this->load->view('dosen/header');
 		$data['jurusan'] = $this->user_model->get_jurusan_fak();
 		$this->load->view('dosen/rekap_layanan/rekap_layanan_detail',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function bimbingan()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+		$data['dosen'] = $this->ta_model->get_bimbingan_dosen_user($this->session->userdata('userId'));
+		$this->load->view('dosen/bimbingan/bimbingan',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function bimbingan_detail()
+	{
+		$id_user = $this->input->get('dosen');
+		$id_user = $this->encrypt->decode($id_user);
+		$jenis = $this->input->get('jenis');
+		$strata = $this->input->get('strata');
+
+		switch($strata)
+		{
+			case "d3":
+			$npm1 = $npm2 = "0";
+			break;
+			case "s1":
+			$npm1 = "1";
+			$npm2 = "5";
+			break;
+			case "s2":
+			$npm1 = $npm2 = "2";
+			break;
+			case "s3":
+			$npm1 = $npm2 = "3";
+			break;
+		}
+		switch($jenis)
+		{
+			case "pb1":
+			$status = 'Pembimbing Utama';
+			break;
+			case "pb2":
+			$status = 'Pembimbing 2';
+			break;
+			case "pb3":
+			$status = 'Pembimbing 3';
+			break;
+			case "ps1":
+			$status = 'Penguji 1';
+			break;
+			case "ps2":
+			$status = 'Penguji 2';
+			break;
+			case "ps3":
+			$status = 'Penguji 3';
+			break;
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['ta'] = $this->ta_model->get_bimbingan_dosen_detail($id_user,$status,$npm1,$npm2);
+		$data['id_dosen'] = $id_user;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/bimbingan/bimbingan_detail',$data);
 		
 		$this->load->view('footer_global');
 	}

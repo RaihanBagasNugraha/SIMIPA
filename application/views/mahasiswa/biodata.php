@@ -160,7 +160,7 @@
                                             <div class="col-sm-4"><input name="tempat_lahir" required id="tempat_lahir" value="<?php echo $biodata->tempat_lahir ?>" type="text" placeholder="Contoh: Bandar Lampung" class="form-control"></div>
                                             <div class="col-sm-1"></div>
                                             <label for="tanggal_lahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
-                                            <div class="col-sm-3"><input name="tanggal_lahir" required id="tanggal_lahir" value="<?php echo date_format(date_create($biodata->tanggal_lahir), "d-m-Y") ?>" type="text" data-inputmask-alias="datetime" placeholder="dd-mm-yyyy" data-inputmask-inputformat="dd-mm-yyyy" im-insert="false" class="form-control input-mask-trigger"></div>
+                                            <div class="col-sm-3"><input name="tanggal_lahir" required id="tanggal_lahir" value="<?php echo $biodata->tanggal_lahir ?>" type="text" placeholder="yyyy-mm-dd"  class="form-control tgl"></div>
                                         
                                         </div>
                                         <div class="position-relative row form-group"><label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
@@ -336,6 +336,8 @@
                             </div>
 <script src="<?php echo site_url("assets/scripts/jquery_3.4.1_jquery.min.js") ?>"></script>
 <script src="<?php echo site_url("assets/scripts/select2.full.js") ?>"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript">
 $(document).ready(function(){
     $("select").select2({
@@ -345,6 +347,12 @@ $(document).ready(function(){
         type:"POST",
         url: "<?php echo site_url('mahasiswa/ambil_data') ?>",
         cache: false,
+    });
+
+    $('.tgl').datepicker({
+        dateFormat : 'yy-mm-dd',
+        changeMonth: true,
+        changeYear: true
     });
 
     $("#provinsi").change(function(){
