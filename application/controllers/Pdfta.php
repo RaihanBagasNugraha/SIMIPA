@@ -403,7 +403,7 @@ class Pdfta extends CI_Controller {
 
         //ttd
         if($ta->status == "0"){
-            $pdf->Cell(90, $spasi,$pdf->Image($blank_image,$pdf->GetX(), $pdf->GetY(),60,0,'PNG'), 0, 0, 'L'); 
+            $pdf->Cell(90, $spasi,$pdf->Image("$blank_image",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L'); 
             $pdf->Cell(30, $spasi,$pdf->Image("$ta->ttd",$pdf->GetX()-3, $pdf->GetY(),40,0,'PNG'), 0, 0, 'L');
         }
         elseif($ta->status >= 1 ||$ta->status == -2 ){
@@ -413,7 +413,7 @@ class Pdfta extends CI_Controller {
 
         // $pdf->Image("$ta->ttd",80,200,30,0,'PNG');
         $pdf->Ln(26);
-        $pdf->Cell(90, $spasi,$pa->gelar_depan.". "$pa->name.", ".$pa->gelar_belakang, 0, 0, 'L');
+        $pdf->Cell(90, $spasi,$pa->gelar_depan.". ".$pa->name.", ".$pa->gelar_belakang, 0, 0, 'L');
         $pdf->Cell(30, $spasi,$mhs->name, 0, 0, 'L');
         $pdf->Ln(5);
 

@@ -97,7 +97,7 @@ class Admin extends CI_Controller {
 			$this->email->subject('Verifikasi Email Registrasi SIMIPA');   
 			$this->email->message("
 			Silahkan Klik Link Berikut Untuk Menyelesaikan Verifikasi Registrasi <br>
-			http://localhost/simipa/verifikasi-registrasi/$token
+			https://apps.fmipa.unila.ac.id/simipa/verifikasi-registrasi/$token
 			<br><br>
 			Terimakasih.
 			
@@ -181,7 +181,7 @@ class Admin extends CI_Controller {
 		else{
 			$jur_unit = $jurusan;
 		}
-		$array = array(16,17,18,19,21,11);
+		$array = array(16,17,18,19,11);
 		$check = $this->user_model->check_tugas_tambahan($data['user'],$tugas,$jur_unit,$prodi,$status);
 
 		if(!empty($check)){

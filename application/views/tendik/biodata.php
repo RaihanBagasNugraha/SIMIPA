@@ -69,7 +69,7 @@
                                         <div class="position-relative row form-group">
                                             <label for="jurusan" class="col-sm-2 col-form-label">Pangkat Golongan</label>
                                             <div class="col-sm-10">
-                                            <select name="pangkat" class="input-lg form-control">
+                                            <select  name="pangkat" class="input-lg form-control">
                                             <option value = "">-- Pilih Pangkat Golongan--</option>
                                             <?php
                                             $list_pangkat = $this->user_model->get_pangkat_all();
@@ -106,8 +106,8 @@
                                             
                                             <label for="jenkel" class="col-sm-2 col-form-label">Jenis Kelamin</label>
                                             <div class="col-sm-10">
-                                            <select name="jenkel" class=" form-control">
-                                            <option>-- Pilih Jenis Kelamin --</option>
+                                            <select required name="jenkel" class=" form-control">
+                                            <option value=''>-- Pilih Jenis Kelamin --</option>
                                             <option value="Laki-laki" <?php if($biodata->jenis_kelamin == "Laki-laki") echo "selected" ?>>Laki-laki</option>
                                             <option value="Perempuan" <?php if($biodata->jenis_kelamin == "Perempuan") echo "selected" ?>>Perempuan</option>
                                             </select>
@@ -116,8 +116,8 @@
                                         <div class="position-relative row form-group">
                                             <label for="agama" class="col-sm-2 col-form-label">Agama</label>
                                             <div class="col-sm-10">
-                                                <select name="agama" class=" form-control">
-                                                <option>-- Pilih Agama --</option>
+                                                <select required name="agama" class=" form-control">
+                                                <option value=''>-- Pilih Agama --</option>
                                                 <?php
                                                 $list = $this->parameter_model->select_agama();
                                                 foreach ($list as $row) {
@@ -137,19 +137,19 @@
                                             <div class="col-sm-4"><input name="tempat_lahir" required id="tempat_lahir" value="<?php echo $biodata->tempat_lahir ?>" type="text" placeholder="Contoh: Bandar Lampung" class="form-control"></div>
                                             <div class="col-sm-1"></div>
                                             <label for="tanggal_lahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
-                                            <div class="col-sm-3"><input name="tanggal_lahir" required id="tanggal_lahir" value="<?php echo date_format(date_create($biodata->tanggal_lahir), "d-m-Y") ?>" type="text" data-inputmask-alias="datetime" placeholder="dd-mm-yyyy" data-inputmask-inputformat="dd-mm-yyyy" im-insert="false" class="form-control input-mask-trigger"></div>
+                                            <div class="col-sm-3"><input name="tanggal_lahir" required id="tanggal_lahir" value="<?php echo $biodata->tanggal_lahir ?>" type="text" placeholder="yyyy-mm-dd"  class="form-control tgl"></div>
                                         
                                         </div>
                                         <div class="position-relative row form-group"><label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
                                             <div class="col-sm-10">
-                                            <textarea name="jalan" id="jalan" class="form-control" placeholder="Contoh: Jl. Soekarno Hatta Gg. Bypass Raya No. 103 RT 01 RW 04"><?php echo $biodata->jalan ?></textarea>
+                                            <textarea name="jalan" required id="jalan" class="form-control" placeholder="Contoh: Jl. Soekarno Hatta Gg. Bypass Raya No. 103 RT 01 RW 04"><?php echo $biodata->jalan ?></textarea>
                                             </div>
                                             
                                         </div>
                                         <div class="position-relative row form-group"><label for="alamat" class="col-sm-2 col-form-label"></label>
                                             <div class="col-sm-10">
-                                                <select name="provinsi" id="provinsi" class="form-control">
-                                                <option>-- Pilih Provinsi --</option>
+                                                <select required name="provinsi" id="provinsi" class="form-control">
+                                                <option value='' >-- Pilih Provinsi --</option>
                                                 <?php
                                                 $list = $this->wilayah_model->provinsi();
                                                 foreach ($list as $row) {
@@ -165,8 +165,8 @@
                                         <div class="position-relative row form-group"><label for="alamat" class="col-sm-2 col-form-label"></label>
                                             
                                             <div class="col-sm-10">
-                                                <select name="kota_kabupaten" id="kota-kabupaten" class=" form-control">
-                                                <option>-- Pilih Kota/Kabupaten --</option>
+                                                <select required name="kota_kabupaten" id="kota-kabupaten" class=" form-control">
+                                                <option value='' >-- Pilih Kota/Kabupaten --</option>
                                                 <?php
                                                 if(!empty($biodata->kota_kabupaten)) {
                                                     echo $this->wilayah_model->kabupaten_cek($biodata->provinsi, $biodata->kota_kabupaten);
@@ -181,8 +181,8 @@
                                         <div class="position-relative row form-group"><label for="alamat" class="col-sm-2 col-form-label"></label>
                                             
                                             <div class="col-sm-10">
-                                                <select name="kecamatan" id="kecamatan" class=" form-control">
-                                                <option>-- Pilih Kecamatan --</option>
+                                                <select required name="kecamatan" id="kecamatan" class=" form-control">
+                                                <option value = ''>-- Pilih Kecamatan --</option>
                                                 <?php
                                                 if(!empty($biodata->kecamatan)) {
                                                     echo $this->wilayah_model->kecamatan_cek($biodata->kota_kabupaten, $biodata->kecamatan);
@@ -195,8 +195,8 @@
                                         <div class="position-relative row form-group"><label for="alamat" class="col-sm-2 col-form-label"></label>
                                             
                                             <div class="col-sm-10">
-                                                <select name="kelurahan_desa" id="kelurahan-desa" class=" form-control">
-                                                <option>-- Pilih Kelurahan/Desa --</option>
+                                                <select required name="kelurahan_desa" id="kelurahan-desa" class=" form-control">
+                                                <option value=''>-- Pilih Kelurahan/Desa --</option>
                                                 <?php
                                                 if(!empty($biodata->kelurahan_desa)) {
                                                     echo $this->wilayah_model->desa_cek($biodata->kecamatan, $biodata->kelurahan_desa);
@@ -209,7 +209,7 @@
                                         <div class="position-relative row form-group"><label for="alamat" class="col-sm-2 col-form-label"></label>
                                             
                                             <div class="col-sm-3">
-                                            <input name="kode_pos" id="kode_pos" value="<?php echo $biodata->kode_pos ?>" type="text" placeholder="Contoh: 35144" data-inputmask="'mask': '99999'" im-insert="true" class="form-control input-mask-trigger">
+                                            <input name="kode_pos" required id="kode_pos" value="<?php echo $biodata->kode_pos ?>" type="text" placeholder="Contoh: 35144" data-inputmask="'mask': '99999'" im-insert="true" class="form-control input-mask-trigger">
                                             </div>
                                             
                                             
@@ -306,6 +306,8 @@
                             </div>
 <script src="<?php echo site_url("assets/scripts/jquery_3.4.1_jquery.min.js") ?>"></script>
 <script src="<?php echo site_url("assets/scripts/select2.full.js") ?>"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript">
 $(document).ready(function(){
     $("select").select2({
@@ -315,6 +317,12 @@ $(document).ready(function(){
         type:"POST",
         url: "<?php echo site_url('tendik/ambil_data') ?>",
         cache: false,
+    });
+
+    $('.tgl').datepicker({
+        dateFormat : 'yy-mm-dd',
+        changeMonth: true,
+        changeYear: true
     });
 
     $("#provinsi").change(function(){

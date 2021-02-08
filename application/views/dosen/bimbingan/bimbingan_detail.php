@@ -9,31 +9,8 @@
                                     </div>
                                     <?php
                                     $data_dosen = $this->user_model->get_dosen_data($this->session->userdata('userId'));
-                                    $strata = $_GET['strata'];
-                                    switch($data_dosen->jurusan)
-                                    {
-                                        case "0":
-                                        $jur_dosen = "Dokter MIPA";
-                                        break;
-                                        case "1":
-                                        $jur_dosen = "Kimia";
-                                        break;
-                                        case "2":
-                                        $jur_dosen = "Biologi";
-                                        break;
-                                        case "3":
-                                        $jur_dosen = "Matematika";
-                                        break;
-                                        case "4":
-                                        $jur_dosen = "Fisika";
-                                        break;
-                                        case "5":
-                                        $jur_dosen = "Ilmu Komputer";
-                                        break;
-                                    }
-                                    
                                     ?>
-                                    <div>Tugas Akhir Mahasiswa <?php echo strtoupper($strata); ?> Jurusan <?php echo $jur_dosen; ?>
+                                    <div>Daftar Mahasiswa Bimbingan Tugas Akhir
                                         <div class="page-title-subheading">
                                         </div>
                                     </div>
@@ -82,7 +59,7 @@
                                         <?php
                                         if(empty($ta))
                                         {
-                                            echo "<tr><td colspan='6'>Data tidak tersedia</td></tr>";
+                                            echo "<tr><td colspan='8'>Data tidak tersedia</td></tr>";
                                         }
                                         else
                                         {

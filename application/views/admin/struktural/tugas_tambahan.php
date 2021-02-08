@@ -58,7 +58,7 @@
                                         {
                                             $no = 0;
                                             foreach($tugas as $row) {
-                                               $array = array(16,17,18,19,21,11);
+                                               $array = array(16,17,18,19,11);
                                                if(!in_array($row->id_tugas_tambahan, $array)){
                                         ?>
                                         <tr>

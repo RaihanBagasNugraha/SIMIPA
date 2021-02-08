@@ -206,7 +206,7 @@ class Approval extends CI_Controller {
 			$this->email->subject('Lupa Password SIMIPA');   
 			$this->email->message("
 			Silahkan Klik Link Berikut Untuk Reset Password Website SIMIPA <br>
-			http://localhost/simipa/ganti-password/$token
+			https://apps.fmipa.unila.ac.id/simipa/ganti-password/$token
 			<br><br>
 			Terimakasih.
 			

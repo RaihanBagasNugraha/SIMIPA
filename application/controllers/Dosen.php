@@ -113,13 +113,13 @@ class Dosen extends CI_Controller {
 
 		$this->user_model->update_dosen($data_dosen, $this->session->userdata('userId'));
 
-		$tgl_lahir = new DateTime($this->input->post('tanggal_lahir'));
+		// $tgl_lahir = new DateTime($this->input->post('tanggal_lahir'));
 
 		$data_akun = array(
 			'jenis_kelamin' => $this->input->post('jenkel'),
 			'agama' => $this->input->post('agama'),
 			'tempat_lahir' => $this->input->post('tempat_lahir'),
-			'tanggal_lahir' => $tgl_lahir->format('Y-m-d'),
+			'tanggal_lahir' => $this->input->post('tanggal_lahir'),
 			'jalan' => $this->input->post('jalan'),
 			'provinsi' => $this->input->post('provinsi'),
 			'kota_kabupaten' => $this->input->post('kota_kabupaten'),
@@ -498,54 +498,54 @@ class Dosen extends CI_Controller {
 		$status = "kajur";
 		
 		//send email
-		if(!empty($alter)){
-			$config = Array(  
-				'protocol' => 'smtp',  
-				'smtp_host' => 'ssl://smtp.googlemail.com',  
-				'smtp_port' => 465,  
-				'smtp_user' => 'apps.fmipa.unila@gmail.com',   
-				'smtp_pass' => 'apps_fmipa 2020',   
-				'mailtype' => 'html',   
-				'charset' => 'iso-8859-1'  
-			);  
-			$jml_email = count($alter);
-			$n = 0;
-			foreach($alter as $row){
-				$this->load->library('email', $config);
-				$this->email->set_newline("\r\n");  
-				$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
-				$this->email->to($row->email);//$row->email   
-				$this->email->subject('Approve Tema Penelitian Fakultas Matematika dan Ilmu Pengetahuan Alam');   
-				$this->email->message("
-				Kepada Yth. $row->nama
-				<br>
-				Untuk Melakukan Approval Tema Penelitian Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai $row->status Silahkan Klik Link Berikut :<br>
-				http://apps.fmipa.unila.ac.id/simipa/approval/ta?token=$row->token
-				<br><br>
-				Terimakasih.
+// 		if(!empty($alter)){
+// 			$config = Array(  
+// 				'protocol' => 'smtp',  
+// 				'smtp_host' => 'ssl://smtp.googlemail.com',  
+// 				'smtp_port' => 465,  
+// 				'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+// 				'smtp_pass' => 'apps_fmipa 2020',   
+// 				'mailtype' => 'html',   
+// 				'charset' => 'iso-8859-1'  
+// 			);  
+// 			$jml_email = count($alter);
+// 			$n = 0;
+// 			foreach($alter as $row){
+// 				$this->load->library('email', $config);
+// 				$this->email->set_newline("\r\n");  
+// 				$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
+// 				$this->email->to($row->email);//$row->email   
+// 				$this->email->subject('Approve Tema Penelitian Fakultas Matematika dan Ilmu Pengetahuan Alam');   
+// 				$this->email->message("
+// 				Kepada Yth. $row->nama
+// 				<br>
+// 				Untuk Melakukan Approval Tema Penelitian Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai $row->status Silahkan Klik Link Berikut :<br>
+// 				http://apps.fmipa.unila.ac.id/simipa/approval/ta?token=$row->token
+// 				<br><br>
+// 				Terimakasih.
 				
-				");
-				if (!$this->email->send()) {  
-					    $n = 0;
-				   }else{  
-					  $n++;
-				}   
-			}
+// 				");
+// 				if (!$this->email->send()) {  
+// 					    $n = 0;
+// 				   }else{  
+// 					  $n++;
+// 				}   
+// 			}
             
-		}
-		else{
-		    $jml_email = 0;
-			$n = 0;
-		}
+// 		}
+// 		else{
+// 		    $jml_email = 0;
+// 			$n = 0;
+// 		}
 		// check apakah email terkirim semua
-		if($jml_email == $n)
-		{
+// 		if($jml_email == $n)
+// 		{
 		    $this->ta_model->approve_ta($id,$ttd,$status,$dosenid);
 		    redirect(site_url("dosen/struktural/tema"));
-		}
-		else{
-		    redirect(site_url("dosen/struktural/tema?status=error"));
-		}
+// 		}
+// 		else{
+// 		    redirect(site_url("dosen/struktural/tema?status=error"));
+// 		}
 		
 	}
 
@@ -735,7 +735,9 @@ class Dosen extends CI_Controller {
 		$ps3_nip = $data['ps3_alter_nip'];
 		$ps3_nama = $data['ps3_alter_nama'];
 		$ps3_email = $data['ps3_alter_email'];
-		
+
+        //send email
+        
 
 		if($pb2 == NULL && ($pb2_nip != NULL && $pb2_nama != NULL)){
 			$status = "Pembimbing 2";
@@ -803,116 +805,172 @@ class Dosen extends CI_Controller {
 			);
 			$this->ta_model->insert_approval_ta($data_approval);
 		}
-
-		if($jenis == "Tugas Akhir"){
-			$this->ta_model->approval_koordinator_ta($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2);
-			$this->ta_model->set_komisi_ta($id,$pb1,$ps1,$ps2);
-
-			if($ps1 != NULL && $ps1 != '0'){
-	
-				$data_approval = array(
-					'id_pengajuan' => $id,
-					'status_slug' => 'Penguji 1',
-					'id_user' => $ps1,
-					'ttd' => '',	
-				);
-	
-				$this->ta_model->insert_approval_ta($data_approval);
+		
+		$alter = $this->ta_model->get_komisi_alter_id($id);
+		
+		//send email
+		if(!empty($alter)){
+			$config = Array(  
+				'protocol' => 'smtp',  
+				'smtp_host' => 'ssl://smtp.googlemail.com',  
+				'smtp_port' => 465,  
+				'smtp_user' => 'apps.fmipa.unila@gmail.com',   
+				'smtp_pass' => 'apps_fmipa 2020',   
+				'mailtype' => 'html',   
+				'charset' => 'iso-8859-1'  
+			);  
+			$jml_email = count($alter);
+			$n = 0;
+			foreach($alter as $row){
+				$this->load->library('email', $config);
+				$this->email->set_newline("\r\n");  
+				$this->email->from('apps.fmipa.unila@gmail.com', 'SIMIPA');   
+				$this->email->to($row->email);//$row->email   
+				$this->email->subject('Approve Tema Penelitian Fakultas Matematika dan Ilmu Pengetahuan Alam');   
+				$this->email->message("
+				Kepada Yth. $row->nama
+				<br>
+				Untuk Melakukan Approval Tema Penelitian Mahasiswa Fakultas Matematika Dan Ilmu Pengetahuan Alam Sebagai $row->status Silahkan Klik Link Berikut :<br>
+				http://apps.fmipa.unila.ac.id/simipa/approval/ta?token=$row->token
+				<br><br>
+				Terimakasih.
+				
+				");
+				if (!$this->email->send()) { 
+					    $n = 0;
+				   }else{  
+					  $n++;
+				}   
 			}
-
-			// $this->ta_model->approve_ta_kaprodi($id);
-			$data_approval = array(
-				'id_pengajuan' => $id,
-				'status_slug' => "Ketua Program Studi",
-				'id_user' => $dosenid,
-				'ttd' => $ttd,
-			);
-			$this->ta_model->insert_approve_ta_kaprodi($data_approval);
-		}
-
-		else{
-			$this->ta_model->approval_koordinator($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2);
-			$this->ta_model->set_komisi($id,$pb1,$pb2,$pb3,$ps1,$ps2,$ps3);
-
-			if($jenis != 'Skripsi'){
-				$data_approval = array(
-					'id_pengajuan' => $id,
-					'status_slug' => "Ketua Program Studi",
-					'id_user' => $dosenid,
-					'ttd' => $ttd,
-				);
-				$this->ta_model->insert_approve_ta_kaprodi($data_approval);
-			}
-
-			if($pb2 != NULL && $pb2 != '0'){
-
-				$data_approval = array(
-					'id_pengajuan' => $id,
-					'status_slug' => 'Pembimbing 2',
-					'id_user' => $pb2,
-					'ttd' => '',	
-				);
-	
-				$this->ta_model->insert_approval_ta($data_approval);
-			}
-	
-			if($pb3 != NULL && $pb3 != '0'){
-	
-				$data_approval = array(
-					'id_pengajuan' => $id,
-					'status_slug' => 'Pembimbing 3',
-					'id_user' => $pb3,
-					'ttd' => '',	
-				);
-	
-				$this->ta_model->insert_approval_ta($data_approval);
-			}
-	
-			if($ps1 != NULL && $ps1 != '0'){
-	
-				$data_approval = array(
-					'id_pengajuan' => $id,
-					'status_slug' => 'Penguji 1',
-					'id_user' => $ps1,
-					'ttd' => '',	
-				);
-	
-				$this->ta_model->insert_approval_ta($data_approval);
-			}
-	
-			if($ps2 != NULL && $ps2 != '0'){
-	
-				$data_approval = array(
-					'id_pengajuan' => $id,
-					'status_slug' => 'Penguji 2',
-					'id_user' => $ps2,
-					'ttd' => '',	
-				);
-	
-				$this->ta_model->insert_approval_ta($data_approval);
-			}
-	
-			if($ps3 != NULL && $ps3 != '0'){
-	
-				$data_approval = array(
-					'id_pengajuan' => $id,
-					'status_slug' => 'Penguji 3',
-					'id_user' => $ps3,
-					'ttd' => '',	
-				);
-	
-				$this->ta_model->insert_approval_ta($data_approval);
-			}
-	
-		}
-		if($jenis != 'Skripsi'){
-		     redirect(site_url("dosen/struktural/kaprodi/tugas-akhir"));
+            
 		}
 		else{
-		    redirect(site_url("dosen/tugas-akhir/tema/koordinator"));
+		    $jml_email = 0;
+			$n = 0;
 		}
 		
-		
+		// check apakah email terkirim semua
+		if($jml_email == $n)
+		{
+    		 if($jenis == "Tugas Akhir"){
+    			$this->ta_model->approval_koordinator_ta($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2);
+    			$this->ta_model->set_komisi_ta($id,$pb1,$ps1,$ps2);
+    
+    			if($ps1 != NULL && $ps1 != '0'){
+    	
+    				$data_approval = array(
+    					'id_pengajuan' => $id,
+    					'status_slug' => 'Penguji 1',
+    					'id_user' => $ps1,
+    					'ttd' => '',	
+    				);
+    	
+    				$this->ta_model->insert_approval_ta($data_approval);
+    			}
+    
+    			// $this->ta_model->approve_ta_kaprodi($id);
+    			$data_approval = array(
+    				'id_pengajuan' => $id,
+    				'status_slug' => "Ketua Program Studi",
+    				'id_user' => $dosenid,
+    				'ttd' => $ttd,
+    			);
+    			$this->ta_model->insert_approve_ta_kaprodi($data_approval);
+    		}
+    
+    		else{
+    			$this->ta_model->approval_koordinator($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2);
+    			$this->ta_model->set_komisi($id,$pb1,$pb2,$pb3,$ps1,$ps2,$ps3);
+    
+    			if($jenis != 'Skripsi'){
+    				$data_approval = array(
+    					'id_pengajuan' => $id,
+    					'status_slug' => "Ketua Program Studi",
+    					'id_user' => $dosenid,
+    					'ttd' => $ttd,
+    				);
+    				$this->ta_model->insert_approve_ta_kaprodi($data_approval);
+    			}
+    
+    			if($pb2 != NULL && $pb2 != '0'){
+    
+    				$data_approval = array(
+    					'id_pengajuan' => $id,
+    					'status_slug' => 'Pembimbing 2',
+    					'id_user' => $pb2,
+    					'ttd' => '',	
+    				);
+    	
+    				$this->ta_model->insert_approval_ta($data_approval);
+    			}
+    	
+    			if($pb3 != NULL && $pb3 != '0'){
+    	
+    				$data_approval = array(
+    					'id_pengajuan' => $id,
+    					'status_slug' => 'Pembimbing 3',
+    					'id_user' => $pb3,
+    					'ttd' => '',	
+    				);
+    	
+    				$this->ta_model->insert_approval_ta($data_approval);
+    			}
+    	
+    			if($ps1 != NULL && $ps1 != '0'){
+    	
+    				$data_approval = array(
+    					'id_pengajuan' => $id,
+    					'status_slug' => 'Penguji 1',
+    					'id_user' => $ps1,
+    					'ttd' => '',	
+    				);
+    	
+    				$this->ta_model->insert_approval_ta($data_approval);
+    			}
+    	
+    			if($ps2 != NULL && $ps2 != '0'){
+    	
+    				$data_approval = array(
+    					'id_pengajuan' => $id,
+    					'status_slug' => 'Penguji 2',
+    					'id_user' => $ps2,
+    					'ttd' => '',	
+    				);
+    	
+    				$this->ta_model->insert_approval_ta($data_approval);
+    			}
+    	
+    			if($ps3 != NULL && $ps3 != '0'){
+    	
+    				$data_approval = array(
+    					'id_pengajuan' => $id,
+    					'status_slug' => 'Penguji 3',
+    					'id_user' => $ps3,
+    					'ttd' => '',	
+    				);
+    	
+    				$this->ta_model->insert_approval_ta($data_approval);
+    			}
+    	
+    		}
+    		if($jenis != 'Skripsi'){
+    		     redirect(site_url("dosen/struktural/kaprodi/tugas-akhir"));
+    		}
+    		else{
+    		    redirect(site_url("dosen/tugas-akhir/tema/koordinator"));
+    		}
+		}
+		else{
+		    $this->ta_model->update_pbb_alternatif_ta($id);
+		    
+		    if($jenis != 'Skripsi'){
+    		     redirect(site_url("dosen/struktural/kaprodi/tugas-akhir?status=error"));
+    		}
+    		else{
+    		    redirect(site_url("dosen/tugas-akhir/tema/koordinator?status=error"));
+    		}
+		}
+	
 	}
 
 	//Manajemen Seminar
@@ -5033,6 +5091,74 @@ class Dosen extends CI_Controller {
 		$this->load->view('dosen/header');
 		$data['jurusan'] = $this->user_model->get_jurusan_fak();
 		$this->load->view('dosen/rekap_layanan/rekap_layanan_detail',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function bimbingan()
+	{
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+		$data['dosen'] = $this->ta_model->get_bimbingan_dosen_user($this->session->userdata('userId'));
+		$this->load->view('dosen/bimbingan/bimbingan',$data);
+		
+		$this->load->view('footer_global');
+	}
+
+	function bimbingan_detail()
+	{
+		$id_user = $this->input->get('dosen');
+		$id_user = $this->encrypt->decode($id_user);
+		$jenis = $this->input->get('jenis');
+		$strata = $this->input->get('strata');
+
+		switch($strata)
+		{
+			case "d3":
+			$npm1 = $npm2 = "0";
+			break;
+			case "s1":
+			$npm1 = "1";
+			$npm2 = "5";
+			break;
+			case "s2":
+			$npm1 = $npm2 = "2";
+			break;
+			case "s3":
+			$npm1 = $npm2 = "3";
+			break;
+		}
+		switch($jenis)
+		{
+			case "pb1":
+			$status = 'Pembimbing Utama';
+			break;
+			case "pb2":
+			$status = 'Pembimbing 2';
+			break;
+			case "pb3":
+			$status = 'Pembimbing 3';
+			break;
+			case "ps1":
+			$status = 'Penguji 1';
+			break;
+			case "ps2":
+			$status = 'Penguji 2';
+			break;
+			case "ps3":
+			$status = 'Penguji 3';
+			break;
+		}
+
+		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
+		$data['ta'] = $this->ta_model->get_bimbingan_dosen_detail($id_user,$status,$npm1,$npm2);
+		$data['id_dosen'] = $id_user;
+
+		$this->load->view('header_global', $header);
+		$this->load->view('dosen/header');
+
+		$this->load->view('dosen/bimbingan/bimbingan_detail',$data);
 		
 		$this->load->view('footer_global');
 	}

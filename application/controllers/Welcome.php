@@ -33,6 +33,15 @@ class Welcome extends CI_Controller {
 		$this->load->view('login');
 		}
 	}
+	
+	public function check_php() {
+if( ini_get('allow_url_fopen') ) {
+    die('allow_url_fopen is enabled. file_get_contents should work well');
+} else {
+    die('allow_url_fopen is disabled. file_get_contents would not work');
+}
+
+	}
 
 	public function registrasi()
 	{
@@ -179,6 +188,219 @@ class Welcome extends CI_Controller {
 
 		redirect(site_url('registrasi'));
 	}
+	
+	public function aksi_registrasi2()
+	{
+		//echo "<pre>";
+
+		
+		$status = 3;
+		
+    $mhs=array();
+		
+
+        for($i=0; $i<sizeof($mhs); $i++) {
+		$userInfo = array(
+			'email' => $mhs[$i][1],
+			'password' => getHashedPassword($mhs[$i][0]),
+			'roleId' => $status, // Default Mahasiswa
+			'name' => $mhs[$i][2],
+			'mobile' => $mhs[$i][4],
+			'jenis_kelamin' => $mhs[$i][3],
+			'agama' => $mhs[$i][6],
+			'tempat_lahir' => $mhs[$i][5],
+			'tanggal_lahir' => $mhs[$i][10],
+			'jalan' => $mhs[$i][11],
+			'kode_pos' => $mhs[$i][12],
+			'is_active' => 1,
+			'createdBy' => 98, // form database
+			'createdDtm' => date('Y-m-d H:i:s')
+		);
+
+		$strata = substr($mhs[$i][0], 2, 1);
+		$jur_array = array("0", "1", "2", "5");
+		if(in_array($strata, $jur_array))
+		{
+			$jurusan = substr($mhs[$i][0], 5, 1);
+			if($jurusan == 6) $jurusan = 2;
+		}
+		else
+		{
+			$jurusan = 0;
+		}
+
+		
+			$data_mhs = array(
+				'jurusan' => $jurusan,
+				'npm' => $mhs[$i][0],
+				'jalur_masuk' => $mhs[$i][7],
+				'asal_sekolah' => $mhs[$i][8],
+				'nama_sekolah' => $mhs[$i][9],
+			);
+		
+
+		
+			
+				// cek npm
+				$cek_npm = $this->user_model->cek_npm($mhs[$i][0]);
+			
+			
+				$result = $this->user_model->addNewUser($userInfo, $data_mhs);
+
+        }
+        echo count($mhs);
+	}
+	
+	public function aksi_registrasi3()
+	{
+		//echo "<pre>";
+
+		
+		$status = 2;
+        $mhs=array();
+        
+        for($i=0; $i<sizeof($mhs); $i++) {
+		$userInfo = array(
+			'email' => $mhs[$i][1],
+			'password' => getHashedPassword($mhs[$i][0]),
+			'roleId' => $status, // Default Mahasiswa
+			'name' => $mhs[$i][2],
+			'mobile' => $mhs[$i][4],
+			'jenis_kelamin' => $mhs[$i][3],
+			'agama' => $mhs[$i][6],
+			'tempat_lahir' => $mhs[$i][5],
+			'tanggal_lahir' => $mhs[$i][10],
+			'jalan' => $mhs[$i][11],
+			'kode_pos' => $mhs[$i][12],
+			'is_active' => 1,
+			'createdBy' => 98, // form database
+			'createdDtm' => date('Y-m-d H:i:s')
+		);
+
+// 		$strata = substr($mhs[$i][0], 2, 1);
+// 		$jur_array = array("0", "1", "2", "5");
+// 		if(in_array($strata, $jur_array))
+// 		{
+// 			$jurusan = substr($mhs[$i][0], 5, 1);
+// 			if($jurusan == 6) $jurusan = 2;
+// 		}
+// 		else
+// 		{
+// 			$jurusan = 0;
+// 		}
+
+		
+			$data_mhs = array(
+				'nip_nik' => $mhs[$i][0],
+				'nidn' => $mhs[$i][14],
+				'gelar_depan' => NULL,
+				'gelar_belakang' => NULL,
+				'id_sinta' => NULL,
+				'jurusan' => $mhs[$i][13],
+				'pangkat_gol'=>$mhs[$i][7],
+				'fungsional'=>$mhs[$i][8],
+				'mk_diampu'=> NULL
+			);
+		
+
+		
+			
+				// cek npm
+				$cek_npm = $this->user_model->cek_npm($mhs[$i][0]);
+			
+			
+				$result = $this->user_model->addNewUser($userInfo, $data_mhs);
+
+        }
+        echo count($mhs);
+	}
+	
+	
+	
+// 		public function aksi_registrasi_admin()
+// 	{
+// 		//echo "<pre>";
+
+// 		$nama = ucwords(strtolower($this->security->xss_clean('Administrator')));
+// 		$email = strtolower($this->security->xss_clean('apps.fmipa.unila@gmail.com'));
+// 		$password = '12345';
+// 		$npm = '12345678';
+// 		$hp = $this->security->xss_clean('0123');
+// 		$status = 1;
+
+// 		$userInfo = array(
+// 			'email' => $email,
+// 			'password' => getHashedPassword($password),
+// 			'roleId' => $status, // Default Mahasiswa
+// 			'name' => $nama,
+// 			'mobile' => $hp,
+// 			'createdBy' => 99, // form register
+// 			'createdDtm' => date('Y-m-d H:i:s')
+// 		);
+
+// 		$strata = substr($npm, 2, 1);
+// 		if($strata <= 2)
+// 		{
+// 			$jurusan = substr($npm, 5, 1);
+// 			if($jurusan == 6) $jurusan = 2;
+// 		}
+// 		else
+// 		{
+// 			$jurusan = 0;
+// 		}
+
+// 		if($status == 3){
+// 			$data_mhs = array(
+// 				'jurusan' => $jurusan,
+// 				'npm' => $npm
+// 			);
+// 		}
+		
+// 		elseif($status == 2 || $status == 1){
+// 			$data_mhs = array(
+// 				'nip_nik' => $npm
+// 			);
+// 		}
+		
+
+// 		// cek email
+// 		$cek_email = $this->user_model->cek_email($email);
+// 		if($cek_email)
+// 		{
+// 			$this->session->set_flashdata('error', 'Email Anda telah terdaftar!');
+// 		}
+// 		else
+// 		{
+// 			if($status == 3)
+// 			{
+// 				// cek npm
+// 				$cek_npm = $this->user_model->cek_npm($npm);
+// 			}
+// 			elseif($status == 2 || $status == 1){
+// 				// cek nip dosen
+// 				$cek_npm = $this->user_model->cek_nip_dosen($npm);
+// 				// $cek_npm = $this->user_model->cek_npm_alumni($npm);
+// 			}
+// 			if($cek_npm)
+// 			{
+// 				$this->session->set_flashdata('error', 'NPM Anda telah terdaftar!');
+// 			}
+// 			else
+// 			{
+// 				$result = $this->user_model->addNewUser($userInfo, $data_mhs);
+
+
+// 				if ($result > 0) {
+// 					$this->session->set_flashdata('success', 'Anda sudah terdaftar, silahkan tunggu email dari sistem untuk bisa login.');
+// 				} else {
+// 					$this->session->set_flashdata('error', 'Gagal Mendaftar!');
+// 				}
+// 			}
+
+// 		}
+
+// 		redirect(site_url('registrasi'));
+// 	}
 	
 	public function logout() 
 	{

@@ -40,12 +40,12 @@
                         }
                         ?>
                         <?php 
-                        if ($akun->ttd == NULL){
-                            echo "<script>
-                            alert('Silahkan Lengkapi Informasi Akun & Biodata Anda Terlebih Dahulu');
-                            window.location.href='biodata';
-                            </script>";
-                        } 
+                        // if ($akun->ttd == NULL){
+                        //     echo "<script>
+                        //     alert('Silahkan Lengkapi Informasi Akun & Biodata Anda Terlebih Dahulu');
+                        //     window.location.href='biodata';
+                        //     </script>";
+                        // } 
                         
                         ?>
                         <br><br><br><br>
