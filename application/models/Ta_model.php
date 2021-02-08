@@ -633,6 +633,9 @@ class Ta_model extends CI_Model
 		];
 			
 		$this->db->insert('tugas_akhir_komisi', $data_komisi);
+
+		$insert_id = $this->db->insert_id();
+		return $insert_id;
 	}
 
 	function set_komisi_alter_access($id,$nip,$nama,$status,$email)
@@ -820,6 +823,8 @@ class Ta_model extends CI_Model
 	function insert_approval_ta($data)
 	{
 		$this->db->insert('tugas_akhir_approval', $data);
+		$insert_id = $this->db->insert_id();
+		return $insert_id;
 	}
 
 	// seminar dosen
@@ -1385,7 +1390,7 @@ class Ta_model extends CI_Model
 
 	function get_komisi_alter($token)
 	{
-		$query = $this->db->query("SELECT tugas_akhir.*, tugas_akhir_komisi.* FROM tugas_akhir_komisi_alternatif, tugas_akhir_komisi, tugas_akhir WHERE tugas_akhir_komisi_alternatif.token = '$token' AND tugas_akhir_komisi_alternatif.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir_komisi_alternatif.status = tugas_akhir_komisi.status AND tugas_akhir_komisi_alternatif.id_tugas_akhir = tugas_akhir_komisi.id_tugas_akhir AND tugas_akhir.status = 8");
+		$query = $this->db->query("SELECT tugas_akhir.*, tugas_akhir_komisi.* FROM tugas_akhir_komisi_alternatif, tugas_akhir_komisi, tugas_akhir WHERE tugas_akhir_komisi_alternatif.token = '$token' AND tugas_akhir_komisi_alternatif.id_tugas_akhir = tugas_akhir.id_pengajuan AND tugas_akhir_komisi_alternatif.status = tugas_akhir_komisi.status AND tugas_akhir_komisi_alternatif.id_tugas_akhir = tugas_akhir_komisi.id_tugas_akhir AND tugas_akhir.status = 7");
 		return $query->row();
 	}
 
@@ -1977,11 +1982,11 @@ class Ta_model extends CI_Model
 		return $query->row();	
 	}
 
-   function update_pbb_alternatif_ta($where)
+   	function update_pbb_alternatif_ta($where)
 	{
-		$this->db->where('id_tugas_akhir', $where);
-	    $this->db->update('tugas_akhir_komisi_alternatif', array('id_tugas_akhir' => '-99'));
+		// $this->db->where('id_tugas_akhir', $where);
+	    // $this->db->update('tugas_akhir_komisi_alternatif', array('id_tugas_akhir' => '-99'));
+		$this->db->delete('tugas_akhir_komisi_alternatif', array('id_tugas_akhir' => $where));
 	}
-	
 	
 }

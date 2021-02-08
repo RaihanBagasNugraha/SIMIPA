@@ -19,10 +19,10 @@
                             //echo "<pre>";
                             //print_r($data_ta);
                             //echo "</pre>";
-                            if(!empty($_GET['status']) && $_GET['status'] == 'error') {
+                            // if(!empty($_GET['status']) && $_GET['status'] == 'error') {
 
-                                echo '<div class="alert alert-danger fade show" role="alert">Terjadi Kesalahan Saat Mengirim Email</div>';
-                            }
+                            //     echo '<div class="alert alert-danger fade show" role="alert">Terjadi Kesalahan Saat Mengirim Email</div>';
+                            // }
                         ?>
 
                         <div class="row">

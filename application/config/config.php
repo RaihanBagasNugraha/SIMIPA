@@ -24,8 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://192.168.43.83/simipa/';
-// $config['base_url'] = 'http://localhost/simipa/';
-$config['base_url'] = 'https://apps.fmipa.unila.ac.id/simipa/';
+$config['base_url'] = 'http://localhost/simipa/';
+// $config['base_url'] = 'https://apps.fmipa.unila.ac.id/simipa/';
 /*
 |--------------------------------------------------------------------------
 | Index File

@@ -741,69 +741,24 @@ class Dosen extends CI_Controller {
 
 		if($pb2 == NULL && ($pb2_nip != NULL && $pb2_nama != NULL)){
 			$status = "Pembimbing 2";
-			$this->ta_model->set_komisi_alter($id,$pb2_nip,$pb2_nama,$status);
 			$this->ta_model->set_komisi_alter_access($id,$pb2_nip,$pb2_nama,$status,$pb2_email);
-
-			$data_approval = array(
-				'id_pengajuan' => $id,
-				'status_slug' => $status,
-				'id_user' => '0',
-				'ttd' => '',	
-			);
-			$this->ta_model->insert_approval_ta($data_approval);
 		}
 		if($pb3 == NULL && ($pb3_nip != NULL && $pb3_nama != NULL)){
 			$status = "Pembimbing 3";
-			$this->ta_model->set_komisi_alter($id,$pb3_nip,$pb3_nama,$status);
 			$this->ta_model->set_komisi_alter_access($id,$pb3_nip,$pb3_nama,$status,$pb3_email);
-
-			$data_approval = array(
-				'id_pengajuan' => $id,
-				'status_slug' => $status,
-				'id_user' => '0',
-				'ttd' => '',	
-			);
-			$this->ta_model->insert_approval_ta($data_approval);
 		}
 		if($ps1 == NULL && ($ps1_nip != NULL && $ps1_nama != NULL)){
 			$status = "Penguji 1";
-			$this->ta_model->set_komisi_alter($id,$ps1_nip,$ps1_nama,$status);
 			$this->ta_model->set_komisi_alter_access($id,$ps1_nip,$ps1_nama,$status,$ps1_email);
-
-			$data_approval = array(
-				'id_pengajuan' => $id,
-				'status_slug' => $status,
-				'id_user' => '0',
-				'ttd' => '',	
-			);
-			$this->ta_model->insert_approval_ta($data_approval);
-
 		}
 		if($ps2 == NULL && ($ps2_nip != NULL && $ps2_nama != NULL)){
 			$status = "Penguji 2";
-			$this->ta_model->set_komisi_alter($id,$ps2_nip,$ps2_nama,$status);
 			$this->ta_model->set_komisi_alter_access($id,$ps2_nip,$ps2_nama,$status,$ps2_email);
-
-			$data_approval = array(
-				'id_pengajuan' => $id,
-				'status_slug' => $status,
-				'id_user' => '0',
-				'ttd' => '',	
-			);
-			$this->ta_model->insert_approval_ta($data_approval);
 		}
 		if($ps3 == NULL && ($ps3_nip != NULL && $ps3_nama != NULL)){
 			$status = "Penguji 3";
-			$this->ta_model->set_komisi_alter($id,$ps3_nip,$ps3_nama,$status);
 			$this->ta_model->set_komisi_alter_access($id,$ps3_nip,$ps3_nama,$status,$ps3_email);
 
-			$data_approval = array(
-				'id_pengajuan' => $id,
-				'status_slug' => $status,
-				'id_user' => '0',
-				'ttd' => '',	
-			);
-			$this->ta_model->insert_approval_ta($data_approval);
 		}
 		
 		$alter = $this->ta_model->get_komisi_alter_id($id);
@@ -839,7 +794,7 @@ class Dosen extends CI_Controller {
 				if (!$this->email->send()) { 
 					    $n = 0;
 				   }else{  
-					  $n++;
+					  $n ++;
 				}   
 			}
             
@@ -852,6 +807,73 @@ class Dosen extends CI_Controller {
 		// check apakah email terkirim semua
 		if($jml_email == $n)
 		{
+			if($pb2 == NULL && ($pb2_nip != NULL && $pb2_nama != NULL)){
+				$status = "Pembimbing 2";
+				$alter_id = $this->ta_model->set_komisi_alter($id,$pb2_nip,$pb2_nama,$status);
+				// $this->ta_model->set_komisi_alter_access($id,$pb2_nip,$pb2_nama,$status,$pb2_email);
+	
+				$data_approval = array(
+					'id_pengajuan' => $id,
+					'status_slug' => $status,
+					'id_user' => '0',
+					'ttd' => '',	
+				);
+				$app_alter = $this->ta_model->insert_approval_ta($data_approval);
+			}
+			if($pb3 == NULL && ($pb3_nip != NULL && $pb3_nama != NULL)){
+				$status = "Pembimbing 3";
+				$alter_id = $this->ta_model->set_komisi_alter($id,$pb3_nip,$pb3_nama,$status);
+				// $this->ta_model->set_komisi_alter_access($id,$pb3_nip,$pb3_nama,$status,$pb3_email);
+	
+				$data_approval = array(
+					'id_pengajuan' => $id,
+					'status_slug' => $status,
+					'id_user' => '0',
+					'ttd' => '',	
+				);
+				$app_alter = $this->ta_model->insert_approval_ta($data_approval);
+			}
+			if($ps1 == NULL && ($ps1_nip != NULL && $ps1_nama != NULL)){
+				$status = "Penguji 1";
+				$alter_id = $this->ta_model->set_komisi_alter($id,$ps1_nip,$ps1_nama,$status);
+				// $this->ta_model->set_komisi_alter_access($id,$ps1_nip,$ps1_nama,$status,$ps1_email);
+	
+				$data_approval = array(
+					'id_pengajuan' => $id,
+					'status_slug' => $status,
+					'id_user' => '0',
+					'ttd' => '',	
+				);
+				$app_alter = $this->ta_model->insert_approval_ta($data_approval);
+	
+			}
+			if($ps2 == NULL && ($ps2_nip != NULL && $ps2_nama != NULL)){
+				$status = "Penguji 2";
+				$alter_id = $this->ta_model->set_komisi_alter($id,$ps2_nip,$ps2_nama,$status);
+				// $this->ta_model->set_komisi_alter_access($id,$ps2_nip,$ps2_nama,$status,$ps2_email);
+	
+				$data_approval = array(
+					'id_pengajuan' => $id,
+					'status_slug' => $status,
+					'id_user' => '0',
+					'ttd' => '',	
+				);
+				$app_alter = $this->ta_model->insert_approval_ta($data_approval);
+			}
+			if($ps3 == NULL && ($ps3_nip != NULL && $ps3_nama != NULL)){
+				$status = "Penguji 3";
+				$alter_id = $this->ta_model->set_komisi_alter($id,$ps3_nip,$ps3_nama,$status);
+				// $this->ta_model->set_komisi_alter_access($id,$ps3_nip,$ps3_nama,$status,$ps3_email);
+	
+				$data_approval = array(
+					'id_pengajuan' => $id,
+					'status_slug' => $status,
+					'id_user' => '0',
+					'ttd' => '',	
+				);
+				$app_alter = $this->ta_model->insert_approval_ta($data_approval);
+			}
+
     		 if($jenis == "Tugas Akhir"){
     			$this->ta_model->approval_koordinator_ta($id,$ttd,$dosenid,$no_penetapan,$judul_approve,$judul1,$judul2);
     			$this->ta_model->set_komisi_ta($id,$pb1,$ps1,$ps2);
@@ -961,8 +983,7 @@ class Dosen extends CI_Controller {
     		}
 		}
 		else{
-		    $this->ta_model->update_pbb_alternatif_ta($id);
-		    
+		    $this->ta_model->update_pbb_alternatif_ta($id);   
 		    if($jenis != 'Skripsi'){
     		     redirect(site_url("dosen/struktural/kaprodi/tugas-akhir?status=error"));
     		}

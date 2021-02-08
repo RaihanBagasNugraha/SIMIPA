@@ -163,9 +163,13 @@ class Admin extends CI_Controller {
 		}
 		if($data['prodi'] == ""){
 			$prodi = 0;
+		}else{
+			$prodi = $data['prodi'];
 		}
 		if($data['lab'] == ""){
 			$lab = 0;
+		}else{
+			$lab = $data['lab'];
 		}
 
 		//get jurusan, unit, lab
