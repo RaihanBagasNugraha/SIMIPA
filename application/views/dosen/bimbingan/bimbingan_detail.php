@@ -146,6 +146,7 @@
                                                             echo "<a href=".site_url("mahasiswa/tugas-akhir/seminar/form_pdf?jenis=berita_acara&id=$smr_up->id").">Berita Acara</a>";
                                                         }
                                                         else{
+                                                            // echo $smr_up->status;
                                                             echo "<br><br>";
                                                             echo "<i>Penilaian Seminar</i>";
                                                         }

@@ -55,7 +55,7 @@ class Approval extends CI_Controller {
         $this->ta_model->approve_ta_alter($id,$ttd,$status,$token);
         
         echo "<script>window.alert('Approval Berhasil');
-        window.location='apps.fmipa.unila.ac.id/simipa';</script>"; //ganti url
+        window.location='https://apps.fmipa.unila.ac.id/simipa';</script>"; //ganti url
     }
 
     function send()  
@@ -148,7 +148,7 @@ class Approval extends CI_Controller {
         $this->ta_model->seminar_sidang_komisi_alter_update($id,$token);
         
         echo "<script>window.alert('Approval Berhasil');
-        window.location='apps.fmipa.unila.ac.id/simipa';</script>"; //ganti url
+        window.location='https://apps.fmipa.unila.ac.id/simipa';</script>"; //ganti url
     }
 
     

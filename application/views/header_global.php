@@ -101,8 +101,8 @@
                                             <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                         </a>
                                         <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-                                            <a href="<?php echo site_url('kelola-akun') ?>" type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-user"> </i>
-                                        Akun</a>
+                                        <!--    <a href="<?php echo site_url('kelola-akun') ?>" type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-user"> </i>-->
+                                        <!--Akun</a>-->
                                         
 
                                             <div tabindex="-1" class="dropdown-divider"></div>

@@ -1279,13 +1279,13 @@ class Pdfta extends CI_Controller {
         $pdf->Ln(7);
         
         foreach($komisi as $kom){
-            $pdf->Cell(90, $spasi,"$kom->status_slug", 0, 0, 'L');    
+            $pdf->Cell(150, $spasi,"$kom->status_slug", 0, 0, 'C');    
         }   
         $pdf->Ln(5);
 
         foreach($komisi as $kom){
             if($kom->ttd != ""){
-                $pdf->Cell(90, $spasi,$pdf->Image($kom->ttd,$pdf->GetX(), $pdf->GetY(),40,0,'PNG'), 0, 0, 'L'); 
+                $pdf->Cell(150, $spasi,$pdf->Image($kom->ttd,$pdf->GetX()+55, $pdf->GetY(),40,0,'PNG'), 0, 0, 'C'); 
             }
         }
         
@@ -1301,7 +1301,7 @@ class Pdfta extends CI_Controller {
                     $g_belakang = $gelar->gelar_belakang;
                 }
 
-            $pdf->Cell(90, $spasi,$g_depan." ".$kom->nama.", ".$g_belakang, 0, 0, 'L');   
+            $pdf->Cell(150, $spasi,$g_depan." ".$kom->nama.", ".$g_belakang, 0, 0, 'C');   
         } 
         $pdf->Ln(5);
         foreach($komisi as $kom){
