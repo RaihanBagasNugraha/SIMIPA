@@ -3924,7 +3924,7 @@ $(document).ready(function() {
             <?php  $seg = $this->uri->segment(3); ?>
                 <form id="del_ser" method="post" action="<?php echo site_url("admin/hapus_user") ?>">
                     <div class="position-relative row form-group">
-                        <label for="prodi" class="col-sm-9 col-form-label"><b>Hapus </b>User Berikut ?</label>
+                        <label for="prodi" class="col-sm-9 col-form-label"><b>Hapuss </b>User Berikut ?</label>
                         <input type="hidden" id='id_user_del' name='id'>
                         <input type="hidden" id='' value='hapus' name='aksi'>
                         <input type="hidden" id='' value='<?php echo $seg ?>' name='seg'>

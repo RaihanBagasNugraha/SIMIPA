@@ -198,7 +198,7 @@ class Mahasiswa extends CI_Controller {
 		$biodata = $this->user_model->select_biodata_by_ID($this->session->userdata('userId'), 3)->row();
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		$data['ta'] = $this->ta_model->selet_ta_by_npm($this->session->userdata('username'));
-		$data['status_ta'] = $this->ta_model->select_active_ta($this->session->userdata('username'));
+		$data['status_ta'] = $this->ta_model->select_active_ta2($this->session->userdata('username'));
 
 		if($biodata->prodi == NULL || $biodata->dosen_pa == NULL || $biodata->dosen_pa == "0"){
 			echo "<script type='text/javascript'>alert('Silahkan Isi Biodata Terlebih Dahulu');window.location.href ='" . base_url() . "mahasiswa/biodata';</script>";
@@ -736,25 +736,25 @@ class Mahasiswa extends CI_Controller {
 				$this->ta_model->insert_approval_seminar($data_approval);
 				}
 			}
-			if($jenis == "Seminar Tugas Akhir"){
-				if($ps1 != NULL){
-					$result = $this->db->query('SELECT id_user FROM `tbl_users_dosen` WHERE nip_nik = '.$ps1)->row();
-					if(!empty($result)){
-						$result = $result->id_user;
-					}
-					else{
-						$result = 0;
-					}
-						$data_approval = array(
-							'id_pengajuan' => $insert_id,
-							'status_slug' => 'Penguji 1',
-							'id_user' => $result,
-							'ttd' => '',	
-						);
+// 			if($jenis == "Seminar Tugas Akhir"){
+// 				if($ps1 != NULL){
+// 					$result = $this->db->query('SELECT id_user FROM `tbl_users_dosen` WHERE nip_nik = '.$ps1)->row();
+// 					if(!empty($result)){
+// 						$result = $result->id_user;
+// 					}
+// 					else{
+// 						$result = 0;
+// 					}
+// 						$data_approval = array(
+// 							'id_pengajuan' => $insert_id,
+// 							'status_slug' => 'Penguji 1',
+// 							'id_user' => $result,
+// 							'ttd' => '',	
+// 						);
 
-						$this->ta_model->insert_approval_seminar($data_approval);
-				}
-			}
+// 						$this->ta_model->insert_approval_seminar($data_approval);
+// 				}
+// 			}
 
 		}
 		redirect(site_url("mahasiswa/tugas-akhir/seminar?status=berhasil"));
@@ -2016,10 +2016,11 @@ class Mahasiswa extends CI_Controller {
 
 	function layanan_fakultas_simpan()
 	{
-		// $data = $this->input->post();
+		$data = $this->input->post();
 		// echo "<pre>";
 		// print_r($data);
 		$id = $this->encrypt->decode($this->input->post('id_lay'));
+		// echo $id;
 		$aksi = $this->input->post('aksi');
 		$seg = $this->uri->segment(3);
 		if($aksi == "perbaiki"){

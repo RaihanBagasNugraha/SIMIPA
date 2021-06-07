@@ -161,7 +161,11 @@
                                             </td>
 
                                             <td class="align-top">
-                                            <?php  if($cek != 1){ ?>
+                                            <?php  if($cek != 1){ 
+                                                 if($row->status == 2){
+                                                    echo "Selesai";
+                                                }else{    
+                                            ?>
                                                 <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="verifikasi">
                                                     <button style="width: 80px;" type="button" class="mb-2 btn btn-primary btn-sm"  data-toggle="modal" data-target="#verifikasimasuk">
                                                         Verifikasi
@@ -173,14 +177,18 @@
                                                         Tolak
                                                     </button>
                                                 </a>
-                                            <?php }else{ ?>
+                                            <?php } }else{ 
+                                                if($row->status == 2){
+                                                    echo "Selesai";
+                                                }else{
+                                            ?>
                                                 <a data-toggle = "modal" data-id="<?php echo $row->id ?>" class="verifikasi2">
                                                     <button style="width: 80px;" type="button" class="mb-2 btn btn-primary btn-sm"  data-toggle="modal" data-target="#verifikasimasuk2">
                                                         Verifikasi
                                                     </button>
                                                 </a>
 
-                                            <?php } ?>
+                                            <?php } } ?>
                                             </td>
                                         </tr>
                                         <?php

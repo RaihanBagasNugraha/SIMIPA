@@ -124,11 +124,11 @@
                                                     <?php echo $kom->persentase."%" ?>
                                                 </td> 
                                                 <td class="align-top">
-                                                    <a data-toggle = "modal" data-id="<?php echo $kom->id ?>" data-aksi="<?php echo $aksi ?>" data-ida ="<?php echo $ida ?>" data-attr="<?php echo $kom->attribut ?>" data-per="<?php echo $kom->persentase ?>" class="passingIDUbah" >
-                                                                <button type="button" class="btn mb-2 btn-wide btn-warning btn-sm"   <?php echo $button ?> data-toggle="modal" data-target="#komponensmrubah">
-                                                                    Ubah
-                                                                </button>
-                                                    </a>
+                                                    <!--<a data-toggle = "modal" data-id="<?php echo $kom->id ?>" data-aksi="<?php echo $aksi ?>" data-ida ="<?php echo $ida ?>" data-attr="<?php echo $kom->attribut ?>" data-per="<?php echo $kom->persentase ?>" class="passingIDUbah" >-->
+                                                    <!--            <button type="button" class="btn mb-2 btn-wide btn-warning btn-sm"   <?php echo $button ?> data-toggle="modal" data-target="#komponensmrubah">-->
+                                                    <!--                Ubah-->
+                                                    <!--            </button>-->
+                                                    <!--</a>-->
                                                     <a data-toggle = "modal" data-id="<?php echo $kom->id ?>" data-aksi="<?php echo $aksi ?>" data-ida ="<?php echo $ida ?>" data-jenis="Seminar" class="passingIDHapus" >
                                                                 <button type="button" class="btn mb-2 btn-wide btn-danger btn-sm "  <?php echo $button ?> data-toggle="modal" data-target="#komponensmrhapus">
                                                                     Hapus

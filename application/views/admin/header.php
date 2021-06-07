@@ -38,7 +38,7 @@
                                         <li  <?php if($this->uri->segment(2) == "user") echo 'class="mm-active"' ?>>
                                             <a href="#">
                                                 <i class="metismenu-icon">
-                                                </i>Tambah User
+                                                </i>Kelola
                                                 <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                             </a>
                                             <ul>
@@ -52,6 +52,12 @@
                                                     <a href="<?php echo site_url("admin/user/tendik") ?>" <?php if($this->uri->segment(2) == "user" && $this->uri->segment(3) == "tendik") echo 'class="mm-active"' ?>>
                                                         <i class="metismenu-icon">
                                                         </i>Tendik
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<?php echo site_url("admin/user/mahasiswa") ?>" <?php if($this->uri->segment(2) == "user" && $this->uri->segment(3) == "mahasiswa") echo 'class="mm-active"' ?>>
+                                                        <i class="metismenu-icon">
+                                                        </i>Mahasiswa
                                                     </a>
                                                 </li>
                                             </ul>

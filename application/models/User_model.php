@@ -837,8 +837,10 @@ class User_model extends CI_Model
 	{
 		if($role == 2){
 			$result = $this->db->query("SELECT * FROM tbl_users a, tbl_users_dosen b WHERE a.roleId = 2 AND a.userId = b.id_user ORDER BY userId DESC");
-		}else{
+		}elseif($role == 4){
 			$result = $this->db->query("SELECT * FROM tbl_users a, tbl_users_tendik b WHERE a.roleId = 4 AND a.userId = b.id_user ORDER BY userId DESC");
+		}elseif($role == 3){
+			$result = $this->db->query("SELECT * FROM tbl_users a, tbl_users_mahasiswa b WHERE a.roleId = 3 AND a.userId = b.id_user ORDER BY b.jurusan");
 		}
 		return $result->result();
 	}
@@ -850,6 +852,9 @@ class User_model extends CI_Model
 			$this->db->delete('tbl_users', array('userId' => $id));
 		}elseif($seg == 'tendik'){
 			$this->db->delete('tbl_users_tendik', array('id_user' => $id));
+			$this->db->delete('tbl_users', array('userId' => $id));
+		}elseif($seg == 'mahasiswa'){
+			$this->db->delete('tbl_users_mahasiswa', array('id_user' => $id));
 			$this->db->delete('tbl_users', array('userId' => $id));
 		}	
 	}

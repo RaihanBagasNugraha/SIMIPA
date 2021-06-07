@@ -111,7 +111,7 @@
                                             <td class="align-top">
                                                <?php 
                                                 $approval = $this->layanan_model->get_approval_layanan($row->id);
-                                                $form_selesai = array(3,5,6,7,8,10,11,12,13,18,19,20,21,22,23,25,26,35,37,38,44,45);
+                                                $form_selesai = array(3,5,6,7,8,9,10,11,12,13,18,19,20,21,22,23,25,26,35,37,38,44,45);
                                                 if(in_array($row->id_layanan_fakultas,$form_selesai)){
                                                     echo "<span style='color:white;background-color:#5cb85c' class='btn-sm'>Selesai</span>";
                                                 }else{

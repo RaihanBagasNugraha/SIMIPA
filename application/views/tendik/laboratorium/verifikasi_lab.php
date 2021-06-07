@@ -51,7 +51,8 @@
                                             $n = 0;
                                             $jml = count($form);
                                             foreach($form as $row) {
-                                              
+                                                // echo('<pre>');
+                                                // print_r($form);
                                         ?>
                                         <tr>
                                             <td class="align-top">

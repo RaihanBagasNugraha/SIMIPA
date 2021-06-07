@@ -57,6 +57,10 @@
                                                         $form_layanan = $this->layanan_model->select_layanan_by_bagian($layanan);
                                                         
                                                         foreach($form_layanan as $form){
+                                                            //kuisioner alumni
+                                                            if($form->id_layanan_fakultas == 35){
+                                                                continue;
+                                                            }
                                                     ?>
                                                         <option value=<?php echo $form->id_layanan_fakultas ?>><?php echo $form->nama ?></option>
                                                     <?php } ?>    

@@ -92,7 +92,7 @@
                                                 <input value="<?php echo $kom->id?>" type = "hidden" min="0" max="100" name="<?php echo "attribut[$n]"?>" >
                                                 <td><?php echo $kom->persentase ?> %</td>
                                                 
-                                                <td><input value="" type = "number" required min="0" max="100" style="width: 4em" name="<?php echo "nilai[$n]"?>" ></td>
+                                                <td><input value="" type = "text"  class='input-mask-trigger' data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false" im-insert="true" required min="0" max="100" style="width: 4em" name="<?php echo "nilai[$n]"?>" ></td>
                                             </tr>
                                             <?php $n++; } ?>
                                         </tbody>

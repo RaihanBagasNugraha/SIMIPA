@@ -831,8 +831,18 @@ class Tendik extends CI_Controller {
 	function bebas_lab()
 	{
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
-		$data['lab'] = $this->layanan_model->get_lab_pranata_user($this->session->userdata('userId'))->jurusan_unit;
-		$data['form'] = $this->layanan_model->get_lab_pranata_form($data['lab']);
+		$lab = $this->layanan_model->get_lab_pranata_user($this->session->userdata('userId'));
+		// echo "<pre>";
+		// print_r($data);
+		// $form = array();
+		// foreach($lab as $lb){
+			// array_push($form, $this->layanan_model->get_lab_pranata_form($lb->jurusan_unit));
+			// $form[] = ;
+			// $data['form'][] = 
+		// }
+		$data['form'] = $this->layanan_model->get_lab_pranata_form($this->session->userdata('userId'));
+		// echo "<pre>";
+		// print_r($data['form']);
 	
 		$this->load->view('header_global', $header);
 		$this->load->view('tendik/header');

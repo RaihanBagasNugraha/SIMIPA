@@ -1363,7 +1363,7 @@ class Dosen extends CI_Controller {
 		else{
 			$data['ta'] = $this->ta_model->get_ta_rekap_detail_tolak($this->session->userdata('userId'),$angkatan,$jenis,$npm1,$npm2);
 		}
-
+        $data['detail'] = $detail;
 		$header['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
 		
 		$this->load->view('header_global', $header);

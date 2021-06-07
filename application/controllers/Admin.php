@@ -249,6 +249,8 @@ class Admin extends CI_Controller {
 		}elseif($seg == 'tendik'){
 			$role = 4;
 			// $tbl = 'tbl_users_tendik';
+		}elseif($seg == 'mahasiswa'){
+			$role = 3;
 		}
 
 		$data['akun'] = $this->user_model->select_by_ID($this->session->userdata('userId'))->row();
@@ -256,7 +258,12 @@ class Admin extends CI_Controller {
 
 		$this->load->view('header_global', $data);
 		$this->load->view('admin/header');
-		$this->load->view('admin/user/tambah_user');
+		if($role == 3){
+			$this->load->view('admin/user/tambah_user_mahasiswa');
+		}else{
+			$this->load->view('admin/user/tambah_user');
+		}
+		
 
         $this->load->view('footer_global');
 	}

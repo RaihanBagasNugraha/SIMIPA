@@ -9,7 +9,7 @@
                                     </div>
                                     
                                     <div>List Beasiswa Aktif
-                                        <div class="page-title-subheading">Klik <b>Daftar</b> Untuk Mendaftar Beasiswa
+                                        <div class="page-title-subheading">Pilih Beasiswa Aktif
                                         </div>
                                        
                                     </div>

@@ -491,7 +491,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -1072,10 +1072,19 @@ class Layanan extends CI_Controller {
         //judul
         //get judul
         $judul = $this->ta_model->get_latest_ta_npm($data->npm);
-        $pdf->SetWidths(array(45, 5, 100));
-        $pdf->SetAligns(array('L','C','L'));
-        $pdf->RowNoBorder(array('Judul '.$draf,':', $judul->judul_approve == 1 ? $judul->judul1 : $judul->judul2));
-        $pdf->Ln(5);
+        if(empty($judul)){
+            $pdf->SetWidths(array(45, 5, 100));
+            $pdf->SetAligns(array('L','C','L'));
+            $pdf->RowNoBorder(array('Judul '.$draf,':', ''));
+            $pdf->Ln(5);
+        }else{
+            $pdf->SetWidths(array(45, 5, 100));
+            $pdf->SetAligns(array('L','C','L'));
+            // $pdf->RowNoBorder(array('Judul '.$draf,':', $judul->judul_approve == 1 ? $judul->judul1 : $judul->judul2));
+            $pdf->RowNoBorder(array('Judul '.$draf,':', $judul->judul1));
+            $pdf->Ln(5);
+        }
+      
 
         $pdf->SetSpacing($spasi);
         $pdf->SetAligns(array('C','L','L','L','L'));
@@ -1210,7 +1219,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -2060,10 +2069,10 @@ class Layanan extends CI_Controller {
         $pdf->SetX(120);
 
         $dekan = $this->layanan_model->get_tugas_tambahan_user('Dekan');
-        $pdf->Cell(68, $spasi, $dekan->gelar_depan." ".$dekan->name.", ".$dekan->gelar_belakang,0,1);
+        $pdf->Cell(68, $spasi, empty($dekan) ? "" : $dekan->gelar_depan." ".$dekan->name.", ".$dekan->gelar_belakang,0,1);
         $pdf->SetFont('Times','',12);
         $pdf->SetX(120);
-        $pdf->Cell(68, $spasi, "NIP. ".$dekan->nip_nik,0,1);
+        $pdf->Cell(68, $spasi, "NIP. ".empty($dekan) ? "" : $dekan->nip_nik,0,1);
 
         $pdf->AddPage('P');
         $pdf->SetX(20);
@@ -2245,7 +2254,12 @@ class Layanan extends CI_Controller {
         $pa = $this->user_model->get_dosen_pa_by_npm($data->npm);
         $kajur = $this->user_model->get_kajur_by_npm($data->npm);
         $pb_id = $this->ta_model->get_ta_aktif_npm($data->npm);
-        $pb = $this->user_model->get_dosen_data($pb_id->pembimbing1);
+        if(!empty($pb_id)){
+            $pb = $this->user_model->get_dosen_data($pb_id->pembimbing1);
+        }else{
+            $pb = '';
+        }
+        
 
         $numPage = '/PM/MIPA/I/25';
         $spasi = 4.5;
@@ -2355,20 +2369,22 @@ class Layanan extends CI_Controller {
         $pdf->Ln(20);
         $pdf->Cell(60, $spasi, $pa->gelar_depan." ".$pa->name.", ".$pa->gelar_belakang);
         $pdf->Cell(25, $spasi, "");
-        $pdf->Cell(60, $spasi, $pb->gelar_depan." ".$pb->name.", ".$pb->gelar_belakang,0,1);
+        $pdf->Cell(60, $spasi, empty($pb) ? "" : $pb->gelar_depan." ".$pb->name.", ".$pb->gelar_belakang,0,1);
         $pdf->Cell(60, $spasi, "NIP. ".$pa->nip_nik);
         $pdf->Cell(25, $spasi, "");
-        $pdf->Cell(60, $spasi, "NIP. ".$pb->nip_nik,0,1);
+        $pdf->Cell(60, $spasi, "NIP. ".empty($pb) ? "" : $pb->nip_nik,0,1);
         $pdf->Ln(5);
         $pdf->Cell(55, $spasi, "");
         $pdf->Cell(40, $spasi, "Ketua Jurusan ".$jurusan.",",0,0,'C');
         $pdf->Cell(50, $spasi, "",0,1);
         $pdf->Ln(20);
+        
+
         $pdf->Cell(55, $spasi, "");
-        $pdf->Cell(40, $spasi,  $kajur->gelar_depan." ".$kajur->name.", ".$kajur->gelar_belakang,0,0,'C');
+        $pdf->Cell(40, $spasi, empty($kajur) ? "": $kajur->gelar_depan." ".$kajur->name.", ".$kajur->gelar_belakang,0,0,'C');
         $pdf->Cell(50, $spasi, "",0,1);
         $pdf->Cell(55, $spasi, "");
-        $pdf->Cell(40, $spasi, "NIP. ". $kajur->nip_nik,0,0,'C');
+        $pdf->Cell(40, $spasi, "NIP. ". empty($kajur) ? "": $kajur->nip_nik,0,0,'C');
         $pdf->Cell(50, $spasi, "",0,1);
         $pdf->SetXY(105, $y_materai+3);
         $pdf->SetFont('Times','I',9);
@@ -3231,7 +3247,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -3356,7 +3372,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -3536,7 +3552,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -3714,7 +3730,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -3975,7 +3991,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -5062,7 +5078,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -5802,7 +5818,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -5997,7 +6013,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -6205,7 +6221,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -6399,7 +6415,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -6591,7 +6607,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -6778,7 +6794,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -6931,7 +6947,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -7074,7 +7090,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -7255,7 +7271,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -7682,7 +7698,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -7956,7 +7972,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -8208,7 +8224,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -8510,7 +8526,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -8702,7 +8718,7 @@ class Layanan extends CI_Controller {
         $surat = $this->layanan_model->get_no_surat_fakultas($data->id);
         if(!empty($surat)){
             $no_surat = $surat->nomor_surat;
-            $cap = "assets/images/stamp.png";
+            $cap = "assets/images/blank.png";
         }else{
             $no_surat = "";
             $cap = "assets/images/blank.png";
@@ -9369,7 +9385,7 @@ class Layanan extends CI_Controller {
         }
         //cap fakultas
         if($lab->status == 3){
-            $pdf->Image('assets/images/stamp.png',95,$pdf->GetY()+10,30);
+            $pdf->Image('assets/images/blank.png',95,$pdf->GetY()+10,30);
         }
         $pdf->Ln(3);
         $y_now = $pdf->GetY();

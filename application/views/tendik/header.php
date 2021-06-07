@@ -325,8 +325,12 @@ foreach($tugas as $row){
                                 <li <?php if($this->uri->segment(2) == "bebas-lab") echo 'class="mm-active"' ?>>
                                     <a href="#">
                                     <?php 
-                                        $lab_prn = $this->layanan_model->get_lab_pranata_user($this->session->userdata('userId'))->jurusan_unit;
-                                        $jml_frm_prn = count($this->layanan_model->get_lab_pranata_form($lab_prn));
+                                        $lab_prn = $this->layanan_model->get_lab_pranata_user($this->session->userdata('userId'));
+                                        
+                                        // foreach($lab_prn as $lbp){
+                                            $jml_frm_prn = count($this->layanan_model->get_lab_pranata_form($this->session->userdata('userId')));
+                                        // }
+                                        // $jml_frm_prn = 0;
 
                                         $verifikasi_pranata = $jml_frm_prn;
                                     

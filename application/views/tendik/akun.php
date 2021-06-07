@@ -61,7 +61,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="position-relative row form-group"><label for="ttd" class="col-sm-2 col-form-label">Tanda Tangan Digital</label>
+                                        <!-- <div class="position-relative row form-group"><label for="ttd" class="col-sm-2 col-form-label">Tanda Tangan Digital</label>
                             
                                             <div class="col-sm-4">
                                             <img src='<?php if($akun->ttd == "")
@@ -103,7 +103,7 @@
                                             <input type="hidden" name="output_ttd" id="output">
                                             </div>
                                     
-                                        </div>
+                                        </div> -->
                                         
                                         <div class="position-relative row form-group"><label for="examplePassword" class="col-sm-2 col-form-label">Kata Sandi</label>
                                             <div class="col-sm-6"><input name="password" id="password" disabled type="password" class="form-control"></div>

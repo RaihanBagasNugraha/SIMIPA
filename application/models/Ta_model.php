@@ -36,6 +36,16 @@ class Ta_model extends CI_Model
 	{
 		$this->db->where('npm =', $npm);
 		$this->db->where('status !=', '6');
+// 		$this->db->where('status !=', '-2');
+		$query = $this->db->get($this->table);
+		return $query->result();
+	}
+	
+	function select_active_ta2($npm)
+	{
+		$this->db->where('npm =', $npm);
+		$this->db->where('status !=', '6');
+		$this->db->where('status !=', '-2');
 		$query = $this->db->get($this->table);
 		return $query->result();
 	}
@@ -1299,7 +1309,7 @@ class Ta_model extends CI_Model
 
 	function get_mahasiswa_ta_rekap_ta_detail_seminar($npm,$seminar)
 	{
-		$query = $this->db->query("SELECT * FROM seminar_sidang,tugas_akhir WHERE tugas_akhir.npm = $npm AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.jenis = '$seminar' AND seminar_sidang.status != 6 AND seminar_sidang.status > 6");
+		$query = $this->db->query("SELECT *,seminar_sidang.status as status FROM seminar_sidang,tugas_akhir WHERE tugas_akhir.npm = $npm AND seminar_sidang.id_tugas_akhir = tugas_akhir.id_pengajuan AND seminar_sidang.jenis = '$seminar' AND seminar_sidang.status != 6 AND seminar_sidang.status > 6");
 		return $query->row();
 	}
 
